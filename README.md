@@ -1,3 +1,6 @@
+<p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a></p>
+
+<a id="english"></a>
 # TaqSim course: water allocation in the Zarafshan basin
 
 Welcome. This folder holds everything you need for the hands-on part of the course. You run the exercises in your
@@ -89,3 +92,204 @@ The setup box at the top of each notebook notices that the software is already i
 
 The model software is [TaqSim](https://github.com/hydrosolutions/taqsim), by hydrosolutions GmbH. The course material
 was prepared for the TaqSim training in Tashkent, 12 to 13 October 2026.
+
+
+---
+
+<a id="russian"></a>
+
+# Курс TaqSim: распределение воды в бассейне Зарафшана
+
+Добро пожаловать. В этой папке есть всё, что нужно для практической части курса. Упражнения выполняются в
+браузере, в бесплатном сервисе Google Colab. На компьютер ничего устанавливать не нужно.
+
+## Перед курсом: три шага (15 минут)
+
+**1. Заведите аккаунт Google.** Если у вас уже есть адрес Gmail, можно пользоваться им. Если нет, создайте аккаунт на
+[accounts.google.com](https://accounts.google.com/signup). Google может попросить номер телефона для подтверждения.
+
+**2. Откройте первую тетрадь.** Нажмите на кнопку:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb)
+
+Откроется страница с текстом и серыми блоками кода. Это *тетрадь* (notebook). Каждый серый блок — шаг, который можно
+запустить.
+
+**3. Запустите её.** В меню сверху выберите **Среда выполнения → Выполнить все** (Runtime → Run all). Первый блок
+устанавливает программу модели, это занимает около минуты. Затем появятся схема небольшой речной системы, таблица и
+график. Если вы их видите, вы готовы к курсу.
+
+Если Colab спросит «Всё равно запустить?» (Run anyway), потому что тетрадь написана не Google, нажмите **Всё равно
+запустить**. Это нормально.
+
+## Пробуем ИИ-помощника (10 минут, по желанию, но рекомендуется)
+
+В Colab встроен ИИ-помощник Gemini. На курсе вы будете с его помощью менять водные модели, описывая словами, что
+нужно. Чтобы попробовать:
+
+1. Нажмите синюю кнопку **Gemini** внизу страницы.
+2. Скопируйте это предложение в чат и отправьте (можно по-английски, Gemini понимает и русский):
+
+   > Find the smallest canal share, in steps of 1 percent, for which the farm has no shortage in any of the three
+   > years. Use the run() function.
+
+3. Gemini ответит кодом. Нажмите **Вставить** (Insert) или скопируйте код в новый блок через **+ Код** и запустите
+   его. Правильный ответ — **9 процентов**.
+
+Если это получилось, вы сделали всё, что нужно для курса. Другие задания для Gemini есть в самой тетради.
+
+## Тетради
+
+Открывайте каждую по её кнопке. Каждая тетрадь начинается с блока настройки, который занимает около минуты. Всегда
+запускайте этот блок первым.
+
+| | Тетрадь | Что вы делаете |
+|---|---|---|
+| 0 | [Старт](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) | Собираете и запускаете маленькую речную систему, затем меняете её с помощью Gemini |
+| 1 | [Моделирование](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_simulation.ipynb) | Полная модель Зарафшана: 61 элемент, шесть лет, день за днём |
+| 2 | Лимитирование: [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb) | Ограничивать подачу заранее или опустошить водохранилище? Правило для водохранилища, на вашем языке |
+| 3 | [Оптимизация](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) | Компьютер перебирает тысячи планов распределения и показывает компромиссы |
+| 4 | [Вода для реки](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) | Сколько воды оставлять в реке — и как |
+
+В папке `games/` лежат три интерактивные страницы, которые используются на занятиях. Скачайте одну и откройте в любом
+браузере; интернет для них не нужен.
+
+## Если что-то пошло не так
+
+- **В блоке появился красный текст, и он остановился.** Прочитайте последнюю строку красного текста. Затем вставьте
+  весь красный текст в Gemini и спросите «что пошло не так?». Так же вы будете работать и во время курса.
+- **«Среда выполнения отключена» (Runtime disconnected).** Colab останавливает тетрадь, если ею долго не пользуются.
+  Снова выберите **Среда выполнения → Выполнить все**.
+- **Блок настройки работает очень долго.** Подождите две минуты. Если ничего не происходит, выберите **Среда
+  выполнения → Отключить и удалить среду выполнения**, затем **Выполнить все**.
+- **Gemini не появляется.** Ему нужен личный аккаунт Google, и он доступен не во всех странах. Вместо него откройте в
+  другой вкладке бесплатное [приложение Gemini](https://gemini.google.com) или [ChatGPT](https://chat.openai.com):
+  вставьте туда шпаргалку из стартовой тетради и свой вопрос, а полученный код скопируйте обратно в Colab.
+
+## Для тех, у кого на компьютере есть Python
+
+Всё работает и локально, с Python 3.12 или новее и `git`:
+
+```
+git clone https://github.com/hydrosolutions/zarafshan-taqsim-course.git
+cd zarafshan-taqsim-course
+pip install deap ctrl-freak pymoo polars jupyter
+pip install --no-deps "git+https://github.com/hydrosolutions/taqsim.git@v0.1.4"
+pip install "git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301"
+jupyter lab
+```
+
+Блок настройки в начале каждой тетради заметит, что программа уже установлена, и только задаст пути.
+
+## Что в папке
+
+- `00_starter.ipynb` … `04_eflow.ipynb`: тетради курса в порядке занятий.
+- `src/zarafshan_taqsim/`: код модели Зарафшана, который используют тетради.
+- `data/ZRB_baseline/`: данные о притоке, водопотреблении, водохранилищах и каналах, 2010–2023.
+- `eflow_game/`: модель, стоящая за тетрадью и игрой «вода для реки», с заранее рассчитанными результатами.
+- `games/`: три интерактивные страницы.
+- `_cache/`: результаты долгих расчётов, чтобы тетрадь по оптимизации открывалась за секунды.
+
+Программа модели — [TaqSim](https://github.com/hydrosolutions/taqsim), разработка hydrosolutions GmbH. Материалы
+подготовлены для обучения TaqSim в Ташкенте, 12–13 октября 2026 года.
+
+
+---
+
+<a id="uzbek"></a>
+
+# TaqSim kursi: Zarafshon havzasida suv taqsimoti
+
+Xush kelibsiz. Bu papkada kursning amaliy qismi uchun kerak boʻlgan hamma narsa bor. Mashqlar brauzerda, Googlening
+bepul Colab xizmatida bajariladi. Kompyuteringizga hech narsa oʻrnatish shart emas.
+
+## Kursdan oldin: uchta ish (15 daqiqa)
+
+**1. Google hisobini oching.** Gmail manzilingiz boʻlsa, undan foydalanishingiz mumkin. Boʻlmasa,
+[accounts.google.com](https://accounts.google.com/signup) sahifasida yarating. Google tasdiqlash uchun telefon raqamini
+soʻrashi mumkin.
+
+**2. Birinchi daftarni oching.** Shu tugmani bosing:
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb)
+
+Matn va kulrang kod bloklari boʻlgan sahifa ochiladi. Bu *daftar* (notebook). Har bir kulrang blok ishga tushirish
+mumkin boʻlgan bitta qadam.
+
+**3. Ishga tushiring.** Yuqoridagi menyudan **Runtime → Run all** ni tanlang. Birinchi blok model dasturini oʻrnatadi,
+bu bir daqiqacha vaqt oladi. Soʻng kichik daryo tizimining chizmasi, jadval va grafik paydo boʻladi. Ularni koʻrsangiz,
+kursga tayyorsiz.
+
+Agar Colab daftar Google tomonidan yozilmagani uchun «Run anyway?» deb soʻrasa, **Run anyway** ni bosing. Bu odatiy hol.
+
+## Sunʼiy intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin tavsiya etiladi)
+
+Colab ichida Gemini nomli yordamchi bor. Kursda siz u orqali suv modellarini oddiy soʻzlar bilan tasvirlab
+oʻzgartirasiz. Sinab koʻrish uchun:
+
+1. Sahifaning pastidagi koʻk **Gemini** tugmasini bosing.
+2. Shu jumlani chatga nusxalab yuboring (inglizcha boʻlsa ham boʻladi):
+
+   > Find the smallest canal share, in steps of 1 percent, for which the farm has no shortage in any of the three
+   > years. Use the run() function.
+
+3. Gemini kod bilan javob beradi. **Insert** ni bosing (yoki kodni **+ Code** orqali yangi blokka nusxalang) va blokni
+   ishga tushiring. Toʻgʻri javob — **9 foiz**.
+
+Shu ishlagan boʻlsa, kurs uchun kerak boʻlgan hamma narsani qildingiz. Gemini uchun boshqa topshiriqlar daftarning
+oʻzida bor.
+
+## Daftarlar
+
+Har birini oʻz tugmasi bilan oching. Har bir daftar bir daqiqacha davom etadigan sozlash bloki bilan boshlanadi. Doim
+avval shu blokni ishga tushiring.
+
+| | Daftar | Nima qilasiz |
+|---|---|---|
+| 0 | [Boshlanish](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) | Kichik daryo tizimini qurib ishga tushirasiz, soʻng Gemini yordamida oʻzgartirasiz |
+| 1 | [Modellashtirish](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_simulation.ipynb) | Zarafshonning toʻliq modeli: 61 element, olti yil, kun-bakun |
+| 2 | Cheklash: [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb) | Erta cheklash yoki omborni boʻshatish? Suv ombori qoidasi, oʻz tilingizda |
+| 3 | [Optimallashtirish](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) | Kompyuter minglab taqsimot rejalarini koʻrib chiqib, murosalarni koʻrsatadi |
+| 4 | [Daryo uchun suv](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) | Daryoda qancha suv qoldirish kerak — va qanday qilib |
+
+`games/` papkasida mashgʻulotlarda ishlatiladigan uchta interaktiv sahifa bor. Birini yuklab olib, istalgan brauzerda
+oching; ular internetsiz ishlaydi.
+
+## Agar biror narsa notoʻgʻri ketsa
+
+- **Blokda qizil matn chiqdi va u toʻxtadi.** Qizil matnning oxirgi qatorini oʻqing. Soʻng butun qizil matnni
+  Gemini ga qoʻyib, «nima notoʻgʻri ketdi?» deb soʻrang. Kurs davomida ham shunday ishlaysiz.
+- **«Runtime disconnected».** Colab uzoq vaqt ishlatilmagan daftarni toʻxtatadi. Yana **Runtime → Run all** ni
+  tanlang.
+- **Sozlash bloki juda uzoq ishlayapti.** Ikki daqiqa kuting. Hech narsa boʻlmasa, **Runtime → Disconnect and delete
+  runtime**, soʻng **Runtime → Run all** ni tanlang.
+- **Gemini chiqmayapti.** Unga shaxsiy Google hisobi kerak va u hamma mamlakatda ham mavjud emas. Oʻrniga boshqa
+  oynada bepul [Gemini ilovasi](https://gemini.google.com) yoki [ChatGPT](https://chat.openai.com) dan foydalaning:
+  boshlanish daftaridagi eslatma varaqasini va savolingizni u yerga qoʻying, olingan kodni Colab ga qaytarib nusxalang.
+
+## Kompyuterida Python bor kishilar uchun
+
+Hammasi lokal ham ishlaydi, Python 3.12 yoki undan yangisi va `git` bilan:
+
+```
+git clone https://github.com/hydrosolutions/zarafshan-taqsim-course.git
+cd zarafshan-taqsim-course
+pip install deap ctrl-freak pymoo polars jupyter
+pip install --no-deps "git+https://github.com/hydrosolutions/taqsim.git@v0.1.4"
+pip install "git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301"
+jupyter lab
+```
+
+Har bir daftarning boshidagi sozlash bloki dastur allaqachon oʻrnatilganini sezadi va faqat yoʻllarni belgilaydi.
+
+## Papkada nima bor
+
+- `00_starter.ipynb` … `04_eflow.ipynb`: kurs daftarlari, mashgʻulotlar tartibida.
+- `src/zarafshan_taqsim/`: daftarlar ishlatadigan Zarafshon modelining kodi.
+- `data/ZRB_baseline/`: oqim, suv talabi, suv omborlari va kanallar maʼlumotlari, 2010–2023.
+- `eflow_game/`: «daryo uchun suv» daftari va oʻyini ortidagi model, oldindan hisoblangan natijalar bilan.
+- `games/`: uchta interaktiv sahifa.
+- `_cache/`: uzoq hisob-kitoblar natijalari, optimallashtirish daftari soniyalarda ochilishi uchun.
+
+Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan [TaqSim](https://github.com/hydrosolutions/taqsim).
+Materiallar Toshkentda 2026-yil 12–13-oktabrda oʻtkaziladigan TaqSim oʻquv kursi uchun tayyorlangan.
