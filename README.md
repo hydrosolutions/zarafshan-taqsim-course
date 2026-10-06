@@ -44,6 +44,9 @@ If that worked, you have done everything the course needs. More tasks for Gemini
 Each step adds one thing to the step before. Start at the top, even if you know water models already: the tools are
 new to everyone.
 
+**In the course afternoon** we do steps 1 and 2 together, and step 3 if there is time. **Steps 4 to 7 are for
+afterwards**, at your own pace, with this page as your guide. Everything stays online.
+
 | Step | What | New in this step | Open |
 |---|---|---|---|
 | 1 | **Starter notebook** | The tools: Colab, a notebook, a tiny river system, and Gemini changing it for you | [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) |
@@ -146,6 +149,10 @@ was prepared for the TaqSim training in Tashkent, 12 to 13 October 2026.
 
 Каждый шаг добавляет одну вещь к предыдущему. Начинайте сверху, даже если водные модели вам знакомы: инструменты новы
 для всех.
+
+**На занятии во второй половине дня** мы вместе проходим шаги 1 и 2, а шаг 3 — если останется время. **Шаги с 4 по
+7 — для самостоятельной работы после курса**, в своём темпе, с этой страницей в качестве путеводителя. Всё остаётся
+в открытом доступе.
 
 | Шаг | Что | Что нового на этом шаге | Открыть |
 |---|---|---|---|
@@ -251,6 +258,10 @@ oʻzida bor.
 
 Har bir qadam oldingisiga bitta narsa qoʻshadi. Suv modellarini bilsangiz ham yuqoridan boshlang: vositalar hamma uchun
 yangi.
+
+**Kursning tushdan keyingi mashgʻulotida** 1- va 2-qadamlarni birga bajaramiz, vaqt qolsa 3-qadamni ham. **4-dan
+7-gacha boʻlgan qadamlar kursdan keyin**, oʻz surʼatingizda, shu sahifani yoʻl koʻrsatkich qilib bajarish uchun.
+Hammasi onlayn qoladi.
 
 | Qadam | Nima | Bu qadamda nima yangi | Ochish |
 |---|---|---|---|
