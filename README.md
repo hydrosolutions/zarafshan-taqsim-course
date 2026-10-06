@@ -1,4 +1,4 @@
-<p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a></p>
+<p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a> &nbsp;|&nbsp; <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/">Course page</a> (links open in new tabs)</p>
 
 <a id="english"></a>
 # TaqSim course: water allocation in the Zarafshan basin
