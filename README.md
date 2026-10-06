@@ -52,8 +52,25 @@ first.
 | 3 | [Optimisation](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) | Let the computer search thousands of allocation plans and show the trade-offs |
 | 4 | [River flow for nature](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) | How much water to leave in the river, and how |
 
-The folder `games/` holds three interactive pages used in the sessions. Download one and open it in any browser;
-they work without internet.
+## Order of the sessions
+
+The course follows one thread, from a plan you can hold in your head to one a computer has to search for:
+
+1. **Starter notebook** (0): the tools, and your first model change with Gemini.
+2. **Warm-up game** (`games/zarafshan_warmup_game.html`): three levers, four results, and the question "can any
+   other plan beat mine?". No code.
+3. **Simulation notebook** (1): the real Zarafshan system, day by day.
+4. **Rationing notebook** (2): two levers, a few results, and the set of plans that no other plan beats. This is the
+   Pareto idea, without the word.
+5. **Zarafshan game** (`games/zarafshan_tradeoff_game.html`): six levers, five results, and the optimiser's own
+   front to compare your plan against.
+6. **Optimisation notebook** (3): the same idea with its proper name, and the computer doing the search.
+7. **River-for-nature game and notebook** (`games/eflow_game.html`, then 4): a different trade-off, water for the
+   crops against a river that still behaves like a river.
+
+The three games are single web pages in the folder `games/`. To use one: open the folder on GitHub, click the file,
+click the download button (an arrow pointing down), then open the downloaded file in any browser. They work without
+internet.
 
 ## If something goes wrong
 
@@ -151,8 +168,24 @@ was prepared for the TaqSim training in Tashkent, 12 to 13 October 2026.
 | 3 | [Оптимизация](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) | Компьютер перебирает тысячи планов распределения и показывает компромиссы |
 | 4 | [Вода для реки](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) | Сколько воды оставлять в реке — и как |
 
-В папке `games/` лежат три интерактивные страницы, которые используются на занятиях. Скачайте одну и откройте в любом
-браузере; интернет для них не нужен.
+## Порядок занятий
+
+Курс идёт по одной нити: от плана, который можно удержать в голове, до плана, который приходится искать компьютеру:
+
+1. **Стартовая тетрадь** (0): инструменты и первое изменение модели с помощью Gemini.
+2. **Разминочная игра** (`games/zarafshan_warmup_game.html`): три рычага, четыре результата и вопрос «может ли
+   какой-нибудь другой план побить мой?». Без кода.
+3. **Тетрадь по моделированию** (1): настоящая система Зарафшана, день за днём.
+4. **Тетрадь по лимитированию** (2): два рычага, несколько результатов и набор планов, которые не побить никаким
+   другим планом. Это идея Парето, пока без самого слова.
+5. **Игра «Зарафшан»** (`games/zarafshan_tradeoff_game.html`): шесть рычагов, пять результатов и фронт, найденный
+   оптимизатором, чтобы сравнить с ним свой план.
+6. **Тетрадь по оптимизации** (3): та же идея под своим именем, и поиск делает компьютер.
+7. **Игра и тетрадь «вода для реки»** (`games/eflow_game.html`, затем 4): другой компромисс — вода для полей против
+   реки, которая всё ещё ведёт себя как река.
+
+Три игры — это отдельные веб-страницы в папке `games/`. Чтобы открыть одну: откройте папку на GitHub, нажмите на
+файл, нажмите кнопку скачивания (стрелка вниз) и откройте скачанный файл в любом браузере. Интернет для них не нужен.
 
 ## Если что-то пошло не так
 
@@ -252,8 +285,25 @@ avval shu blokni ishga tushiring.
 | 3 | [Optimallashtirish](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) | Kompyuter minglab taqsimot rejalarini koʻrib chiqib, murosalarni koʻrsatadi |
 | 4 | [Daryo uchun suv](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) | Daryoda qancha suv qoldirish kerak — va qanday qilib |
 
-`games/` papkasida mashgʻulotlarda ishlatiladigan uchta interaktiv sahifa bor. Birini yuklab olib, istalgan brauzerda
-oching; ular internetsiz ishlaydi.
+## Mashgʻulotlar tartibi
+
+Kurs bitta ip boʻylab boradi: xayolda ushlab turish mumkin boʻlgan rejadan kompyuter qidirishi kerak boʻlgan rejagacha:
+
+1. **Boshlanish daftari** (0): vositalar va Gemini bilan birinchi model oʻzgartirishi.
+2. **Isinish oʻyini** (`games/zarafshan_warmup_game.html`): uchta richag, toʻrtta natija va «boshqa biror reja
+   menikini yenga oladimi?» degan savol. Kodsiz.
+3. **Modellashtirish daftari** (1): haqiqiy Zarafshon tizimi, kun-bakun.
+4. **Cheklash daftari** (2): ikkita richag, bir nechta natija va boshqa hech qaysi reja yenga olmaydigan rejalar
+   toʻplami. Bu Pareto gʻoyasi, hozircha soʻzning oʻzisiz.
+5. **«Zarafshon» oʻyini** (`games/zarafshan_tradeoff_game.html`): oltita richag, beshta natija va oʻz rejangizni
+   solishtirish uchun optimallashtiruvchi topgan front.
+6. **Optimallashtirish daftari** (3): oʻsha gʻoya oʻz nomi bilan, qidiruvni esa kompyuter qiladi.
+7. **«Daryo uchun suv» oʻyini va daftari** (`games/eflow_game.html`, soʻng 4): boshqa murosa — ekinlar uchun suv
+   va hali ham daryodek oqadigan daryo.
+
+Uchta oʻyin `games/` papkasidagi alohida veb-sahifalardir. Birini ochish uchun: GitHub da papkani oching, faylni
+bosing, yuklab olish tugmasini (pastga qaragan strelka) bosing va yuklangan faylni istalgan brauzerda oching. Ular
+internetsiz ishlaydi.
 
 ## Agar biror narsa notoʻgʻri ketsa
 
