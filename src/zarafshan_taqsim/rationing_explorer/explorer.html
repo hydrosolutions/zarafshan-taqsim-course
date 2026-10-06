@@ -1,0 +1,75 @@
+<div class="viz-root" id="rationing-explorer">
+  <div class="rx-controls">
+    <label class="rx-slider" for="rx-trigger">
+      <span>Trigger: start rationing when the reservoir holds less than <strong id="rx-trigger-out"></strong></span>
+      <input type="range" id="rx-trigger" min="0" step="1" />
+    </label>
+    <label class="rx-slider" for="rx-ration">
+      <span>Ration: then deliver <strong id="rx-ration-out"></strong> of the summer need</span>
+      <input type="range" id="rx-ration" min="0" step="1" />
+    </label>
+    <div class="rx-presets" role="group" aria-label="Example plans">
+      <button type="button" data-trigger="0" data-ration="1">No rationing</button>
+      <button type="button" data-trigger="16" data-ration="0.8">Ration lightly</button>
+      <button type="button" data-trigger="16" data-ration="0.5">Cut deep</button>
+    </div>
+  </div>
+
+  <div class="rx-tiles">
+    <div class="rx-tile">
+      <div class="rx-tile-label">Average shortage</div>
+      <div class="rx-tile-value"><span id="rx-mean"></span><small> Mm³ per year not delivered</small></div>
+      <div class="rx-tile-note" id="rx-mean-note"></div>
+    </div>
+    <div class="rx-tile">
+      <div class="rx-tile-label">Worst month</div>
+      <div class="rx-tile-value"><span id="rx-worst"></span><small> % of need not delivered</small></div>
+      <div class="rx-tile-note" id="rx-worst-note"></div>
+    </div>
+    <div class="rx-tile">
+      <div class="rx-tile-label">Years short</div>
+      <div class="rx-tile-value"><span id="rx-years"></span><small> of 100</small></div>
+      <div class="rx-tile-note" id="rx-years-note"></div>
+    </div>
+  </div>
+
+  <p class="rx-verdict" id="rx-verdict">
+    <span id="rx-verdict-text"></span>
+    <button type="button" id="rx-verdict-load" hidden>Load that plan</button>
+  </p>
+
+  <div class="rx-charts">
+    <figure class="rx-card">
+      <figcaption>
+        <strong>Every plan is a dot.</strong> Left is better (less water undelivered), down is better (milder worst month).
+        Click a dot to load that plan.
+      </figcaption>
+      <div class="rx-legend">
+        <span><i class="rx-key rx-key-dot rx-key-current"></i>your plan</span>
+        <span><i class="rx-key rx-key-dot rx-key-front"></i>unbeaten plan</span>
+        <span><i class="rx-key rx-key-dot rx-key-beaten"></i>beaten plan</span>
+      </div>
+      <svg id="rx-tradeoff" role="img" aria-label="All plans: average shortage against worst month"></svg>
+    </figure>
+    <div class="rx-column">
+      <figure class="rx-card">
+        <figcaption><strong>The worst month of each of the 100 years</strong> (% of that month's need not delivered)</figcaption>
+        <div class="rx-legend">
+          <span><i class="rx-key rx-key-bar rx-key-shortage"></i>your plan</span>
+          <span><i class="rx-key rx-key-bar rx-key-reference"></i>no rationing</span>
+        </div>
+        <svg id="rx-shortage" role="img" aria-label="Worst month of each year"></svg>
+      </figure>
+      <figure class="rx-card">
+        <figcaption><strong>Water in the reservoir</strong> (Mm³), <span id="rx-window"></span></figcaption>
+        <div class="rx-legend">
+          <span><i class="rx-key rx-key-line rx-key-current"></i>your plan</span>
+          <span><i class="rx-key rx-key-line rx-key-reference"></i>no rationing</span>
+          <span><i class="rx-key rx-key-line rx-key-trigger"></i>trigger</span>
+        </div>
+        <svg id="rx-storage" role="img" aria-label="Reservoir storage over time"></svg>
+      </figure>
+    </div>
+  </div>
+  <div class="rx-tooltip" id="rx-tooltip" hidden></div>
+</div>

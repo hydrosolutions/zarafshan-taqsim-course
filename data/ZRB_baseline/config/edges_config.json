@@ -1,0 +1,89 @@
+{
+    "Source": [
+        {"target": "HW_Ravatkhoza", "capacity": 1230, "ecological_flow": 0, "tags": ["natural"]}
+    ],
+    "HW_Ravatkhoza": [
+        {"target": "HW_AkKaraDarya", "capacity": 885, "ecological_flow": 0, "tags": ["natural"]},
+        {"target": "Mirzapay", "capacity": 125, "ecological_flow": 0},
+        {"target": "HW_Dargom", "capacity": 125, "ecological_flow": 0},
+        {"target": "Sink_Jizzakh", "capacity": 45, "ecological_flow": 0}
+    ],
+    "HW_AkKaraDarya": [
+        {"target": "Akkaradarya", "capacity": 120, "ecological_flow": 0},
+        {"target": "NaturalSplit_AkKaraDarya", "capacity": 780, "ecological_flow": 0, "tags": ["natural"]}
+    ],
+    "NaturalSplit_AkKaraDarya": [
+        {"target": "HW_Damkhoza", "capacity": 550, "ecological_flow": 0, "tags": ["natural"]},
+        {"target": "RES_Akdarya", "capacity": 230, "ecological_flow": 0, "tags": ["natural"]}
+    ],
+    "HW_Damkhoza": [
+        {"target": "HW_Narpay", "capacity": 80, "ecological_flow": 0},
+        {"target": "HW_Confluence", "capacity": 350, "ecological_flow": 0, "tags": ["natural"]},
+        {"target": "Miankaltoss", "capacity": 100, "ecological_flow": 0},
+        {"target": "RES_Kattakurgan", "capacity": 100, "ecological_flow": 0}
+    ],
+    "HW_Narpay": [
+        {"target": "HW_Confluence", "capacity": 125, "ecological_flow": 0},
+        {"target": "Narpay", "capacity": 80, "ecological_flow": 0}
+    ],
+    "HW_Confluence": [
+        {"target": "HW_Karmana", "capacity": 400, "ecological_flow": 0, "tags": ["natural"]}
+    ],
+    "HW_Karmana": [
+        {"target": "Karmanakonimex", "capacity": 80, "ecological_flow": 0},
+        {"target": "Sink_Navoi", "capacity": 400, "ecological_flow": 0, "tags": ["natural"]},
+        {"target": "Powerplant", "capacity": 30, "ecological_flow": 0}
+    ],
+    "Dargom": [
+        {"target": "HW_Damkhoza", "capacity": 180, "ecological_flow": 0}
+    ],
+    "HW_Dargom": [
+        {"target": "Dargom", "capacity": 100, "ecological_flow": 0},
+        {"target": "Sink_Kashkadarya", "capacity": 60, "ecological_flow": 0}
+    ],
+    "Mirzapay": [
+        {"target": "RES_Akdarya", "capacity": 180, "ecological_flow": 0}
+    ],
+    "Karmanakonimex": [
+        {"target": "Sink_Navoi", "capacity": 150, "ecological_flow": 0}
+    ],
+    "Akkaradarya": [
+        {"target": "RES_Akdarya", "capacity": 180, "ecological_flow": 0}
+    ],
+    "Miankaltoss": [
+        {"target": "HW_Karmana", "capacity": 150, "ecological_flow": 0}
+    ],
+    "Narpay": [
+        {"target": "HW_Karmana", "capacity": 150, "ecological_flow": 0}
+    ],
+    "Powerplant": [
+        {"target": "Sink_Navoi", "capacity": 30, "ecological_flow": 0}
+    ],
+    "RES_Kattakurgan": [
+        {"target": "HW_Narpay", "capacity": 125, "ecological_flow": 0}
+    ],
+    "RES_Akdarya": [
+        {"target": "HW_Confluence", "capacity": 200, "ecological_flow": 0, "tags": ["natural"]}
+    ],
+    "RF_Dargom": [
+        {"target": "Dargom", "capacity": 50, "ecological_flow": 0}
+    ],
+    "RF_Mirzapay": [
+        {"target": "Mirzapay", "capacity": 50, "ecological_flow": 0}
+    ],
+    "RF_Akkaradarya": [
+        {"target": "Akkaradarya", "capacity": 50, "ecological_flow": 0}
+    ],
+    "RF_Narpay": [
+        {"target": "Narpay", "capacity": 50, "ecological_flow": 0}
+    ],
+    "RF_Karmanakonimex": [
+        {"target": "Karmanakonimex", "capacity": 50, "ecological_flow": 0}
+    ],
+    "RF_Miankaltoss": [
+        {"target": "Miankaltoss", "capacity": 50, "ecological_flow": 0}
+    ],
+    "Sink_Jizzakh": [],
+    "Sink_Kashkadarya": [],
+    "Sink_Navoi": []
+}

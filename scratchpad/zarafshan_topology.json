@@ -1,0 +1,977 @@
+{
+  "frequency": "daily",
+  "start_date": "2017-01-01",
+  "nodes": [
+    {
+      "type": "source",
+      "id": "Source",
+      "location": [
+        4382810.64,
+        378094.43
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Dargom",
+      "metadata": {
+        "area_km2": 2800.5,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4383557.1,
+        315015.0
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Mirzapay",
+      "metadata": {
+        "area_km2": 2594.1,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4416576.8,
+        338504.1
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Akkaradarya",
+      "metadata": {
+        "area_km2": 1134.0,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4443388.2,
+        290211.8
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Miankaltoss",
+      "metadata": {
+        "area_km2": 2821.4,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4453042.0,
+        233892.0
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Narpay",
+      "metadata": {
+        "area_km2": 1852.9,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4414323.9,
+        240740.4
+      ]
+    },
+    {
+      "type": "source",
+      "id": "RF_Karmanakonimex",
+      "metadata": {
+        "area_km2": 2475.3,
+        "runoff_coefficient": 0.2
+      },
+      "location": [
+        4468744.0,
+        184442.0
+      ]
+    },
+    {
+      "type": "storage",
+      "id": "RES_Kattakurgan",
+      "capacity": 667000000,
+      "initial_storage": 333500000,
+      "dead_storage": 66700000,
+      "location": [
+        4414364.46,
+        265373.79
+      ]
+    },
+    {
+      "type": "storage",
+      "id": "RES_Akdarya",
+      "capacity": 106000000,
+      "initial_storage": 53000000,
+      "dead_storage": 10600000,
+      "location": [
+        4432908.15,
+        274483.07
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Ravatkhoza",
+      "location": [
+        4377810.64,
+        363094.43
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_AkKaraDarya",
+      "metadata": {
+        "natural_split_ratios": {
+          "R_HW_AkKaraDarya_HW_Damkhoza": 0.7,
+          "R_HW_AkKaraDarya_RES_Akdarya": 0.3
+        }
+      },
+      "location": [
+        4395650.43,
+        333156.64
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Damkhoza",
+      "location": [
+        4417759.4,
+        284720.68
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Narpay",
+      "location": [
+        4424501.92,
+        270403.55
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Confluence",
+      "location": [
+        4433214.0,
+        239889.6
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Karmana",
+      "location": [
+        4448118.7,
+        209334.3
+      ]
+    },
+    {
+      "type": "splitter",
+      "id": "HW_Dargom",
+      "location": [
+        4383557.1,
+        321178.73
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Dargom",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4390976.0,
+        315015.0
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Mirzapay",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4406576.84,
+        338504.1
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Akkaradarya",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4433388.22,
+        290211.78
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Miankaltoss",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4443042.0,
+        233892.0
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Narpay",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4424323.86,
+        240740.38
+      ]
+    },
+    {
+      "type": "demand",
+      "id": "Karmanakonimex",
+      "efficiency": 0.4875,
+      "consumption_fraction": 1.0,
+      "location": [
+        4458744.0,
+        184442.0
+      ]
+    },
+    {
+      "type": "passthrough",
+      "id": "Powerplant",
+      "location": [
+        4452052.53,
+        185894.2
+      ]
+    },
+    {
+      "type": "sink",
+      "id": "Sink_Navoi",
+      "location": [
+        4455000.0,
+        195000.0
+      ]
+    },
+    {
+      "type": "sink",
+      "id": "Sink_Jizzakh",
+      "location": [
+        4385000.0,
+        370000.0
+      ]
+    },
+    {
+      "type": "sink",
+      "id": "Sink_Kashkadarya",
+      "location": [
+        4378000.0,
+        325000.0
+      ]
+    },
+    {
+      "type": "reach",
+      "id": "R_Source_HW_Ravatkhoza",
+      "location": [
+        4380310.64,
+        370594.43
+      ],
+      "capacity": 106272000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Ravatkhoza_HW_AkKaraDarya",
+      "location": [
+        4386730.54,
+        348125.54
+      ],
+      "capacity": 76464000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Ravatkhoza_Mirzapay",
+      "location": [
+        4392193.74,
+        350799.27
+      ],
+      "capacity": 10800000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Ravatkhoza_HW_Dargom",
+      "location": [
+        4380683.87,
+        342136.58
+      ],
+      "capacity": 10800000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Ravatkhoza_Sink_Jizzakh",
+      "location": [
+        4381405.32,
+        366547.21
+      ],
+      "capacity": 3888000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_AkKaraDarya_Akkaradarya",
+      "location": [
+        4414519.32,
+        311684.21
+      ],
+      "capacity": 10368000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_AkKaraDarya_HW_Damkhoza",
+      "location": [
+        4406704.92,
+        308938.66
+      ],
+      "capacity": 47520000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_AkKaraDarya_RES_Akdarya",
+      "location": [
+        4414279.29,
+        303819.85
+      ],
+      "capacity": 19872000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Damkhoza_HW_Narpay",
+      "location": [
+        4421130.66,
+        277562.11
+      ],
+      "capacity": 6912000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Damkhoza_HW_Confluence",
+      "location": [
+        4425486.7,
+        262305.14
+      ],
+      "capacity": 30240000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Damkhoza_Miankaltoss",
+      "location": [
+        4430400.7,
+        259306.34
+      ],
+      "capacity": 8640000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Damkhoza_RES_Kattakurgan",
+      "location": [
+        4416061.93,
+        275047.23
+      ],
+      "capacity": 8640000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Narpay_HW_Confluence",
+      "location": [
+        4428857.96,
+        255146.58
+      ],
+      "capacity": 10800000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Narpay_Narpay",
+      "location": [
+        4424412.89,
+        255571.96
+      ],
+      "capacity": 6912000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Confluence_HW_Karmana",
+      "location": [
+        4440666.35,
+        224611.95
+      ],
+      "capacity": 34560000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Karmana_Karmanakonimex",
+      "location": [
+        4453431.35,
+        196888.15
+      ],
+      "capacity": 6912000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Karmana_Sink_Navoi",
+      "location": [
+        4451559.35,
+        202167.15
+      ],
+      "capacity": 34560000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Karmana_Powerplant",
+      "location": [
+        4450085.62,
+        197614.25
+      ],
+      "capacity": 2592000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Dargom_Dargom",
+      "location": [
+        4387266.55,
+        318096.86
+      ],
+      "capacity": 8640000
+    },
+    {
+      "type": "reach",
+      "id": "R_HW_Dargom_Sink_Kashkadarya",
+      "location": [
+        4380778.55,
+        323089.36
+      ],
+      "capacity": 5184000
+    },
+    {
+      "type": "reach",
+      "id": "R_RES_Kattakurgan_HW_Narpay",
+      "location": [
+        4419433.19,
+        267888.67
+      ],
+      "capacity": 10800000
+    },
+    {
+      "type": "reach",
+      "id": "R_RES_Akdarya_HW_Confluence",
+      "location": [
+        4433061.08,
+        257186.34
+      ],
+      "capacity": 17280000
+    },
+    {
+      "type": "reach",
+      "id": "R_Dargom_HW_Damkhoza",
+      "location": [
+        4404367.7,
+        299867.84
+      ],
+      "capacity": 15552000
+    },
+    {
+      "type": "reach",
+      "id": "R_Mirzapay_RES_Akdarya",
+      "location": [
+        4419742.5,
+        306493.58
+      ],
+      "capacity": 15552000
+    },
+    {
+      "type": "reach",
+      "id": "R_Akkaradarya_RES_Akdarya",
+      "location": [
+        4433148.19,
+        282347.43
+      ],
+      "capacity": 15552000
+    },
+    {
+      "type": "reach",
+      "id": "R_Miankaltoss_HW_Karmana",
+      "location": [
+        4445580.35,
+        221613.15
+      ],
+      "capacity": 12960000
+    },
+    {
+      "type": "reach",
+      "id": "R_Narpay_HW_Karmana",
+      "location": [
+        4436221.28,
+        225037.34
+      ],
+      "capacity": 12960000
+    },
+    {
+      "type": "reach",
+      "id": "R_Karmanakonimex_Sink_Navoi",
+      "location": [
+        4456872.0,
+        189721.0
+      ],
+      "capacity": 12960000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Dargom_Dargom",
+      "location": [
+        4387266.55,
+        315015.0
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Mirzapay_Mirzapay",
+      "location": [
+        4411576.82,
+        338504.1
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Akkaradarya_Akkaradarya",
+      "location": [
+        4438388.21,
+        290211.79
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Narpay_Narpay",
+      "location": [
+        4419323.88,
+        240740.39
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Miankaltoss_Miankaltoss",
+      "location": [
+        4448042.0,
+        233892.0
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_RF_Karmanakonimex_Karmanakonimex",
+      "location": [
+        4463744.0,
+        184442.0
+      ],
+      "capacity": 4320000
+    },
+    {
+      "type": "reach",
+      "id": "R_Powerplant_Sink_Navoi",
+      "location": [
+        4453526.27,
+        190447.1
+      ],
+      "capacity": 2592000
+    }
+  ],
+  "edges": [
+    {
+      "id": "Source_to_R_Source_HW_Ravatkhoza",
+      "source": "Source",
+      "target": "R_Source_HW_Ravatkhoza",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_Source_HW_Ravatkhoza_to_HW_Ravatkhoza",
+      "source": "R_Source_HW_Ravatkhoza",
+      "target": "HW_Ravatkhoza",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_Ravatkhoza_to_R_HW_Ravatkhoza_HW_AkKaraDarya",
+      "source": "HW_Ravatkhoza",
+      "target": "R_HW_Ravatkhoza_HW_AkKaraDarya",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_Ravatkhoza_HW_AkKaraDarya_to_HW_AkKaraDarya",
+      "source": "R_HW_Ravatkhoza_HW_AkKaraDarya",
+      "target": "HW_AkKaraDarya",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_AkKaraDarya_to_R_HW_AkKaraDarya_HW_Damkhoza",
+      "source": "HW_AkKaraDarya",
+      "target": "R_HW_AkKaraDarya_HW_Damkhoza",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_AkKaraDarya_HW_Damkhoza_to_HW_Damkhoza",
+      "source": "R_HW_AkKaraDarya_HW_Damkhoza",
+      "target": "HW_Damkhoza",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_AkKaraDarya_to_R_HW_AkKaraDarya_RES_Akdarya",
+      "source": "HW_AkKaraDarya",
+      "target": "R_HW_AkKaraDarya_RES_Akdarya",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_AkKaraDarya_RES_Akdarya_to_RES_Akdarya",
+      "source": "R_HW_AkKaraDarya_RES_Akdarya",
+      "target": "RES_Akdarya",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_Damkhoza_to_R_HW_Damkhoza_HW_Confluence",
+      "source": "HW_Damkhoza",
+      "target": "R_HW_Damkhoza_HW_Confluence",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_Damkhoza_HW_Confluence_to_HW_Confluence",
+      "source": "R_HW_Damkhoza_HW_Confluence",
+      "target": "HW_Confluence",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "RES_Akdarya_to_R_RES_Akdarya_HW_Confluence",
+      "source": "RES_Akdarya",
+      "target": "R_RES_Akdarya_HW_Confluence",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_RES_Akdarya_HW_Confluence_to_HW_Confluence",
+      "source": "R_RES_Akdarya_HW_Confluence",
+      "target": "HW_Confluence",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_Confluence_to_R_HW_Confluence_HW_Karmana",
+      "source": "HW_Confluence",
+      "target": "R_HW_Confluence_HW_Karmana",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_Confluence_HW_Karmana_to_HW_Karmana",
+      "source": "R_HW_Confluence_HW_Karmana",
+      "target": "HW_Karmana",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_Karmana_to_R_HW_Karmana_Sink_Navoi",
+      "source": "HW_Karmana",
+      "target": "R_HW_Karmana_Sink_Navoi",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "R_HW_Karmana_Sink_Navoi_to_Sink_Navoi",
+      "source": "R_HW_Karmana_Sink_Navoi",
+      "target": "Sink_Navoi",
+      "tags": [
+        "natural"
+      ]
+    },
+    {
+      "id": "HW_Ravatkhoza_to_R_HW_Ravatkhoza_Mirzapay",
+      "source": "HW_Ravatkhoza",
+      "target": "R_HW_Ravatkhoza_Mirzapay"
+    },
+    {
+      "id": "R_HW_Ravatkhoza_Mirzapay_to_Mirzapay",
+      "source": "R_HW_Ravatkhoza_Mirzapay",
+      "target": "Mirzapay"
+    },
+    {
+      "id": "HW_Ravatkhoza_to_R_HW_Ravatkhoza_HW_Dargom",
+      "source": "HW_Ravatkhoza",
+      "target": "R_HW_Ravatkhoza_HW_Dargom"
+    },
+    {
+      "id": "R_HW_Ravatkhoza_HW_Dargom_to_HW_Dargom",
+      "source": "R_HW_Ravatkhoza_HW_Dargom",
+      "target": "HW_Dargom"
+    },
+    {
+      "id": "HW_Ravatkhoza_to_R_HW_Ravatkhoza_Sink_Jizzakh",
+      "source": "HW_Ravatkhoza",
+      "target": "R_HW_Ravatkhoza_Sink_Jizzakh"
+    },
+    {
+      "id": "R_HW_Ravatkhoza_Sink_Jizzakh_to_Sink_Jizzakh",
+      "source": "R_HW_Ravatkhoza_Sink_Jizzakh",
+      "target": "Sink_Jizzakh"
+    },
+    {
+      "id": "HW_AkKaraDarya_to_R_HW_AkKaraDarya_Akkaradarya",
+      "source": "HW_AkKaraDarya",
+      "target": "R_HW_AkKaraDarya_Akkaradarya"
+    },
+    {
+      "id": "R_HW_AkKaraDarya_Akkaradarya_to_Akkaradarya",
+      "source": "R_HW_AkKaraDarya_Akkaradarya",
+      "target": "Akkaradarya"
+    },
+    {
+      "id": "HW_Damkhoza_to_R_HW_Damkhoza_HW_Narpay",
+      "source": "HW_Damkhoza",
+      "target": "R_HW_Damkhoza_HW_Narpay"
+    },
+    {
+      "id": "R_HW_Damkhoza_HW_Narpay_to_HW_Narpay",
+      "source": "R_HW_Damkhoza_HW_Narpay",
+      "target": "HW_Narpay"
+    },
+    {
+      "id": "HW_Damkhoza_to_R_HW_Damkhoza_Miankaltoss",
+      "source": "HW_Damkhoza",
+      "target": "R_HW_Damkhoza_Miankaltoss"
+    },
+    {
+      "id": "R_HW_Damkhoza_Miankaltoss_to_Miankaltoss",
+      "source": "R_HW_Damkhoza_Miankaltoss",
+      "target": "Miankaltoss"
+    },
+    {
+      "id": "HW_Damkhoza_to_R_HW_Damkhoza_RES_Kattakurgan",
+      "source": "HW_Damkhoza",
+      "target": "R_HW_Damkhoza_RES_Kattakurgan"
+    },
+    {
+      "id": "R_HW_Damkhoza_RES_Kattakurgan_to_RES_Kattakurgan",
+      "source": "R_HW_Damkhoza_RES_Kattakurgan",
+      "target": "RES_Kattakurgan"
+    },
+    {
+      "id": "HW_Narpay_to_R_HW_Narpay_HW_Confluence",
+      "source": "HW_Narpay",
+      "target": "R_HW_Narpay_HW_Confluence"
+    },
+    {
+      "id": "R_HW_Narpay_HW_Confluence_to_HW_Confluence",
+      "source": "R_HW_Narpay_HW_Confluence",
+      "target": "HW_Confluence"
+    },
+    {
+      "id": "HW_Narpay_to_R_HW_Narpay_Narpay",
+      "source": "HW_Narpay",
+      "target": "R_HW_Narpay_Narpay"
+    },
+    {
+      "id": "R_HW_Narpay_Narpay_to_Narpay",
+      "source": "R_HW_Narpay_Narpay",
+      "target": "Narpay"
+    },
+    {
+      "id": "HW_Karmana_to_R_HW_Karmana_Karmanakonimex",
+      "source": "HW_Karmana",
+      "target": "R_HW_Karmana_Karmanakonimex"
+    },
+    {
+      "id": "R_HW_Karmana_Karmanakonimex_to_Karmanakonimex",
+      "source": "R_HW_Karmana_Karmanakonimex",
+      "target": "Karmanakonimex"
+    },
+    {
+      "id": "HW_Karmana_to_R_HW_Karmana_Powerplant",
+      "source": "HW_Karmana",
+      "target": "R_HW_Karmana_Powerplant"
+    },
+    {
+      "id": "R_HW_Karmana_Powerplant_to_Powerplant",
+      "source": "R_HW_Karmana_Powerplant",
+      "target": "Powerplant"
+    },
+    {
+      "id": "HW_Dargom_to_R_HW_Dargom_Dargom",
+      "source": "HW_Dargom",
+      "target": "R_HW_Dargom_Dargom"
+    },
+    {
+      "id": "R_HW_Dargom_Dargom_to_Dargom",
+      "source": "R_HW_Dargom_Dargom",
+      "target": "Dargom"
+    },
+    {
+      "id": "HW_Dargom_to_R_HW_Dargom_Sink_Kashkadarya",
+      "source": "HW_Dargom",
+      "target": "R_HW_Dargom_Sink_Kashkadarya"
+    },
+    {
+      "id": "R_HW_Dargom_Sink_Kashkadarya_to_Sink_Kashkadarya",
+      "source": "R_HW_Dargom_Sink_Kashkadarya",
+      "target": "Sink_Kashkadarya"
+    },
+    {
+      "id": "RES_Kattakurgan_to_R_RES_Kattakurgan_HW_Narpay",
+      "source": "RES_Kattakurgan",
+      "target": "R_RES_Kattakurgan_HW_Narpay"
+    },
+    {
+      "id": "R_RES_Kattakurgan_HW_Narpay_to_HW_Narpay",
+      "source": "R_RES_Kattakurgan_HW_Narpay",
+      "target": "HW_Narpay"
+    },
+    {
+      "id": "Dargom_to_R_Dargom_HW_Damkhoza",
+      "source": "Dargom",
+      "target": "R_Dargom_HW_Damkhoza"
+    },
+    {
+      "id": "R_Dargom_HW_Damkhoza_to_HW_Damkhoza",
+      "source": "R_Dargom_HW_Damkhoza",
+      "target": "HW_Damkhoza"
+    },
+    {
+      "id": "Mirzapay_to_R_Mirzapay_RES_Akdarya",
+      "source": "Mirzapay",
+      "target": "R_Mirzapay_RES_Akdarya"
+    },
+    {
+      "id": "R_Mirzapay_RES_Akdarya_to_RES_Akdarya",
+      "source": "R_Mirzapay_RES_Akdarya",
+      "target": "RES_Akdarya"
+    },
+    {
+      "id": "Akkaradarya_to_R_Akkaradarya_RES_Akdarya",
+      "source": "Akkaradarya",
+      "target": "R_Akkaradarya_RES_Akdarya"
+    },
+    {
+      "id": "R_Akkaradarya_RES_Akdarya_to_RES_Akdarya",
+      "source": "R_Akkaradarya_RES_Akdarya",
+      "target": "RES_Akdarya"
+    },
+    {
+      "id": "Miankaltoss_to_R_Miankaltoss_HW_Karmana",
+      "source": "Miankaltoss",
+      "target": "R_Miankaltoss_HW_Karmana"
+    },
+    {
+      "id": "R_Miankaltoss_HW_Karmana_to_HW_Karmana",
+      "source": "R_Miankaltoss_HW_Karmana",
+      "target": "HW_Karmana"
+    },
+    {
+      "id": "Narpay_to_R_Narpay_HW_Karmana",
+      "source": "Narpay",
+      "target": "R_Narpay_HW_Karmana"
+    },
+    {
+      "id": "R_Narpay_HW_Karmana_to_HW_Karmana",
+      "source": "R_Narpay_HW_Karmana",
+      "target": "HW_Karmana"
+    },
+    {
+      "id": "Karmanakonimex_to_R_Karmanakonimex_Sink_Navoi",
+      "source": "Karmanakonimex",
+      "target": "R_Karmanakonimex_Sink_Navoi"
+    },
+    {
+      "id": "R_Karmanakonimex_Sink_Navoi_to_Sink_Navoi",
+      "source": "R_Karmanakonimex_Sink_Navoi",
+      "target": "Sink_Navoi"
+    },
+    {
+      "id": "Powerplant_to_R_Powerplant_Sink_Navoi",
+      "source": "Powerplant",
+      "target": "R_Powerplant_Sink_Navoi"
+    },
+    {
+      "id": "R_Powerplant_Sink_Navoi_to_Sink_Navoi",
+      "source": "R_Powerplant_Sink_Navoi",
+      "target": "Sink_Navoi"
+    },
+    {
+      "id": "RF_Dargom_to_R_RF_Dargom_Dargom",
+      "source": "RF_Dargom",
+      "target": "R_RF_Dargom_Dargom"
+    },
+    {
+      "id": "R_RF_Dargom_Dargom_to_Dargom",
+      "source": "R_RF_Dargom_Dargom",
+      "target": "Dargom"
+    },
+    {
+      "id": "RF_Mirzapay_to_R_RF_Mirzapay_Mirzapay",
+      "source": "RF_Mirzapay",
+      "target": "R_RF_Mirzapay_Mirzapay"
+    },
+    {
+      "id": "R_RF_Mirzapay_Mirzapay_to_Mirzapay",
+      "source": "R_RF_Mirzapay_Mirzapay",
+      "target": "Mirzapay"
+    },
+    {
+      "id": "RF_Akkaradarya_to_R_RF_Akkaradarya_Akkaradarya",
+      "source": "RF_Akkaradarya",
+      "target": "R_RF_Akkaradarya_Akkaradarya"
+    },
+    {
+      "id": "R_RF_Akkaradarya_Akkaradarya_to_Akkaradarya",
+      "source": "R_RF_Akkaradarya_Akkaradarya",
+      "target": "Akkaradarya"
+    },
+    {
+      "id": "RF_Narpay_to_R_RF_Narpay_Narpay",
+      "source": "RF_Narpay",
+      "target": "R_RF_Narpay_Narpay"
+    },
+    {
+      "id": "R_RF_Narpay_Narpay_to_Narpay",
+      "source": "R_RF_Narpay_Narpay",
+      "target": "Narpay"
+    },
+    {
+      "id": "RF_Miankaltoss_to_R_RF_Miankaltoss_Miankaltoss",
+      "source": "RF_Miankaltoss",
+      "target": "R_RF_Miankaltoss_Miankaltoss"
+    },
+    {
+      "id": "R_RF_Miankaltoss_Miankaltoss_to_Miankaltoss",
+      "source": "R_RF_Miankaltoss_Miankaltoss",
+      "target": "Miankaltoss"
+    },
+    {
+      "id": "RF_Karmanakonimex_to_R_RF_Karmanakonimex_Karmanakonimex",
+      "source": "RF_Karmanakonimex",
+      "target": "R_RF_Karmanakonimex_Karmanakonimex"
+    },
+    {
+      "id": "R_RF_Karmanakonimex_Karmanakonimex_to_Karmanakonimex",
+      "source": "R_RF_Karmanakonimex_Karmanakonimex",
+      "target": "Karmanakonimex"
+    }
+  ]
+}

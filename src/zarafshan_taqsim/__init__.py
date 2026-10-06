@@ -1,0 +1,237 @@
+"""Zarafshan River Basin water system model for TaqSim."""
+
+from zarafshan_taqsim.analysis import WaterBalance, compute_water_balance
+from zarafshan_taqsim.baseline import build_objectives, compute_baseline, compute_reference_point
+from zarafshan_taqsim.cache import CachedResult, OptimizationConfig, load_result, run_or_load, save_result
+from zarafshan_taqsim.convergence import (
+    ConvergenceHistory,
+    GenerationRecord,
+    make_convergence_callback,
+    plot_convergence,
+)
+from zarafshan_taqsim.data import (
+    DEFAULT_DISTRICTS,
+    DISTRICT_COLORS,
+    SECONDS_PER_DAY,
+    SECONDS_PER_MONTH,
+    TRANSFER_COLORS,
+    DemandConfig,
+    HydroworkConfig,
+    PassthroughConfig,
+    ReservoirConfig,
+    RunoffConfig,
+    derive_va_table,
+    load_canal_properties,
+    load_demand,
+    load_demand_config,
+    load_edges,
+    load_evaporation,
+    load_hv_curve,
+    load_hydrowork_config,
+    load_inflow,
+    load_min_flow,
+    load_passthrough_config,
+    load_precipitation,
+    load_reservoir_config,
+    load_runoff_config,
+    plot_supply_demand,
+)
+from zarafshan_taqsim.figures import FigureRegistry, TableRegistry, figures, tables
+from zarafshan_taqsim.network import (
+    N_TIMESTEPS,
+    apply_demand_proportional_splitting,
+    apply_static_demand_splitting,
+    create_zrb_system,
+    get_node_counts,
+    visualize_network,
+)
+from zarafshan_taqsim.objectives import (
+    equity_deficit,
+    passthrough_min_flow_deficit,
+    release_variability,
+    total_agricultural_deficit,
+)
+from zarafshan_taqsim.optimization_coursebook import (
+    baseline_district_summary,
+    baseline_objective_table,
+    decision_table_from_schema,
+    front_arrays,
+    kattakurgan_policy_variants,
+    narpay_equity_variants,
+    objective_catalog_table,
+    parameter_schema_summary,
+    plot_narpay_equity,
+    plot_pareto_concept,
+    plot_pareto_idea,
+    plot_release_sensitivity,
+    plot_representative_district_deficits,
+    plot_representative_sink_flows,
+    plot_selected_parameter_profiles,
+    plot_tunable_parameter_map,
+    release_comparison_table,
+    representative_indices,
+    representative_table,
+    run_coursebook_optimization,
+    selected_parameter_names,
+    simulate_representatives,
+)
+from zarafshan_taqsim.optimize_runner import main as run_optimization_pipeline
+from zarafshan_taqsim.optimize_runner import run_optimization
+from zarafshan_taqsim.pareto_viz import plot_parallel_coordinates, plot_pareto_3d, plot_pareto_scatter
+from zarafshan_taqsim.posthoc import (
+    AnalysisResult,
+    analyze_representatives,
+    analyze_solution,
+    extract_representatives,
+    plot_parameter_profiles,
+    print_representative_table,
+)
+from zarafshan_taqsim.strategies import (
+    CanalLossRule,
+    EFlowSplitPolicy,
+    EvaporationLossRule,
+    MonthlyDistribution,
+    PassThroughRelease,
+    PriorityDistribution,
+    ZRBReleaseRule,
+)
+from zarafshan_taqsim.visualization import (
+    build_baseline_overview_table,
+    plot_baseline_strategy_comparison,
+    plot_canal_loss_breakdown,
+    plot_static_ratio_network,
+    plot_system_dashboard,
+    plot_top_reach_losses,
+    print_annual_water_balance,
+    print_district_comparison,
+    print_district_summary,
+    print_powerplant_comparison,
+    print_powerplant_stats,
+    print_water_balance_comparison,
+)
+
+__all__ = [
+    # Analysis
+    "WaterBalance",
+    "compute_water_balance",
+    # Constants
+    "SECONDS_PER_DAY",
+    "SECONDS_PER_MONTH",
+    "N_TIMESTEPS",
+    "DEFAULT_DISTRICTS",
+    "DISTRICT_COLORS",
+    "TRANSFER_COLORS",
+    # Config types
+    "ReservoirConfig",
+    "DemandConfig",
+    "HydroworkConfig",
+    "RunoffConfig",
+    "PassthroughConfig",
+    # Data loading
+    "derive_va_table",
+    "load_inflow",
+    "load_demand",
+    "load_min_flow",
+    "load_hv_curve",
+    "load_precipitation",
+    "load_evaporation",
+    "load_edges",
+    "load_canal_properties",
+    "load_reservoir_config",
+    "load_demand_config",
+    "load_hydrowork_config",
+    "load_runoff_config",
+    "load_passthrough_config",
+    # Visualization (matplotlib)
+    "plot_supply_demand",
+    # Notebook figure and table captions
+    "FigureRegistry",
+    "TableRegistry",
+    "figures",
+    "tables",
+    # Visualization (plotly)
+    "plot_system_dashboard",
+    "plot_static_ratio_network",
+    "plot_baseline_strategy_comparison",
+    "plot_canal_loss_breakdown",
+    "plot_top_reach_losses",
+    "build_baseline_overview_table",
+    "print_annual_water_balance",
+    "print_district_summary",
+    "print_water_balance_comparison",
+    "print_district_comparison",
+    "print_powerplant_stats",
+    "print_powerplant_comparison",
+    # Network
+    "create_zrb_system",
+    "apply_static_demand_splitting",
+    "apply_demand_proportional_splitting",
+    "get_node_counts",
+    "visualize_network",
+    # Objectives
+    "total_agricultural_deficit",
+    "equity_deficit",
+    "release_variability",
+    "passthrough_min_flow_deficit",
+    # Strategies
+    "ZRBReleaseRule",
+    "MonthlyDistribution",
+    "PriorityDistribution",
+    "EFlowSplitPolicy",
+    "EvaporationLossRule",
+    "CanalLossRule",
+    "PassThroughRelease",
+    # Baseline & Objectives
+    "build_objectives",
+    "compute_baseline",
+    "compute_reference_point",
+    # Cache
+    "OptimizationConfig",
+    "CachedResult",
+    "save_result",
+    "load_result",
+    "run_or_load",
+    # Convergence
+    "GenerationRecord",
+    "ConvergenceHistory",
+    "make_convergence_callback",
+    "plot_convergence",
+    # Pareto Visualization
+    "plot_pareto_scatter",
+    "plot_pareto_3d",
+    "plot_parallel_coordinates",
+    # Post-Hoc Analysis
+    "AnalysisResult",
+    "extract_representatives",
+    "analyze_solution",
+    "analyze_representatives",
+    "plot_parameter_profiles",
+    "print_representative_table",
+    # Optimization Runner
+    "run_optimization",
+    "run_optimization_pipeline",
+    # Environmental-flow coursebook helpers
+    # Optimization coursebook helpers
+    "baseline_district_summary",
+    "baseline_objective_table",
+    "decision_table_from_schema",
+    "front_arrays",
+    "kattakurgan_policy_variants",
+    "narpay_equity_variants",
+    "objective_catalog_table",
+    "parameter_schema_summary",
+    "plot_narpay_equity",
+    "plot_pareto_concept",
+    "plot_pareto_idea",
+    "plot_release_sensitivity",
+    "plot_representative_district_deficits",
+    "plot_representative_sink_flows",
+    "plot_selected_parameter_profiles",
+    "plot_tunable_parameter_map",
+    "release_comparison_table",
+    "representative_indices",
+    "representative_table",
+    "run_coursebook_optimization",
+    "selected_parameter_names",
+    "simulate_representatives",
+]
