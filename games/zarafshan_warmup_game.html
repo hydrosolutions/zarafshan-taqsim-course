@@ -462,8 +462,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 .intro summary::before { content: "▸"; font-size: 0.9em; opacity: 0.7; }
 .intro[open] summary::before { content: "▾"; }
 .intro summary h2 { margin: 0; font-size: 1.05rem; }
-.intro .prose { max-width: 78ch; }
-.intro .prose p { margin: 8px 0; }
+.intro .prose { column-width: 52ch; column-gap: 36px; }  /* the whole width: two columns on a wide window, one on a laptop */
+.intro .prose p { margin: 0 0 10px; break-inside: avoid; }
 
 </style>
 </head>
