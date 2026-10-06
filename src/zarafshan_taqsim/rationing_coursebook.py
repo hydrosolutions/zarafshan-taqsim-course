@@ -605,24 +605,26 @@ def plot_inflows(inflows: tuple[float, ...]) -> Figure:
 
 
 def plot_runs(runs: dict[str, RunResult], first_year: int = 1, window_years: int = 20) -> Figure:
-    """One row per plan: storage over a window of years (left) and each year's worst month (right)."""
+    """One row per plan: each year's worst month over all years (left, the shown window shaded) and storage over
+    a window of years (right)."""
     fig, axes = plt.subplots(
         len(runs), 2, figsize=(8.0, 2.1 * len(runs) + 0.4), sharex="col", sharey="col", squeeze=False
     )
     for (label, run), (left, right) in zip(runs.items(), axes, strict=True):
-        months = np.arange(12 * (first_year - 1), 12 * (first_year - 1 + window_years))
-        left.plot(months / 12 + 1, run.storage[months], color=WATER, linewidth=1.4)
-        if run.plan.trigger > 0.0 and run.plan.ration < 1.0:
-            left.axhline(run.plan.trigger, color=MUTED, linewidth=1.0)
-            left.text(first_year + 0.1, run.plan.trigger + 1.0, "trigger", color=MUTED, fontsize=7.5)
-        left.xaxis.set_major_locator(MaxNLocator(integer=True))
-        left.set_ylim(0, CAPACITY_MM3 * 1.05)
-        left.set_ylabel("Storage (Mm³)")
-        left.set_title(label, loc="left", fontsize=9.5, color=INK, weight="bold")
         worst = run.worst_month_by_year
-        right.bar(np.arange(1, len(worst) + 1), worst, width=0.7, color=SHORTAGE)
-        right.set_ylim(0, 100)
-        right.set_ylabel("Worst month (% short)")
+        left.axvspan(first_year - 0.5, first_year + window_years - 0.5, color=WATER, alpha=0.12, linewidth=0)
+        left.bar(np.arange(1, len(worst) + 1), worst, width=0.7, color=SHORTAGE)
+        left.set_ylim(0, 100)
+        left.set_ylabel("Worst month of the year\n(% of its need not delivered)")
+        left.set_title(label, loc="left", fontsize=9.5, color=INK, weight="bold")
+        months = np.arange(12 * (first_year - 1), 12 * (first_year - 1 + window_years))
+        right.plot(months / 12 + 1, run.storage[months], color=WATER, linewidth=1.4)
+        if run.plan.trigger > 0.0 and run.plan.ration < 1.0:
+            right.axhline(run.plan.trigger, color=MUTED, linewidth=1.0)
+            right.text(first_year + 0.1, run.plan.trigger + 1.0, "trigger", color=MUTED, fontsize=7.5)
+        right.xaxis.set_major_locator(MaxNLocator(integer=True))
+        right.set_ylim(0, CAPACITY_MM3 * 1.05)
+        right.set_ylabel("Storage (Mm³)")
         scores = run.scores
         right.set_title(
             f"{scores.mean_shortage:.1f} Mm³/yr short · worst month {scores.worst_month:.0f} % · "
@@ -633,8 +635,8 @@ def plot_runs(runs: dict[str, RunResult], first_year: int = 1, window_years: int
         )
         _style(left)
         _style(right)
-    axes[-1][0].set_xlabel(f"Year (a window of {window_years} years)")
-    axes[-1][1].set_xlabel("Year (all years)")
+    axes[-1][0].set_xlabel("Year (all years; shaded: the years shown on the right)")
+    axes[-1][1].set_xlabel(f"Year (a window of {window_years} years)")
     fig.tight_layout()
     return fig
 
