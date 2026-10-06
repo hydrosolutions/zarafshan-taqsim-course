@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zarafshan Warm-up</title>
-<meta name="description" content="Warm-up for the Zarafshan water-allocation trade-off game: a Zarafshan-like river built from sixteen TaqSim blocks, three levers, four indicators, every lever combination run in TaqSim. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026.">
+<title>The Zarafshan in sixteen blocks</title>
+<meta name="description" content="A first model of the Zarafshan oasis: a Zarafshan-like river built from sixteen TaqSim blocks, three levers, four indicators, every lever combination run in TaqSim. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026.">
 <style>
 /* Tokens: dataviz reference palette families. Light-mode sector hues are darkened steps so every line clears 3:1 and
    every text token 4.5:1 on the light surface (measured with validate_palette.js `contrast`); sector order
@@ -460,7 +460,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>Zarafshan warm-up <span class="thin">a river in sixteen blocks</span></h1>
+    <h1>The Zarafshan in sixteen blocks <span class="thin">a first model of the oasis</span></h1>
     <div class="top-controls">
       <div class="segmented" id="year-buttons" role="group" aria-label="Hydrological year"></div>
       <button class="btn small" id="theme-toggle" type="button">Theme: auto</button>
@@ -514,8 +514,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
         </div>
       </section>
       <section class="card tasks-card" aria-labelledby="tasks-title">
-        <header><div><h2 id="tasks-title">Warm-up</h2><span class="sub" id="tasks-sub"></span></div></header>
-        <p class="hint">After this warm-up you can:</p>
+        <header><div><h2 id="tasks-title">Your tasks</h2><span class="sub" id="tasks-sub"></span></div></header>
+        <p class="hint">After this game you can:</p>
         <ul class="goals">
           <li>name TaqSim's building blocks and say which one is a river, a canal, a reservoir, a headworks;</li>
           <li>say why, in a dry year, the crops, the river downstream and next year's storage cannot all get what they need;</li>
@@ -3176,7 +3176,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     banner.textContent = "";
     banner.classList.toggle("all-done", !next || !!next.extra);
     if (!next) {
-      banner.appendChild(h("span", { class: "step", text: "Warm-up done." }));
+      banner.appendChild(h("span", { class: "step", text: "All tasks done." }));
       banner.appendChild(h("span", { class: "what", text: "Next: the full Zarafshan game, with the same river, more users and scenario cards." }));
       if (hadFocus) banner.focus({ preventScroll: true });
       return;
