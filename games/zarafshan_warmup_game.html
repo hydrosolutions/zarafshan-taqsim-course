@@ -464,6 +464,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 .intro summary h2 { margin: 0; font-size: 1.05rem; }
 .intro .prose { column-width: 52ch; column-gap: 36px; }  /* the whole width: two columns on a wide window, one on a laptop */
 .intro .prose p { margin: 0 0 10px; break-inside: avoid; }
+.lang-note { margin: -6px 0 12px; }
 
 </style>
 </head>
@@ -473,14 +474,15 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
     <h1>The Zarafshan in sixteen blocks <span class="thin">a first model of the oasis</span></h1>
     <div class="top-controls">
       <div class="segmented" id="year-buttons" role="group" aria-label="Hydrological year"></div>
+      <div class="segmented" id="lang-buttons" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></div>
       <button class="btn small" id="theme-toggle" type="button">Theme: auto</button>
     </div>
   </header>
 
   <!-- intro:start -->
   <details class="card intro" id="intro" open>
-    <summary><h2>Before you play: what this model shows, and why</h2></summary>
-    <div class="prose">
+    <summary><h2 data-i18n>Before you play: what this model shows, and why</h2></summary>
+    <div class="prose" data-lang="en">
       <p><b>What you see.</b> A simplified Zarafshan, from the Ravatkhoja headworks down to below Navoi, for one water year
       from October to September, month by month. Upstream: the headworks with the transfers to Jizzakh and Kashkadarya, the
       Samarkand canals (the <i>upper fields</i>) and the cities. Then the weir that fills the Kattakurgan reservoir in winter.
@@ -512,12 +514,46 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       among them is a decision the model informs but cannot make. And when the water comes at the wrong time, storage is the
       adaptation.</p>
     </div>
+    <div class="prose" data-lang="ru" hidden>
+      <p><b>Что вы видите.</b> Упрощённый Зарафшан от Раватходжинского гидроузла до участка ниже Навои, один водный год
+      с октября по сентябрь, месяц за месяцем. Выше по течению: гидроузел с перебросками в Джизак и Кашкадарью, самаркандские
+      каналы (<i>верхние поля</i>) и города. Затем водозабор, который зимой наполняет Каттакурганское водохранилище. Ниже:
+      нижний гидроузел с тепловой электростанцией и каналами Каттакургана и Навои (<i>нижние поля</i>). В конце — река,
+      которая должна течь дальше для природы и для водопользователей ниже. Дренажная вода с полей возвращается через
+      несколько месяцев. Каждый блок — это блок TaqSim одного из шести видов; из тех же видов собрана полная модель бассейна.</p>
+      <p><b>Что вы можете менять.</b> Три рычага, каждый — настоящее решение управляющего бассейном. <i>Резерв реки</i>: доля
+      месячного стока, которую оба гидроузла обязаны оставить в реке. <i>Доля наполнения</i>: какую часть зимней воды водозабор
+      направляет в водохранилище. <i>Доля попуска</i>: какую часть того, чего летом не хватает ниже водохранилища, оно
+      выпускает.</p>
+      <p><b>За чем вы следите.</b> Четыре результата: обеспеченность верхних полей, обеспеченность нижних полей, выполненные
+      потребности ниже по течению (месяцев из двенадцати) и вода в водохранилище на 30 сентября против 170 млн м³, которые
+      были в нём 1 октября. Пять «миров»: сухой, средний и влажный год по данным наблюдений, а также средний год, каким его
+      проецируют климатические модели на 2041–2070 и 2071–2099 годы (источник — в примечаниях о происхождении данных ниже).</p>
+      <p><b>Чем интересна эта система.</b> В средний и влажный год можно обеспечить почти всех. В сухой год приходит примерно
+      на четверть меньше воды, и становится видна очередность: верхние поля обслуживаются первыми, и никакой рычаг этого не
+      меняет; каждый кубометр, сбережённый для реки или для следующего года, отнимается у нижних полей. Ни один план не
+      даёт нижним полям 40 % их потребности, не выполняет потребности ниже по течению во все двенадцать месяцев и не
+      сохраняет 170 млн м³ одновременно. В будущих «мирах» год приносит столько же воды, сколько сегодня, но раньше: больше
+      в апреле и мае, меньше в июле и августе, когда посевам нужно больше всего. От этого первыми страдают те, у кого нет
+      хранилища, — верхние каналы, а водохранилище защищает нижние поля. Игра позволяет обнаружить всё это самому, пробуя, —
+      в этом и смысл.</p>
+      <p><b>Что попробовать.</b> Следуйте заданиям справа. Сначала найдите блоки и проиграйте год. Затем в сухой год:
+      выполните потребности ниже по течению в каждый месяц и посмотрите, кто за это платит; дайте нижним полям 40 % и
+      посмотрите, что ломается; сохраните 170 млн м³ в водохранилище и посмотрите, чего это стоит полям. Откройте
+      исследователь компромиссов: какие планы из всех положений рычагов не побить никаким другим, и чего каждый из них
+      стоит по остальным осям? Наконец, переключитесь в «мир» 2071–2099 и проиграйте год.</p>
+      <p><b>Что вынесет управляющий водой.</b> В сухой год распределение — это выбор между проигравшими, а не технический
+      оптимум; рычаги решают, кто проиграет. Очередность обслуживания на гидроузлах важнее любого отдельного рычага.
+      Сбережение воды на следующий год имеет цену в этом году, и модель делает её видимой. Планов, которые не побить никаким
+      другим, много, и выбор между ними — решение, которому модель помогает, но которое она не принимает. А когда вода
+      приходит не вовремя, адаптация — это хранилище.</p>
+    </div>
   </details>
   <!-- intro:end -->
 
   <div class="now-wrap">
     <div class="now" id="now" role="status" tabindex="-1"></div>
-    <div class="note" id="note" hidden><span id="note-text"></span><span class="note-buttons"><button class="btn small" id="note-action" type="button" hidden></button><button class="btn small" id="note-close" type="button" aria-keyshortcuts="Escape">Got it</button></span></div>
+    <div class="note" id="note" hidden><span id="note-text"></span><span class="note-buttons"><button class="btn small" id="note-action" type="button" hidden></button><button class="btn small" id="note-close" type="button" aria-keyshortcuts="Escape" data-i18n>Got it</button></span></div>
   </div>
 
   <div class="layout">
@@ -527,18 +563,18 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       <div class="verdict" id="verdict" tabindex="-1"></div>
       <section class="card schematic-card" aria-labelledby="schematic-title">
         <header>
-          <div><h2 id="schematic-title">The river as blocks</h2><span class="sub" id="schematic-sub"></span></div>
+          <div><h2 id="schematic-title" data-i18n>The river as blocks</h2><span class="sub" id="schematic-sub"></span></div>
           <div class="diagram-controls">
-            <button class="btn small" id="animate" type="button">Play the year</button>
+            <button class="btn small" id="animate" type="button" data-i18n>Play the year</button>
             <div class="month-box">
               <label for="month" class="visually-hidden">Month</label>
               <input type="range" id="month" min="0" max="12" step="1" value="12">
-              <div class="month-ticks" aria-hidden="true"><span>Oct</span><span>Jan</span><span>Apr</span><span>Jul</span><span>Year</span></div>
+              <div class="month-ticks" aria-hidden="true"><span data-i18n>Oct</span><span data-i18n>Jan</span><span data-i18n>Apr</span><span data-i18n>Jul</span><span data-i18n>Year</span></div>
             </div>
-            <span class="month-label" id="month-label">Whole year</span>
+            <span class="month-label" id="month-label" data-i18n>Whole year</span>
           </div>
         </header>
-        <p class="hint scroll-note">Scroll sideways to see the whole river →</p>
+        <p class="hint scroll-note" data-i18n>Scroll sideways to see the whole river →</p>
         <div class="schematic-box" id="schematic"></div>
         <div class="selected-line" id="selected-line"></div>
         <p class="caption">Water flows from left to right; the arrowheads show the direction. A dashed arrow that ends in the open is water that leaves to the air: evaporation, and ET (evapotranspiration), the water the crops use. Numbers on the lines are Mm³ (million m³) that flowed in the year or month shown; the numbers at the reservoir and at the two Drainage blocks are Mm³ stored (in the year view: on 1 October and on 30 September). The line width shows the flow in m³/s. <span class="key-dash" aria-hidden="true"></span>Dashed lines lead to and from the reservoir. <span class="key-dot" aria-hidden="true"></span>A thin dotted line carries no water. The column in the Reservoir box shows its storage. Each Drainage block is the ground under the fields above it: the water that drains from them returns to the river months later. Each user's box says what it needs. At a canal, “a of b” means: the canal took a of the b it needs, including what is lost and what drains away. The river line gets wider where the power plant and the Drainage block give water back. The numbers under Inflow and River end are what enters and what leaves the model. ✓ supplied, ✕ not fully supplied. Click a block to see what kind of TaqSim block it is and what it does.</p>
@@ -547,41 +583,41 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 
     <aside class="side" id="side" aria-label="Levers and tasks">
       <section class="card levers-card" aria-labelledby="levers-title">
-        <header><div><h2 id="levers-title">Levers</h2><span class="sub">Each lever changes one number in a block's rule. The full game has levers with these names; there the release share serves the Kattakurgan command only.</span></div></header>
+        <header><div><h2 id="levers-title" data-i18n>Levers</h2><span class="sub">Each lever changes one number in a block's rule. The full game has levers with these names; there the release share serves the Kattakurgan command only.</span></div></header>
         <div id="levers"></div>
         <div class="save-bar">
           <label class="visually-hidden" for="plan-name">Plan name</label>
-          <input class="name-input" id="plan-name" type="text" placeholder="Plan name, e.g. River first" aria-describedby="plan-name-count">
+          <input class="name-input" id="plan-name" type="text" placeholder="Plan name, e.g. River first" data-i18n-placeholder aria-describedby="plan-name-count">
           <span class="hint name-count" id="plan-name-count" role="status"></span>
           <div class="btn-row">
-            <button class="btn primary" id="save-plan" type="button">Save plan</button>
-            <button class="btn" id="reset-levers" type="button">Starting plan</button>
-            <button class="btn" id="undo" type="button" disabled>Undo</button>
+            <button class="btn primary" id="save-plan" type="button" data-i18n>Save plan</button>
+            <button class="btn" id="reset-levers" type="button" data-i18n>Starting plan</button>
+            <button class="btn" id="undo" type="button" disabled data-i18n>Undo</button>
           </div>
           <div class="saved-list" id="saved-list"></div>
         </div>
       </section>
       <section class="card tasks-card" aria-labelledby="tasks-title">
-        <header><div><h2 id="tasks-title">Your tasks</h2><span class="sub" id="tasks-sub"></span></div></header>
-        <p class="hint">After this game you can:</p>
+        <header><div><h2 id="tasks-title" data-i18n>Your tasks</h2><span class="sub" id="tasks-sub"></span></div></header>
+        <p class="hint" data-i18n>After this game you can:</p>
         <ul class="goals">
-          <li>name TaqSim's building blocks and say which one is a river, a canal, a reservoir, a headworks;</li>
-          <li>say why, in a dry year, the crops, the river downstream and next year's storage cannot all get what they need;</li>
-          <li>read a plot of plans that no other plan beats.</li>
+          <li data-i18n>name TaqSim's building blocks and say which one is a river, a canal, a reservoir, a headworks;</li>
+          <li data-i18n>say why, in a dry year, the crops, the river downstream and next year's storage cannot all get what they need;</li>
+          <li data-i18n>read a plot of plans that no other plan beats.</li>
         </ul>
         <ol class="tasks" id="tasks"></ol>
-        <p class="hint">The ticks only help you find your way. This is not a test. Next: the full Zarafshan game.</p>
-        <div class="btn-row"><button class="btn small" id="fresh" type="button">Start fresh (clear tasks and plans)</button></div>
+        <p class="hint" data-i18n>The ticks only help you find your way. This is not a test. Next: the simulation coursebook, with the full basin model.</p>
+        <div class="btn-row"><button class="btn small" id="fresh" type="button" data-i18n>Start fresh (clear tasks and plans)</button></div>
       </section>
     </aside>
 
     <section class="tabs-area" aria-label="Details">
       <div class="tabs" role="tablist" aria-label="Views" id="tabs">
-        <button role="tab" id="tabbtn-block" data-tab="block" aria-controls="tab-block" aria-selected="true">Selected block</button>
-        <button role="tab" id="tabbtn-blocks" data-tab="blocks" aria-controls="tab-blocks" aria-selected="false">Building blocks</button>
-        <button role="tab" id="tabbtn-charts" data-tab="charts" aria-controls="tab-charts" aria-selected="false">Monthly charts</button>
-        <button role="tab" id="tabbtn-explorer" data-tab="explorer" aria-controls="tab-explorer" aria-selected="false">Trade-off explorer</button>
-        <button role="tab" id="tabbtn-sources" data-tab="sources" aria-controls="tab-sources" aria-selected="false">Sources &amp; assumptions</button>
+        <button role="tab" id="tabbtn-block" data-tab="block" aria-controls="tab-block" aria-selected="true" data-i18n>Selected block</button>
+        <button role="tab" id="tabbtn-blocks" data-tab="blocks" aria-controls="tab-blocks" aria-selected="false" data-i18n>Building blocks</button>
+        <button role="tab" id="tabbtn-charts" data-tab="charts" aria-controls="tab-charts" aria-selected="false" data-i18n>Monthly charts</button>
+        <button role="tab" id="tabbtn-explorer" data-tab="explorer" aria-controls="tab-explorer" aria-selected="false" data-i18n>Trade-off explorer</button>
+        <button role="tab" id="tabbtn-sources" data-tab="sources" aria-controls="tab-sources" aria-selected="false" data-i18n>Sources &amp; assumptions</button>
       </div>
 
       <section class="tab-panel" id="tab-block" role="tabpanel" aria-labelledby="tabbtn-block">
@@ -1210,7 +1246,58 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   const GRID_SIZE = M.gridSize(K);
   const SVGNS = "http://www.w3.org/2000/svg";
   const $ = (id) => document.getElementById(id);
-  const KEY = { state: "zarafshanWarmup.state.v3", plans: "zarafshanWarmup.plans.v3", theme: "zarafshanWarmup.theme", tasks: "zarafshanWarmup.tasks.v3" };
+  const KEY = { state: "zarafshanWarmup.state.v3", plans: "zarafshanWarmup.plans.v3", theme: "zarafshanWarmup.theme", tasks: "zarafshanWarmup.tasks.v3", lang: "zarafshanWarmup.lang" };
+  // ---------- language ----------
+  // English is the default. Russian covers the play surface: the intro, the year buttons, the levers, the tiles, the
+  // blocks' names, the tasks and the buttons. The deeper sections (sources, record, explorer notes) stay in English.
+  const LANG = (() => { try { return localStorage.getItem(KEY.lang) === "ru" ? "ru" : "en"; } catch (e) { return "en"; } })();
+  const L = (en, ru) => (LANG === "ru" ? ru : en);
+  const RU = {
+    "Before you play: what this model shows, and why": "Прежде чем играть: что показывает эта модель и зачем",
+    "Play the year": "Проиграть год", "Whole year": "Весь год", "The river as blocks": "Река как блоки", "Levers": "Рычаги",
+    "Save plan": "Сохранить план", "Starting plan": "Исходный план", "Undo": "Отменить", "Your tasks": "Ваши задания",
+    "After this game you can:": "После этой игры вы сможете:",
+    "name TaqSim's building blocks and say which one is a river, a canal, a reservoir, a headworks;": "назвать строительные блоки TaqSim и сказать, какой из них река, канал, водохранилище, гидроузел;",
+    "say why, in a dry year, the crops, the river downstream and next year's storage cannot all get what they need;": "объяснить, почему в сухой год посевы, река ниже по течению и запас на следующий год не могут получить всё, что им нужно;",
+    "read a plot of plans that no other plan beats.": "читать график планов, которые не побить никаким другим планом.",
+    "The ticks only help you find your way. This is not a test. Next: the simulation coursebook, with the full basin model.": "Галочки лишь помогают ориентироваться. Это не экзамен. Дальше: учебник по моделированию с полной моделью бассейна.",
+    "Start fresh (clear tasks and plans)": "Начать заново (сбросить задания и планы)",
+    "Selected block": "Выбранный блок", "Building blocks": "Строительные блоки", "Monthly charts": "Месячные графики",
+    "Trade-off explorer": "Исследователь компромиссов", "Sources & assumptions": "Источники и допущения", "Got it": "Понятно",
+    "Plan name, e.g. River first": "Название плана, например «Река прежде всего»",
+    "Theme: auto": "Тема: авто",
+    "River reserve": "Резерв реки", "Reservoir fill share": "Доля наполнения водохранилища", "Reservoir release share": "Доля попуска из водохранилища",
+    " of inflow": " стока",
+    "Upper irrigation": "Верхнее орошение", "Lower irrigation": "Нижнее орошение", "Downstream needs": "Потребности ниже", "End storage": "Запас на конец года",
+    "Upper crops": "Верхние посевы", "Lower crops": "Нижние посевы", "Downstream": "Ниже по течению",
+    "Downstream volume met": "Объём ниже по течению", "Storage change": "Изменение запаса", "Energy not generated": "Невыработанная энергия", "Reservoir evaporation": "Испарение с водохранилища",
+    "The share of the downstream needs that arrives, by volume. This number changes a little with every lever step; the month count jumps.": "Доля потребностей ниже по течению, которая выполнена по объёму. Это число чуть меняется при каждом шаге рычага; счёт месяцев меняется скачком.",
+    "End storage minus the storage on 1 October. A negative change means the plan uses water kept from last year.": "Запас на конец года минус запас на 1 октября. Отрицательное изменение означает, что план расходует воду, сбережённую с прошлого года.",
+    "A month counts as cooled with at least 15 m³/s. Energy is lost whenever the intake is below 25 m³/s, so energy can be lost in a month that counts as cooled.": "Месяц считается обеспеченным охлаждением при не менее 15 м³/с. Энергия теряется, когда забор ниже 25 м³/с, так что потеря возможна и в месяц, который считается обеспеченным.",
+    "Water the reservoir loses to the air in the year. Storing water costs water: the fuller the reservoir, the larger its surface.": "Вода, которую водохранилище за год теряет в воздух. Хранение воды стоит воды: чем полнее водохранилище, тем больше его поверхность.",
+    "Starting plan, this year": "Исходный план, этот год", "Share of the volume owed": "Доля причитающегося объёма",
+    "A negative change means the plan uses water kept from last year.": "Отрицательное изменение означает, что план расходует воду, сбережённую с прошлого года.",
+    "Same as the starting plan": "Как в исходном плане", "Change against the starting plan, same year": "Изменение относительно исходного плана в тот же год",
+    "points": "пунктов", "of 12": "из 12", "of 12 months": "из 12 месяцев",
+    "Inflow": "Приток", "Upper river": "Верховье", "Upper headworks": "Верхний гидроузел", "Transfers": "Переброски", "Main canal": "Магистральный канал",
+    "Samarkand canals": "самаркандские каналы", "Drainage": "Дренаж", "Cities": "Города", "and industry": "и промышленность", "Weir": "Водозабор",
+    "Reservoir": "Водохранилище", "beside the river": "рядом с рекой", "Lower headworks": "Нижний гидроузел", "Thermal power plant": "Тепловая электростанция",
+    "cooling water": "вода для охлаждения", "Kattakurgan, Navoi": "Каттакурган, Навои", "e-flow + users": "экосток + водопользователи", "River end": "Конец реки",
+    "Line width:": "Толщина линии:", "Mean flow": "Средний расход", "Oct": "Окт", "Jan": "Янв", "Apr": "Апр", "Jul": "Июл", "Year": "Год", "Month": "Месяц", "Scroll sideways to see the whole river →": "Прокрутите вбок, чтобы увидеть всю реку →", "Volume in the year": "Объём за год", "Volume in": "Объём в",
+    "no need": "нет потребности", "supplied": "обеспечено", "met": "выполнено", "all its cooling water": "вся вода для охлаждения",
+    "Show its rule and water balance.": "Показать его правило и водный баланс.",
+    "Hint": "Подсказка", "Task": "Задание", "Extra task": "Дополнительное задание", "Extra: ": "Дополнительно: ", "Done: ": "Выполнено: ", "To do: ": "Сделать: ",
+    "All tasks done.": "Все задания выполнены.", "All tasks done · extra": "Все задания выполнены · дополнительно",
+    "Next: the simulation coursebook, with the full basin model.": "Дальше: учебник по моделированию с полной моделью бассейна.",
+    "You had already done this while you worked on the task before. ": "Вы сделали это уже во время предыдущего задания. ",
+    "Open the Trade-off explorer": "Открыть исследователь компромиссов", "Show me": "Покажи", "Load that plan": "Загрузить этот план", "The better plan": "Лучший план",
+    "Click again to clear the ticks, plans and levers": "Нажмите ещё раз, чтобы сбросить галочки, планы и рычаги", "Cleared. The page is as at the start.": "Сброшено. Страница как в начале.",
+    "loaded into the levers.": "загружен в рычаги.",
+    "Measured at the block": "Измерено в блоке",
+    "needs": "нужно", "short": "не хватает", "in": "в", "cooling": "охлаждение", "start": "начало", "end": "конец", "stored": "в запасе", "of": "из",
+  };
+  const t = (en) => (LANG === "ru" && RU[en]) || en;
+  const RU_T = t; // the name `t` is also a month index in some scopes
   const NAME_MAX = 28;
 
   // ---------- storage (best effort, never required) ----------
@@ -1386,7 +1473,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     extra.hidden = !action;
     extra.textContent = action ? action.label : "";
     extra.onclick = action ? action.run : null;
-    $("note-close").textContent = closeLabel || "Got it";
+    $("note-close").textContent = closeLabel || t("Got it");
     box.hidden = false;
     announce(message);
     // without an opener the note remembers where the keyboard was and gives it back when it closes
@@ -1415,9 +1502,15 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     municipal: "var(--municipal)", irrigation: "var(--irrigation)", energy: "var(--energy)", environment: "var(--environment)",
     transfers: "var(--transfers)", storage: "var(--storage)", river: "var(--river)", ink: "var(--ink)", ink2: "var(--ink-2)", muted: "var(--muted)",
   };
-  const YEAR_SHORT = { dry: "Dry year", median: "Mean year", wet: "Wet year", mid_century: "2041–2070", late_century: "2071–2099" };
-  const YEAR_WORD = { dry: "dry year", median: "mean year", wet: "wet year", mid_century: "2041–2070 world", late_century: "2071–2099 world" };
+  const YEAR_SHORT = L({ dry: "Dry year", median: "Mean year", wet: "Wet year", mid_century: "2041–2070", late_century: "2071–2099" },
+                       { dry: "Сухой год", median: "Средний год", wet: "Влажный год", mid_century: "2041–2070", late_century: "2071–2099" });
+  const YEAR_WORD = L({ dry: "dry year", median: "mean year", wet: "wet year", mid_century: "2041–2070 world", late_century: "2071–2099 world" },
+                      { dry: "сухой год", median: "средний год", wet: "влажный год", mid_century: "мир 2041–2070", late_century: "мир 2071–2099" });
   const yearWord = (y) => YEAR_WORD[y];
+  const WORLD_LABEL_RU = { dry: "Сухой год (окт 2020 – сен 2021)", median: "Средний год (средние по месяцам за 2017–2022)", wet: "Влажный год (окт 2018 – сен 2019)",
+    mid_century: "2041–2070: средний год при изменении климата (SSP3-7.0)", late_century: "2071–2099: средний год при изменении климата (SSP3-7.0)" };
+  const worldLabel = (y) => (LANG === "ru" && WORLD_LABEL_RU[y]) || worldLabel(y);
+  const MONTH = L(K.months, ["Окт", "Ноя", "Дек", "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен"]);
   // the three observed years: what the record, the gauge comparison and the "dry / mean / wet" sentences refer to
   const RECORD_YEARS = ["dry", "median", "wet"];
   const TOTALS = {
@@ -1447,40 +1540,41 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   const drainStartNow = () => M.drainStart(K, state.year, state.levers.reserve_share);
   // Lever names are those of the full game; `full` is the lever's number there.
   const LEVERS = [
-    { key: "reserve_share", label: "River reserve", full: "L6", fmt: reservePct, unit: " of inflow", blocks: ["headworks", "lower_headworks"],
-      explain: "In every month each headworks lets its canal take only river water above this share of that month's natural inflow. The upper headworks also leave what the cities need. At the lower headworks the power plant's intake comes first, and from November to March the weir fills the reservoir before that, so in a dry month less than this share can flow on. More reserve means less for the crops of both blocks and more water in the river. Less is irrigated, so less drain water returns in winter and the reservoir fills less." },
-    { key: "fill_share", label: "Reservoir fill share", full: "L3", fmt: pct, blocks: ["weir"],
-      explain: `From November to March the weir first lets pass what the power plant needs. Of the rest of the river it sends this share to the reservoir (at most ${fmt0(K.reservoir.fill_cap_m3s)} m³/s). What is stored does not flow downstream in that month; the reservoir gives it back from March to November, mostly to the lower canal. It does not fill in a month in which the river is already too low for the lower headworks.` },
-    { key: "release_share", label: "Reservoir release share", full: "L4", fmt: pct, blocks: ["reservoir"],
-      explain: "From March to November, when the river at the lower headworks is not enough for the power plant, the lower canal and the reserve, the reservoir gives this share of the missing water, down to dead storage. It never releases in a month in which it fills. A high share serves the lower fields this year; a low share keeps water for next year." },
+    { key: "reserve_share", label: t("River reserve"), full: "L6", fmt: reservePct, unit: t(" of inflow"), blocks: ["headworks", "lower_headworks"],
+      explain: L("In every month each headworks lets its canal take only river water above this share of that month's natural inflow. The upper headworks also leave what the cities need. At the lower headworks the power plant's intake comes first, and from November to March the weir fills the reservoir before that, so in a dry month less than this share can flow on. More reserve means less for the crops of both blocks and more water in the river. Less is irrigated, so less drain water returns in winter and the reservoir fills less.", "Каждый месяц каждый гидроузел позволяет своему каналу брать только ту воду, что сверх этой доли естественного притока месяца. Верхний гидроузел оставляет ещё и то, что нужно городам. На нижнем гидроузле сначала идёт забор электростанции, а с ноября по март водозабор ещё раньше наполняет водохранилище, так что в сухой месяц дальше может пройти меньше этой доли. Больше резерва — меньше воды посевам обоих блоков.") },
+    { key: "fill_share", label: t("Reservoir fill share"), full: "L3", fmt: pct, blocks: ["weir"],
+      explain: L(`From November to March the weir first lets pass what the power plant needs. Of the rest of the river it sends this share to the reservoir (at most ${fmt0(K.reservoir.fill_cap_m3s)} m³/s). What is stored does not flow downstream in that month; the reservoir gives it back from March to November, mostly to the lower canal. It does not fill in a month in which the river is already too low for the lower headworks.`, `С ноября по март водозабор сначала пропускает то, что нужно электростанции. От остального стока он направляет эту долю в водохранилище (не более ${fmt0(K.reservoir.fill_cap_m3s)} м³/с). Сохранённая вода в этом месяце не течёт вниз; водохранилище отдаёт её с марта по ноябрь, в основном нижнему каналу. Оно не наполняется в месяц, когда реки и так слишком мало.`) },
+    { key: "release_share", label: t("Reservoir release share"), full: "L4", fmt: pct, blocks: ["reservoir"],
+      explain: L("From March to November, when the river at the lower headworks is not enough for the power plant, the lower canal and the reserve, the reservoir gives this share of the missing water, down to dead storage. It never releases in a month in which it fills. A high share serves the lower fields this year; a low share keeps water for next year.", "С марта по ноябрь, когда реки у нижнего гидроузла не хватает на электростанцию, нижний канал и резерв, водохранилище отдаёт эту долю недостающей воды, вплоть до мёртвого объёма. Оно никогда не делает попуск в месяц, когда наполняется. Большая доля обслуживает нижние поля в этом году; малая сберегает воду на следующий.") },
   ];
-  const describeLevers = (lv) => `reserve ${Math.round(lv.reserve_share * 100)} %, fill ${Math.round(lv.fill_share * 100)} %, release ${Math.round(lv.release_share * 100)} %`;
+  const describeLevers = (lv) => L(`reserve ${Math.round(lv.reserve_share * 100)} %, fill ${Math.round(lv.fill_share * 100)} %, release ${Math.round(lv.release_share * 100)} %`,
+    `резерв ${Math.round(lv.reserve_share * 100)} %, наполнение ${Math.round(lv.fill_share * 100)} %, попуск ${Math.round(lv.release_share * 100)} %`);
   // Indicator names are those of the full game; `full` is the indicator's number there.
   const AXES = [
-    { key: "irrigation_supply", label: "Upper irrigation", brief: "Upper crops", full: "A1", unit: "%", digits: 1, domain: () => [0, 100], color: C.irrigation, block: "irrigation",
+    { key: "irrigation_supply", label: t("Upper irrigation"), brief: t("Upper crops"), full: "A1", unit: "%", digits: 1, domain: () => [0, 100], color: C.irrigation, block: "irrigation",
       fullLabel: "part of A1 in the full game: the Samarkand canals",
       taqsim: "The crop requirement that the upper Irrigation block could not deliver, as a shortfall volume (minimised)." },
-    { key: "lower_irrigation_supply", label: "Lower irrigation", brief: "Lower crops", full: "A1", unit: "%", digits: 1, domain: () => [0, 100], color: C.irrigation, block: "lower_irrigation",
+    { key: "lower_irrigation_supply", label: t("Lower irrigation"), brief: t("Lower crops"), full: "A1", unit: "%", digits: 1, domain: () => [0, 100], color: C.irrigation, block: "lower_irrigation",
       fullLabel: "part of A1 in the full game: the Kattakurgan command and Navoi",
       taqsim: "The crop requirement that the lower Irrigation block could not deliver, as a shortfall volume (minimised)." },
-    { key: "downstream_months", label: "Downstream needs", brief: "Downstream", full: "A4", unit: "months", digits: 0, domain: () => [0, 12], color: C.environment, block: "downstream",
+    { key: "downstream_months", label: t("Downstream needs"), brief: t("Downstream"), full: "A4", unit: "months", digits: 0, domain: () => [0, 12], color: C.environment, block: "downstream",
       fullLabel: "close to A4 in the full game, which checks the e-flow alone",
       taqsim: "The shortfall at the Downstream block, a Demand that consumes nothing (minimised). The page counts the months in which the river carries what is owed: the e-flow plus the downstream users. In the full game A4 checks the environmental flow alone." },
-    { key: "end_storage", label: "End storage", brief: "End storage", full: "A5", unit: "Mm³", digits: 0, domain: () => [0, K.reservoir.capacity], color: C.storage, block: "reservoir",
+    { key: "end_storage", label: t("End storage"), brief: t("End storage"), full: "A5", unit: "Mm³", digits: 0, domain: () => [0, K.reservoir.capacity], color: C.storage, block: "reservoir",
       taqsim: "Storage in the reservoir on 30 September, from the Storage block's records (maximised)." },
   ];
   const axisFmt = (a, v) => (a.digits ? fmt1(v) : fmt0(v));
   const fullLabel = (a) => a.fullLabel || `${a.full} in the full game`;
-  const axisUnit = (a) => (a.unit === "months" ? "of 12 months" : a.unit);
+  const axisUnit = (a) => (a.unit === "months" ? t("of 12 months") : a.unit);
   const MINIS = [
-    { key: "downstream_supply", label: "Downstream volume met", unit: "%", fmt: (v) => (v < 100 - 1e-9 ? fmt1(Math.min(v, 99.9)) : fmt1(v)),
-      note: "The share of the downstream needs that arrives, by volume. This number changes a little with every lever step; the month count jumps." },
-    { key: "storage_change", label: "Storage change", unit: "Mm³", fmt: signed0,
-      note: "End storage minus the storage on 1 October. A negative change means the plan uses water kept from last year." },
-    { key: "energy_not_generated_gwh", label: "Energy not generated", unit: "GWh", fmt: fmt0,
-      note: "A month counts as cooled with at least 15 m³/s. Energy is lost whenever the intake is below 25 m³/s, so energy can be lost in a month that counts as cooled." },
-    { key: "evaporation", label: "Reservoir evaporation", unit: "Mm³", fmt: fmt0,
-      note: "Water the reservoir loses to the air in the year. Storing water costs water: the fuller the reservoir, the larger its surface." },
+    { key: "downstream_supply", label: t("Downstream volume met"), unit: "%", fmt: (v) => (v < 100 - 1e-9 ? fmt1(Math.min(v, 99.9)) : fmt1(v)),
+      note: t("The share of the downstream needs that arrives, by volume. This number changes a little with every lever step; the month count jumps.") },
+    { key: "storage_change", label: t("Storage change"), unit: "Mm³", fmt: signed0,
+      note: t("End storage minus the storage on 1 October. A negative change means the plan uses water kept from last year.") },
+    { key: "energy_not_generated_gwh", label: t("Energy not generated"), unit: "GWh", fmt: fmt0,
+      note: t("A month counts as cooled with at least 15 m³/s. Energy is lost whenever the intake is below 25 m³/s, so energy can be lost in a month that counts as cooled.") },
+    { key: "evaporation", label: t("Reservoir evaporation"), unit: "Mm³", fmt: fmt0,
+      note: t("Water the reservoir loses to the air in the year. Storing water costs water: the fuller the reservoir, the larger its surface.") },
   ];
 
   // The eight kinds of TaqSim element. `full` = how many the full Zarafshan model has (61 blocks, 70 edges).
@@ -1511,22 +1605,22 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   const VB = { W: 1180, H: 510, top: 36 };
   const Y = 270, BOX_H = 72;
   const BLOCKS = {
-    inflow: { type: "source", kind: "source", x: 36, y: Y, name: "Inflow", hit: [2, 252, 70, 104] },
-    upper_river: { type: "reach", kind: "pill-h", x: 129, y: Y, len: 90, name: "Upper river", hit: [76, 252, 108, 82] },
-    headworks: { type: "splitter", kind: "hw", x: 232, y: Y, name: "Upper headworks", hit: [215, 253, 34, 34], hit2: [84, 204, 136, 44] },
-    transfers: { type: "sink", kind: "sink-up", x: 232, y: 138, name: "Transfers", hit: [108, 126, 142, 52] },
-    main_canal: { type: "reach", kind: "pill-v", x: 232, y: 352, len: 60, name: "Main canal", hit: [112, 334, 134, 52] },
-    irrigation: { type: "demand", kind: "box", zone: true, x: 318, y: 439, w: 236, name: "Upper irrigation", sub: "Samarkand canals", sector: "irrigation", badge: "below" },
-    drain_store: { type: "storage", kind: "pill-v", tank: true, side: "right", x: 560, y: 372, len: 52, name: "Drainage", hit: [543, 342, 34, 60], hit2: [578, 352, 122, 70] },
-    cities: { type: "demand", kind: "box", x: 390, y: Y, w: 152, name: "Cities", sub: "and industry", sector: "municipal" },
-    weir: { type: "splitter", kind: "hw", x: 560, y: Y, name: "Weir", hit: [543, 253, 34, 34], hit2: [468, 204, 80, 44] },
-    reservoir: { type: "storage", kind: "box", x: 690, y: 104, w: 190, name: "Reservoir", sub: "beside the river", sector: "storage" },
-    lower_headworks: { type: "splitter", kind: "hw", below: true, x: 760, y: Y, name: "Lower headworks", hit: [743, 253, 34, 34], hit2: [596, 290, 150, 44] },
-    power_plant: { type: "demand", kind: "box", x: 922, y: 162, w: 226, name: "Thermal power plant", sub: "cooling water", sector: "energy", badge: "none" },
-    lower_irrigation: { type: "demand", kind: "box", zone: true, x: 820, y: 439, w: 190, name: "Lower irrigation", sub: "Kattakurgan, Navoi", sector: "irrigation", badge: "below" },
-    lower_drain: { type: "storage", kind: "pill-v", tank: true, side: "right", x: 940, y: 372, len: 52, name: "Drainage", hit: [923, 342, 34, 60], hit2: [958, 352, 122, 70] },
-    downstream: { type: "demand", kind: "box", x: 1046, y: Y, w: 162, name: "Downstream", sub: "e-flow + users", sector: "environment" },
-    sink: { type: "sink", kind: "sink", x: 1158, y: Y, name: "River end", hit: [1146, 252, 32, 36], hit2: [1076, 312, 102, 68] },
+    inflow: { type: "source", kind: "source", x: 36, y: Y, name: t("Inflow"), hit: [2, 252, 70, 104] },
+    upper_river: { type: "reach", kind: "pill-h", x: 129, y: Y, len: 90, name: t("Upper river"), hit: [76, 252, 108, 82] },
+    headworks: { type: "splitter", kind: "hw", x: 232, y: Y, name: t("Upper headworks"), hit: [215, 253, 34, 34], hit2: [84, 204, 136, 44] },
+    transfers: { type: "sink", kind: "sink-up", x: 232, y: 138, name: t("Transfers"), hit: [108, 126, 142, 52] },
+    main_canal: { type: "reach", kind: "pill-v", x: 232, y: 352, len: 60, name: t("Main canal"), hit: [112, 334, 134, 52] },
+    irrigation: { type: "demand", kind: "box", zone: true, x: 318, y: 439, w: 236, name: t("Upper irrigation"), sub: t("Samarkand canals"), sector: "irrigation", badge: "below" },
+    drain_store: { type: "storage", kind: "pill-v", tank: true, side: "right", x: 560, y: 372, len: 52, name: t("Drainage"), hit: [543, 342, 34, 60], hit2: [578, 352, 122, 70] },
+    cities: { type: "demand", kind: "box", x: 390, y: Y, w: 152, name: t("Cities"), sub: t("and industry"), sector: "municipal" },
+    weir: { type: "splitter", kind: "hw", x: 560, y: Y, name: t("Weir"), hit: [543, 253, 34, 34], hit2: [468, 204, 80, 44] },
+    reservoir: { type: "storage", kind: "box", x: 690, y: 104, w: 190, name: t("Reservoir"), sub: t("beside the river"), sector: "storage" },
+    lower_headworks: { type: "splitter", kind: "hw", below: true, x: 760, y: Y, name: t("Lower headworks"), hit: [743, 253, 34, 34], hit2: [596, 290, 150, 44] },
+    power_plant: { type: "demand", kind: "box", x: 922, y: 162, w: 226, name: t("Thermal power plant"), sub: t("cooling water"), sector: "energy", badge: "none" },
+    lower_irrigation: { type: "demand", kind: "box", zone: true, x: 820, y: 439, w: 190, name: t("Lower irrigation"), sub: t("Kattakurgan, Navoi"), sector: "irrigation", badge: "below" },
+    lower_drain: { type: "storage", kind: "pill-v", tank: true, side: "right", x: 940, y: 372, len: 52, name: t("Drainage"), hit: [923, 342, 34, 60], hit2: [958, 352, 122, 70] },
+    downstream: { type: "demand", kind: "box", x: 1046, y: Y, w: 162, name: t("Downstream"), sub: t("e-flow + users"), sector: "environment" },
+    sink: { type: "sink", kind: "sink", x: 1158, y: Y, name: t("River end"), hit: [1146, 252, 32, 36], hit2: [1076, 312, 102, 68] },
   };
   const EDGE_LIST = M.EDGES.map(([s, t]) => ({ id: `${s}_to_${t}`, s, t }));
   const typeCount = (type) => (type === "edge" ? EDGE_LIST.length : Object.values(BLOCKS).filter((b) => b.type === type).length);
@@ -1656,21 +1750,21 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     const list = beatenBy(current);
     const where = yearWord(state.year);
     if (!list.length) {
-      return { cls: "clear", short: `Not beaten by any of the ${fmt0(GRID_SIZE)} lever combinations (${where}).`,
-        text: `Your plan is not beaten: none of the ${fmt0(GRID_SIZE)} lever combinations is ${BEATEN_RULE} (${where}).` };
+      return { cls: "clear", short: L(`Not beaten by any of the ${fmt0(GRID_SIZE)} lever combinations (${where}).`, `Не побит ни одной из ${fmt0(GRID_SIZE)} комбинаций рычагов (${where}).`),
+        text: L(`Your plan is not beaten: none of the ${fmt0(GRID_SIZE)} lever combinations is ${BEATEN_RULE} (${where}).`, `Ваш план не побит: ни одна из ${fmt0(GRID_SIZE)} комбинаций рычагов не является по меньшей мере такой же хорошей по всем четырём показателям и лучшей хотя бы по одному (${where}).`) };
     }
     const span = (k) => K.lever_bounds[k][1] - K.lever_bounds[k][0];
     const distance = (p) => M.LEVERS.reduce((d, k) => d + Math.abs(p.levers[k] - state.levers[k]) / span(k), 0);
     const best = list.reduce((a, b) => (distance(b) < distance(a) ? b : a));
     return { cls: "beaten", best,
-      short: `Beaten (${where}): ${best.name} gives more ${betterOn(best, current, "brief")} and no less elsewhere.`,
-      text: `Your plan is beaten (${where}): another plan is ${BEATEN_RULE}. The nearest: ${best.name}. It is better on ${betterOn(best, current)} and at least as good on the rest.` };
+      short: L(`Beaten (${where}): ${best.name} gives more ${betterOn(best, current, "brief")} and no less elsewhere.`, `Побит (${where}): ${best.name} даёт больше: ${betterOn(best, current, "brief")} — и не меньше по остальному.`),
+      text: L(`Your plan is beaten (${where}): another plan is ${BEATEN_RULE}. The nearest: ${best.name}. It is better on ${betterOn(best, current)} and at least as good on the rest.`, `Ваш план побит (${where}): другой план по меньшей мере так же хорош по всем четырём показателям и лучше хотя бы по одному. Ближайший: ${best.name}. Он лучше по: ${betterOn(best, current)} — и не хуже по остальному.`) };
   }
 
   // ---------- controls ----------
   function buildYearButtons() {
     const box = $("year-buttons");
-    for (const y of YEARS) box.appendChild(h("button", { type: "button", "data-year": y, "aria-pressed": String(y === state.year), text: YEAR_SHORT[y], title: K.years[y].label, onclick: () => setYear(y) }));
+    for (const y of YEARS) box.appendChild(h("button", { type: "button", "data-year": y, "aria-pressed": String(y === state.year), text: YEAR_SHORT[y], title: worldLabel(y), onclick: () => setYear(y) }));
   }
   function setYear(y) {
     withdrawPlotQuestion();
@@ -1720,7 +1814,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         settleTimer = setTimeout(settle, 600);
         update();
       });
-      const scale = h("div", { class: "scale" }, [h("span", { text: pct(values[0]) }), h("span", { text: `start ${pct(K.default_levers[def.key])}` }), h("span", { text: pct(values[values.length - 1]) })]);
+      const scale = h("div", { class: "scale" }, [h("span", { text: pct(values[0]) }), h("span", { text: `${L("start", "старт")} ${pct(K.default_levers[def.key])}` }), h("span", { text: pct(values[values.length - 1]) })]);
       container.appendChild(h("div", { class: "lever" }, [head, input, scale, explain]));
       sliders[def.key] = { input, out, def, values };
     }
@@ -1743,7 +1837,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     state.levers = snapLevers(levers);
     state.undo = before;
     update();
-    if (label) toast(`${label} loaded into the levers.`, "Undo", undo);
+    if (label) toast(`${label} ${t("loaded into the levers.")}`, t("Undo"), undo);
   }
   function undo() {
     if (!state.undo) return;
@@ -1756,7 +1850,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   const TABS = ["block", "blocks", "charts", "explorer", "sources"];
   function buildControls() {
     buildLevers();
-    $("reset-levers").addEventListener("click", () => setLevers(K.default_levers, "Starting plan"));
+    $("reset-levers").addEventListener("click", () => setLevers(K.default_levers, t("Starting plan")));
     $("undo").addEventListener("click", undo);
     $("save-plan").addEventListener("click", savePlan);
     $("plan-name").addEventListener("keydown", (e) => e.key === "Enter" && savePlan());
@@ -1786,7 +1880,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     };
     $("fresh").addEventListener("click", () => {
       if (!freshArmed) {
-        $("fresh").textContent = "Click again to clear the ticks, plans and levers";
+        $("fresh").textContent = t("Click again to clear the ticks, plans and levers");
         freshArmed = setTimeout(disarm, 6000);
         return;
       }
@@ -1807,7 +1901,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       setYear("median");
       window.scrollTo(0, 0);
       $("now").focus({ preventScroll: true });
-      toast("Cleared. The page is as at the start.");
+      toast(t("Cleared. The page is as at the start."));
     });
     $("note-close").addEventListener("click", closeNote);
     const closeHelp = (keep) => {
@@ -1831,7 +1925,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   function setMonth(t) {
     state.month = t;
     $("month").value = t;
-    $("month").setAttribute("aria-valuetext", t >= N ? "Whole year" : K.months[t]);
+    $("month").setAttribute("aria-valuetext", t >= N ? RU_T("Whole year") : MONTH[t]);
     renderSchematic();
     renderSelectedLine();
     if (state.tab === "block") renderInspector();
@@ -1936,7 +2030,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         continue;
       }
       el.appendChild(h("span", { class: "line", text: top ? v.short : v.text, title: top ? v.short : null }));
-      if (v.best) el.appendChild(h("button", { class: "linklike", type: "button", text: "Load that plan", onclick: () => setLevers(v.best.levers, "The better plan") }));
+      if (v.best) el.appendChild(h("button", { class: "linklike", type: "button", text: t("Load that plan"), onclick: () => setLevers(v.best.levers, t("The better plan")) }));
       el.className = `${top ? "verdict" : "verdict-line"} ${v.cls}`;
       if (hadFocus) (el.querySelector("button") || el).focus({ preventScroll: true });
     }
@@ -1960,8 +2054,8 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   }
   function delta(now, before, fmt, unit) {
     const d = now - before;
-    if (Math.abs(d) < 5e-2) return h("span", { class: "delta same", text: "±0", title: "Same as the starting plan" });
-    return h("span", { class: `delta ${d > 0 ? "good" : "bad"}`, text: `${d > 0 ? "↑ +" : "↓ −"}${fmt(Math.abs(d))}${unit ? " " + unit : ""}`, title: "Change against the starting plan, same year" });
+    if (Math.abs(d) < 5e-2) return h("span", { class: "delta same", text: "±0", title: t("Same as the starting plan") });
+    return h("span", { class: `delta ${d > 0 ? "good" : "bad"}`, text: `${d > 0 ? "↑ +" : "↓ −"}${fmt(Math.abs(d))}${unit ? " " + unit : ""}`, title: t("Change against the starting plan, same year") });
   }
   function renderTiles() {
     const ind = results[state.year].indicators;
@@ -1972,23 +2066,23 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       for (const a of AXES) {
         const values = Object.fromEntries(YEARS.map((y) => [y, results[y].indicators[a.key]]));
         const detail = a.key === "end_storage"
-          ? `1 Oct ${fmt0(ind.storage_initial)} · dead storage ${fmt0(K.reservoir.dead)}`
-          : `dry ${fmt0(values.dry)} · mean ${fmt0(values.median)} · wet ${fmt0(values.wet)}`;
+          ? L(`1 Oct ${fmt0(ind.storage_initial)} · dead storage ${fmt0(K.reservoir.dead)}`, `1 окт ${fmt0(ind.storage_initial)} · мёртвый объём ${fmt0(K.reservoir.dead)}`)
+          : L(`dry ${fmt0(values.dry)} · mean ${fmt0(values.median)} · wet ${fmt0(values.wet)}`, `сухой ${fmt0(values.dry)} · средний ${fmt0(values.median)} · влажный ${fmt0(values.wet)}`);
         const tile = h("button", { type: "button", class: `tile${state.selected === a.block ? " active" : ""}`, "data-key": a.key, "aria-label": `${a.label}: ${axisFmt(a, ind[a.key])} ${axisUnit(a)}. Show the block ${BLOCKS[a.block].name}.` }, [
           h("span", { class: "key", style: `background:${a.color}` }),
           h("span", { class: "label", text: a.label }),
-          h("span", { class: "value" }, [axisFmt(a, ind[a.key]), h("small", { text: a.unit === "months" ? "of 12" : a.unit }), " ", h("small", {}, [delta(ind[a.key], ref[a.key], (v) => axisFmt(a, v), a.unit === "%" ? "points" : a.unit === "Mm³" ? "Mm³" : "")])]),
+          h("span", { class: "value" }, [axisFmt(a, ind[a.key]), h("small", { text: a.unit === "months" ? t("of 12") : a.unit }), " ", h("small", {}, [delta(ind[a.key], ref[a.key], (v) => axisFmt(a, v), a.unit === "%" ? t("points") : a.unit === "Mm³" ? "Mm³" : "")])]),
           h("span", { class: "band" }, [bandSvg(a, values)]),
           h("span", { class: "detail", text: detail }),
         ]);
         tile.addEventListener("click", () => selectBlock(a.block, false));
         attachTip(tile, a.label, () => [
           ...YEARS.map((y) => ({ label: YEAR_SHORT[y], value: `${axisFmt(a, values[y])} ${a.unit}` })),
-          { label: "Starting plan, this year", value: `${axisFmt(a, ref[a.key])} ${a.unit}` },
-          ...(a.key === "downstream_months" ? [{ label: "Share of the volume owed", value: `${fmt1(ind.downstream_supply)} %` }] : []),
-          ...(a.key === "end_storage" ? [{ label: "A negative change means the plan uses water kept from last year.", value: "" }] : []),
+          { label: t("Starting plan, this year"), value: `${axisFmt(a, ref[a.key])} ${a.unit}` },
+          ...(a.key === "downstream_months" ? [{ label: t("Share of the volume owed"), value: `${fmt1(ind.downstream_supply)} %` }] : []),
+          ...(a.key === "end_storage" ? [{ label: t("A negative change means the plan uses water kept from last year."), value: "" }] : []),
           ...(a.key === "end_storage" ? [{ label: `Below ${fmt0(K.reservoir.dead)} Mm³ (dead storage) the water cannot be released. It can still evaporate.`, value: "" }] : []),
-          { label: `Measured at the block ${BLOCKS[a.block].name}. ${fullLabel(a).replace(/^./, (ch) => ch.toUpperCase())}.`, value: "" },
+          { label: `${t("Measured at the block")} ${BLOCKS[a.block].name}. ${fullLabel(a).replace(/^./, (ch) => ch.toUpperCase())}.`, value: "" },
         ]);
         box.appendChild(tile);
       }
@@ -2004,7 +2098,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         ]);
         attachTip(tile, mi.label, () => [
           ...YEARS.map((y) => ({ label: YEAR_SHORT[y], value: `${mi.fmt(results[y].indicators[mi.key])} ${mi.unit}` })),
-          { label: "Starting plan, this year", value: `${mi.fmt(ref[mi.key])} ${mi.unit}` },
+          { label: t("Starting plan, this year"), value: `${mi.fmt(ref[mi.key])} ${mi.unit}` },
           { label: mi.note, value: "" },
         ]);
         strip.appendChild(tile);
@@ -2037,10 +2131,10 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       { id: "weir_to_reservoir", arrow: 0.6, label: "Weir → reservoir (fill)", color: C.storage, cls: "storage", path: `M ${n.weir.x} ${Y} V ${n.reservoir.y} H ${left(n.reservoir)}`, series: m.flow_weir_to_reservoir, lx: n.weir.x + 12, ly: 196 },
       { id: "weir_to_lower_headworks", arrow: 0.55, label: "Weir → lower headworks (river)", color: C.river, path: `M ${n.weir.x} ${Y} H ${n.lower_headworks.x}`, series: m.flow_weir_to_lower_headworks, lx: (n.weir.x + n.lower_headworks.x) / 2 + 6, ly: 252, anchor: "middle" },
       { id: "reservoir_to_lower_headworks", arrow: 0.5, label: "Reservoir → lower headworks (release)", color: C.storage, cls: "storage", path: `M ${n.lower_headworks.x} ${boxBottom(n.reservoir)} V ${Y}`, series: m.flow_reservoir_to_lower_headworks, lx: n.lower_headworks.x - 12, ly: 196, anchor: "end" },
-      { id: "reservoir_evaporation", loss: true, arrow: "end", note: "Not an edge: the Storage block's loss rule takes this water out of the model.", label: "Evaporation from the reservoir", color: C.storage, cls: "storage", path: `M ${right(n.reservoir)} ${n.reservoir.y + 8} H ${right(n.reservoir) + 36} V ${boxTop(n.reservoir) + 4}`, series: m.evaporation, word: "evaporated", lx: right(n.reservoir) + 46, ly: n.reservoir.y - 12 },
+      { id: "reservoir_evaporation", loss: true, arrow: "end", note: "Not an edge: the Storage block's loss rule takes this water out of the model.", label: "Evaporation from the reservoir", color: C.storage, cls: "storage", path: `M ${right(n.reservoir)} ${n.reservoir.y + 8} H ${right(n.reservoir) + 36} V ${boxTop(n.reservoir) + 4}`, series: m.evaporation, word: L("evaporated", "испарилось"), lx: right(n.reservoir) + 46, ly: n.reservoir.y - 12 },
       { id: "lower_headworks_to_power_plant", arrow: 0.55, label: "Lower headworks → power plant (cooling intake)", color: C.energy, path: `M ${n.lower_headworks.x} ${Y} L ${n.lower_headworks.x + 20} ${Y - 20} V ${n.power_plant.y} H ${left(n.power_plant)}`, series: m.flow_lower_headworks_to_power_plant, lx: n.lower_headworks.x + 30, ly: 226 },
       { id: "power_plant_to_downstream", arrow: 0.5, label: "Power plant → river (return)", color: C.energy, path: `M ${n.power_plant.x} ${boxBottom(n.power_plant)} V ${Y}`, series: m.flow_power_plant_to_downstream, lx: n.power_plant.x - 12, ly: 228, anchor: "end" },
-      { id: "power_plant_evaporation", loss: true, arrow: "end", note: "Not an edge: the Demand block consumes this water (consumption_fraction).", label: "Evaporation in the power plant's cooling", color: C.energy, cls: "storage", path: `M ${right(n.power_plant) - 30} ${boxTop(n.power_plant)} V ${boxTop(n.power_plant) - 30}`, series: m.retained_power_plant, word: "evaporated", lx: right(n.power_plant) - 18, ly: boxTop(n.power_plant) - 10 },
+      { id: "power_plant_evaporation", loss: true, arrow: "end", note: "Not an edge: the Demand block consumes this water (consumption_fraction).", label: "Evaporation in the power plant's cooling", color: C.energy, cls: "storage", path: `M ${right(n.power_plant) - 30} ${boxTop(n.power_plant)} V ${boxTop(n.power_plant) - 30}`, series: m.retained_power_plant, word: L("evaporated", "испарилось"), lx: right(n.power_plant) - 18, ly: boxTop(n.power_plant) - 10 },
       { id: "lower_headworks_to_lower_irrigation", arrow: 0.5, label: "Lower headworks → lower canal (intake)", color: C.irrigation, path: `M ${n.lower_headworks.x} ${Y} V ${boxTop(n.lower_irrigation)}`, series: m.flow_lower_headworks_to_lower_irrigation, need: lowerNeed, lx: n.lower_headworks.x + 14, ly: 338 },
       { id: "lower_headworks_to_downstream", arrow: 0.55, label: "Lower headworks → downstream (river)", color: C.river, path: `M ${n.lower_headworks.x} ${Y} H ${n.power_plant.x}`, series: m.flow_lower_headworks_to_downstream, lx: (n.lower_headworks.x + n.power_plant.x) / 2 + 16, ly: 252, anchor: "middle" },
       { id: "river_after_power_plant", stretch: true, label: "River with the power plant's return", color: C.river, path: `M ${n.power_plant.x} ${Y} H ${n.lower_drain.x}`, series: afterPlant },
@@ -2065,10 +2159,10 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   // The two Drainage blocks and the monthly series of what each holds.
   const STORES = { drain_store: "drain_store", lower_drain: "lower_drain_store" };
   function blockNeed(id, m, t) {
-    if (CROPS[id]) return `crops need ${fmt0(monthVolume(CROPS[id].need, t))}`;
-    if (id === "cities") return `need ${fmt0(monthVolume(m.requirement_cities, t))}`;
-    if (id === "power_plant") return `needs ${fmt0(monthVolume(m.requirement_power_plant, t))} (${K.tpp.withdrawal_m3s} m³/s)`;
-    if (id === "downstream") return `needs ${fmt0(monthVolume(m.requirement_downstream, t))}`;
+    if (CROPS[id]) return `${L("crops need", "посевам нужно")} ${fmt0(monthVolume(CROPS[id].need, t))}`;
+    if (id === "cities") return `${L("need", "нужно")} ${fmt0(monthVolume(m.requirement_cities, t))}`;
+    if (id === "power_plant") return `${RU_T("needs")} ${fmt0(monthVolume(m.requirement_power_plant, t))} (${K.tpp.withdrawal_m3s} m³/s)`;
+    if (id === "downstream") return `${RU_T("needs")} ${fmt0(monthVolume(m.requirement_downstream, t))}`;
     return null;
   }
   function blockStatus(id, m, ind, t, annual) {
@@ -2077,29 +2171,29 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       const need = v(CROPS[id].need), short = v(CROPS[id].short(m));
       const bad = short > 0.05;
       // one decimal, like the tile, and the need of the month, so that the year can be read off the box
-      return { ok: !bad, label: need <= 0 ? "no need" : annual ? `${fmt1(ind[CROPS[id].supply])} % supplied` : bad ? `short ${shortText(short)}` : "supplied" };
+      return { ok: !bad, label: need <= 0 ? RU_T("no need") : annual ? `${fmt1(ind[CROPS[id].supply])} % ${RU_T("supplied")}` : bad ? `${RU_T("short")} ${shortText(short)}` : RU_T("supplied") };
     }
     if (id === "cities") {
       const short = v(m.deficit_cities);
       const bad = annual ? ind.city_months < 12 : short > 1e-9;
-      return { ok: !bad, label: annual ? `${fmt0(ind.city_months)} of 12 months` : bad ? `short ${shortText(short)}` : "supplied" };
+      return { ok: !bad, label: annual ? `${fmt0(ind.city_months)} ${RU_T("of 12 months")}` : bad ? `${RU_T("short")} ${shortText(short)}` : RU_T("supplied") };
     }
     if (id === "power_plant") {
       const fullMonths = m.deficit_power_plant.filter((d) => d <= 1e-9).length;
       const bad = annual ? fullMonths < 12 : m.deficit_power_plant[t] > 1e-9;
-      return { ok: !bad, label: annual ? `all its cooling water in ${fullMonths} of 12 months` : bad ? `cooling ${Math.round(100 * m.tpp_output_fraction[t])} %` : "all its cooling water" };
+      return { ok: !bad, label: annual ? `${RU_T("all its cooling water")} ${RU_T("in")} ${fullMonths} ${RU_T("of 12 months")}` : bad ? `${RU_T("cooling")} ${Math.round(100 * m.tpp_output_fraction[t])} %` : RU_T("all its cooling water") };
     }
     if (id === "downstream") {
       const short = v(m.deficit_downstream);
       const bad = annual ? ind.downstream_months < 12 : short > 1e-9;
-      return { ok: !bad, label: annual ? `${fmt0(ind.downstream_months)} of 12 months` : bad ? `short ${shortText(short)}` : "met" };
+      return { ok: !bad, label: annual ? `${fmt0(ind.downstream_months)} ${RU_T("of 12 months")}` : bad ? `${RU_T("short")} ${shortText(short)}` : RU_T("met") };
     }
     if (id === "reservoir") {
       const s = annual ? ind.end_storage : m.storage[t];
-      return { ok: null, label: annual ? `start ${fmt0(K.reservoir.initial)} → end ${fmt0(s)} Mm³` : `${fmt0(s)} Mm³ stored` };
+      return { ok: null, label: annual ? `${RU_T("start")} ${fmt0(K.reservoir.initial)} → ${RU_T("end")} ${fmt0(s)} Mm³` : `${fmt0(s)} Mm³ ${RU_T("stored")}` };
     }
     // only for the block's spoken name: its label on the diagram is drawn with the symbol
-    if (STORES[id]) return { ok: null, label: `holds ${fmt0(annual ? m[STORES[id]][N - 1] : m[STORES[id]][t])} Mm³` };
+    if (STORES[id]) return { ok: null, label: `${L("holds", "содержит")} ${fmt0(annual ? m[STORES[id]][N - 1] : m[STORES[id]][t])} Mm³` };
     return { ok: null, label: "" };
   }
   function symbolBox(n) {
@@ -2120,8 +2214,8 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     const t = state.month;
     const annual = t >= N;
     const { W, H } = VB;
-    $("month-label").textContent = annual ? "Whole year" : K.months[t];
-    $("schematic-sub").textContent = `${K.years[state.year].label} · flows in Mm³ ${annual ? "over the whole year" : "in " + K.months[t]}`;
+    $("month-label").textContent = annual ? RU_T("Whole year") : MONTH[t];
+    $("schematic-sub").textContent = L(`${worldLabel(state.year)} · flows in Mm³ ${annual ? "over the whole year" : "in " + MONTH[t]}`, `${worldLabel(state.year)} · потоки в млн м³ ${annual ? "за весь год" : "в " + MONTH[t]}`);
     keepFocus(box, () => {
       box.textContent = "";
       const root = svg("svg", { viewBox: `0 ${VB.top} ${W} ${H - VB.top}`, class: "schematic", role: "group", "aria-label": "The river as sixteen TaqSim blocks, with the flows of the current plan" }, box);
@@ -2146,14 +2240,14 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         }
         const hit = svg("path", { d: L.path, class: "hit" }, linkG);
         attachTip(hit, L.loss ? `Loss: ${L.label}` : L.stretch ? L.label : `Edge: ${L.label}`, () => [
-          { label: annual ? "Volume in the year" : `Volume in ${K.months[t]}`, value: `${fmt1(monthVolume(L.series, t))} Mm³` },
-          { label: "Mean flow", value: `${fmt1(q)} m³/s` },
+          { label: annual ? RU_T("Volume in the year") : `${RU_T("Volume in")} ${MONTH[t]}`, value: `${fmt1(monthVolume(L.series, t))} Mm³` },
+          { label: RU_T("Mean flow"), value: `${fmt1(q)} m³/s` },
           L.loss ? { label: L.note, value: "" } : L.stretch ? { label: "Not an edge of its own: the edges that meet here, drawn as one river.", value: "" } : { label: "Edge id in TaqSim", value: L.id },
         ], false);
         if (L.word) text(root, L.lx, L.ly, `${L.word} ${vol(L.series)}`, { class: "small", "text-anchor": L.anchor || "start" });
-        else if (L.lx != null) text(root, L.lx, L.ly, L.need && monthVolume(L.need, t) > 0.05 ? `${vol(L.series)} of ${vol(L.need)}` : vol(L.series), { class: "value", "text-anchor": L.anchor || "start" });
+        else if (L.lx != null) text(root, L.lx, L.ly, L.need && monthVolume(L.need, t) > 0.05 ? `${vol(L.series)} ${RU_T("of")} ${vol(L.need)}` : vol(L.series), { class: "value", "text-anchor": L.anchor || "start" });
       }
-      text(root, BLOCKS.main_canal.x + 20, 358, `lost for good ${vol(m.canal_loss)}`, { class: "small" });
+      text(root, BLOCKS.main_canal.x + 20, 358, `${L("lost for good", "потеряно безвозвратно")} ${vol(m.canal_loss)}`, { class: "small" });
 
       for (const [id, n] of Object.entries(BLOCKS)) {
         const selected = state.selected === id;
@@ -2188,7 +2282,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
           const side = n.side === "right" ? { x: n.x + 18, anchor: "start" } : { x: n.x - 18, anchor: "end" };
           text(g, side.x, n.y - 2, tag, { class: "tag", "text-anchor": side.anchor });
           text(g, side.x, n.y + 20, n.name, { class: "name", "text-anchor": side.anchor });
-          if (STORES[id]) text(g, side.x, n.y + 44, `holds ${fmt0(annual ? m[STORES[id]][N - 1] : m[STORES[id]][t])} Mm³`, { class: "small" });
+          if (STORES[id]) text(g, side.x, n.y + 44, `${L("holds", "содержит")} ${fmt0(annual ? m[STORES[id]][N - 1] : m[STORES[id]][t])} Mm³`, { class: "small" });
         } else if (n.kind === "sink") {
           svg("path", { d: `M ${n.x} ${n.y - 11} L ${n.x + 15} ${n.y} L ${n.x} ${n.y + 11} Z`, fill: C.environment }, g);
           text(g, W - 6, n.y + 60, tag, { class: "tag", "text-anchor": "end" });
@@ -2232,7 +2326,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         }
         hits.forEach(([hx, hy, hw, hh], i) => {
           const attrs = { x: hx, y: hy, width: hw, height: hh, class: "hit-box" };
-          if (i === 0) Object.assign(attrs, { tabindex: 0, role: "button", "data-key": `block-${id}`, "aria-label": `${TYPES[n.type].name}: ${n.name}${status.label ? ", " + status.label : ""}. Show its rule and water balance.` });
+          if (i === 0) Object.assign(attrs, { tabindex: 0, role: "button", "data-key": `block-${id}`, "aria-label": `${TYPES[n.type].name}: ${n.name}${status.label ? ", " + status.label : ""}. ${RU_T("Show its rule and water balance.")}` });
           const hitBox = svg("rect", attrs, g);
           attachTip(hitBox, `${TYPES[n.type].name}: ${n.name}`, () => blockTipRows(id, m, ind, t, annual), i === 0);
           hitBox.addEventListener("click", () => selectBlock(id, true));
@@ -2242,7 +2336,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       const lg = svg("g", { class: "width-legend" }, root);
       // the key of the line widths stands in the free corner at the top left
       const LY = 62;
-      text(lg, 8, LY, "Line width:", { class: "small" });
+      text(lg, 8, LY, RU_T("Line width:"), { class: "small" });
       [[10, 106], [50, 164], [200, 226]].forEach(([q, x]) => {
         const sample = svg("line", { x1: x, x2: x + 20, y1: LY - 6, y2: LY - 6, "stroke-width": widthFor(q).toFixed(2), "data-id": "legend" }, lg);
         sample.style.stroke = C.river;
@@ -2430,7 +2524,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     if (id === "weir") extra.push(h("p", { class: "hint", text: `Needed below the weir ${annual ? "over the year" : "this month"}, for the power plant, the lower canal and the river reserve: ${fmt1(neededBelow(t))} Mm³. What the weir stores does not flow on in that month.` }));
     box.appendChild(leftCol);
     box.appendChild(h("div", {}, [
-      h("h3", { text: `Water balance of this block: ${annual ? "whole year" : K.months[t]}, Mm³` }),
+      h("h3", { text: `Water balance of this block: ${annual ? "whole year" : MONTH[t]}, Mm³` }),
       h("table", { class: "balance" }, [body]),
       ...extra,
     ]));
@@ -2502,7 +2596,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         dots[i].setAttribute("cy", y(has ? s.values[t] : 0));
         dots[i].setAttribute("visibility", has ? "visible" : "hidden");
       });
-      showTip(evt, K.months[t], [...opts.series.map((s) => ({ label: s.name, value: s.values[t] == null ? "no observation" : `${(s.fmt || fmt1)(s.values[t])} ${opts.unit || ""}`, color: s.color })), ...(opts.refLines || []).map((rl) => ({ label: rl.label, value: "", color: rl.color || "var(--muted)" }))]);
+      showTip(evt, MONTH[t], [...opts.series.map((s) => ({ label: s.name, value: s.values[t] == null ? "no observation" : `${(s.fmt || fmt1)(s.values[t])} ${opts.unit || ""}`, color: s.color })), ...(opts.refLines || []).map((rl) => ({ label: rl.label, value: "", color: rl.color || "var(--muted)" }))]);
     };
     hit.addEventListener("pointermove", point);
     hit.addEventListener("pointerdown", point);
@@ -2601,7 +2695,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     const share = (months) => sum(months.map((t) => m.outflow[t])) / sum(months.map((t) => M.volume(gauge[t], K.days_in_month[t])));
     $("river-note").textContent = seen.length === N
       ? `Leaving the model in the year: ${fmt0(out)} Mm³. Gauge record: ${fmt0(obs)} Mm³${state.year === "median" ? " (the mean-year record includes two years with filled values)" : ""}. With your plan the model carries ${Math.round(100 * share(WINTER))} % of the record from October to April and ${fmt1(share(SUMMER))} times the record from June to August; see Sources & assumptions.`
-      : `Only ${K.months[seen[0]]} to ${K.months[seen[seen.length - 1]]} were observed in this year. In these months the model carries ${fmt0(out)} Mm³ and the gauge recorded ${fmt0(obs)} Mm³; see Sources & assumptions.`;
+      : `Only ${MONTH[seen[0]]} to ${MONTH[seen[seen.length - 1]]} were observed in this year. In these months the model carries ${fmt0(out)} Mm³ and the gauge recorded ${fmt0(obs)} Mm³; see Sources & assumptions.`;
     scheduleChartDraw(true);
   }
 
@@ -2646,7 +2740,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     toggle.hidden = !canSearch;
     toggle.setAttribute("aria-pressed", String(searched.length > 0));
     toggle.textContent = searched.length ? "Hide the optimiser's plans" : "Show the optimiser's plans";
-    $("pc-sub").textContent = K.years[state.year].label;
+    $("pc-sub").textContent = worldLabel(state.year);
     const help = $("pc-help");
     const outcomes = new Set(cloud.map((p) => AXES.map((a) => axisFmt(a, p.indicators[state.year][a.key])).join("|"))).size;
     const fills = new Set(cloud.map((p) => p.levers.fill_share));
@@ -3011,7 +3105,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   }
 
   // ---------- warm-up tasks ----------
-  const peakMonth = (series) => K.months[series.indexOf(Math.max(...series))];
+  const peakMonth = (series) => MONTH[series.indexOf(Math.max(...series))];
   const dry = () => results.dry.indicators;
   // A task compares what the page shows: 79.96 is shown as 80.0 and counts as 80.
   const shown1 = (v) => Math.round(v * 10) / 10;
@@ -3028,52 +3122,61 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   const plotStep = () => !state.tasks.plotRead && window.innerWidth >= 768;
   const kindsFound = () => NODE_TYPES.filter((t) => state.tasks.types.includes(t)).map((t) => `${TYPES[t].name}: ${(state.tasks.blocks || {})[t] || "✓"}`);
   const TASKS = [
-    { id: "blocks", what: () => "Click one block of each kind in the river: Source, Reach, Splitter, Storage, Demand, Sink.",
+    { id: "blocks", what: () => L("Click one block of each kind in the river: Source, Reach, Splitter, Storage, Demand, Sink.", "Нажмите на один блок каждого вида в реке: Source, Reach, Splitter, Storage, Demand, Sink."),
       progress: () => {
         const missing = NODE_TYPES.filter((t) => !state.tasks.types.includes(t)).map((t) => TYPES[t].name);
-        return missing.length ? `${[...kindsFound(), `still missing: ${missing.join(", ")}`].join(" · ")}` : "";
+        return missing.length ? `${[...kindsFound(), `${L("still missing", "ещё не найдены")}: ${missing.join(", ")}`].join(" · ")}` : "";
       },
-      hint: () => "The kind is written in small capitals on each block. The two Sinks are the arrowheads: Transfers and River end.",
+      hint: () => L("The kind is written in small capitals on each block. The two Sinks are the arrowheads: Transfers and River end.", "Вид написан капителью на каждом блоке. Два Sink — это наконечники стрелок: Переброски и Конец реки."),
       done: () => NODE_TYPES.every((t) => state.tasks.types.includes(t)),
-      after: () => "A river stretch and a canal are both a Reach. A headworks and a weir are both a Splitter. A reservoir and the ground under the fields are both a Storage. Every water user is a Demand." },
-    { id: "year", what: () => "Press “Play the year” and watch the river, the reservoir and the two Irrigation boxes. In which month does the most water arrive? In which month do the crops need most?",
-      hint: () => "The button is above the river. The line widths show the flow. Each Irrigation box shows what its crops need in each month.",
+      after: () => L("A river stretch and a canal are both a Reach. A headworks and a weir are both a Splitter. A reservoir and the ground under the fields are both a Storage. Every water user is a Demand.", "Участок реки и канал — оба Reach. Гидроузел и водозабор — оба Splitter. Водохранилище и грунт под полями — оба Storage. Каждый водопользователь — Demand.") },
+    { id: "year", what: () => L("Press “Play the year” and watch the river, the reservoir and the two Irrigation boxes. In which month does the most water arrive? In which month do the crops need most?", "Нажмите «Проиграть год» и следите за рекой, водохранилищем и двумя блоками орошения. В какой месяц приходит больше всего воды? В какой месяц посевам нужно больше всего?"),
+      hint: () => L("The button is above the river. The line widths show the flow. Each Irrigation box shows what its crops need in each month.", "Кнопка над рекой. Толщина линий показывает расход. Каждый блок орошения показывает, сколько нужно его посевам в каждый месяц."),
       done: () => state.tasks.played,
-      after: () => `Most water arrives in ${peakMonth(K.years[state.year].natural_mm3)}; the crops need most in ${peakMonth(K.crop_mm3)}. The reservoir stores winter water for the summer. The upper fields take their water first: under this plan they get ${fmt1(results[state.year].indicators.irrigation_supply)} % of what their crops need, the lower fields ${fmt1(results[state.year].indicators.lower_irrigation_supply)} %. No lever changes this order.` },
-    { id: "downstream", year: "dry", plan: true, what: () => "Dry year: meet the downstream needs in all 12 months.",
-      hint: () => "Raise the River reserve to about 25 %: both canals must then leave more water in the river. Watch the two Irrigation tiles.",
+      after: () => L(`Most water arrives in ${peakMonth(K.years[state.year].natural_mm3)}; the crops need most in ${peakMonth(K.crop_mm3)}. The reservoir stores winter water for the summer. The upper fields take their water first: under this plan they get ${fmt1(results[state.year].indicators.irrigation_supply)} % of what their crops need, the lower fields ${fmt1(results[state.year].indicators.lower_irrigation_supply)} %. No lever changes this order.`,
+        `Больше всего воды приходит в ${peakMonth(K.years[state.year].natural_mm3)}; посевам больше всего нужно в ${peakMonth(K.crop_mm3)}. Водохранилище хранит зимнюю воду для лета. Верхние поля берут воду первыми: при этом плане они получают ${fmt1(results[state.year].indicators.irrigation_supply)} % потребности своих посевов, нижние поля — ${fmt1(results[state.year].indicators.lower_irrigation_supply)} %. Никакой рычаг не меняет эту очередность.`) },
+    { id: "downstream", year: "dry", plan: true, what: () => L("Dry year: meet the downstream needs in all 12 months.", "Сухой год: выполните потребности ниже по течению во все 12 месяцев."),
+      hint: () => L("Raise the River reserve to about 25 %: both canals must then leave more water in the river. Watch the two Irrigation tiles.", "Поднимите резерв реки примерно до 25 %: тогда оба канала должны оставлять в реке больше воды. Следите за двумя плитками орошения."),
       done: () => state.year === "dry" && dry().downstream_months >= 12,
-      after: () => `The downstream needs are met in all 12 months. The crops pay: the upper fields get ${fmt1(dry().irrigation_supply)} % (starting plan: ${fmt1(reference.dry.indicators.irrigation_supply)} %), the lower fields ${fmt1(dry().lower_irrigation_supply)} % (starting plan: ${fmt1(reference.dry.indicators.lower_irrigation_supply)} %). The lower fields lose more: the reserve is kept again at the lower headworks, where the upper canal and the power plant have already taken their water.` },
-    { id: "crops", year: "dry", plan: true, what: () => `Dry year: give the lower fields at least ${CROP_TARGET} % of what their crops need.`,
-      hint: () => `Lower the River reserve to 5 % and raise the Reservoir fill share to 80 %: more water reaches the lower headworks, and the reservoir holds more for the summer.${state.levers.release_share < 1 - 1e-9 ? " Set the Reservoir release share back to 100 %." : ""}`,
+      after: () => L(`The downstream needs are met in all 12 months. The crops pay: the upper fields get ${fmt1(dry().irrigation_supply)} % (starting plan: ${fmt1(reference.dry.indicators.irrigation_supply)} %), the lower fields ${fmt1(dry().lower_irrigation_supply)} % (starting plan: ${fmt1(reference.dry.indicators.lower_irrigation_supply)} %). The lower fields lose more: the reserve is kept again at the lower headworks, where the upper canal and the power plant have already taken their water.`,
+        `Потребности ниже по течению выполнены во все 12 месяцев. Платят посевы: верхние поля получают ${fmt1(dry().irrigation_supply)} % (исходный план: ${fmt1(reference.dry.indicators.irrigation_supply)} %), нижние поля — ${fmt1(dry().lower_irrigation_supply)} % (исходный план: ${fmt1(reference.dry.indicators.lower_irrigation_supply)} %). Нижние поля теряют больше: резерв удерживается ещё раз на нижнем гидроузле, где верхний канал и электростанция уже взяли свою воду.`) },
+    { id: "crops", year: "dry", plan: true, what: () => L(`Dry year: give the lower fields at least ${CROP_TARGET} % of what their crops need.`, `Сухой год: дайте нижним полям не менее ${CROP_TARGET} % потребности их посевов.`),
+      hint: () => L(`Lower the River reserve to 5 % and raise the Reservoir fill share to 80 %: more water reaches the lower headworks, and the reservoir holds more for the summer.${state.levers.release_share < 1 - 1e-9 ? " Set the Reservoir release share back to 100 %." : ""}`,
+        `Опустите резерв реки до 5 % и поднимите долю наполнения водохранилища до 80 %: больше воды доходит до нижнего гидроузла, и водохранилище хранит больше для лета.${state.levers.release_share < 1 - 1e-9 ? " Верните долю попуска из водохранилища на 100 %." : ""}`),
       done: () => state.year === "dry" && shown1(dry().lower_irrigation_supply) >= CROP_TARGET,
-      after: () => `The lower fields get ${fmt1(dry().lower_irrigation_supply)} %, the upper fields ${fmt1(dry().irrigation_supply)} %. The price: the downstream needs are met in ${fmt0(dry().downstream_months)} of 12 months. The reservoir ends the year with ${fmt0(dry().end_storage)} Mm³ (1 October: ${fmt0(K.reservoir.initial)})${dry().end_storage < K.reservoir.initial - 0.5 ? ": its water went to the lower canal" : ""}.` },
-    { id: "storage", year: "dry", plan: true, what: () => `Dry year: keep at least ${fmt0(STORAGE_TARGET)} Mm³ in the reservoir on 30 September. That is what it held on 1 October.`,
-      hint: () => `${state.levers.fill_share < 0.8 - 1e-9 ? "First raise the Reservoir fill share to 80 %. Then lower" : "Lower"} the Reservoir release share to 0 %: the reservoir then keeps its winter water. Watch the tile Lower irrigation.`,
+      after: () => L(`The lower fields get ${fmt1(dry().lower_irrigation_supply)} %, the upper fields ${fmt1(dry().irrigation_supply)} %. The price: the downstream needs are met in ${fmt0(dry().downstream_months)} of 12 months. The reservoir ends the year with ${fmt0(dry().end_storage)} Mm³ (1 October: ${fmt0(K.reservoir.initial)})${dry().end_storage < K.reservoir.initial - 0.5 ? ": its water went to the lower canal" : ""}.`,
+        `Нижние поля получают ${fmt1(dry().lower_irrigation_supply)} %, верхние — ${fmt1(dry().irrigation_supply)} %. Цена: потребности ниже по течению выполнены в ${fmt0(dry().downstream_months)} из 12 месяцев. Водохранилище заканчивает год с ${fmt0(dry().end_storage)} млн м³ (1 октября: ${fmt0(K.reservoir.initial)})${dry().end_storage < K.reservoir.initial - 0.5 ? ": его вода ушла в нижний канал" : ""}.`) },
+    { id: "storage", year: "dry", plan: true, what: () => L(`Dry year: keep at least ${fmt0(STORAGE_TARGET)} Mm³ in the reservoir on 30 September. That is what it held on 1 October.`, `Сухой год: сохраните не менее ${fmt0(STORAGE_TARGET)} млн м³ в водохранилище на 30 сентября. Столько в нём было 1 октября.`),
+      hint: () => L(`${state.levers.fill_share < 0.8 - 1e-9 ? "First raise the Reservoir fill share to 80 %. Then lower" : "Lower"} the Reservoir release share to 0 %: the reservoir then keeps its winter water. Watch the tile Lower irrigation.`,
+        `${state.levers.fill_share < 0.8 - 1e-9 ? "Сначала поднимите долю наполнения водохранилища до 80 %. Затем опустите" : "Опустите"} долю попуска из водохранилища до 0 %: тогда водохранилище сохраняет зимнюю воду. Следите за плиткой «Нижнее орошение».`),
       done: () => state.year === "dry" && Math.round(dry().end_storage) >= STORAGE_TARGET,
-      after: () => `The reservoir ends the year with ${fmt0(dry().end_storage)} Mm³; ${fmt0(dry().evaporation)} Mm³ evaporated on the way. The lower fields now get ${fmt1(dry().lower_irrigation_supply)} %${state.tasks.last && state.tasks.last.lower > dry().lower_irrigation_supply + 0.05 ? ` (before this task: ${fmt1(state.tasks.last.lower)} %)` : ""}, and the downstream needs are met in ${fmt0(dry().downstream_months)} of 12 months. Water kept for next year is water the lower fields do not get this year.${dry().energy_not_generated_gwh > 0.5 ? ` Less water also reaches the power plant in some months, so it makes less electricity: the tile Energy not generated shows ${fmt0(dry().energy_not_generated_gwh)} GWh.` : ""}` },
+      after: () => L(`The reservoir ends the year with ${fmt0(dry().end_storage)} Mm³; ${fmt0(dry().evaporation)} Mm³ evaporated on the way. The lower fields now get ${fmt1(dry().lower_irrigation_supply)} %${state.tasks.last && state.tasks.last.lower > dry().lower_irrigation_supply + 0.05 ? ` (before this task: ${fmt1(state.tasks.last.lower)} %)` : ""}, and the downstream needs are met in ${fmt0(dry().downstream_months)} of 12 months. Water kept for next year is water the lower fields do not get this year.${dry().energy_not_generated_gwh > 0.5 ? ` Less water also reaches the power plant in some months, so it makes less electricity: the tile Energy not generated shows ${fmt0(dry().energy_not_generated_gwh)} GWh.` : ""}`,
+        `Водохранилище заканчивает год с ${fmt0(dry().end_storage)} млн м³; ${fmt0(dry().evaporation)} млн м³ по пути испарилось. Нижние поля теперь получают ${fmt1(dry().lower_irrigation_supply)} %${state.tasks.last && state.tasks.last.lower > dry().lower_irrigation_supply + 0.05 ? ` (до этого задания: ${fmt1(state.tasks.last.lower)} %)` : ""}, а потребности ниже по течению выполнены в ${fmt0(dry().downstream_months)} из 12 месяцев. Вода, сбережённая на следующий год, — это вода, которую нижние поля не получат в этом году.${dry().energy_not_generated_gwh > 0.5 ? ` В некоторые месяцы меньше воды доходит и до электростанции, и она вырабатывает меньше: плитка «Невыработанная энергия» показывает ${fmt0(dry().energy_not_generated_gwh)} ГВт·ч.` : ""}`) },
     { id: "both", year: () => (plotStep() ? "dry" : "median"), plan: true,
       what: () => plotStep()
-        ? "Dry year: can one plan do tasks 3, 4 and 5 together? Open the Trade-off explorer; the box above the plot says what to do."
-        : `Mean year: find one plan with the lower fields at least ${CROP_TARGET} %, the downstream needs met in all 12 months and ${fmt0(STORAGE_TARGET)} Mm³ kept.`,
-      progress: () => (window.innerWidth >= 768 ? `step ${plotStep() ? 1 : 2} of 2` : ""),
+        ? L("Dry year: can one plan do tasks 3, 4 and 5 together? Open the Trade-off explorer; the box above the plot says what to do.", "Сухой год: может ли один план выполнить задания 3, 4 и 5 вместе? Откройте исследователь компромиссов; окно над графиком говорит, что делать.")
+        : L(`Mean year: find one plan with the lower fields at least ${CROP_TARGET} %, the downstream needs met in all 12 months and ${fmt0(STORAGE_TARGET)} Mm³ kept.`, `Средний год: найдите один план, при котором нижние поля получают не менее ${CROP_TARGET} %, потребности ниже по течению выполнены во все 12 месяцев и сохранено ${fmt0(STORAGE_TARGET)} млн м³.`),
+      progress: () => (window.innerWidth >= 768 ? L(`step ${plotStep() ? 1 : 2} of 2`, `шаг ${plotStep() ? 1 : 2} из 2`) : ""),
       action: () => (plotStep()
-        ? { label: "Open the Trade-off explorer", run: openExplorer }
-        : { label: "Starting plan", run: () => setLevers(K.default_levers, "Starting plan") }),
+        ? { label: t("Open the Trade-off explorer"), run: openExplorer }
+        : { label: t("Starting plan"), run: () => setLevers(K.default_levers, t("Starting plan")) }),
       hint: () => plotStep()
-        ? `In the Trade-off explorer every grey line is a plan that no other plan beats. Two filters: on Downstream needs, click the 12 at the top; on End storage, drag from the top down to the mark at ${fmt0(STORAGE_TARGET)} (with the keys: ArrowDown on Downstream needs, ArrowUp on End storage). Then look how high the dark lines reach on Lower irrigation.`
-        : "Switch to the mean year, press Starting plan, raise the River reserve to 20 % and lower the Reservoir release share to 0 %.",
-      hintAction: () => (plotStep() ? { label: "Show me", run: showPlotFilter } : null),
+        ? L(`In the Trade-off explorer every grey line is a plan that no other plan beats. Two filters: on Downstream needs, click the 12 at the top; on End storage, drag from the top down to the mark at ${fmt0(STORAGE_TARGET)} (with the keys: ArrowDown on Downstream needs, ArrowUp on End storage). Then look how high the dark lines reach on Lower irrigation.`,
+            `В исследователе компромиссов каждая серая линия — план, который не побить никаким другим. Два фильтра: на оси «Потребности ниже» нажмите 12 вверху; на оси «Запас на конец года» потяните сверху вниз до отметки ${fmt0(STORAGE_TARGET)} (клавишами: стрелка вниз на «Потребности ниже», стрелка вверх на «Запас на конец года»). Затем посмотрите, как высоко тёмные линии поднимаются на оси «Нижнее орошение».`)
+        : L("Switch to the mean year, press Starting plan, raise the River reserve to 20 % and lower the Reservoir release share to 0 %.", "Переключитесь на средний год, нажмите «Исходный план», поднимите резерв реки до 20 % и опустите долю попуска из водохранилища до 0 %."),
+      hintAction: () => (plotStep() ? { label: t("Show me"), run: showPlotFilter } : null),
       done: () => !plotStep() && state.year === "median" && allThree(results.median.indicators),
-      after: () => `In the mean year it works: the lower fields get ${fmt1(results.median.indicators.lower_irrigation_supply)} %. In the dry year none of the ${fmt0(GRID_SIZE)} lever settings does all three: with the downstream needs met and ${fmt0(STORAGE_TARGET)} Mm³ kept, the lower fields get at most ${fmt1(dryMostKeepingBoth())} %. Someone must get less, or the reservoir ends lower. Who gets less is a decision, not a calculation.` },
-    { id: "future", extra: true, year: "late_century", what: () => "The future: switch to the 2071–2099 world and play the year. When does most water arrive now, and what do the lower fields get?",
-      hint: () => "The year buttons above the river: the last two are the mean year under climate change, from the climate impact report. Press “Play the year” and watch July and August.",
+      after: () => L(`In the mean year it works: the lower fields get ${fmt1(results.median.indicators.lower_irrigation_supply)} %. In the dry year none of the ${fmt0(GRID_SIZE)} lever settings does all three: with the downstream needs met and ${fmt0(STORAGE_TARGET)} Mm³ kept, the lower fields get at most ${fmt1(dryMostKeepingBoth())} %. Someone must get less, or the reservoir ends lower. Who gets less is a decision, not a calculation.`,
+        `В средний год это получается: нижние поля получают ${fmt1(results.median.indicators.lower_irrigation_supply)} %. В сухой год ни одно из ${fmt0(GRID_SIZE)} положений рычагов не выполняет все три условия: при выполненных потребностях ниже по течению и сохранённых ${fmt0(STORAGE_TARGET)} млн м³ нижние поля получают не более ${fmt1(dryMostKeepingBoth())} %. Кто-то должен получить меньше, или водохранилище закончит год с меньшим запасом. Кто получит меньше — это решение, а не расчёт.`) },
+    { id: "future", extra: true, year: "late_century", what: () => L("The future: switch to the 2071–2099 world and play the year. When does most water arrive now, and what do the lower fields get?", "Будущее: переключитесь в мир 2071–2099 и проиграйте год. Когда теперь приходит больше всего воды и что получают нижние поля?"),
+      hint: () => L("The year buttons above the river: the last two are the mean year under climate change, from the climate impact report. Press “Play the year” and watch July and August.", "Кнопки годов над рекой: две последние — средний год при изменении климата, по отчёту о климатических воздействиях. Нажмите «Проиграть год» и следите за июлем и августом."),
       done: () => state.year === "late_century" && state.tasks.played,
-      after: () => `Most water now arrives in ${peakMonth(K.years.late_century.natural_mm3)} instead of ${peakMonth(K.years.median.natural_mm3)}; the crops still need most in ${peakMonth(K.crop_mm3)}, and the year brings about the same amount of water as today's mean year. Who pays is the upper fields: served first and straight from the river, with no storage, they get ${fmt1(results.late_century.indicators.irrigation_supply)} % here against ${fmt1(results.median.indicators.irrigation_supply)} % today, the shortfall in August and September. The lower fields get ${fmt1(results.late_century.indicators.lower_irrigation_supply)} % against ${fmt1(results.median.indicators.lower_irrigation_supply)} %: the spring surplus serves them directly in April and May, so the reservoir keeps its water for August. Water at the wrong time hurts first whoever has no storage; the reservoir is the adaptation.` },
-    { id: "unbeaten", extra: true, what: () => "Save two different plans that no other plan beats. In the Trade-off explorer, find the circles with their numbers.",
-      hint: () => "The line under the tiles now says whether your plan is beaten. Move one lever at a time until it turns green, or press Load that plan. Then press Save plan. Your Task 6 plan may already be one of the two.",
+      after: () => L(`Most water now arrives in ${peakMonth(K.years.late_century.natural_mm3)} instead of ${peakMonth(K.years.median.natural_mm3)}; the crops still need most in ${peakMonth(K.crop_mm3)}, and the year brings about the same amount of water as today's mean year. Who pays is the upper fields: served first and straight from the river, with no storage, they get ${fmt1(results.late_century.indicators.irrigation_supply)} % here against ${fmt1(results.median.indicators.irrigation_supply)} % today, the shortfall in August and September. The lower fields get ${fmt1(results.late_century.indicators.lower_irrigation_supply)} % against ${fmt1(results.median.indicators.lower_irrigation_supply)} %: the spring surplus serves them directly in April and May, so the reservoir keeps its water for August. Water at the wrong time hurts first whoever has no storage; the reservoir is the adaptation.`,
+        `Больше всего воды теперь приходит в ${peakMonth(K.years.late_century.natural_mm3)} вместо ${peakMonth(K.years.median.natural_mm3)}; посевам по-прежнему больше всего нужно в ${peakMonth(K.crop_mm3)}, а год приносит примерно столько же воды, сколько сегодняшний средний год. Платят верхние поля: обслуживаемые первыми и прямо из реки, без хранилища, здесь они получают ${fmt1(results.late_century.indicators.irrigation_supply)} % против ${fmt1(results.median.indicators.irrigation_supply)} % сегодня, нехватка — в августе и сентябре. Нижние поля получают ${fmt1(results.late_century.indicators.lower_irrigation_supply)} % против ${fmt1(results.median.indicators.lower_irrigation_supply)} %: весенний избыток обслуживает их напрямую в апреле и мае, так что водохранилище сохраняет воду для августа. Вода не вовремя бьёт первыми по тем, у кого нет хранилища; водохранилище — это адаптация.`) },
+    { id: "unbeaten", extra: true, what: () => L("Save two different plans that no other plan beats. In the Trade-off explorer, find the circles with their numbers.", "Сохраните два разных плана, которые не побить никаким другим. В исследователе компромиссов найдите кружки с их номерами."),
+      hint: () => L("The line under the tiles now says whether your plan is beaten. Move one lever at a time until it turns green, or press Load that plan. Then press Save plan. Your Task 6 plan may already be one of the two.", "Строка под плитками теперь говорит, побит ли ваш план. Двигайте по одному рычагу, пока она не станет зелёной, или нажмите «Загрузить этот план». Затем нажмите «Сохранить план». Ваш план из задания 6 может уже быть одним из двух."),
       done: () => state.tab === "explorer" && new Set(planList().filter((p) => !p.beaten.length).map((p) => M.LEVERS.map((k) => p.levers[k]).join("|"))).size >= 2,
-      after: () => "No other lever combination is at least as good on all four indicators and better on one. Many plans are like this: choosing among them is a decision, not a calculation." },
+      after: () => L("No other lever combination is at least as good on all four indicators and better on one. Many plans are like this: choosing among them is a decision, not a calculation.", "Никакая другая комбинация рычагов не является по меньшей мере такой же хорошей по всем четырём показателям и лучшей хотя бы по одному. Таких планов много: выбор между ними — решение, а не расчёт.") },
   ];
   // The first step of task 6 is to read the plot: the Downstream axis filtered to 12 of 12 in the dry year.
   function openExplorer() {
@@ -3193,9 +3296,9 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       holdPlanTask = true;
       // what the tiles showed when this task was ticked, for the note of the next one
       state.tasks.last = { end_storage: results[state.year].indicators.end_storage, lower: results[state.year].indicators.lower_irrigation_supply };
-      const name = current.extra ? "Extra task" : `Task ${TASKS.indexOf(current) + 1}`;
+      const name = current.extra ? t("Extra task") : `${t("Task")} ${TASKS.indexOf(current) + 1}`;
       // closing this note lets the next plan task be ticked, if the plan on screen already meets it
-      showNote(`${name} done${current.plan ? ` with ${describeLevers(state.levers)}` : ""}. ${early ? "You had already done this while you worked on the task before. " : ""}${feedback}`, null, null, () => {
+      showNote(`${name} ${L("done", "выполнено")}${current.plan ? ` ${L("with", "при")} ${describeLevers(state.levers)}` : ""}. ${early ? t("You had already done this while you worked on the task before. ") : ""}${feedback}`, null, null, () => {
         holdPlanTask = false;
         metOnClose = true;
         renderTasks();
@@ -3211,14 +3314,14 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       list.appendChild(h("li", { class: `${done ? "done" : ""}${task === next ? " current" : ""}`, "data-task": task.id }, [
         h("span", { class: "box", "aria-hidden": "true", text: done ? "✓" : "" }),
         h("div", {}, [
-          h("span", { class: "visually-hidden", text: done ? "Done: " : "To do: " }),
-          h("span", { class: "what", text: `${task.extra ? "Extra: " : ""}${task.what()}` }),
+          h("span", { class: "visually-hidden", text: done ? t("Done: ") : t("To do: ") }),
+          h("span", { class: "what", text: `${task.extra ? t("Extra: ") : ""}${task.what()}` }),
           done ? h("p", { class: "after", text: done }) : null,
         ]),
       ]));
     }
     const n = MAIN_TASKS.filter((task) => state.tasks.done[task.id]).length;
-    $("tasks-sub").textContent = `${n} of ${MAIN_TASKS.length} done · about 10 minutes, then 5 minutes of discussion`;
+    $("tasks-sub").textContent = L(`${n} of ${MAIN_TASKS.length} done · about 10 minutes, then 5 minutes of discussion`, `${n} из ${MAIN_TASKS.length} выполнено · около 10 минут, затем 5 минут обсуждения`);
     // The banner changes only when its content changes, so that it is not announced again and again.
     const banner = $("now");
     const index = next ? TASKS.indexOf(next) : -1;
@@ -3234,17 +3337,17 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     banner.textContent = "";
     banner.classList.toggle("all-done", !next || !!next.extra);
     if (!next) {
-      banner.appendChild(h("span", { class: "step", text: "All tasks done." }));
-      banner.appendChild(h("span", { class: "what", text: "Next: the full Zarafshan game, with the same river, more users and scenario cards." }));
+      banner.appendChild(h("span", { class: "step", text: t("All tasks done.") }));
+      banner.appendChild(h("span", { class: "what", text: t("Next: the simulation coursebook, with the full basin model.") }));
       if (hadFocus) banner.focus({ preventScroll: true });
       return;
     }
-    banner.appendChild(h("span", { class: "step", text: next.extra ? "Warm-up done · extra" : `Task ${index + 1} of ${MAIN_TASKS.length}${progress && next.id === "both" ? ` · ${progress}` : ""}` }));
+    banner.appendChild(h("span", { class: "step", text: next.extra ? t("All tasks done · extra") : `${t("Task")} ${index + 1} ${L("of", "из")} ${MAIN_TASKS.length}${progress && next.id === "both" ? ` · ${progress}` : ""}` }));
     banner.appendChild(h("span", { class: "what", text: what }));
-    if (switchTo) banner.appendChild(h("button", { class: "btn small", type: "button", text: `Switch to the ${yearWord(switchTo)}`, onclick: () => setYear(switchTo) }));
+    if (switchTo) banner.appendChild(h("button", { class: "btn small", type: "button", text: `${L("Switch to the", "Переключиться:")} ${yearWord(switchTo)}`, onclick: () => setYear(switchTo) }));
     if (action) banner.appendChild(h("button", { class: "btn small", type: "button", text: action.label, onclick: action.run }));
     // The hint opens in the note, so nothing on the page moves.
-    const hint = h("button", { class: "btn small", type: "button", text: "Hint", onclick: () => { showNote(next.hint(), hint, next.hintAction ? next.hintAction() : null); hintOpen = true; } });
+    const hint = h("button", { class: "btn small", type: "button", text: t("Hint"), onclick: () => { showNote(next.hint(), hint, next.hintAction ? next.hintAction() : null); hintOpen = true; } });
     banner.appendChild(hint);
     if (progress && next.id !== "both") banner.appendChild(h("span", { class: "progress", text: progress }));
     // the banner was rebuilt: keep the keyboard focus in it
@@ -3319,7 +3422,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     const part = (series, months) => sum(months.map((t) => series[t]));
     const gaugeVolume = (y) => K.years[y].gauge_m3s.map((q, t) => M.volume(q, K.days_in_month[t]));
     const against = (y, months) => part(reference[y].monthly.outflow, months) / part(gaugeVolume(y), months);
-    const failing = (y) => reference[y].monthly.deficit_downstream.map((d, t) => (d > 1e-9 ? K.months[t] : null)).filter(Boolean).join(" and ") || "none";
+    const failing = (y) => reference[y].monthly.deficit_downstream.map((d, t) => (d > 1e-9 ? MONTH[t] : null)).filter(Boolean).join(" and ") || "none";
     const model = RECORD_YEARS.map((y) => fmt0(reference[y].indicators.outflow)).join(" / ");
     const S = SENSITIVITY;
     const countWord = (n) => (n === 1 ? "one combination does" : `${fmt0(n)} combinations do`);
@@ -3483,13 +3586,40 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   }
 
   // ---------- start ----------
+  function applyLanguage() {
+    document.documentElement.lang = LANG;
+    if (LANG === "ru") {
+      for (const el of document.querySelectorAll("[data-i18n]")) {
+        const ru = RU[el.textContent.trim()];
+        if (ru) el.textContent = ru;
+      }
+      for (const el of document.querySelectorAll("[data-i18n-placeholder]")) {
+        const ru = RU[el.getAttribute("placeholder")];
+        if (ru) el.setAttribute("placeholder", ru);
+      }
+    }
+    for (const el of document.querySelectorAll("#intro .prose[data-lang]")) el.hidden = el.dataset.lang !== LANG;
+    for (const b of $("lang-buttons").children) {
+      b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));
+      b.addEventListener("click", () => {
+        if (b.dataset.lang === LANG) return;
+        try { localStorage.setItem(KEY.lang, b.dataset.lang); } catch (e) { /* no storage: stay in English */ }
+        location.reload();
+      });
+    }
+    if (LANG === "ru") {
+      const note = h("p", { class: "hint lang-note", text: "По-русски: вводная часть, годы, рычаги, плитки, блоки реки и задания. Подробные разделы ниже (источники, сравнение с данными, пояснения к графикам) пока только по-английски." });
+      $("intro").insertAdjacentElement("afterend", note);
+    }
+  }
   function start() {
+    applyLanguage();
     setupTheme();
     buildYearButtons();
     buildControls();
     renderStatic();
     compute();
-    $("month").setAttribute("aria-valuetext", "Whole year");
+    $("month").setAttribute("aria-valuetext", RU_T("Whole year"));
     setTab(state.tab);
     update();
   }
