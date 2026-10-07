@@ -10,7 +10,7 @@ the synthetic river applies the paper's season-to-season correlations to the log
 
 import json
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import ClassVar
 
@@ -73,6 +73,15 @@ MONTHLY_NEED_MM3: tuple[float, ...] = (WINTER_NEED_MM3 / MONTHS_PER_SEASON,) * M
     SUMMER_NEED_MM3 / MONTHS_PER_SEASON,
 ) * MONTHS_PER_SEASON
 SHORT_TOLERANCE_PERCENT = 1e-6
+# --- The winter fields (the "one more user" sections). Illustrative, like the evaporation share.
+WINTER_MONTHS = range(0, MONTHS_PER_SEASON)
+# What the winter fields (winter wheat, salt leaching) ask for in each winter month, Mm³; nothing in summer
+WINTER_FIELDS_NEED_MM3: tuple[float, ...] = (2.5,) * MONTHS_PER_SEASON + (0.0,) * MONTHS_PER_SEASON
+WINTER_FIELDS_TOTAL_MM3 = sum(WINTER_FIELDS_NEED_MM3)
+# The winter trigger is compared with the "water in sight": the storage plus, if there is one, the forecast of
+# the coming summer. Its scale is therefore the reservoir plus a large summer.
+WINTER_TRIGGER_MAX_MM3 = 120.0
+FORECAST_SEED = SEED + 1  # the forecaster's noise; a different seed from the river's
 # The trade-off charts stop here on the average-shortage axis; plans beyond it are far from any sensible choice.
 MEAN_SHORTAGE_AXIS_MAX = 12.0
 
@@ -99,6 +108,28 @@ class Plan:
 
 
 NO_RATIONING = Plan()
+# The summer plan kept fixed in the winter sections: "cut deep" from the second run
+SUMMER_PLAN_FOR_WINTER = Plan(trigger=16.0, ration=0.5)
+
+
+@dataclass(frozen=True)
+class WinterPlan:
+    """A winter plan: when the water in sight is below `trigger` Mm³, deliver only `ration` of the winter need.
+
+    The water in sight is the storage, plus the forecast of the coming summer when the operator has one.
+    """
+
+    trigger: float = 0.0
+    ration: float = 1.0
+
+    def __post_init__(self) -> None:
+        if not 0.0 <= self.trigger <= WINTER_TRIGGER_MAX_MM3:
+            raise ValueError(f"winter trigger must be between 0 and {WINTER_TRIGGER_MAX_MM3:g} Mm³, got {self.trigger}")
+        if not 0.0 <= self.ration <= 1.0:
+            raise ValueError(f"winter ration must be between 0 and 1, got {self.ration}")
+
+
+WINTER_IN_FULL = WinterPlan()
 
 
 @dataclass(frozen=True)
@@ -201,6 +232,39 @@ def season_statistics(inflows: tuple[float, ...], regime: Regime = DEFAULT_REGIM
 # --- The building blocks ------------------------------------------------------------------------------------
 
 
+def seasonal_forecast(
+    inflows: tuple[float, ...], skill: float, seed: int = FORECAST_SEED, regime: Regime = DEFAULT_REGIME
+) -> tuple[float, ...]:
+    """A forecast of each summer's inflow, one number per year, with the given skill.
+
+    The forecaster sees the coming summer through noise: `skill` is the correlation between what it sees and
+    the truth. The forecast is the best guess given what it sees, so with skill 0 it is the long-run average
+    summer and with skill 1 it is the summer itself.
+
+    Args:
+        inflows: Monthly river inflow in Mm³, as from `synthetic_inflows`.
+        skill: Correlation between the forecast and the truth, 0 (no skill) to 1 (perfect).
+        seed: Seed of the forecaster's noise.
+        regime: The seasonal pattern the inflows were drawn from.
+
+    Returns:
+        Forecast summer inflow in Mm³, one value per year.
+
+    Raises:
+        ValueError: If `skill` is outside 0 to 1.
+    """
+    if not 0.0 <= skill <= 1.0:
+        raise ValueError(f"skill must be between 0 and 1, got {skill}")
+    _, summer = season_totals(inflows)
+    mu, sigma = _lognormal_parameters(*regime.summer)
+    truth = (np.log(summer) - mu) / sigma  # the summer, as a standard score
+    rng = np.random.default_rng(seed)
+    seen = skill * truth + np.sqrt(1.0 - skill**2) * rng.standard_normal(len(summer))  # the truth through noise
+    # The best guess of the summer given what was seen: the mean of a log-normal, narrowed by the forecaster's skill
+    guess = np.exp(mu + sigma * skill * seen + sigma**2 * (1.0 - skill**2) / 2.0)
+    return tuple(float(value) for value in guess)
+
+
 @dataclass(frozen=True)
 class RationingRelease(Strategy):
     """Release what the farm needs.
@@ -226,6 +290,42 @@ class RationingRelease(Strategy):
 
 
 @dataclass(frozen=True)
+class WinterRelease(Strategy):
+    """The summer rule with its two knobs, plus two knobs for winter.
+
+    In winter, deliver what the winter fields ask for, unless the water in sight (the storage, plus the forecast
+    of the coming summer if there is one) is below the winter trigger: then deliver only the winter ration of it.
+    """
+
+    __params__: ClassVar[tuple[str, ...]] = ("trigger", "ration", "winter_trigger", "winter_ration")
+    __bounds__: ClassVar[dict[str, tuple[float, float]]] = {
+        "trigger": (0.0, CAPACITY_MM3),
+        "ration": (0.0, 1.0),
+        "winter_trigger": (0.0, WINTER_TRIGGER_MAX_MM3),
+        "winter_ration": (0.0, 1.0),
+    }
+
+    trigger: float = 0.0
+    ration: float = 1.0
+    winter_trigger: float = 0.0
+    winter_ration: float = 1.0
+    forecast: tuple[float, ...] = field(default=(), compare=False)  # one forecast per year, Mm³; empty: none
+
+    def release(self, node: Storage, inflow: float, t: Timestep) -> float:
+        month = t.index % 12
+        need = MONTHLY_NEED_MM3[month]  # what the farm asks for this month
+        if month in SUMMER_MONTHS:
+            if node.storage < self.trigger:
+                need *= self.ration
+            return min(need, node.storage)
+        in_sight = node.storage + (self.forecast[t.index // 12] if self.forecast else 0.0)
+        winter_need = WINTER_FIELDS_NEED_MM3[month]  # what the winter fields ask for
+        if in_sight < self.winter_trigger:
+            winter_need *= self.winter_ration
+        return min(need + winter_need, node.storage)
+
+
+@dataclass(frozen=True)
 class SummerEvaporation:
     """Each summer month a fixed share of the stored water evaporates."""
 
@@ -242,19 +342,40 @@ def build_system(
     plan: Plan = NO_RATIONING,
     evaporation_share: float = 0.0,
     start_storage: float = START_STORAGE_MM3,
+    winter: WinterPlan | None = None,
+    forecast: tuple[float, ...] | None = None,
 ) -> WaterSystem:
-    """Build the four-block system: river → reservoir → farm → downstream.
+    """Build the four-block system river → reservoir → farm → downstream, or, with a winter plan, the five-block
+    system with the winter fields between the farm and the sink.
 
     Args:
         inflows: Monthly river inflow in Mm³.
-        plan: The rationing plan the reservoir follows.
+        plan: The rationing plan the reservoir follows in summer.
         evaporation_share: Share of the stored water lost per summer month (0 = no evaporation).
         start_storage: Water in the reservoir at the start, in Mm³.
+        winter: The winter plan; None builds the four-block system without the winter fields.
+        forecast: One forecast of the summer inflow per year, Mm³, as from `seasonal_forecast`; None means the
+            winter plan looks at the storage alone. Only used with a winter plan.
 
     Returns:
         A validated system, not yet simulated.
+
+    Raises:
+        ValueError: If the forecast does not have one value per year.
     """
     years = len(inflows) // 12
+    if winter is None:
+        policy: Strategy = RationingRelease(trigger=plan.trigger, ration=plan.ration)
+    else:
+        if forecast is not None and len(forecast) != years:
+            raise ValueError(f"the forecast needs one value per year ({years}), got {len(forecast)}")
+        policy = WinterRelease(
+            trigger=plan.trigger,
+            ration=plan.ration,
+            winter_trigger=winter.trigger,
+            winter_ration=winter.ration,
+            forecast=tuple(forecast or ()),
+        )
     system = WaterSystem(frequency=Frequency.MONTHLY)
     system.add_node(Source(id="river", inflow=TimeSeries(values=list(inflows))))
     system.add_node(
@@ -262,13 +383,17 @@ def build_system(
             id="reservoir",
             capacity=CAPACITY_MM3,
             initial_storage=start_storage,
-            release_policy=RationingRelease(trigger=plan.trigger, ration=plan.ration),
+            release_policy=policy,
             loss_rule=SummerEvaporation(share=evaporation_share) if evaporation_share > 0.0 else NoLoss(),
         )
     )
     system.add_node(Demand(id="farm", requirement=TimeSeries(values=list(MONTHLY_NEED_MM3) * years)))
+    chain = ["river", "reservoir", "farm", "downstream"]
+    if winter is not None:
+        system.add_node(Demand(id="winter_fields", requirement=TimeSeries(values=list(WINTER_FIELDS_NEED_MM3) * years)))
+        chain.insert(3, "winter_fields")  # the winter fields take what the farm passes on
     system.add_node(Sink(id="downstream"))
-    for source, target in (("river", "reservoir"), ("reservoir", "farm"), ("farm", "downstream")):
+    for source, target in zip(chain, chain[1:], strict=False):
         system.add_edge(Edge(id=f"{source}_to_{target}", source=source, target=target))
     system.validate()
     return system
@@ -335,6 +460,57 @@ def simulate_plan(
     system.simulate(len(inflows))
     shortage = shortage_by_month(system)
     return RunResult(plan=plan, scores=_scores(shortage), storage=_storage_path(system), shortage_by_month=shortage)
+
+
+@dataclass(frozen=True)
+class WinterScores:
+    """How a winter plan did: what the farm and the winter fields did not get, and the farm's worst month."""
+
+    summer_shortage: float  # Mm³ per year the farm did not get
+    winter_shortage: float  # Mm³ per year the winter fields did not get
+    worst_month: float  # % of its need the farm did not get in its worst month
+
+
+@dataclass(frozen=True)
+class WinterRun:
+    plan: Plan
+    winter: WinterPlan
+    scores: WinterScores
+    storage: np.ndarray  # Mm³ at the end of each month
+    winter_delivered_by_year: np.ndarray  # Mm³ the winter fields received in each winter
+
+
+def _deficit_by_year(system: WaterSystem, node_id: str) -> np.ndarray:
+    steps = len(system.nodes["river"].inflow.values)
+    return _padded(_monthly(system.nodes[node_id], DeficitRecorded, "deficit"), steps).reshape(-1, 12)
+
+
+def _winter_scores(system: WaterSystem) -> WinterScores:
+    farm, fields = _deficit_by_year(system, "farm"), _deficit_by_year(system, "winter_fields")
+    return WinterScores(
+        summer_shortage=float(farm[:, list(SUMMER_MONTHS)].sum() / len(farm)),
+        winter_shortage=float(fields[:, list(WINTER_MONTHS)].sum() / len(fields)),
+        worst_month=float(shortage_by_month(system).max()),
+    )
+
+
+def simulate_winter(
+    inflows: tuple[float, ...],
+    winter: WinterPlan = WINTER_IN_FULL,
+    plan: Plan = SUMMER_PLAN_FOR_WINTER,
+    forecast: tuple[float, ...] | None = None,
+) -> WinterRun:
+    """Run the five-block system through TaqSim and read off storage, winter deliveries and scores."""
+    system = build_system(inflows, plan, winter=winter, forecast=forecast)
+    system.simulate(len(inflows))
+    delivered = WINTER_FIELDS_TOTAL_MM3 - _deficit_by_year(system, "winter_fields").sum(axis=1)
+    return WinterRun(
+        plan=plan,
+        winter=winter,
+        scores=_winter_scores(system),
+        storage=_storage_path(system),
+        winter_delivered_by_year=delivered,
+    )
 
 
 def objectives() -> list[Objective]:
@@ -444,6 +620,101 @@ def front_of(table: pd.DataFrame) -> pd.DataFrame:
     return front.sort_values("mean_shortage").reset_index(drop=True)
 
 
+# --- Many winter plans -------------------------------------------------------------------------------------
+
+
+WINTER_GOALS = ("summer_shortage", "winter_shortage")
+
+
+def winter_grid(
+    n_trigger: int = 21, n_ration: int = 21, trigger_max: float = WINTER_TRIGGER_MAX_MM3
+) -> list[WinterPlan]:
+    """Evenly spaced winter plans covering every trigger (0 to `trigger_max`) and every ration (0 to 1)."""
+    return [
+        WinterPlan(trigger=float(trigger), ration=float(ration))
+        for trigger in np.linspace(0.0, trigger_max, n_trigger)
+        for ration in np.linspace(0.0, 1.0, n_ration)
+    ]
+
+
+def score_winter_plans(
+    inflows: tuple[float, ...],
+    winter_plans: list[WinterPlan],
+    plan: Plan = SUMMER_PLAN_FOR_WINTER,
+    forecast: tuple[float, ...] | None = None,
+) -> pd.DataFrame:
+    """Run every winter plan, with the summer plan fixed, and tabulate its scores.
+
+    Returns:
+        One row per winter plan with `winter_trigger`, `winter_ration`, `summer_shortage`, `winter_shortage`,
+        `worst_month` and `unbeaten` (no other plan in the table has both a smaller summer and a smaller winter
+        shortage).
+    """
+    rows = []
+    for winter in winter_plans:
+        scores = simulate_winter(inflows, winter, plan=plan, forecast=forecast).scores
+        rows.append((winter.trigger, winter.ration, scores.summer_shortage, scores.winter_shortage, scores.worst_month))
+    columns = ["winter_trigger", "winter_ration", *WINTER_GOALS, "worst_month"]
+    table = pd.DataFrame(rows, columns=columns)
+    table["unbeaten"] = unbeaten(table[list(WINTER_GOALS)].to_numpy().round(6))
+    return table
+
+
+def winter_front_of(table: pd.DataFrame) -> pd.DataFrame:
+    """The distinct unbeaten (summer shortage, winter shortage) pairs of a winter score table, smallest summer
+    shortage first."""
+    ties_first = table[table["unbeaten"]].sort_values(["winter_ration", "winter_trigger"], ascending=[False, True])
+    front = ties_first.round(dict.fromkeys(WINTER_GOALS, 6)).drop_duplicates(list(WINTER_GOALS))
+    return front.sort_values("summer_shortage").reset_index(drop=True)
+
+
+def least_winter_shortage(table: pd.DataFrame, summer_cap: float) -> float:
+    """The smallest winter shortage among the plans whose summer shortage is at most `summer_cap` (NaN if none)."""
+    within = table[table["summer_shortage"] <= summer_cap + 1e-9]
+    return float(within["winter_shortage"].min()) if len(within) else float("nan")
+
+
+def winter_plan_within(table: pd.DataFrame, summer_cap: float) -> WinterPlan:
+    """The unbeaten winter plan with the least winter shortage whose summer shortage is at most `summer_cap`.
+
+    Raises:
+        ValueError: If no unbeaten plan keeps the summer shortage within the cap.
+    """
+    front = winter_front_of(table)
+    within = front[front["summer_shortage"] <= summer_cap + 1e-9]
+    if within.empty:
+        raise ValueError(f"no unbeaten plan keeps the summer shortage within {summer_cap:g} Mm³ per year")
+    row = within.iloc[-1]
+    return WinterPlan(trigger=float(row["winter_trigger"]), ration=float(row["winter_ration"]))
+
+
+def score_by_skill(
+    inflows: tuple[float, ...],
+    skills: tuple[float, ...],
+    winter_plans: list[WinterPlan] | None = None,
+    plan: Plan = SUMMER_PLAN_FOR_WINTER,
+) -> dict[float, pd.DataFrame]:
+    """The winter score table for a forecast of each skill, keyed by skill."""
+    winter_plans = winter_plans or winter_grid()
+    return {
+        skill: score_winter_plans(inflows, winter_plans, plan, seasonal_forecast(inflows, skill)) for skill in skills
+    }
+
+
+def forecast_value(tables: dict[float, pd.DataFrame], summer_cap: float) -> pd.DataFrame:
+    """For each forecast skill, the smallest winter shortage that keeps the summer shortage within `summer_cap`.
+
+    Args:
+        tables: Winter score tables keyed by forecast skill, as from `score_by_skill`.
+        summer_cap: The summer shortage, Mm³ per year, that the plans may not exceed.
+
+    Returns:
+        One row per skill with `skill` and `winter_shortage` (Mm³ per year), in order of skill.
+    """
+    rows = [(skill, least_winter_shortage(table, summer_cap)) for skill, table in sorted(tables.items())]
+    return pd.DataFrame(rows, columns=["skill", "winter_shortage"])
+
+
 # --- The explorer on the web page ---------------------------------------------------------------------------
 
 
@@ -527,11 +798,27 @@ NETWORK_EDGES: tuple[tuple[str, str], ...] = (("river", "reservoir"), ("reservoi
 _NODE_MARKERS = {"Source": "o", "Storage": "s", "Demand": "h", "Sink": "v"}
 
 
-def plot_network() -> Figure:
-    """The model as TaqSim sees it: four nodes joined by three edges, water flowing left to right."""
-    fig, ax = plt.subplots(figsize=(8.0, 2.4))
-    positions = {node_id: (i * 2.4, 0.0) for i, (node_id, _, _) in enumerate(NETWORK_NODES)}
-    for source, target in NETWORK_EDGES:
+WINTER_NETWORK_NODES: tuple[tuple[str, str, str], ...] = (
+    *NETWORK_NODES[:3],
+    ("winter_fields", "Demand", "winter wheat and leaching"),
+    NETWORK_NODES[3],
+)
+WINTER_NETWORK_EDGES: tuple[tuple[str, str], ...] = (
+    ("river", "reservoir"),
+    ("reservoir", "farm"),
+    ("farm", "winter_fields"),
+    ("winter_fields", "downstream"),
+)
+
+
+def plot_network(winter: bool = False) -> Figure:
+    """The model as TaqSim sees it: four nodes joined by three edges, water flowing left to right (five nodes and
+    four edges with the winter fields)."""
+    nodes, edges = (WINTER_NETWORK_NODES, WINTER_NETWORK_EDGES) if winter else (NETWORK_NODES, NETWORK_EDGES)
+    spacing = 3.4 if winter else 2.4
+    fig, ax = plt.subplots(figsize=(11.2 if winter else 8.0, 2.4))
+    positions = {node_id: (i * spacing, 0.0) for i, (node_id, _, _) in enumerate(nodes)}
+    for source, target in edges:
         (x0, y0), (x1, y1) = positions[source], positions[target]
         ax.annotate(
             "",
@@ -539,12 +826,21 @@ def plot_network() -> Figure:
             xytext=(x0 + 0.55, y0),
             arrowprops={"arrowstyle": "-|>", "color": WATER, "linewidth": 1.8, "shrinkA": 0, "shrinkB": 0},
         )
-        ax.text((x0 + x1) / 2, 0.2, f"{source}_to_{target}", ha="center", fontsize=7, color=MUTED, family="monospace")
-    for node_id, kind, note in NETWORK_NODES:
+        ax.text(
+            (x0 + x1) / 2,
+            0.2,
+            f"{source}_to_{target}",
+            ha="center",
+            fontsize=6 if winter else 7,
+            color=MUTED,
+            family="monospace",
+        )
+    for node_id, kind, note in nodes:
         x, y = positions[node_id]
         ax.scatter(x, y, s=3000, marker=_NODE_MARKERS[kind], color=SURFACE, edgecolors=INK, linewidths=1.4, zorder=3)
         label_y = y + 0.08 if kind == "Sink" else y  # a triangle's visual centre sits above its middle
-        ax.text(x, label_y, node_id, ha="center", va="center", fontsize=8, color=INK, weight="bold", zorder=4)
+        size = 8 if len(node_id) <= 10 else 6.5  # "winter_fields" must fit inside its hexagon
+        ax.text(x, label_y, node_id, ha="center", va="center", fontsize=size, color=INK, weight="bold", zorder=4)
         ax.text(x, -0.62, kind, ha="center", va="top", fontsize=8.5, color=SECONDARY)
         ax.text(x, -0.85, note, ha="center", va="top", fontsize=7.5, color=MUTED)
     ax.set_xlim(-0.9, positions["downstream"][0] + 0.9)
@@ -589,9 +885,19 @@ def plot_inflows(inflows: tuple[float, ...]) -> Figure:
     winter, summer = season_totals(inflows)
     years = np.arange(1, len(winter) + 1)
     fig, ax = plt.subplots(figsize=(8.0, 3.0))
-    ax.plot(years, summer, color=SHORTAGE, linewidth=1.6, label="Summer inflow (April to September, when the farm irrigates)")
-    ax.plot(years, winter, color=WATER, linewidth=1.6, label="Winter inflow (October to March, when the reservoir fills)")
-    ax.axhline(SUMMER_NEED_MM3, color=MUTED, linewidth=1.0, label=f"What the farm needs in summer, {SUMMER_NEED_MM3:g} Mm³")
+    ax.plot(
+        years,
+        summer,
+        color=SHORTAGE,
+        linewidth=1.6,
+        label="Summer inflow (April to September, when the farm irrigates)",
+    )
+    ax.plot(
+        years, winter, color=WATER, linewidth=1.6, label="Winter inflow (October to March, when the reservoir fills)"
+    )
+    ax.axhline(
+        SUMMER_NEED_MM3, color=MUTED, linewidth=1.0, label=f"What the farm needs in summer, {SUMMER_NEED_MM3:g} Mm³"
+    )
     ax.set_xlim(0, len(years) + 1)
     ax.set_ylim(0, max(summer.max(), winter.max()) * 1.35)
     ax.legend(loc="upper left", frameon=False, fontsize=8, ncol=1)
@@ -805,5 +1111,108 @@ def plot_regime_comparison(cases: dict[str, tuple[tuple[float, ...], pd.DataFram
     for ax in (left, right):
         ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY)
         _style(ax)
+    fig.tight_layout()
+    return fig
+
+
+# --- The winter fields and the forecast --------------------------------------------------------------------
+
+
+_FRONT_COLORS = (WATER, SHORTAGE, "#1baf7a", "#8e6bd6", MUTED)
+
+
+def plot_winter_fronts(fronts: dict[str, pd.DataFrame]) -> Figure:
+    """Compare the unbeaten winter plans of two or more winter score tables (e.g. without and with a forecast)."""
+    fig, ax = plt.subplots(figsize=(7.0, 3.8))
+    for (label, table), color in zip(fronts.items(), _FRONT_COLORS, strict=False):
+        front = winter_front_of(table)
+        ax.plot(
+            front["summer_shortage"],
+            front["winter_shortage"],
+            color=color,
+            linewidth=1.6,
+            drawstyle="steps-post",
+            marker="o",
+            markersize=5,
+            markeredgecolor=SURFACE,
+            label=label,
+        )
+    ax.set_xlabel("Summer shortage: water the farm did not get (Mm³ per year) — less is better")
+    ax.set_ylabel("Winter shortage: water the winter fields\ndid not get (Mm³ per year) — less is better")
+    ax.set_xlim(left=0)
+    ax.set_ylim(0, WINTER_FIELDS_TOTAL_MM3 * 1.05)
+    ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY, loc="upper right")
+    _style(ax)
+    fig.tight_layout()
+    return fig
+
+
+def plot_winter_decisions(
+    runs: dict[str, WinterRun], inflows: tuple[float, ...], first_year: int = 1, window_years: int = 20
+) -> Figure:
+    """Top: what the winter fields received each winter under each plan. Bottom: the summer inflow that followed."""
+    _, summer = season_totals(inflows)
+    years = np.arange(first_year, first_year + window_years)
+    fig, (top, bottom) = plt.subplots(2, 1, figsize=(8.0, 4.6), sharex=True)
+    width = 0.8 / len(runs)
+    for i, ((label, run), color) in enumerate(zip(runs.items(), _FRONT_COLORS, strict=False)):
+        offsets = years + (i - (len(runs) - 1) / 2) * width
+        top.bar(offsets, run.winter_delivered_by_year[years - 1], width=width, color=color, label=label)
+    top.axhline(WINTER_FIELDS_TOTAL_MM3, color=MUTED, linewidth=1.0)
+    top.text(years[0] - 0.4, WINTER_FIELDS_TOTAL_MM3 + 0.3, "what the winter fields ask for", color=MUTED, fontsize=7.5)
+    top.set_ylim(0, WINTER_FIELDS_TOTAL_MM3 * 1.25)
+    top.set_ylabel("Delivered in winter (Mm³)")
+    top.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY, loc="upper right", ncol=len(runs))
+    bottom.bar(years, summer[years - 1], width=0.7, color=WATER, alpha=0.75)
+    bottom.axhline(SUMMER_NEED_MM3, color=MUTED, linewidth=1.0)
+    bottom.text(years[0] - 0.4, SUMMER_NEED_MM3 + 1.0, "what the farm needs in summer", color=MUTED, fontsize=7.5)
+    bottom.set_ylabel("The summer that followed:\ninflow (Mm³)")
+    bottom.set_xlabel(f"Year (a window of {window_years} years)")
+    bottom.xaxis.set_major_locator(MaxNLocator(integer=True))
+    for ax in (top, bottom):
+        _style(ax)
+    fig.tight_layout()
+    return fig
+
+
+def plot_forecast_skill(inflows: tuple[float, ...], skills: tuple[float, ...] = (0.5, 0.9)) -> Figure:
+    """One panel per skill: the forecast of each summer against the summer that came."""
+    _, summer = season_totals(inflows)
+    fig, axes = plt.subplots(1, len(skills), figsize=(3.4 * len(skills), 3.3), sharex=True, sharey=True)
+    top = float(max(summer.max(), max(max(seasonal_forecast(inflows, s)) for s in skills))) * 1.05
+    for ax, skill in zip(np.atleast_1d(axes), skills, strict=True):
+        forecast = np.asarray(seasonal_forecast(inflows, skill))
+        ax.plot([0, top], [0, top], color=MUTED, linewidth=1.0)
+        ax.scatter(summer, forecast, s=14, color=WATER, alpha=0.8, edgecolors="none")
+        ax.set_title(f"skill {skill:g}", loc="left", fontsize=9.5, color=INK, weight="bold")
+        ax.set_xlabel("The summer that came (Mm³)")
+        ax.set_xlim(0, top)
+        ax.set_ylim(0, top)
+        _style(ax)
+    np.atleast_1d(axes)[0].set_ylabel("The forecast (Mm³)")
+    fig.tight_layout()
+    return fig
+
+
+def plot_forecast_value(curve: pd.DataFrame, no_forecast: float, summer_cap: float) -> Figure:
+    """The winter shortage the forecast leaves, against its skill, with the no-forecast level for comparison."""
+    fig, ax = plt.subplots(figsize=(6.4, 3.4))
+    ax.axhline(no_forecast, color=SHORTAGE, linewidth=1.4, label="no forecast: storage alone")
+    ax.plot(
+        curve["skill"],
+        curve["winter_shortage"],
+        color=WATER,
+        linewidth=1.6,
+        marker="o",
+        markersize=5,
+        markeredgecolor=SURFACE,
+        label="with the forecast",
+    )
+    ax.set_xlabel("Forecast skill (correlation with the summer that came)")
+    ax.set_ylabel(f"Winter shortage (Mm³ per year)\nwith the summer shortage held to {summer_cap:g} Mm³")
+    ax.set_xlim(0, 1)
+    ax.set_ylim(bottom=0)
+    ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY)
+    _style(ax)
     fig.tight_layout()
     return fig
