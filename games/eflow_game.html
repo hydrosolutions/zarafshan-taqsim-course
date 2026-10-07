@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>River for Nature</title>
-<meta name="description" content="River flow for nature vs irrigation: the Zarafshan at Ravatkhoja, one headworks with TaqSim's e-flow rule, two levers, two results (crops supplied, river score by fishy's IARI). Every lever combination precomputed in TaqSim. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026.">
+<meta name="description" content="River flow for nature vs irrigation: the Zarafshan at Ravatkhoja, one headworks with TaqSim's e-flow rule, two levers, two results (crops supplied, river score by fishy's IARI). Every lever combination precomputed in TaqSim. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026. English and Russian.">
 <style>
 /* Tokens: dataviz reference palette families. Light-mode sector hues are darkened steps so every line clears 3:1 and
    every text token 4.5:1 on the light surface (measured with validate_palette.js `contrast`); sector order
@@ -208,15 +208,21 @@ header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: cent
 .scroll-note { display: none; }
 @media (max-width: 899px) {
   .schematic-box { overflow-x: auto; }
-  .schematic-box svg { min-width: 940px; }
+  .schematic-box svg { min-width: 900px; }
   .scroll-note { display: block; }
 }
-.schematic text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--ink); font-size: 18px; }
-.schematic .name { font-weight: 620; }
+.schematic text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--ink); font-size: 15px; }
+.schematic .name { font-weight: 620; font-size: 18px; }
 .schematic .value { fill: var(--ink-2); }
 .schematic .small { fill: var(--ink-2); }
-.schematic .tag { fill: var(--ink-2); font-size: 16px; font-weight: 650; letter-spacing: 0.05em; }
+.schematic .tag { fill: var(--ink-2); font-size: 12px; font-weight: 650; letter-spacing: 0.06em; }
+/* labels on the lines keep a halo of the surface colour, so they stay readable where they cross a line */
+.schematic .edge-label { fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
 .schematic .node-box { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.4; }
+/* the source and the two sinks carry a light tint of their colour (browsers without color-mix keep the plain surface) */
+.schematic .node-box.source { stroke: var(--river); fill: color-mix(in srgb, var(--river) 12%, var(--surface)); }
+.schematic .node-box.fields { stroke: var(--irrigation); fill: color-mix(in srgb, var(--irrigation) 12%, var(--surface)); }
+.schematic .node-box.river-end { stroke: var(--environment); fill: color-mix(in srgb, var(--environment) 12%, var(--surface)); }
 .schematic .node-box.zone { stroke-dasharray: 5 3; }
 .schematic .hw { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
 .schematic .pill { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
@@ -471,21 +477,110 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 #ind-warnings li { color: var(--bad-text); }
 .scatter-dot:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
+/* the "Before you play" panel */
+.intro { margin: 0 0 10px; padding: 10px 16px; }
+.intro summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.intro summary::-webkit-details-marker { display: none; }
+.intro summary::before { content: "▸"; font-size: 0.9em; opacity: 0.7; }
+.intro[open] summary::before { content: "▾"; }
+.intro summary h2 { margin: 0; font-size: 1.05rem; }
+.intro .prose { column-width: 52ch; column-gap: 36px; margin-top: 6px; }  /* two columns on a wide window, one on a laptop */
+.intro .prose p { margin: 0 0 10px; break-inside: avoid; }
+
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>River flow for nature vs irrigation <span class="thin">the Zarafshan at Ravatkhoja</span></h1>
+    <h1 id="page-title">River flow for nature vs irrigation <span class="thin">the Zarafshan at Ravatkhoja</span></h1>
     <div class="top-controls">
       <div class="segmented" id="year-buttons" role="group" aria-label="Year shown in the charts"></div>
+      <div class="segmented" id="lang-buttons" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></div>
       <button class="btn small" id="theme-toggle" type="button">Theme: auto</button>
     </div>
   </header>
 
+  <!-- intro:start -->
+  <details class="card intro" id="intro" open>
+    <summary><h2 data-i18n>Before you play: what this model shows, and why</h2></summary>
+    <div class="prose" data-lang="en">
+      <p><b>What you see.</b> The Zarafshan at the Ravatkhoja headworks, where the Samarkand canals Dargom, Mirzapay and
+      Akkaradarya take their water, day by day for the five years 2019–2023, with the recorded river and the canals' real
+      monthly demand. The model has five TaqSim blocks: the inflow, the headworks with TaqSim's environmental-flow rule, the
+      canal gate, the fields and the river end. Nothing is stored and nothing is lost between them: on every day, what
+      arrives either goes to the fields or stays in the river. The same kinds of block build the full basin model.</p>
+      <p><b>What you can change.</b> Two levers, both numbers in the rule of the headworks. The <i>reserve share</i>: the part
+      of each day's flow that is kept for the river before the canal takes anything. The <i>reserve ceiling</i>: the most the
+      rule ever reserves on one day. With the share at 100 % the ceiling becomes a <i>guaranteed minimum</i>: the first
+      so-many cubic metres per second of every day stay in the river, whatever the canal needs. So the question is not only
+      how much water to leave in the river, but how: as a share of each day, or as a floor that is never crossed.</p>
+      <p><b>What you watch.</b> Two results. <i>Crops supplied</i>: the water the fields received over the five years, as a
+      share of what the canals asked for. <i>River score</i>: how far the river below the headworks is from its natural
+      regime, on the 33 indicators of hydrologic alteration (monthly flows, extremes and their timing, pulses, rates of
+      change), summarised by the IARI index as implemented in the fishy package. 0 is natural; up to 0.05 counts as close to
+      natural, up to 0.15 as good, above that as altered. Lower is better. Under the tiles, <i>Beaten by</i> says whether
+      another plan is at least as good on both results and better on one.</p>
+      <p><b>Why this river is interesting.</b> The canal takes only 16 % of the water, yet with no reserve the river scores
+      0.30, "altered". The reason is <i>when</i> it takes it: the demand starts in March, the month of lowest flow, and the river
+      below the headworks drops to 17 m³/s where in the record it never fell below 26. Leaving a share does little until the
+      share is large: up to 50 % the crops still get 99.7 % of their water, and the river is still "altered". A guaranteed
+      minimum protects exactly the low days: keeping the first 100 m³/s in the river makes the score "good", at the cost of
+      about a quarter of the crops' water. Two plans that give the crops nearly the same water, "leave 80 %" and "the first
+      80 m³/s always stay", give the river different scores, 0.167 and 0.151; the second is better on both counts.</p>
+      <p><b>What to try.</b> Follow the five tasks on the right. Find the share at which the crops first go short. Find the
+      smallest minimum that makes the river "good", and what it costs. Load Example A and Example B, then open the tab
+      <i>The 33 indicators</i> for each and see which indicators differ. In the <i>Trade-off explorer</i>, every one of the 91
+      lever settings is a dot; the filled dots are the 43 plans that no other plan beats. Click one and see what kind of rule
+      it is. Finally, back at the starting plan, see which indicators are hurt most although the canal takes so little.</p>
+      <p><b>What a water manager takes away.</b> How water is left in a river matters as much as how much: a floor on the low
+      days does more for the river per cubic metre than a share of every day. An index like the IARI makes "the river's
+      health" comparable between plans, but it sees hydrology only, nothing about fish, temperature or sediment, and here
+      it works against a reference of 14 years where the method asks for 20; it is a tool for comparing plans, not a verdict.
+      Among the plans that no other plan beats, choosing is a decision about how much river to trade for how much crop,
+      which the model informs but cannot make.</p>
+    </div>
+    <div class="prose" data-lang="ru" hidden>
+      <p><b>Что вы видите.</b> Зарафшан у Раватходжинского гидроузла, где берут воду самаркандские каналы Даргом, Мирзапай
+      и Аккарадарья, день за днём в течение пяти лет, 2019–2023, с фактическим стоком реки и реальной месячной потребностью
+      каналов. В модели пять блоков TaqSim: приток, гидроузел с правилом экологического стока TaqSim, голова канала, поля и
+      конец реки. Между ними ничего не хранится и не теряется: каждый день пришедшая вода либо уходит на поля, либо
+      остаётся в реке. Из блоков тех же видов собрана полная модель бассейна.</p>
+      <p><b>Что вы можете менять.</b> Два рычага, оба — числа в правиле гидроузла. <i>Доля резерва</i>: часть суточного стока,
+      которая остаётся реке прежде, чем канал возьмёт что-либо. <i>Потолок резерва</i>: больше этого правило за день не
+      резервирует никогда. При доле 100 % потолок становится <i>гарантированным минимумом</i>: первые столько-то кубометров
+      в секунду каждого дня остаются в реке, что бы ни было нужно каналу. Так что вопрос не только в том, сколько воды
+      оставить реке, но и как: долей каждого дня или порогом, ниже которого река не опускается.</p>
+      <p><b>За чем вы следите.</b> Два результата. <i>Обеспеченность посевов</i>: вода, полученная полями за пять лет, в долях
+      от запрошенного каналами. <i>Оценка реки</i>: насколько река ниже гидроузла отошла от естественного режима по 33
+      показателям гидрологической изменённости (месячные расходы, экстремумы и их сроки, пульсации, скорости изменения),
+      сведённым в индекс IARI в реализации пакета fishy. 0 — естественный режим; до 0.05 считается близким к естественному,
+      до 0.15 — хорошим, выше — изменённым. Чем меньше, тем лучше. Под плитками строка <i>Побит</i> говорит, есть ли план,
+      который не хуже по обоим результатам и лучше хотя бы по одному.</p>
+      <p><b>Чем интересна эта река.</b> Канал берёт лишь 16 % воды, а без резерва оценка реки — 0.30, «изменена». Причина
+      в том, <i>когда</i> он берёт: потребность начинается в марте, в месяц самого низкого стока, и река ниже гидроузла
+      падает до 17 м³/с там, где за весь ряд наблюдений не опускалась ниже 26. Оставлять долю почти бесполезно, пока доля
+      не велика: до 50 % посевы по-прежнему получают 99.7 % своей воды, а река по-прежнему «изменена». Гарантированный
+      минимум защищает именно маловодные дни: первые 100 м³/с, оставленные реке, делают оценку «хорошей» ценой примерно
+      четверти воды посевов. Два плана, дающие посевам почти одинаковую воду, «оставить 80 %» и «первые 80 м³/с всегда
+      остаются», дают реке разные оценки, 0.167 и 0.151; второй лучше по обоим результатам.</p>
+      <p><b>Что попробовать.</b> Следуйте пяти заданиям справа. Найдите долю, при которой посевы впервые недополучают воду.
+      Найдите наименьший минимум, при котором река становится «хорошей», и во что он обходится. Загрузите Пример A и
+      Пример B, затем откройте для каждого вкладку <i>33 показателя</i> и посмотрите, какие показатели различаются. В
+      <i>Исследователе компромиссов</i> каждое из 91 положений рычагов — точка; закрашенные точки — 43 плана, которые не побить
+      никаким другим. Нажмите на одну из них и посмотрите, что это за правило. Наконец, вернувшись к исходному плану,
+      посмотрите, какие показатели страдают сильнее всего, хотя канал берёт так мало.</p>
+      <p><b>Что вынесет управляющий водой.</b> Как оставлять воду реке, важно не меньше, чем сколько: порог в маловодные дни
+      даёт реке больше на каждый кубометр, чем доля каждого дня. Индекс вроде IARI делает «здоровье реки» сравнимым между
+      планами, но видит только гидрологию, ничего о рыбе, температуре или наносах, и здесь работает по ряду в 14 лет там,
+      где метод требует 20; это инструмент сравнения планов, а не приговор. Среди планов, которые не побить никаким другим,
+      выбор — это решение о том, сколько реки отдать за сколько урожая; модель ему помогает, но принять его не может.</p>
+    </div>
+  </details>
+  <!-- intro:end -->
+
   <div class="now-wrap">
     <div class="now" id="now" role="status" tabindex="-1"></div>
-    <div class="note" id="note" hidden><span id="note-text"></span><span class="note-buttons"><button class="btn small" id="note-action" type="button" hidden></button><button class="btn small" id="note-close" type="button" aria-keyshortcuts="Escape">Got it</button></span></div>
+    <div class="note" id="note" hidden><span id="note-text"></span><span class="note-buttons"><button class="btn small" id="note-action" type="button" hidden></button><button class="btn small" id="note-close" type="button" aria-keyshortcuts="Escape" data-i18n>Got it</button></span></div>
   </div>
 
   <div class="layout">
@@ -494,13 +589,15 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       <div class="minis" id="minis"></div>
       <div class="verdict" id="verdict" tabindex="-1"></div>
       <section class="card schematic-card" aria-labelledby="schematic-title">
-        <header><div><h2 id="schematic-title">The river as blocks</h2><span class="sub" id="schematic-sub"></span></div></header>
+        <header><div><h2 id="schematic-title" data-i18n>The river as blocks</h2><span class="sub" id="schematic-sub"></span></div></header>
         <div class="schematic-box" id="schematic"></div>
-        <p class="caption">Water flows from left to right. Numbers on the lines are Mm³ (million m³) that flowed in the year shown; the line width follows the flow. The <strong>Headworks</strong> block carries TaqSim's e-flow rule: each day it reserves <em>min(share × flow, ceiling)</em> for the river and passes the rest to the canal gate. The <strong>Canal gate</strong> gives the fields what they need that day and returns the rest to the river. Nothing is stored and nothing is lost between the blocks. Click a block to see its rule and its water balance.</p>
+        <p class="hint scroll-note" data-i18n>Scroll sideways to see the whole river →</p>
+        <p class="caption" data-lang="en">Water flows from left to right. Numbers on the lines are Mm³ (million m³) that flowed in the year shown; the line width follows the flow. The <strong>Headworks</strong> block carries TaqSim's e-flow rule: each day it reserves <em>min(share × flow, ceiling)</em> for the river and passes the rest to the canal gate. The <strong>Canal gate</strong> gives the fields what they need that day and returns the rest to the river. Nothing is stored and nothing is lost between the blocks. Click a block to see its rule and its water balance.</p>
+        <p class="caption" data-lang="ru" hidden>Вода течёт слева направо. Числа на линиях — млн м³ (миллионы кубометров), прошедшие за показанный год; толщина линии следует за расходом. Блок <strong>Гидроузел</strong> несёт правило экологического стока TaqSim: каждый день он резервирует для реки <em>min(доля × сток, потолок)</em>, а остальное передаёт голове канала. <strong>Голова канала</strong> отдаёт полям то, что им нужно в этот день, а остальное возвращает реке. Между блоками ничего не хранится и не теряется. Нажмите на блок, чтобы увидеть его правило и водный баланс.</p>
         <div class="inspector" id="inspector" hidden></div>
       </section>
       <section class="card" aria-labelledby="hydro-title">
-        <header><div><h2 id="hydro-title">The river below the headworks, day by day</h2><span class="sub" id="hydro-sub"></span></div></header>
+        <header><div><h2 id="hydro-title" data-i18n>The river below the headworks, day by day</h2><span class="sub" id="hydro-sub"></span></div></header>
         <div class="chart" id="chart-hydro"></div>
         <div class="legend" id="hydro-legend"></div>
       </section>
@@ -508,39 +605,39 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 
     <aside class="side" id="side" aria-label="Levers and tasks">
       <section class="card levers-card" aria-labelledby="levers-title">
-        <header><div><h2 id="levers-title">Levers</h2><span class="sub">Both are numbers in the rule of the Headworks block. The river gets at least the reserve; it also gets whatever the canal does not need.</span></div></header>
+        <header><div><h2 id="levers-title" data-i18n>Levers</h2><span class="sub" data-i18n>Both are numbers in the rule of the Headworks block. The river gets at least the reserve; it also gets whatever the canal does not need.</span></div></header>
         <div id="levers"></div>
         <div class="btn-row family-row" id="family-row"></div>
         <div class="save-bar">
           <div class="btn-row">
-            <button class="btn" id="reset-levers" type="button">Starting plan</button>
-            <button class="btn" id="example-a" type="button">Example A</button>
-            <button class="btn" id="example-b" type="button">Example B</button>
-            <button class="btn" id="undo" type="button" disabled>Undo</button>
+            <button class="btn" id="reset-levers" type="button" data-i18n>Starting plan</button>
+            <button class="btn" id="example-a" type="button" data-i18n>Example A</button>
+            <button class="btn" id="example-b" type="button" data-i18n>Example B</button>
+            <button class="btn" id="undo" type="button" disabled data-i18n>Undo</button>
           </div>
         </div>
       </section>
       <section class="card tasks-card" aria-labelledby="tasks-title">
-        <header><div><h2 id="tasks-title">Tasks</h2><span class="sub" id="tasks-sub"></span></div><button class="btn small" id="reset-tasks" type="button">Start fresh</button></header>
+        <header><div><h2 id="tasks-title" data-i18n>Tasks</h2><span class="sub" id="tasks-sub"></span></div><button class="btn small" id="reset-tasks" type="button" data-i18n>Start fresh</button></header>
         <ol class="tasks" id="tasks"></ol>
       </section>
     </aside>
 
     <section class="tabs-area" id="tabs-area">
       <div class="tabs" role="tablist" aria-label="More">
-        <button class="tab" role="tab" id="tabbtn-explorer" aria-controls="tab-explorer" aria-selected="true" type="button">Trade-off explorer</button>
-        <button class="tab" role="tab" id="tabbtn-indicators" aria-controls="tab-indicators" aria-selected="false" type="button">The 33 indicators</button>
-        <button class="tab" role="tab" id="tabbtn-supply" aria-controls="tab-supply" aria-selected="false" type="button">Canal supply</button>
-        <button class="tab" role="tab" id="tabbtn-sources" aria-controls="tab-sources" aria-selected="false" type="button">Sources &amp; assumptions</button>
+        <button class="tab" role="tab" id="tabbtn-explorer" aria-controls="tab-explorer" aria-selected="true" type="button" data-i18n>Trade-off explorer</button>
+        <button class="tab" role="tab" id="tabbtn-indicators" aria-controls="tab-indicators" aria-selected="false" type="button" data-i18n>The 33 indicators</button>
+        <button class="tab" role="tab" id="tabbtn-supply" aria-controls="tab-supply" aria-selected="false" type="button" data-i18n>Canal supply</button>
+        <button class="tab" role="tab" id="tabbtn-sources" aria-controls="tab-sources" aria-selected="false" type="button" data-i18n>Sources &amp; assumptions</button>
       </div>
 
       <section class="tab-panel" id="tab-explorer" role="tabpanel" aria-labelledby="tabbtn-explorer">
         <section class="card" aria-labelledby="scatter-title">
-          <header><div><h2 id="scatter-title">Crops against the river</h2><span class="sub" id="scatter-sub"></span></div></header>
+          <header><div><h2 id="scatter-title" data-i18n>Crops against the river</h2><span class="sub" id="scatter-sub"></span></div></header>
           <p class="verdict-line" id="scatter-verdict" tabindex="-1"></p>
           <div class="pc-controls">
             <div class="segmented" id="family-filter" role="group" aria-label="Show plans of one family"></div>
-            <span class="hint">Hover a dot for its levers and numbers. Click a dot to load that plan into the levers.</span>
+            <span class="hint" data-i18n>Hover a dot for its levers and numbers. Click a dot to load that plan into the levers.</span>
           </div>
           <div class="chart" id="scatter"></div>
           <div class="legend" id="scatter-legend"></div>
@@ -550,7 +647,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 
       <section class="tab-panel" id="tab-indicators" role="tabpanel" aria-labelledby="tabbtn-indicators" hidden>
         <section class="card" aria-labelledby="ind-title">
-          <header><div><h2 id="ind-title">How the river score is made</h2><span class="sub" id="ind-sub"></span></div></header>
+          <header><div><h2 id="ind-title" data-i18n>How the river score is made</h2><span class="sub" id="ind-sub"></span></div></header>
           <p class="sub" id="ind-help"></p>
           <div class="chart" id="chart-indicators"></div>
           <ul class="prose" id="ind-warnings"></ul>
@@ -559,45 +656,46 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 
       <section class="tab-panel" id="tab-supply" role="tabpanel" aria-labelledby="tabbtn-supply" hidden>
         <div class="charts two-col">
-          <div class="card"><header><div><h2>Canal supply against demand</h2><span class="sub">Mm³ per month in the year shown: demand (grey) and water received (green)</span></div></header><div class="chart" id="chart-supply"></div></div>
-          <div class="card"><header><div><h2>Crops supplied, year by year</h2><span class="sub">% of the canal's demand in each of the five scored years</span></div></header><div class="chart" id="chart-years"></div></div>
+          <div class="card"><header><div><h2 data-i18n>Canal supply against demand</h2><span class="sub" data-i18n>Mm³ per month in the year shown: demand (grey) and water received (green)</span></div></header><div class="chart" id="chart-supply"></div></div>
+          <div class="card"><header><div><h2 data-i18n>Crops supplied, year by year</h2><span class="sub" data-i18n>% of the canal's demand in each of the five scored years</span></div></header><div class="chart" id="chart-years"></div></div>
         </div>
       </section>
 
       <section class="tab-panel" id="tab-sources" role="tabpanel" aria-labelledby="tabbtn-sources" hidden>
         <div class="two-col">
           <section class="card" aria-labelledby="model-title">
-            <header><div><h2 id="model-title">How one day is computed</h2></div></header>
+            <header><div><h2 id="model-title" data-i18n>How one day is computed</h2></div></header>
             <div id="model-notes" class="prose"></div>
           </section>
           <section class="card" aria-labelledby="score-title">
-            <header><div><h2 id="score-title">What the river score is</h2></div></header>
+            <header><div><h2 id="score-title" data-i18n>What the river score is</h2></div></header>
             <div id="score-notes" class="prose"></div>
           </section>
         </div>
         <div class="two-col">
           <section class="card" aria-labelledby="balance-title">
-            <header><div><h2 id="balance-title">Water balance</h2><span class="sub" id="balance-sub"></span></div></header>
+            <header><div><h2 id="balance-title" data-i18n>Water balance</h2><span class="sub" id="balance-sub"></span></div></header>
             <div id="balance" class="prose"></div>
           </section>
           <section class="card" aria-labelledby="simpl-title">
-            <header><div><h2 id="simpl-title">What is simpler than on the real river</h2></div></header>
+            <header><div><h2 id="simpl-title" data-i18n>What is simpler than on the real river</h2></div></header>
             <ol class="prose" id="simplifications"></ol>
           </section>
         </div>
         <section class="card" aria-labelledby="prov-title">
-          <header><div><h2 id="prov-title">Every number and where it comes from</h2><span class="sub">measured = computed from a named file or run; read = written in a file; external = public source; assumed = a starting value, not data</span></div></header>
+          <header><div><h2 id="prov-title" data-i18n>Every number and where it comes from</h2><span class="sub" data-i18n>measured = computed from a named file or run; read = written in a file; external = public source; assumed = a starting value, not data</span></div></header>
           <div class="table-scroll" id="provenance-table"></div>
         </section>
         <section class="card" aria-labelledby="refs-title">
-          <header><div><h2 id="refs-title">Sources</h2></div></header>
+          <header><div><h2 id="refs-title" data-i18n>Sources</h2></div></header>
           <ul class="prose" id="references"></ul>
         </section>
       </section>
     </section>
   </div>
 
-  <footer class="foot">Reference model: <code>workshop/eflow_game/src/eflow_game/model.py</code> on TaqSim <span id="taqsim-version"></span> and fishy <span id="fishy-version"></span>. The copy of the two rules in this page gives the same crop supply as TaqSim (checked on <span id="twin-cases"></span> plans; largest difference <span id="twin-diff"></span> points). Water balance of the current year: <span id="balance-residual"></span>. hydrosolutions, TaqSim workshop Tashkent, 12–13 October 2026.</footer>
+  <footer class="foot" data-lang="en">Reference model: <code>workshop/eflow_game/src/eflow_game/model.py</code> on TaqSim <span class="taqsim-version"></span> and fishy <span class="fishy-version"></span>. The copy of the two rules in this page gives the same crop supply as TaqSim (checked on <span class="twin-cases"></span> plans; largest difference <span class="twin-diff"></span> points). Water balance of the current year: <span class="balance-residual"></span>. hydrosolutions, TaqSim workshop Tashkent, 12–13 October 2026.</footer>
+  <footer class="foot" data-lang="ru" hidden>Эталонная модель: <code>workshop/eflow_game/src/eflow_game/model.py</code> на TaqSim <span class="taqsim-version"></span> и fishy <span class="fishy-version"></span>. Копия двух правил на этой странице даёт ту же обеспеченность посевов, что и TaqSim (проверено на <span class="twin-cases"></span> планах; наибольшее расхождение <span class="twin-diff"></span> пунктов). Водный баланс текущего года: <span class="balance-residual"></span>. hydrosolutions, семинар по TaqSim, Ташкент, 12–13 октября 2026 г.</footer>
 </div>
 <div class="visually-hidden" id="announce" role="status" aria-live="polite"></div>
 <div class="tooltip" id="tooltip"></div>
@@ -662,7 +760,59 @@ const EflowModel = (() => {
   const CEILINGS = D.levers.ceilings_m3s; // last entry is null = no ceiling
   const SVGNS = "http://www.w3.org/2000/svg";
   const $ = (id) => document.getElementById(id);
-  const KEY = { state: "eflowGame.state.v1", theme: "eflowGame.theme", tasks: "eflowGame.tasks.v1" };
+  const KEY = { state: "eflowGame.state.v1", theme: "eflowGame.theme", tasks: "eflowGame.tasks.v1", lang: "eflowGame.lang" };
+
+  // ---------- language ----------
+  // English is the default. Russian covers the whole page: the intro, the levers, the tiles, the blocks, the charts, the
+  // tasks and the sources tab. The bibliography, the code of the two rules and TaqSim's block kinds (Source, Reach,
+  // Sink) stay as they are, as in the sixteen-blocks game.
+  const LANG = (() => { try { return localStorage.getItem(KEY.lang) === "ru" ? "ru" : "en"; } catch (e) { return "en"; } })();
+  const L = (en, ru) => (LANG === "ru" ? ru : en);
+  const RU = {
+    "Before you play: what this model shows, and why": "Прежде чем играть: что показывает эта модель и зачем",
+    "Got it": "Понятно", "The river as blocks": "Река как блоки", "Scroll sideways to see the whole river →": "Прокрутите вбок, чтобы увидеть всю реку →",
+    "The river below the headworks, day by day": "Река ниже гидроузла, день за днём",
+    "Levers": "Рычаги",
+    "Both are numbers in the rule of the Headworks block. The river gets at least the reserve; it also gets whatever the canal does not need.": "Оба — числа в правиле блока «Гидроузел». Река получает как минимум резерв, а сверх того — всё, что не нужно каналу.",
+    "Starting plan": "Исходный план", "Example A": "Пример A", "Example B": "Пример B", "Undo": "Отменить", "The plan": "План",
+    "Tasks": "Задания", "Start fresh": "Начать заново", "Click again to clear": "Нажмите ещё раз, чтобы сбросить", "Tasks and levers reset.": "Задания и рычаги сброшены.",
+    "Trade-off explorer": "Исследователь компромиссов", "The 33 indicators": "33 показателя", "Canal supply": "Подача в канал", "Sources & assumptions": "Источники и допущения",
+    "Crops against the river": "Посевы против реки",
+    "Hover a dot for its levers and numbers. Click a dot to load that plan into the levers.": "Наведите на точку, чтобы увидеть её рычаги и числа. Нажмите на точку, чтобы загрузить этот план в рычаги.",
+    "How the river score is made": "Как складывается оценка реки",
+    "Canal supply against demand": "Подача в канал против потребности",
+    "Mm³ per month in the year shown: demand (grey) and water received (green)": "млн м³ в месяц за показанный год: потребность (серым) и полученная вода (зелёным)",
+    "Crops supplied, year by year": "Обеспеченность посевов по годам",
+    "% of the canal's demand in each of the five scored years": "% потребности канала в каждый из пяти оцениваемых лет",
+    "How one day is computed": "Как считается один день", "What the river score is": "Что такое оценка реки", "Water balance": "Водный баланс",
+    "What is simpler than on the real river": "Что проще, чем на настоящей реке", "Every number and where it comes from": "Каждое число и откуда оно",
+    "measured = computed from a named file or run; read = written in a file; external = public source; assumed = a starting value, not data": "измерено = вычислено из названного файла или прогона; прочитано = записано в файле; внешнее = открытый источник; принято = исходное значение, не данные",
+    "Sources": "Источники",
+    "Hint": "Подсказка", "Load it": "Загрузить", "Open the explorer": "Открыть исследователь", "Starting plan + indicators": "Исходный план + показатели",
+    "Crops supplied": "Обеспеченность посевов", "River score": "Оценка реки", "Rule today": "Правило", "Beaten by": "Побит", "no plan": "никаким планом",
+    "Your plan": "Ваш план", "Not beaten: ": "Не побит: ", "click to load": "нажмите, чтобы загрузить",
+    "Reserve share": "Доля резерва", "Reserve ceiling": "Потолок резерва", "no ceiling": "без потолка", "none": "нет",
+    "Leave a share: no ceiling": "Оставить долю: без потолка", "Guarantee a minimum: share 100 %": "Гарантировать минимум: доля 100 %",
+    "All plans": "Все планы", "Leave a share": "Оставить долю", "Guarantee a minimum": "Гарантировать минимум", "Share with a ceiling": "Доля с потолком",
+    "Canal takes all": "Канал берёт всё", "River untouched": "Река нетронута", "Leave a share (no ceiling)": "Оставить долю (без потолка)", "Guarantee a minimum (share 100 %)": "Гарантировать минимум (доля 100 %)",
+    "points": "пунктов", "Same as the starting plan": "Как в исходном плане", "Change against the starting plan": "Изменение относительно исходного плана",
+    "Class (ISPRA bounds)": "Класс (границы ISPRA)", "Indicators scored": "Оценено показателей",
+    "demand": "потребность", "received": "получено", "crops supplied": "обеспеченность посевов",
+    "natural flow (record)": "естественный сток (наблюдения)", "river below the headworks": "река ниже гидроузла", "taken by the canal": "взято каналом",
+    "close to natural": "близко к естественному", "good": "хорошо", "altered": "изменён",
+    "No warnings for this plan.": "Для этого плана предупреждений нет.",
+    "All tasks done.": "Все задания выполнены.", "Done: ": "Выполнено: ", "To do: ": "Сделать: ",
+    "Number": "Число", "Value": "Значение", "Provenance": "Происхождение", "Where": "Где",
+    "measured": "измерено", "read": "прочитано", "external": "внешнее", "assumed": "принято",
+    "Theme: auto": "Тема: авто",
+  };
+  const t = (en) => (LANG === "ru" && RU[en]) || en;
+  const MM3 = L("Mm³", "млн м³");
+  const M3S = L("m³/s", "м³/с");
+  // "3 plans" / "3 планами" (instrumental case, as after "побит")
+  const planCount = (n) => L(`${n} plan${n > 1 ? "s" : ""}`, `${n} ${n % 10 === 1 && n % 100 !== 11 ? "планом" : "планами"}`);
+  // "91 plans" / "91 план", "43 плана", "27 планов" (nominative, after a number)
+  const plansOf = (n) => L(`${n} plan${n === 1 ? "" : "s"}`, `${n} ${n % 10 === 1 && n % 100 !== 11 ? "план" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "плана" : "планов"}`);
   const CLASSES = META.iari_classes; // {elevato: 0.05, buono: 0.15}
   const GOOD = CLASSES.buono;
 
@@ -700,9 +850,9 @@ const EflowModel = (() => {
     return e;
   }
   function text(parent, x, y, content, attrs) {
-    const t = svg("text", Object.assign({ x, y }, attrs || {}), parent);
-    t.textContent = content;
-    return t;
+    const el = svg("text", Object.assign({ x, y }, attrs || {}), parent);
+    el.textContent = content;
+    return el;
   }
   function h(tag, attrs, children) {
     const e = document.createElement(tag);
@@ -721,7 +871,7 @@ const EflowModel = (() => {
   const fmt2 = (v) => (Math.round(v * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const fmt3 = (v) => (Math.round(v * 1000) / 1000).toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const MONTHS = L(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]);
   function niceScale(max, count) {
     const raw = Math.max(max, 1e-9) / count;
     const p = Math.pow(10, Math.floor(Math.log10(raw)));
@@ -805,7 +955,7 @@ const EflowModel = (() => {
     extra.hidden = !action;
     extra.textContent = action ? action.label : "";
     extra.onclick = action ? action.run : null;
-    $("note-close").textContent = closeLabel || "Got it";
+    $("note-close").textContent = closeLabel || t("Got it");
     box.hidden = false;
     announce(message);
     const active = document.activeElement;
@@ -834,20 +984,34 @@ const EflowModel = (() => {
   const planId = (share, ceiling) => (share === 0 ? "s0_cnone" : `s${share}_c${ceiling == null ? "none" : Math.round(ceiling)}`);
   const family = (p) => (p.share_pct === 0 ? "none" : p.share_pct === 100 && p.ceiling_m3s == null ? "untouched" : p.ceiling_m3s == null ? "share" : p.share_pct === 100 ? "minimum" : "mixed");
   const FAMILY = {
-    none: { label: "Canal takes all", color: "var(--ink)" },
-    untouched: { label: "River untouched", color: "var(--ink)" },
-    share: { label: "Leave a share (no ceiling)", color: "var(--municipal)" },
-    minimum: { label: "Guarantee a minimum (share 100 %)", color: "var(--environment)" },
-    mixed: { label: "Share with a ceiling", color: "var(--muted)" },
+    none: { label: t("Canal takes all"), color: "var(--ink)" },
+    untouched: { label: t("River untouched"), color: "var(--ink)" },
+    share: { label: t("Leave a share (no ceiling)"), color: "var(--municipal)" },
+    minimum: { label: t("Guarantee a minimum (share 100 %)"), color: "var(--environment)" },
+    mixed: { label: t("Share with a ceiling"), color: "var(--muted)" },
   };
-  const className = (score) => (score <= CLASSES.elevato ? "close to natural" : score <= GOOD ? "good" : "altered");
-  const classWord = (score) => (score <= CLASSES.elevato ? `≤ ${CLASSES.elevato}: close to natural` : score <= GOOD ? `≤ ${GOOD}: good` : `> ${GOOD}: altered`);
+  const className = (score) => t(score <= CLASSES.elevato ? "close to natural" : score <= GOOD ? "good" : "altered");
+  const classWord = (score) => `${score <= GOOD ? "≤" : ">"} ${score <= CLASSES.elevato ? CLASSES.elevato : GOOD}: ${className(score)}`;
   // Dominance over the whole grid, computed here so that the page carries no list of winners it cannot check.
   const beatenBy = (p) => PLANS.filter((o) => o !== p && M.dominates({ crops: o.crops_pct, score: o.score }, { crops: p.crops_pct, score: p.score }));
   const START = byId[META.starting_plan];
   const PAIR = META.teaching_pair ? META.teaching_pair.map((id) => byId[id]) : null;
   const EXAMPLE_A = PAIR ? PAIR[0] : byId[planId(80, null)] || PLANS[1];
   const EXAMPLE_B = PAIR ? PAIR[1] : byId[planId(100, 60)] || PLANS[2];
+  // Plan names come from the data in English; the Russian ones follow the same rule as Plan.name in model.py.
+  const planName = (p) => (LANG !== "ru" ? p.name
+    : p.share_pct === 0 ? "Канал берёт всё, что ему нужно"
+    : p.share_pct === 100 && p.ceiling_m3s == null ? "Река нетронута"
+    : p.ceiling_m3s == null ? `Оставить ${p.share_pct} % суточного стока`
+    : p.share_pct === 100 ? `Первые ${fmt0(p.ceiling_m3s)} м³/с всегда остаются`
+    : `Оставить ${p.share_pct} %, не более ${fmt0(p.ceiling_m3s)} м³/с`);
+  // fishy's warnings come from the data in English; three sentence patterns cover every plan.
+  const WARN_RU = [
+    [/^(\d+) of 33 indicators could not be scored \(([^)]+)\); the score is the mean of the other (\d+)$/, (m) => `${m[1]} из 33 показателей не удалось оценить (${pretty(m[2])}); оценка — среднее остальных ${m[3]}`],
+    [/^minimum flow date: /, () => "дата минимального расхода: дату самого низкого расхода оценить нельзя: в естественном ряду она приходится на рубеж года, и индекс не может расположить даты плана на круговой оси"],
+    [/^river below the lowest natural flow on record \(([\d.]+) m³\/s\) on (\d+) of (\d+) days$/, (m) => `река ниже самого низкого естественного расхода за весь ряд (${m[1]} м³/с) в ${m[2]} из ${m[3]} дней`],
+  ];
+  const warnText = (w) => { if (LANG !== "ru") return w; for (const [re, f] of WARN_RU) { const m = w.match(re); if (m) return f(m); } return w; };
 
   // daily series
   const DATES = D.series.dates;
@@ -874,14 +1038,14 @@ const EflowModel = (() => {
   }
   const yearVolumes = (plan, year) => {
     const [from, to] = yearRange(year);
-    const t = twin(plan);
+    const tw = twin(plan);
     return {
       inflow: M.volumeMm3(NATURAL, from, to),
-      river: M.volumeMm3(t.river, from, to),
-      fields: M.volumeMm3(t.fields, from, to),
-      reserve: M.volumeMm3(t.reserve, from, to),
+      river: M.volumeMm3(tw.river, from, to),
+      fields: M.volumeMm3(tw.fields, from, to),
+      reserve: M.volumeMm3(tw.reserve, from, to),
       demand: M.volumeMm3(DEMAND, from, to),
-      rest: M.volumeMm3(t.river, from, to) - M.volumeMm3(t.reserve, from, to),
+      rest: M.volumeMm3(tw.river, from, to) - M.volumeMm3(tw.reserve, from, to),
     };
   };
 
@@ -906,7 +1070,7 @@ const EflowModel = (() => {
     settling = true;
     update();
     settle();
-    if (label) toast(`${label} loaded: ${currentPlan().name}.`);
+    if (label) toast(L(`${label} loaded: ${planName(currentPlan())}.`, `${label} загружен: ${planName(currentPlan())}.`));
   }
   function undo() {
     const last = history.pop();
@@ -920,18 +1084,20 @@ const EflowModel = (() => {
   function buildLevers() {
     const box = $("levers");
     box.textContent = "";
-    const ceilingText = (i) => (CEILINGS[i] == null ? "no ceiling" : `${fmt0(CEILINGS[i])} m³/s`);
+    const ceilingText = (i) => (CEILINGS[i] == null ? t("no ceiling") : `${fmt0(CEILINGS[i])} ${M3S}`);
     const levers = [
       {
-        id: "share", label: "Reserve share", min: 0, max: 100, step: 10, value: () => state.share, show: (v) => `${fmt0(v)} %`,
+        id: "share", label: t("Reserve share"), min: 0, max: 100, step: 10, value: () => state.share, show: (v) => `${fmt0(v)} %`,
         scale: ["0 %", "50 %", "100 %"],
-        explain: "Share of each day's natural flow that the headworks reserves for the river before the canal takes anything. 0 %: the canal takes all it needs. 100 % with no ceiling: the river is untouched.",
+        explain: L("Share of each day's natural flow that the headworks reserves for the river before the canal takes anything. 0 %: the canal takes all it needs. 100 % with no ceiling: the river is untouched.",
+          "Доля естественного суточного стока, которую гидроузел резервирует для реки прежде, чем канал возьмёт что-либо. 0 %: канал берёт всё, что ему нужно. 100 % без потолка: река нетронута."),
         set: (v) => { state.share = Number(v); },
       },
       {
-        id: "ceiling", label: "Reserve ceiling", min: 0, max: CEILINGS.length - 1, step: 1, value: () => state.ceilingIndex, show: ceilingText,
+        id: "ceiling", label: t("Reserve ceiling"), min: 0, max: CEILINGS.length - 1, step: 1, value: () => state.ceilingIndex, show: ceilingText,
         scale: [ceilingText(0), ceilingText(Math.floor((CEILINGS.length - 1) / 2)), ceilingText(CEILINGS.length - 1)],
-        explain: "The reserve never exceeds this flow. With a share of 100 % it is a guaranteed minimum: the first so-many m³/s of every day stay in the river, whatever the canal needs. With a smaller share it only limits the reserve on high-flow days.",
+        explain: L("The reserve never exceeds this flow. With a share of 100 % it is a guaranteed minimum: the first so-many m³/s of every day stay in the river, whatever the canal needs. With a smaller share it only limits the reserve on high-flow days.",
+          "Резерв никогда не превышает этот расход. При доле 100 % это гарантированный минимум: первые столько-то м³/с каждого дня остаются в реке, что бы ни было нужно каналу. При меньшей доле он лишь ограничивает резерв в многоводные дни."),
         set: (v) => { state.ceilingIndex = Number(v); },
       },
     ];
@@ -939,7 +1105,7 @@ const EflowModel = (() => {
       const input = h("input", { type: "range", id: `lever-${l.id}`, min: l.min, max: l.max, step: l.step, value: l.value(), "data-key": l.id });
       const out = h("output", { for: `lever-${l.id}`, id: `out-${l.id}`, text: l.show(l.value()) });
       const explain = h("div", { class: "explain", id: `explain-${l.id}`, hidden: true }, [h("p", { text: l.explain })]);
-      const help = h("button", { class: "help-btn", type: "button", "aria-expanded": "false", "aria-controls": `explain-${l.id}`, "aria-label": `What the ${l.label} does`, text: "?" });
+      const help = h("button", { class: "help-btn", type: "button", "aria-expanded": "false", "aria-controls": `explain-${l.id}`, "aria-label": L(`What the ${l.label} does`, `Что делает рычаг «${l.label}»`), text: "?" });
       help.addEventListener("click", () => { const open = explain.hidden; explain.hidden = !open; help.setAttribute("aria-expanded", String(open)); });
       input.addEventListener("input", () => {
         if (!settling) pushHistory();
@@ -959,20 +1125,21 @@ const EflowModel = (() => {
     }
     const fam = $("family-row");
     fam.textContent = "";
-    fam.appendChild(h("button", { class: "btn small", type: "button", text: "Leave a share: no ceiling", title: "Sets the ceiling to none; the share lever alone decides", onclick: () => setLevers(state.share === 0 ? 50 : state.share, null) }));
-    fam.appendChild(h("button", { class: "btn small", type: "button", text: "Guarantee a minimum: share 100 %", title: "Sets the share to 100 %; the ceiling becomes the guaranteed minimum", onclick: () => setLevers(100, currentCeiling() == null ? 60 : currentCeiling()) }));
-    $("reset-levers").addEventListener("click", () => setLevers(START.share_pct, START.ceiling_m3s, "Starting plan"));
-    $("example-a").addEventListener("click", () => { tasks.loadedA = true; setLevers(EXAMPLE_A.share_pct, EXAMPLE_A.ceiling_m3s, "Example A"); });
-    $("example-b").addEventListener("click", () => { tasks.loadedB = true; setLevers(EXAMPLE_B.share_pct, EXAMPLE_B.ceiling_m3s, "Example B"); });
-    $("example-a").title = `${EXAMPLE_A.name}: crops ${fmt1(EXAMPLE_A.crops_pct)} %, river score ${fmt3(EXAMPLE_A.score)}`;
-    $("example-b").title = `${EXAMPLE_B.name}: crops ${fmt1(EXAMPLE_B.crops_pct)} %, river score ${fmt3(EXAMPLE_B.score)}`;
+    fam.appendChild(h("button", { class: "btn small", type: "button", text: t("Leave a share: no ceiling"), title: L("Sets the ceiling to none; the share lever alone decides", "Убирает потолок; решает только рычаг доли"), onclick: () => setLevers(state.share === 0 ? 50 : state.share, null) }));
+    fam.appendChild(h("button", { class: "btn small", type: "button", text: t("Guarantee a minimum: share 100 %"), title: L("Sets the share to 100 %; the ceiling becomes the guaranteed minimum", "Ставит долю 100 %; потолок становится гарантированным минимумом"), onclick: () => setLevers(100, currentCeiling() == null ? 60 : currentCeiling()) }));
+    $("reset-levers").addEventListener("click", () => setLevers(START.share_pct, START.ceiling_m3s, t("Starting plan")));
+    $("example-a").addEventListener("click", () => { tasks.loadedA = true; setLevers(EXAMPLE_A.share_pct, EXAMPLE_A.ceiling_m3s, t("Example A")); });
+    $("example-b").addEventListener("click", () => { tasks.loadedB = true; setLevers(EXAMPLE_B.share_pct, EXAMPLE_B.ceiling_m3s, t("Example B")); });
+    const exampleTitle = (p) => `${planName(p)}: ${L("crops", "посевы")} ${fmt1(p.crops_pct)} %, ${L("river score", "оценка реки")} ${fmt3(p.score)}`;
+    $("example-a").title = exampleTitle(EXAMPLE_A);
+    $("example-b").title = exampleTitle(EXAMPLE_B);
     $("undo").addEventListener("click", undo);
   }
   function syncSliders() {
     $("lever-share").value = state.share;
     $("out-share").textContent = `${fmt0(state.share)} %`;
     $("lever-ceiling").value = state.ceilingIndex;
-    $("out-ceiling").textContent = currentCeiling() == null ? "no ceiling" : `${fmt0(currentCeiling())} m³/s`;
+    $("out-ceiling").textContent = currentCeiling() == null ? t("no ceiling") : `${fmt0(currentCeiling())} ${M3S}`;
   }
 
   // ---------- year, tabs, theme ----------
@@ -1010,7 +1177,7 @@ const EflowModel = (() => {
     const apply = () => {
       if (mode === "auto") document.documentElement.removeAttribute("data-theme");
       else document.documentElement.setAttribute("data-theme", mode);
-      btn.textContent = `Theme: ${mode}`;
+      btn.textContent = L(`Theme: ${mode}`, `Тема: ${{ auto: "авто", light: "светлая", dark: "тёмная" }[mode]}`);
     };
     btn.addEventListener("click", () => { mode = modes[(modes.indexOf(mode) + 1) % modes.length]; store.set(KEY.theme, mode); apply(); scheduleDraw(); });
     apply();
@@ -1033,40 +1200,41 @@ const EflowModel = (() => {
   }
   function delta(now, before, fmt, unit, lowerIsBetter) {
     const d = now - before;
-    if (Math.abs(d) < (lowerIsBetter ? 5e-4 : 5e-2)) return h("span", { class: "delta same", text: "±0", title: "Same as the starting plan" });
+    if (Math.abs(d) < (lowerIsBetter ? 5e-4 : 5e-2)) return h("span", { class: "delta same", text: "±0", title: t("Same as the starting plan") });
     const good = lowerIsBetter ? d < 0 : d > 0;
-    return h("span", { class: `delta ${good ? "good" : "bad"}`, text: `${d > 0 ? "↑ +" : "↓ −"}${fmt(Math.abs(d))}${unit ? " " + unit : ""}`, title: "Change against the starting plan" });
+    return h("span", { class: `delta ${good ? "good" : "bad"}`, text: `${d > 0 ? "↑ +" : "↓ −"}${fmt(Math.abs(d))}${unit ? " " + unit : ""}`, title: t("Change against the starting plan") });
   }
   function renderTiles() {
     const p = currentPlan();
     keepFocus($("tiles"), () => {
       const box = $("tiles");
       box.textContent = "";
-      const crops = h("div", { class: "tile", tabindex: 0, "data-key": "crops", role: "group", "aria-label": `Crops supplied: ${fmt1(p.crops_pct)} % of the canal's demand over ${YEARS[0]}–${YEARS[YEARS.length - 1]}` }, [
+      const span = `${YEARS[0]}–${YEARS[YEARS.length - 1]}`;
+      const crops = h("div", { class: "tile", tabindex: 0, "data-key": "crops", role: "group", "aria-label": L(`Crops supplied: ${fmt1(p.crops_pct)} % of the canal's demand over ${span}`, `Обеспеченность посевов: ${fmt1(p.crops_pct)} % потребности канала за ${span}`) }, [
         h("span", { class: "key", style: "background:var(--irrigation)" }),
-        h("span", { class: "label", text: "Crops supplied" }),
-        h("span", { class: "value" }, [fmt1(p.crops_pct), h("small", { text: "%" }), " ", h("small", {}, [delta(p.crops_pct, START.crops_pct, fmt1, "points", false)])]),
-        h("span", { class: "detail", text: `of the canal's demand, ${YEARS[0]}–${YEARS[YEARS.length - 1]} · this year ${fmt1(p.crops_by_year_pct[String(state.year)])} %` }),
+        h("span", { class: "label", text: t("Crops supplied") }),
+        h("span", { class: "value" }, [fmt1(p.crops_pct), h("small", { text: "%" }), " ", h("small", {}, [delta(p.crops_pct, START.crops_pct, fmt1, t("points"), false)])]),
+        h("span", { class: "detail", text: L(`of the canal's demand, ${span} · this year ${fmt1(p.crops_by_year_pct[String(state.year)])} %`, `потребности канала, ${span} · в этом году ${fmt1(p.crops_by_year_pct[String(state.year)])} %`) }),
       ]);
-      attachTip(crops, "Crops supplied", () => [
+      attachTip(crops, t("Crops supplied"), () => [
         ...YEARS.map((y) => ({ label: String(y), value: `${fmt1(p.crops_by_year_pct[String(y)])} %` })),
-        { label: "Starting plan", value: `${fmt1(START.crops_pct)} %` },
-        { label: "Water the fields received, as a share of what the three Samarkand canals ask for (monthly mean 2017–2022), summed over the five years. Measured by TaqSim at the Fields block.", value: "" },
+        { label: t("Starting plan"), value: `${fmt1(START.crops_pct)} %` },
+        { label: L("Water the fields received, as a share of what the three Samarkand canals ask for (monthly mean 2017–2022), summed over the five years. Measured by TaqSim at the Fields block.", "Вода, полученная полями, в долях от запроса трёх самаркандских каналов (средние по месяцам за 2017–2022), в сумме за пять лет. Измерено TaqSim в блоке «Поля»."), value: "" },
       ]);
       box.appendChild(crops);
       const warn = p.warnings.length;
-      const river = h("div", { class: "tile", tabindex: 0, "data-key": "score", role: "group", "aria-label": `River score: ${fmt3(p.score)}, ${className(p.score)}` }, [
+      const river = h("div", { class: "tile", tabindex: 0, "data-key": "score", role: "group", "aria-label": `${t("River score")}: ${fmt3(p.score)}, ${className(p.score)}` }, [
         h("span", { class: "key", style: "background:var(--environment)" }),
-        h("span", { class: "label", text: p.score_is_total ? "River score (IARI, all 33 indicators)" : `River score (mean of ${p.scored} of 33 indicators)` }),
-        h("span", { class: "value" }, [fmt3(p.score), " ", h("small", {}, [delta(p.score, START.score, fmt3, "", true)]), warn ? h("span", { class: "mark bad", text: ` ⚠ ${warn}`, title: `${warn} warning${warn > 1 ? "s" : ""}: see The 33 indicators` }) : null]),
-        h("span", { class: "detail", text: `0 = natural · ${classWord(p.score)} · lowest flow ${fmt1(p.lowest_flow_m3s)} m³/s` }),
+        h("span", { class: "label", text: p.score_is_total ? L("River score (IARI, all 33 indicators)", "Оценка реки (IARI, все 33 показателя)") : L(`River score (mean of ${p.scored} of 33 indicators)`, `Оценка реки (среднее ${p.scored} из 33 показателей)`) }),
+        h("span", { class: "value" }, [fmt3(p.score), " ", h("small", {}, [delta(p.score, START.score, fmt3, "", true)]), warn ? h("span", { class: "mark bad", text: ` ⚠ ${warn}`, title: L(`${warn} warning${warn > 1 ? "s" : ""}: see The 33 indicators`, `Предупреждений: ${warn}; см. вкладку «33 показателя»`) }) : null]),
+        h("span", { class: "detail", text: L(`0 = natural · ${classWord(p.score)} · lowest flow ${fmt1(p.lowest_flow_m3s)} m³/s`, `0 = естественный · ${classWord(p.score)} · минимальный расход ${fmt1(p.lowest_flow_m3s)} м³/с`) }),
       ]);
-      attachTip(river, "River score", () => [
-        { label: "Class (ISPRA bounds)", value: className(p.score) },
-        { label: "Indicators scored", value: `${p.scored} of 33` },
-        { label: "Starting plan", value: fmt3(START.score) },
-        ...p.warnings.map((w) => ({ label: `⚠ ${w}`, value: "" })),
-        { label: "fishy's IARI of the river below the headworks, 2019–2023, against the natural record 2010–2023 at Ravatkhoja (14 years; fishy asks for 20). 0 = natural; lower is closer to natural.", value: "" },
+      attachTip(river, t("River score"), () => [
+        { label: t("Class (ISPRA bounds)"), value: className(p.score) },
+        { label: t("Indicators scored"), value: L(`${p.scored} of 33`, `${p.scored} из 33`) },
+        { label: t("Starting plan"), value: fmt3(START.score) },
+        ...p.warnings.map((w) => ({ label: `⚠ ${warnText(w)}`, value: "" })),
+        { label: L("fishy's IARI of the river below the headworks, 2019–2023, against the natural record 2010–2023 at Ravatkhoja (14 years; fishy asks for 20). 0 = natural; lower is closer to natural.", "Индекс IARI (fishy) реки ниже гидроузла за 2019–2023 против естественного ряда 2010–2023 у Раватходжи (14 лет; fishy требует 20). 0 = естественный режим; чем меньше, тем ближе к естественному."), value: "" },
       ]);
       box.appendChild(river);
     });
@@ -1076,10 +1244,10 @@ const EflowModel = (() => {
       const v = yearVolumes(p, state.year);
       const beaten = beatenBy(p);
       const items = [
-        { key: "rule", label: "Rule today", value: p.share_pct === 0 ? "reserve 0" : `reserve = min(${p.share_pct} % × flow${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)} m³/s`})`, note: "What the Headworks block reserves for the river on every day." },
-        { key: "river", label: `River end ${state.year}`, value: `${fmt0(v.river)} Mm³`, note: `Of ${fmt0(v.inflow)} Mm³ that arrived in ${state.year}: ${fmt0(v.reserve)} reserved by the rule, ${fmt0(v.rest)} not needed by the canal.` },
-        { key: "fields", label: `Fields ${state.year}`, value: `${fmt0(v.fields)} of ${fmt0(v.demand)} Mm³`, note: "Water that reached the fields against the canal's demand in the year shown." },
-        { key: "beaten", label: "Beaten by", value: beaten.length ? `${beaten.length} plan${beaten.length > 1 ? "s" : ""}` : "no plan", ok: !beaten.length, note: beaten.length ? `For example ${beaten[0].name}: crops ${fmt1(beaten[0].crops_pct)} %, score ${fmt3(beaten[0].score)}.` : "No other plan of the grid is at least as good on both results and better on one." },
+        { key: "rule", label: t("Rule today"), value: p.share_pct === 0 ? L("reserve 0", "резерв 0") : `${L("reserve", "резерв")} = min(${p.share_pct} % × ${L("flow", "сток")}${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)} ${M3S}`})`, note: L("What the Headworks block reserves for the river on every day.", "Что блок «Гидроузел» резервирует для реки каждый день.") },
+        { key: "river", label: L(`River end ${state.year}`, `Конец реки ${state.year}`), value: `${fmt0(v.river)} ${MM3}`, note: L(`Of ${fmt0(v.inflow)} Mm³ that arrived in ${state.year}: ${fmt0(v.reserve)} reserved by the rule, ${fmt0(v.rest)} not needed by the canal.`, `Из ${fmt0(v.inflow)} млн м³, пришедших в ${state.year} году: ${fmt0(v.reserve)} зарезервировано правилом, ${fmt0(v.rest)} не понадобилось каналу.`) },
+        { key: "fields", label: L(`Fields ${state.year}`, `Поля ${state.year}`), value: L(`${fmt0(v.fields)} of ${fmt0(v.demand)} Mm³`, `${fmt0(v.fields)} из ${fmt0(v.demand)} млн м³`), note: L("Water that reached the fields against the canal's demand in the year shown.", "Вода, дошедшая до полей, против потребности канала в показанном году.") },
+        { key: "beaten", label: t("Beaten by"), value: beaten.length ? planCount(beaten.length) : t("no plan"), ok: !beaten.length, note: beaten.length ? L(`For example ${planName(beaten[0])}: crops ${fmt1(beaten[0].crops_pct)} %, score ${fmt3(beaten[0].score)}.`, `Например, «${planName(beaten[0])}»: посевы ${fmt1(beaten[0].crops_pct)} %, оценка ${fmt3(beaten[0].score)}.`) : L("No other plan of the grid is at least as good on both results and better on one.", "Ни один другой план сетки не является не хуже по обоим результатам и лучше хотя бы по одному.") },
       ];
       for (const mi of items) {
         const tile = h("div", { class: "mini", tabindex: 0, role: "group", "aria-label": `${mi.label}: ${mi.value}`, "data-key": mi.key }, [
@@ -1098,59 +1266,111 @@ const EflowModel = (() => {
     const beaten = beatenBy(p);
     box.className = `verdict ${beaten.length ? "beaten" : "clear"}`;
     const line = beaten.length
-      ? `${p.name}: beaten by ${beaten.length} plan${beaten.length > 1 ? "s" : ""}. ${beaten[0].name} gives the crops ${fmt1(beaten[0].crops_pct)} % and the river ${fmt3(beaten[0].score)}.`
-      : `${p.name}: no other plan beats it on both results.`;
+      ? L(`${planName(p)}: beaten by ${planCount(beaten.length)}. ${planName(beaten[0])} gives the crops ${fmt1(beaten[0].crops_pct)} % and the river ${fmt3(beaten[0].score)}.`,
+        `${planName(p)}: побит ${planCount(beaten.length)}. «${planName(beaten[0])}» даёт посевам ${fmt1(beaten[0].crops_pct)} %, а реке ${fmt3(beaten[0].score)}.`)
+      : L(`${planName(p)}: no other plan beats it on both results.`, `${planName(p)}: ни один другой план не побивает его по обоим результатам.`);
     box.appendChild(h("span", { class: "line", text: line, title: line }));
-    if (beaten.length) box.appendChild(h("button", { class: "linklike", type: "button", text: "Load it", onclick: () => setLevers(beaten[0].share_pct, beaten[0].ceiling_m3s, "The plan") }));
+    if (beaten.length) box.appendChild(h("button", { class: "linklike", type: "button", text: t("Load it"), onclick: () => setLevers(beaten[0].share_pct, beaten[0].ceiling_m3s, t("The plan")) }));
   }
 
   // ---------- schematic ----------
+  // Block texts. The geometry is laid out at render time from the measured text widths, so that every box fits its
+  // labels in both languages and the labels on the lines stay clear of the boxes.
   const BLOCKS = {
-    inflow: { name: "Inflow", kind: "SOURCE", x: 75, y: 110, w: 130, what: "The Zarafshan at Ravatkhoja: the recorded daily flow, 2010–2023.", rule: "Passes on each day's recorded flow (IntervalVolume, 1 day, quantum 1 m³)." },
-    headworks: { name: "Headworks", kind: "REACH · E-FLOW RULE", x: 290, y: 110, w: 180, what: "The Ravatkhoja headworks. TaqSim's EFlowSplit rule: reserve min(share × flow, ceiling) for the river, pass the rest on.", rule: "EFlowSplit(natural_ratios={river_end: 1}, remainder_ratios={canal_gate: 1}, eflow_fraction=share, eflow_cap=ceiling × 86 400 m³)" },
-    canal_gate: { name: "Canal gate", kind: "REACH · PRIORITY RULE", x: 560, y: 110, w: 190, what: "The head of the Samarkand canals. PriorityDistribution: the fields get their demand of the day first; the rest returns to the river.", rule: "PriorityDistribution('fields', monthly demand × 86 400 m³, remainder_ratios={river_end: 1})" },
-    fields: { name: "Fields", kind: "SINK", x: 930, y: 60, w: 140, what: "The Samarkand canals Dargom, Mirzapay and Akkaradarya: what arrives here is counted as crops supplied.", rule: "Records what arrives." },
-    river_end: { name: "River end", kind: "SINK", x: 930, y: 190, w: 140, what: "The river below the headworks. fishy scores this daily series against the natural record.", rule: "Records what arrives (the reserve plus what the canal did not need)." },
+    inflow: { box: "node-box source", name: () => L("Inflow", "Приток"), kind: () => "SOURCE",
+      what: () => L("The Zarafshan at Ravatkhoja: the recorded daily flow, 2010–2023.", "Зарафшан у Раватходжи: наблюдённый суточный сток за 2010–2023 годы."),
+      rule: () => L("Passes on each day's recorded flow (IntervalVolume, 1 day, quantum 1 m³).", "Передаёт наблюдённый сток каждого дня (IntervalVolume, 1 день, квант 1 м³).") },
+    headworks: { box: "hw", name: () => L("Headworks", "Гидроузел"), kind: () => L("REACH · E-FLOW RULE", "REACH · ЭКОСТОК"),
+      what: () => L("The Ravatkhoja headworks. TaqSim's EFlowSplit rule: reserve min(share × flow, ceiling) for the river, pass the rest on.", "Раватходжинский гидроузел. Правило EFlowSplit в TaqSim: зарезервировать для реки min(доля × сток, потолок), остальное передать дальше."),
+      rule: () => "EFlowSplit(natural_ratios={river_end: 1}, remainder_ratios={canal_gate: 1}, eflow_fraction=share, eflow_cap=ceiling × 86 400 m³)" },
+    canal_gate: { box: "hw", name: () => L("Canal gate", "Голова канала"), kind: () => L("REACH · PRIORITY RULE", "REACH · ПРИОРИТЕТ"),
+      what: () => L("The head of the Samarkand canals. PriorityDistribution: the fields get their demand of the day first; the rest returns to the river.", "Голова самаркандских каналов. Правило PriorityDistribution: поля первыми получают свою потребность дня; остальное возвращается в реку."),
+      rule: () => "PriorityDistribution('fields', monthly demand × 86 400 m³, remainder_ratios={river_end: 1})" },
+    fields: { box: "node-box fields", name: () => L("Fields", "Поля"), kind: () => "SINK",
+      what: () => L("The Samarkand canals Dargom, Mirzapay and Akkaradarya: what arrives here is counted as crops supplied.", "Самаркандские каналы Даргом, Мирзапай и Аккарадарья: всё, что сюда приходит, считается водой для посевов."),
+      rule: () => L("Records what arrives.", "Записывает всё, что приходит.") },
+    river_end: { box: "node-box river-end", name: () => L("River end", "Конец реки"), kind: () => "SINK",
+      what: () => L("The river below the headworks. fishy scores this daily series against the natural record.", "Река ниже гидроузла. fishy оценивает этот суточный ряд против естественного."),
+      rule: () => L("Records what arrives (the reserve plus what the canal did not need).", "Записывает всё, что приходит (резерв плюс то, что не понадобилось каналу).") },
   };
-  const BOX_H = 62;
+  const BOX_H = 70;
   let selected = null;
+  // Text widths in the diagram's own units, measured with the fonts the stylesheet gives the SVG text.
+  const measureCtx = (() => { try { return document.createElement("canvas").getContext("2d"); } catch (e) { return null; } })();
+  const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+  function textWidth(str, size, weight, spacing) {
+    let w = 0;
+    if (measureCtx) { measureCtx.font = `${weight || 400} ${size}px ${FONT}`; w = measureCtx.measureText(str).width; }
+    if (!w) w = 0.58 * size * str.length;
+    return w + (spacing || 0) * size * str.length;
+  }
+  // What each block says on its third line, under the plan and the year shown.
+  function blockSub(id, p, v) {
+    const [from, to] = yearRange(state.year);
+    if (id === "headworks") return p.share_pct === 0 ? L("reserve 0", "резерв 0") : `min(${p.share_pct} % × Q${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)}`})`;
+    if (id === "fields") return L(`${fmt1(p.crops_by_year_pct[String(state.year)])} % of demand`, `${fmt1(p.crops_by_year_pct[String(state.year)])} % потребности`);
+    if (id === "river_end") return L(`lowest ${fmt1(lowestInYear(p))} m³/s`, `минимум ${fmt1(lowestInYear(p))} м³/с`);
+    if (id === "inflow") return L(`mean ${fmt0((v.inflow * 1e6) / ((to - from) * 86400))} m³/s`, `средний ${fmt0((v.inflow * 1e6) / ((to - from) * 86400))} м³/с`);
+    return L(`demand ${fmt0(v.demand)} Mm³`, `потребность ${fmt0(v.demand)} млн м³`);
+  }
+  // Columns from left to right, each as wide as its longest line; the two sinks share the last column.
+  function layout(p, v) {
+    const GAP = 96, GAP_SINKS = 250, PAD = 26, MIN_W = 120, MARGIN = 8;
+    const width = (id) => Math.max(MIN_W, PAD + Math.max(textWidth(BLOCKS[id].kind(), 12, 650, 0.06), textWidth(BLOCKS[id].name(), 18, 620), textWidth(blockSub(id, p, v), 15)));
+    const sinkW = Math.max(width("fields"), width("river_end"));
+    const geo = {};
+    let x = MARGIN;
+    for (const id of ["inflow", "headworks", "canal_gate"]) { const w = width(id); geo[id] = { x: x + w / 2, y: 132, w }; x += w + GAP; }
+    x += GAP_SINKS - GAP;
+    geo.fields = { x: x + sinkW / 2, y: 66, w: sinkW };
+    geo.river_end = { x: x + sinkW / 2, y: 220, w: sinkW };
+    return { geo, W: x + sinkW + MARGIN, H: 292, viaX: x - GAP_SINKS / 2 };
+  }
   function renderSchematic() {
     const p = currentPlan();
     const v = yearVolumes(p, state.year);
     const box = $("schematic");
     box.textContent = "";
-    const W = 1010, H = 250;
-    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, class: "schematic", role: "img", "aria-label": `Five blocks: Inflow ${fmt0(v.inflow)} Mm³ to Headworks; reserve ${fmt0(v.reserve)} Mm³ to River end; ${fmt0(v.inflow - v.reserve)} Mm³ to Canal gate; ${fmt0(v.fields)} Mm³ to Fields; ${fmt0(v.rest)} Mm³ back to River end.` }, box);
+    const { geo, W, H, viaX } = layout(p, v);
+    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, class: "schematic", role: "img", "aria-label": L(`Five blocks: Inflow ${fmt0(v.inflow)} Mm³ to Headworks; reserve ${fmt0(v.reserve)} Mm³ to River end; ${fmt0(v.inflow - v.reserve)} Mm³ to Canal gate; ${fmt0(v.fields)} Mm³ to Fields; ${fmt0(v.rest)} Mm³ back to River end.`, `Пять блоков: Приток ${fmt0(v.inflow)} млн м³ к Гидроузлу; резерв ${fmt0(v.reserve)} млн м³ к Концу реки; ${fmt0(v.inflow - v.reserve)} млн м³ к Голове канала; ${fmt0(v.fields)} млн м³ на Поля; ${fmt0(v.rest)} млн м³ обратно к Концу реки.`) }, box);
     const maxFlow = v.inflow || 1;
     const width = (mm3) => 2 + 14 * Math.sqrt(Math.max(mm3, 0) / maxFlow);
-    const link = (x1, y1, x2, y2, mm3, color, label, lx, ly, viaX) => {
-      const d = viaX == null ? `M${x1},${y1} L${x2},${y2}` : `M${x1},${y1} L${viaX},${y1} L${viaX},${y2} L${x2},${y2}`;
-      const path = svg("path", { d, class: `link${mm3 < 0.5 ? " zero" : ""}`, "stroke-width": width(mm3) }, root);
+    // A line from (x1, y1) to (x2, y2), straight or through an elbow at elbowX, ending in an arrowhead that grows with
+    // the line. `lines` are written near the last horizontal segment, above it (side −1) or below it (side +1).
+    const link = (x1, y1, x2, y2, mm3, color, lines, side, elbowX) => {
+      const w = width(mm3);
+      const len = Math.max(10, w + 6), half = Math.max(6, w / 2 + 4);
+      const xEnd = x2 - len;
+      const d = elbowX == null ? `M${x1},${y1} L${xEnd},${y2}` : `M${x1},${y1} L${elbowX},${y1} L${elbowX},${y2} L${xEnd},${y2}`;
+      const path = svg("path", { d, class: `link${mm3 < 0.5 ? " zero" : ""}`, "stroke-width": w }, root);
       path.style.stroke = color;
-      const ah = svg("path", { d: `M${x2 - 10},${y2 - 6} L${x2},${y2} L${x2 - 10},${y2 + 6} Z` }, root);
+      const ah = svg("path", { d: `M${xEnd},${y2 - half} L${x2},${y2} L${xEnd},${y2 + half} Z` }, root);
       ah.style.fill = color;
-      text(root, lx, ly, `${label}${fmt0(mm3)} Mm³`, { class: "value", "text-anchor": "middle" });
+      const cx = ((elbowX == null ? x1 : elbowX) + x2) / 2;
+      const y0 = side < 0 ? y2 - w / 2 - 7 - 17 * (lines.length - 1) : y2 + w / 2 + 17;
+      lines.forEach((str, i) => text(root, cx, y0 + 17 * i, str, { class: "edge-label", "text-anchor": "middle" }));
     };
-    const hw = BLOCKS.headworks, cg = BLOCKS.canal_gate, inf = BLOCKS.inflow, fl = BLOCKS.fields, re = BLOCKS.river_end;
-    link(inf.x + inf.w / 2, inf.y, hw.x - hw.w / 2, hw.y, v.inflow, "var(--river)", "", 170, 68);
-    link(hw.x + hw.w / 2, hw.y, cg.x - cg.w / 2, cg.y, v.inflow - v.reserve, "var(--river)", "", 422, 68);
-    link(hw.x, hw.y + BOX_H / 2, re.x - re.w / 2, re.y + 20, v.reserve, "var(--environment)", "reserve ", 560, 244, hw.x);
-    link(cg.x + cg.w / 2, cg.y - 10, fl.x - fl.w / 2, fl.y, v.fields, "var(--irrigation)", "to the fields ", 790, 50, 740);
-    link(cg.x + cg.w / 2, cg.y + 10, re.x - re.w / 2, re.y - 15, v.rest, "var(--river)", "not needed ", 800, 150, 740);
+    const hw = geo.headworks, cg = geo.canal_gate, inf = geo.inflow, fl = geo.fields, re = geo.river_end;
+    const vol = (mm3) => `${fmt0(mm3)} ${MM3}`;
+    link(inf.x + inf.w / 2, inf.y, hw.x - hw.w / 2, hw.y, v.inflow, "var(--river)", [vol(v.inflow)], -1);
+    link(hw.x + hw.w / 2, hw.y, cg.x - cg.w / 2, cg.y, v.inflow - v.reserve, "var(--river)", [vol(v.inflow - v.reserve)], -1);
+    link(hw.x, hw.y + BOX_H / 2, re.x - re.w / 2, re.y + 22, v.reserve, "var(--environment)", [`${L("reserve", "резерв")} ${vol(v.reserve)}`], 1, hw.x);
+    link(cg.x + cg.w / 2, cg.y - 10, fl.x - fl.w / 2, fl.y, v.fields, "var(--irrigation)", [L("to the fields", "на поля"), vol(v.fields)], -1, viaX);
+    link(cg.x + cg.w / 2, cg.y + 10, re.x - re.w / 2, re.y - 14, v.rest, "var(--river)", [L("not needed", "не нужно каналу"), vol(v.rest)], -1, viaX);
     for (const [id, b] of Object.entries(BLOCKS)) {
       const g = svg("g", { class: "block" }, root);
-      const rect = svg("rect", { x: b.x - b.w / 2, y: b.y - BOX_H / 2, width: b.w, height: BOX_H, rx: 8, class: id === "headworks" || id === "canal_gate" ? "hw" : "node-box" }, g);
-      if (selected === id) svg("rect", { x: b.x - b.w / 2 - 4, y: b.y - BOX_H / 2 - 4, width: b.w + 8, height: BOX_H + 8, rx: 11, class: "ring" }, g);
-      text(g, b.x, b.y - 10, b.kind, { class: "tag", "text-anchor": "middle" });
-      text(g, b.x, b.y + 12, b.name, { class: "name", "text-anchor": "middle" });
-      const sub = id === "headworks" ? (p.share_pct === 0 ? "reserve 0" : `min(${p.share_pct} % × Q${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)}`})`) : id === "fields" ? `${fmt1(p.crops_by_year_pct[String(state.year)])} % of demand` : id === "river_end" ? `lowest ${fmt1(lowestInYear(p))} m³/s` : id === "inflow" ? `mean ${fmt0((v.inflow * 1e6) / ((yearRange(state.year)[1] - yearRange(state.year)[0]) * 86400))} m³/s` : `demand ${fmt0(v.demand)} Mm³`;
-      text(g, b.x, b.y + 27, sub, { class: "small", "text-anchor": "middle", "font-size": "14" });
-      const hit = svg("rect", { x: b.x - b.w / 2, y: b.y - BOX_H / 2, width: b.w, height: BOX_H, class: "hit-box", tabindex: 0, role: "button", "aria-label": `${b.name}, ${b.kind}` }, g);
+      const { x, y, w } = geo[id];
+      const rect = svg("rect", { x: x - w / 2, y: y - BOX_H / 2, width: w, height: BOX_H, rx: 8, class: b.box }, g);
+      if (selected === id) svg("rect", { x: x - w / 2 - 4, y: y - BOX_H / 2 - 4, width: w + 8, height: BOX_H + 8, rx: 11, class: "ring" }, g);
+      text(g, x, y - 13, b.kind(), { class: "tag", "text-anchor": "middle" });
+      text(g, x, y + 8, b.name(), { class: "name", "text-anchor": "middle" });
+      text(g, x, y + 27, blockSub(id, p, v), { class: "small", "text-anchor": "middle" });
+      const hit = svg("rect", { x: x - w / 2, y: y - BOX_H / 2, width: w, height: BOX_H, class: "hit-box", tabindex: 0, role: "button", "aria-label": `${b.name()}, ${b.kind()}` }, g);
       hit.addEventListener("click", () => selectBlock(id));
       hit.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectBlock(id); } });
       rect.style.cursor = "pointer";
     }
-    $("schematic-sub").textContent = `${state.year}: ${fmt0(v.inflow)} Mm³ arrived; ${fmt0(v.fields)} Mm³ went to the fields, ${fmt0(v.river)} Mm³ stayed in the river.`;
+    $("schematic-sub").textContent = L(`${state.year}: ${fmt0(v.inflow)} Mm³ arrived; ${fmt0(v.fields)} Mm³ went to the fields, ${fmt0(v.river)} Mm³ stayed in the river.`, `${state.year}: пришло ${fmt0(v.inflow)} млн м³; ${fmt0(v.fields)} млн м³ ушло на поля, ${fmt0(v.river)} млн м³ осталось в реке.`);
   }
   function lowestInYear(p) {
     const [from, to] = yearRange(state.year);
@@ -1171,20 +1391,20 @@ const EflowModel = (() => {
     const b = BLOCKS[selected];
     const v = yearVolumes(p, state.year);
     const balance = {
-      inflow: [["in: record", v.inflow], ["out: to Headworks", v.inflow]],
-      headworks: [["in: from Inflow", v.inflow], ["out: reserve to River end", v.reserve], ["out: to Canal gate", v.inflow - v.reserve]],
-      canal_gate: [["in: from Headworks", v.inflow - v.reserve], ["out: to Fields", v.fields], ["out: not needed, to River end", v.rest]],
-      fields: [["in: from Canal gate", v.fields], ["demand", v.demand]],
-      river_end: [["in: reserve", v.reserve], ["in: not needed by the canal", v.rest], ["total", v.river]],
+      inflow: [[L("in: record", "вход: наблюдения"), v.inflow], [L("out: to Headworks", "выход: к Гидроузлу"), v.inflow]],
+      headworks: [[L("in: from Inflow", "вход: от Притока"), v.inflow], [L("out: reserve to River end", "выход: резерв к Концу реки"), v.reserve], [L("out: to Canal gate", "выход: к Голове канала"), v.inflow - v.reserve]],
+      canal_gate: [[L("in: from Headworks", "вход: от Гидроузла"), v.inflow - v.reserve], [L("out: to Fields", "выход: на Поля"), v.fields], [L("out: not needed, to River end", "выход: не нужно каналу, к Концу реки"), v.rest]],
+      fields: [[L("in: from Canal gate", "вход: от Головы канала"), v.fields], [L("demand", "потребность"), v.demand]],
+      river_end: [[L("in: reserve", "вход: резерв"), v.reserve], [L("in: not needed by the canal", "вход: не нужно каналу"), v.rest], [L("total", "итого"), v.river]],
     }[selected];
     box.hidden = false;
     box.textContent = "";
     box.appendChild(h("div", { class: "block-card" }, [
-      h("h3", {}, [h("span", { class: "type-tag", text: b.kind }), b.name]),
-      h("p", { text: b.what }),
-      h("p", {}, [h("strong", { text: "Rule: " }), h("code", { text: b.rule })]),
-      h("table", { class: "balance" }, [h("tbody", {}, balance.map(([k, val]) => h("tr", {}, [h("td", { text: k }), h("td", { text: `${fmt1(val)} Mm³` })])))]),
-      h("p", { class: "hint", text: `Volumes for ${state.year}, from the page's copy of the rules; the TaqSim run gives the same crop supply (footer).` }),
+      h("h3", {}, [h("span", { class: "type-tag", text: b.kind() }), b.name()]),
+      h("p", { text: b.what() }),
+      h("p", {}, [h("strong", { text: L("Rule: ", "Правило: ") }), h("code", { text: b.rule() })]),
+      h("table", { class: "balance" }, [h("tbody", {}, balance.map(([k, val]) => h("tr", {}, [h("td", { text: k }), h("td", { text: `${fmt1(val)} ${MM3}` })])))]),
+      h("p", { class: "hint", text: L(`Volumes for ${state.year}, from the page's copy of the rules; the TaqSim run gives the same crop supply (footer).`, `Объёмы за ${state.year} год по копии правил на этой странице; прогон TaqSim даёт ту же обеспеченность посевов (см. подвал страницы).`) }),
     ]));
   }
 
@@ -1229,22 +1449,22 @@ const EflowModel = (() => {
   }
   function renderCharts() {
     const p = currentPlan();
-    const t = twin(p);
+    const tw = twin(p);
     const [from, to] = yearRange(state.year);
-    const nat = Array.from(NATURAL.subarray(from, to)), riv = Array.from(t.river.subarray(from, to));
+    const nat = Array.from(NATURAL.subarray(from, to)), riv = Array.from(tw.river.subarray(from, to));
     const xticks = [];
     for (let i = from; i < to; i++) if (Number(DATES[i].slice(8, 10)) === 1) xticks.push({ i: i - from, label: MONTHS[MONTH_OF[i] - 1] });
-    const hl = p.ceiling_m3s != null && p.share_pct === 100 ? [{ value: p.ceiling_m3s, color: "var(--environment)", label: `guaranteed minimum ${fmt0(p.ceiling_m3s)} m³/s` }] : [];
+    const hl = p.ceiling_m3s != null && p.share_pct === 100 ? [{ value: p.ceiling_m3s, color: "var(--environment)", label: L(`guaranteed minimum ${fmt0(p.ceiling_m3s)} m³/s`, `гарантированный минимум ${fmt0(p.ceiling_m3s)} м³/с`) }] : [];
     lineChart($("chart-hydro"), {
-      n: nat.length, max: Math.max(...nat), unit: "m³/s", xticks, hlines: hl, label: `Daily flow in ${state.year}: natural and below the headworks`,
+      n: nat.length, max: Math.max(...nat), unit: M3S, xticks, hlines: hl, label: L(`Daily flow in ${state.year}: natural and below the headworks`, `Суточный расход в ${state.year} году: естественный и ниже гидроузла`),
       area: { top: nat, bottom: riv, color: "var(--irrigation)" },
       series: [{ values: nat, color: "var(--axis)", width: 1.2, dash: "3 3" }, { values: riv, color: "var(--river)", width: 1.8 }],
     });
-    $("hydro-sub").textContent = `${state.year} · the green band is the water the canal took · lowest flow below the headworks ${fmt1(lowestInYear(p))} m³/s (natural ${fmt1(Math.min(...nat))})`;
+    $("hydro-sub").textContent = L(`${state.year} · the green band is the water the canal took · lowest flow below the headworks ${fmt1(lowestInYear(p))} m³/s (natural ${fmt1(Math.min(...nat))})`, `${state.year} · зелёная полоса — вода, взятая каналом · минимальный расход ниже гидроузла ${fmt1(lowestInYear(p))} м³/с (естественный ${fmt1(Math.min(...nat))})`);
     const legend = $("hydro-legend");
     legend.textContent = "";
     for (const [c, l, dash] of [["var(--axis)", "natural flow (record)", true], ["var(--river)", "river below the headworks", false], ["var(--irrigation)", "taken by the canal", false]]) {
-      legend.appendChild(h("span", { class: "item" }, [h("span", { class: `line${dash ? " dashed" : ""}`, style: `color:${c}` }), l]));
+      legend.appendChild(h("span", { class: "item" }, [h("span", { class: `line${dash ? " dashed" : ""}`, style: `color:${c}` }), t(l)]));
     }
   }
   function barChart(box, opts) {
@@ -1280,27 +1500,27 @@ const EflowModel = (() => {
   }
   function renderSupply() {
     const p = currentPlan();
-    const t = twin(p);
+    const tw = twin(p);
     const [from, to] = yearRange(state.year);
-    const dem = M.monthlyMm3(DEMAND, MONTH_OF, from, to), got = M.monthlyMm3(t.fields, MONTH_OF, from, to);
-    barChart($("chart-supply"), { categories: MONTHS, max: Math.max(...dem, 1), unit: "Mm³", label: `Canal demand and supply by month in ${state.year}`, series: [{ name: "demand", values: dem, color: "var(--grid)" }, { name: "received", values: got, color: "var(--irrigation)" }] });
-    barChart($("chart-years"), { categories: YEARS.map(String), max: 100, unit: "%", label: "Crops supplied in each scored year", series: [{ name: "crops supplied", values: YEARS.map((y) => p.crops_by_year_pct[String(y)]), color: "var(--irrigation)" }] });
+    const dem = M.monthlyMm3(DEMAND, MONTH_OF, from, to), got = M.monthlyMm3(tw.fields, MONTH_OF, from, to);
+    barChart($("chart-supply"), { categories: MONTHS, max: Math.max(...dem, 1), unit: MM3, label: L(`Canal demand and supply by month in ${state.year}`, `Потребность канала и подача по месяцам в ${state.year} году`), series: [{ name: t("demand"), values: dem, color: "var(--grid)" }, { name: t("received"), values: got, color: "var(--irrigation)" }] });
+    barChart($("chart-years"), { categories: YEARS.map(String), max: 100, unit: "%", label: L("Crops supplied in each scored year", "Обеспеченность посевов в каждый оцениваемый год"), series: [{ name: t("crops supplied"), values: YEARS.map((y) => p.crops_by_year_pct[String(y)]), color: "var(--irrigation)" }] });
   }
 
   // ---------- explorer ----------
   function buildFamilyFilter() {
     const box = $("family-filter");
     for (const [key, label] of [["all", "All plans"], ["share", "Leave a share"], ["minimum", "Guarantee a minimum"], ["mixed", "Share with a ceiling"]]) {
-      box.appendChild(h("button", { type: "button", text: label, "aria-pressed": String(state.familyFilter === key), onclick: () => { state.familyFilter = key; for (const b of box.children) b.setAttribute("aria-pressed", String(b.textContent === label)); save(); renderScatter(); } }));
+      box.appendChild(h("button", { type: "button", text: t(label), "aria-pressed": String(state.familyFilter === key), onclick: () => { state.familyFilter = key; for (const b of box.children) b.setAttribute("aria-pressed", String(b.textContent === t(label))); save(); renderScatter(); } }));
     }
   }
   function planRows(p) {
     return [
-      { label: "Reserve share", value: `${p.share_pct} %` },
-      { label: "Reserve ceiling", value: p.ceiling_m3s == null ? "none" : `${fmt0(p.ceiling_m3s)} m³/s` },
-      { label: "Crops supplied", value: `${fmt1(p.crops_pct)} %` },
-      { label: "River score", value: `${fmt3(p.score)} (${className(p.score)})${p.score_is_total ? "" : `, ${p.scored} of 33 indicators`}` },
-      { label: p.unbeaten ? "No other plan beats it" : `Beaten by ${beatenBy(p).length} plans`, value: "" },
+      { label: t("Reserve share"), value: `${p.share_pct} %` },
+      { label: t("Reserve ceiling"), value: p.ceiling_m3s == null ? t("none") : `${fmt0(p.ceiling_m3s)} ${M3S}` },
+      { label: t("Crops supplied"), value: `${fmt1(p.crops_pct)} %` },
+      { label: t("River score"), value: `${fmt3(p.score)} (${className(p.score)})${p.score_is_total ? "" : L(`, ${p.scored} of 33 indicators`, `, ${p.scored} из 33 показателей`)}` },
+      { label: p.unbeaten ? L("No other plan beats it", "Ни один другой план его не побивает") : `${t("Beaten by")} ${planCount(beatenBy(p).length)}`, value: "" },
     ];
   }
   function renderScatter() {
@@ -1309,7 +1529,7 @@ const EflowModel = (() => {
     const current = currentPlan();
     const W = clamp(box.clientWidth || 700, 320, 1100), H = 380;
     const mg = { l: 56, r: 20, t: 20, b: 44 };
-    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, role: "group", "aria-label": "Every plan: crops supplied against the river score; the plans no other plan beats are filled" }, box);
+    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, role: "group", "aria-label": L("Every plan: crops supplied against the river score; the plans no other plan beats are filled", "Все планы: обеспеченность посевов против оценки реки; планы, которые не побить, закрашены") }, box);
     const maxScore = Math.max(...PLANS.map((p) => p.score));
     const yTop = Math.ceil(maxScore * 20) / 20;
     const x = (v) => mg.l + (clamp(v, 0, 100) / 100) * (W - mg.l - mg.r);
@@ -1319,7 +1539,7 @@ const EflowModel = (() => {
       const r = svg("rect", { x: mg.l, y: y(hi), width: W - mg.l - mg.r, height: y(lo) - y(hi) }, root);
       r.style.fill = "var(--environment)";
       r.style.opacity = lo === 0 ? "0.14" : "0.07";
-      text(root, W - mg.r - 4, y(hi) + 12, label, { "text-anchor": "end", "font-size": "12", class: "small" });
+      text(root, W - mg.r - 4, y(hi) + 12, t(label), { "text-anchor": "end", "font-size": "12", class: "small" });
     }
     for (let v = 0; v <= 100.1; v += 10) {
       const g = svg("line", { x1: x(v), x2: x(v), y1: mg.t, y2: H - mg.b, "stroke-width": 1 }, root);
@@ -1331,18 +1551,18 @@ const EflowModel = (() => {
       g.style.stroke = "var(--grid)";
       text(root, mg.l - 6, y(v) + 4, fmt2(v), { "text-anchor": "end", "font-size": "12" });
     }
-    text(root, (mg.l + W - mg.r) / 2, H - 6, "Crops supplied, % of the canal's demand (right is better)", { "text-anchor": "middle", "font-size": "12" });
-    text(root, 4, 12, "River score, 0 = natural (down is better)", { "font-size": "12" });
+    text(root, (mg.l + W - mg.r) / 2, H - 6, L("Crops supplied, % of the canal's demand (right is better)", "Обеспеченность посевов, % потребности канала (правее — лучше)"), { "text-anchor": "middle", "font-size": "12" });
+    text(root, 4, 12, L("River score, 0 = natural (down is better)", "Оценка реки, 0 = естественный режим (ниже — лучше)"), { "font-size": "12" });
     const shown = PLANS.filter((p) => state.familyFilter === "all" || family(p) === state.familyFilter || family(p) === "none" || family(p) === "untouched");
     // beaten first, unbeaten on top
     for (const p of [...shown.filter((p) => !p.unbeaten), ...shown.filter((p) => p.unbeaten)]) {
       const fam = FAMILY[family(p)];
-      const c = svg("circle", { cx: x(p.crops_pct), cy: y(p.score), r: p.unbeaten ? 6 : 4.5, class: "scatter-dot", tabindex: 0, role: "button", "aria-label": `${p.name}: crops ${fmt1(p.crops_pct)} %, score ${fmt3(p.score)}${p.unbeaten ? ", not beaten" : ""}` }, root);
+      const c = svg("circle", { cx: x(p.crops_pct), cy: y(p.score), r: p.unbeaten ? 6 : 4.5, class: "scatter-dot", tabindex: 0, role: "button", "aria-label": L(`${planName(p)}: crops ${fmt1(p.crops_pct)} %, score ${fmt3(p.score)}${p.unbeaten ? ", not beaten" : ""}`, `${planName(p)}: посевы ${fmt1(p.crops_pct)} %, оценка ${fmt3(p.score)}${p.unbeaten ? ", не побит" : ""}`) }, root);
       c.style.fill = p.unbeaten ? fam.color : "var(--surface)";
       c.style.stroke = fam.color;
       c.style.strokeWidth = "1.8";
       c.style.opacity = p.unbeaten ? "1" : "0.8";
-      attachTip(c, () => `${p.unbeaten ? "Not beaten: " : ""}${p.name} · click to load`, () => planRows(p));
+      attachTip(c, () => `${p.unbeaten ? t("Not beaten: ") : ""}${planName(p)} · ${t("click to load")}`, () => planRows(p));
       const load = () => { tasks.fromExplorer = p.id; setLevers(p.share_pct, p.ceiling_m3s, "The plan"); };
       c.addEventListener("click", load);
       c.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); load(); } });
@@ -1353,23 +1573,36 @@ const EflowModel = (() => {
     }
     const ring = svg("circle", { cx: x(current.crops_pct), cy: y(current.score), r: 10, fill: "none", "stroke-width": 3 }, root);
     ring.style.stroke = "var(--ink)";
-    attachTip(ring, "Your plan", () => planRows(current), false);
+    attachTip(ring, t("Your plan"), () => planRows(current), false);
     const unb = PLANS.filter((p) => p.unbeaten).length;
-    $("scatter-sub").textContent = `${PLANS.length} plans, each run in TaqSim for ${YEARS[0]}–${YEARS[YEARS.length - 1]} and scored with fishy; ${unb} are beaten by no other plan (filled dots). Black ring: your plan. A and B: the two example plans.`;
+    const span = `${YEARS[0]}–${YEARS[YEARS.length - 1]}`;
+    $("scatter-sub").textContent = L(`${PLANS.length} plans, each run in TaqSim for ${span} and scored with fishy; ${unb} are beaten by no other plan (filled dots). Black ring: your plan. A and B: the two example plans.`, `${plansOf(PLANS.length)}, каждый прогнан в TaqSim за ${span} и оценён fishy; ${unb} не побить никаким другим планом (закрашенные точки). Чёрное кольцо: ваш план. A и B: два примера.`);
     const verdict = $("scatter-verdict");
-    verdict.textContent = `Reading the plot: a plan is beaten when another dot lies to its right and no higher, or straight below it. The filled dots form the trade-off: more water for the crops costs a river further from natural, and the shape of the rule decides how much.`;
+    verdict.textContent = L("Reading the plot: a plan is beaten when another dot lies to its right and no higher, or straight below it. The filled dots form the trade-off: more water for the crops costs a river further from natural, and the shape of the rule decides how much.", "Как читать график: план побит, когда другая точка лежит правее и не выше него или прямо под ним. Закрашенные точки образуют компромисс: больше воды посевам стоит реки, более далёкой от естественной, а форма правила решает, насколько.");
     const legend = $("scatter-legend");
     legend.textContent = "";
     for (const key of ["share", "minimum", "mixed", "none"]) {
       legend.appendChild(h("span", { class: "item" }, [h("span", { class: "dot", style: `color:${FAMILY[key].color}` }), FAMILY[key].label]));
     }
-    legend.appendChild(h("span", { class: "item", text: "filled: beaten by no plan · hollow: beaten · shaded bands: IARI classes" }));
-    if (PAIR) $("scatter-note").textContent = `Example A, "${PAIR[0].name}", and Example B, "${PAIR[1].name}", give the crops ${fmt1(PAIR[0].crops_pct)} % and ${fmt1(PAIR[1].crops_pct)} %; their river scores are ${fmt3(PAIR[0].score)} and ${fmt3(PAIR[1].score)}. Nearly the same water for the crops, a different river: how the water is left matters, not only how much.`;
+    legend.appendChild(h("span", { class: "item", text: L("filled: beaten by no plan · hollow: beaten · shaded bands: IARI classes", "закрашена: не побита никаким планом · пустая: побита · затенённые полосы: классы IARI") }));
+    if (PAIR) $("scatter-note").textContent = L(`Example A, "${planName(PAIR[0])}", and Example B, "${planName(PAIR[1])}", give the crops ${fmt1(PAIR[0].crops_pct)} % and ${fmt1(PAIR[1].crops_pct)} %; their river scores are ${fmt3(PAIR[0].score)} and ${fmt3(PAIR[1].score)}. Nearly the same water for the crops, a different river: how the water is left matters, not only how much.`, `Пример A, «${planName(PAIR[0])}», и Пример B, «${planName(PAIR[1])}», дают посевам ${fmt1(PAIR[0].crops_pct)} % и ${fmt1(PAIR[1].crops_pct)} %; их оценки реки — ${fmt3(PAIR[0].score)} и ${fmt3(PAIR[1].score)}. Почти одна и та же вода посевам, разная река: важно не только сколько воды оставить, но и как.`);
   }
 
   // ---------- indicators ----------
   const GROUP_OF = (name) => (name.startsWith("monthly_flow") ? 1 : /^(minimum|maximum)_\d+_day$|zero_flow_days|base_flow_index/.test(name) ? 2 : /_date$/.test(name) ? 3 : /pulse/.test(name) ? 4 : 5);
-  const pretty = (name) => name.replace(/^monthly_flow_(\d\d)$/, (m, n) => `${MONTHS[Number(n) - 1]} flow`).replace(/_/g, " ").replace(/(\d+) day/, "$1-day");
+  const PRETTY_RU = { zero_flow_days: "дни без стока", base_flow_index: "индекс базового стока", minimum_flow_date: "дата минимального расхода", maximum_flow_date: "дата максимального расхода", low_pulse_count: "число низких пульсаций", low_pulse_duration: "длительность низких пульсаций", high_pulse_count: "число высоких пульсаций", high_pulse_duration: "длительность высоких пульсаций", rise_rate: "скорость подъёма", fall_rate: "скорость спада", reversals: "число перемен" };
+  const pretty = (name) => {
+    if (LANG === "ru") {
+      const m = name.match(/^monthly_flow_(\d\d)$/);
+      if (m) return `расход, ${MONTHS[Number(m[1]) - 1].toLowerCase()}`;
+      const e = name.match(/^(minimum|maximum)_(\d+)_day$/);
+      if (e) return `${e[1] === "minimum" ? "минимум" : "максимум"} за ${e[2]} ${e[2] === "1" ? "день" : Number(e[2]) < 5 ? "дня" : "дней"}`;
+      return PRETTY_RU[name] || name.replace(/_/g, " ");
+    }
+    return name.replace(/^monthly_flow_(\d\d)$/, (m, n) => `${MONTHS[Number(n) - 1]} flow`).replace(/_/g, " ").replace(/(\d+) day/, "$1-day");
+  };
+  const GROUPS_RU = { 1: "Месячные расходы (12)", 2: "Экстремальные расходы: минимумы и максимумы за 1–90 дней, дни без стока, базовый сток (12)", 3: "Сроки самого низкого и самого высокого расхода (2)", 4: "Низкие и высокие пульсации: число и длительность (4)", 5: "Скорость изменения: подъём, спад, перемены (3)" };
+  const REASON_RU = { unsupported_ambiguous_circular_timing_axis: "круговая ось времени неоднозначна" };
   function renderIndicators() {
     const p = currentPlan();
     const box = $("chart-indicators");
@@ -1379,18 +1612,19 @@ const EflowModel = (() => {
     const W = clamp(box.clientWidth || 700, 320, 1100), rowH = 16, groupGap = 22;
     const groups = [1, 2, 3, 4, 5];
     const H = names.length * rowH + groups.length * groupGap + 30;
-    const mg = { l: 150, r: 60, t: 12 };
-    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `The 33 indicator scores of ${p.name}` }, box);
+    const mg = { l: L(150, 222), r: 60, t: 12 };
+    const root = svg("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": L(`The 33 indicator scores of ${planName(p)}`, `Оценки 33 показателей плана «${planName(p)}»`) }, box);
     const x = (v) => mg.l + (clamp(v, 0, maxAll) / maxAll) * (W - mg.l - mg.r);
     let yy = mg.t;
     for (const g of groups) {
-      text(root, 4, yy + 12, D.indicator_groups[String(g)], { class: "name", "font-size": "13" });
+      text(root, 4, yy + 12, L(D.indicator_groups[String(g)], GROUPS_RU[g]), { class: "name", "font-size": "13" });
       yy += groupGap;
       for (const name of names.filter((n) => GROUP_OF(n) === g)) {
         const v = p.indicators[name];
         text(root, mg.l - 6, yy + 12, pretty(name), { "text-anchor": "end", "font-size": "12" });
         if (v == null) {
-          text(root, mg.l + 4, yy + 12, `not scored: ${(D.plans[0].unscorable[name] || p.unscorable[name] || "").split(";")[0].replace(/_/g, " ")}`, { "font-size": "12", class: "small" });
+          const reason = (D.plans[0].unscorable[name] || p.unscorable[name] || "").split(";")[0];
+          text(root, mg.l + 4, yy + 12, L(`not scored: ${reason.replace(/_/g, " ")}`, `не оценён: ${REASON_RU[reason] || reason.replace(/_/g, " ")}`), { "font-size": "12", class: "small" });
         } else {
           const r = svg("rect", { x: mg.l, y: yy + 2, width: Math.max(1, x(v) - mg.l), height: rowH - 4, rx: 2 }, root);
           r.style.fill = v <= CLASSES.elevato ? "var(--environment)" : v <= GOOD ? "var(--energy)" : "var(--deficit)";
@@ -1399,12 +1633,12 @@ const EflowModel = (() => {
         yy += rowH;
       }
     }
-    $("ind-sub").textContent = `${p.name}: ${p.score_is_total ? "all 33 indicators scored" : `${p.scored} of 33 scored`}; the score is their mean, ${fmt3(p.score)}.`;
-    $("ind-help").textContent = `Each bar is one of the 33 IHA indicators (Richter et al. 1996) as fishy's IARI scores it: 0 when the plan's five-year value lies inside the natural interquartile range, larger the further outside. Bars are green ≤ ${CLASSES.elevato}, amber ≤ ${GOOD}, red above. Same scale for every plan (longest bar in the grid ${fmt2(maxAll)}).`;
+    $("ind-sub").textContent = L(`${planName(p)}: ${p.score_is_total ? "all 33 indicators scored" : `${p.scored} of 33 scored`}; the score is their mean, ${fmt3(p.score)}.`, `${planName(p)}: ${p.score_is_total ? "оценены все 33 показателя" : `оценено ${p.scored} из 33`}; оценка — их среднее, ${fmt3(p.score)}.`);
+    $("ind-help").textContent = L(`Each bar is one of the 33 IHA indicators (Richter et al. 1996) as fishy's IARI scores it: 0 when the plan's five-year value lies inside the natural interquartile range, larger the further outside. Bars are green ≤ ${CLASSES.elevato}, amber ≤ ${GOOD}, red above. Same scale for every plan (longest bar in the grid ${fmt2(maxAll)}).`, `Каждый столбик — один из 33 показателей IHA (Richter et al. 1996), как его оценивает индекс IARI в fishy: 0, когда пятилетнее значение плана лежит внутри естественного межквартильного размаха, и тем больше, чем дальше снаружи. Столбики зелёные при ≤ ${CLASSES.elevato}, янтарные при ≤ ${GOOD}, красные выше. Одна шкала для всех планов (самый длинный столбик сетки ${fmt2(maxAll)}).`);
     const list = $("ind-warnings");
     list.textContent = "";
-    for (const w of p.warnings) list.appendChild(h("li", { text: `⚠ ${w}` }));
-    if (!p.warnings.length) list.appendChild(h("li", { text: "No warnings for this plan." }));
+    for (const w of p.warnings) list.appendChild(h("li", { text: `⚠ ${warnText(w)}` }));
+    if (!p.warnings.length) list.appendChild(h("li", { text: t("No warnings for this plan.") }));
   }
 
   // ---------- balance and static text ----------
@@ -1412,73 +1646,95 @@ const EflowModel = (() => {
     const p = currentPlan();
     const v = yearVolumes(p, state.year);
     const residual = v.inflow - v.river - v.fields;
-    $("balance-residual").textContent = `${fmt0(v.inflow)} = ${fmt0(v.river)} + ${fmt0(v.fields)} Mm³, residual ${Math.abs(residual) < 0.05 ? "0.0" : fmt1(residual)} Mm³`;
-    $("balance-sub").textContent = `${state.year}, ${p.name}`;
+    setAll("balance-residual", L(`${fmt0(v.inflow)} = ${fmt0(v.river)} + ${fmt0(v.fields)} Mm³, residual ${Math.abs(residual) < 0.05 ? "0.0" : fmt1(residual)} Mm³`, `${fmt0(v.inflow)} = ${fmt0(v.river)} + ${fmt0(v.fields)} млн м³, невязка ${Math.abs(residual) < 0.05 ? "0.0" : fmt1(residual)} млн м³`));
+    $("balance-sub").textContent = `${state.year}, ${planName(p)}`;
     const box = $("balance");
     box.textContent = "";
     box.appendChild(h("table", { class: "balance" }, [h("tbody", {}, [
-      ["Inflow at Ravatkhoja (record)", v.inflow], ["Reserved by the rule, to the river", v.reserve], ["Passed to the canal gate", v.inflow - v.reserve], ["Taken by the fields", v.fields], ["Not needed by the canal, back to the river", v.rest], ["River end", v.river], ["Residual: inflow − river − fields", residual],
-    ].map(([k, val]) => h("tr", {}, [h("td", { text: k }), h("td", { text: `${fmt1(val)} Mm³` })])))]));
-    box.appendChild(h("p", { class: "hint", text: "Nothing is stored or lost in this model, so the inflow equals river end plus fields on every day. The TaqSim run has the same balance (checked in the tests: residual 0 m³)." }));
+      [L("Inflow at Ravatkhoja (record)", "Приток у Раватходжи (наблюдения)"), v.inflow], [L("Reserved by the rule, to the river", "Зарезервировано правилом, реке"), v.reserve], [L("Passed to the canal gate", "Передано голове канала"), v.inflow - v.reserve], [L("Taken by the fields", "Взято полями"), v.fields], [L("Not needed by the canal, back to the river", "Не нужно каналу, обратно в реку"), v.rest], [L("River end", "Конец реки"), v.river], [L("Residual: inflow − river − fields", "Невязка: приток − река − поля"), Math.abs(residual) < 0.05 ? 0 : residual],
+    ].map(([k, val]) => h("tr", {}, [h("td", { text: k }), h("td", { text: `${fmt1(val)} ${MM3}` })])))]));
+    box.appendChild(h("p", { class: "hint", text: L("Nothing is stored or lost in this model, so the inflow equals river end plus fields on every day. The TaqSim run has the same balance (checked in the tests: residual 0 m³).", "В этой модели ничего не хранится и не теряется, поэтому приток каждый день равен сумме конца реки и полей. Прогон TaqSim имеет тот же баланс (проверено тестами: невязка 0 м³).") }));
   }
   function renderStatic() {
-    $("taqsim-version").textContent = META.taqsim;
-    $("fishy-version").textContent = META.fishy;
+    setAll("taqsim-version", META.taqsim);
+    setAll("fishy-version", META.fishy);
     // twin check: the page's rules against the stored TaqSim crop supply
     let worst = 0;
     for (const p of PLANS) {
-      const t = twin(p);
+      const tw = twin(p);
       let got = 0, want = 0;
-      for (let i = 0; i < NATURAL.length; i++) { got += t.fields[i]; want += DEMAND[i]; }
+      for (let i = 0; i < NATURAL.length; i++) { got += tw.fields[i]; want += DEMAND[i]; }
       worst = Math.max(worst, Math.abs((100 * got) / want - p.crops_pct));
     }
-    $("twin-cases").textContent = fmt0(PLANS.length);
-    $("twin-diff").textContent = worst < 0.005 ? "< 0.01" : fmt2(worst);
+    setAll("twin-cases", fmt0(PLANS.length));
+    setAll("twin-diff", worst < 0.005 ? "< 0.01" : fmt2(worst));
     const notes = $("model-notes");
     notes.textContent = "";
-    for (const t of [
+    const span = `${YEARS[0]}–${YEARS[YEARS.length - 1]}`;
+    for (const line of L([
       "The model runs day by day. On each day the Inflow block passes on the recorded flow Q at Ravatkhoja.",
       "The Headworks block reserves R = min(share × Q, ceiling) for the river and passes Q − R to the Canal gate. This is TaqSim's EFlowSplit rule with its two parameters, eflow_fraction and eflow_cap.",
       "The Canal gate gives the Fields the canal's demand of the day, D(month), if Q − R allows, else all of Q − R. What is not needed returns to the river: River end = R + (Q − R − fields).",
       "Crops supplied = sum of the fields' water over 2019–2023 ÷ sum of D over the same days. The canal's demand is the monthly mean 2017–2022 of Dargom, Mirzapay and Akkaradarya, zero from November to February.",
       "Each plan is one setting of the two levers. Every combination of the grid (share 0–100 % in steps of 10, ceiling 10–200 m³/s or none) was run in TaqSim, one calendar year per process, and scored once over the five years.",
-    ]) notes.appendChild(h("p", { text: t }));
+    ], [
+      "Модель идёт день за днём. Каждый день блок «Приток» передаёт наблюдённый расход Q у Раватходжи.",
+      "Блок «Гидроузел» резервирует для реки R = min(доля × Q, потолок) и передаёт Q − R «Голове канала». Это правило EFlowSplit в TaqSim с двумя параметрами, eflow_fraction и eflow_cap.",
+      "«Голова канала» отдаёт «Полям» потребность канала в этот день, D(месяц), если Q − R позволяет, иначе всё Q − R. Ненужное возвращается в реку: Конец реки = R + (Q − R − поля).",
+      "Обеспеченность посевов = сумма воды полей за 2019–2023 ÷ сумма D за те же дни. Потребность канала — средние по месяцам за 2017–2022 для Даргома, Мирзапая и Аккарадарьи, ноль с ноября по февраль.",
+      "Каждый план — одно положение двух рычагов. Каждая комбинация сетки (доля 0–100 % с шагом 10, потолок 10–200 м³/с или без него) прогнана в TaqSim, по одному календарному году на процесс, и оценена один раз за пять лет.",
+    ])) notes.appendChild(h("p", { text: line }));
     const score = $("score-notes");
     score.textContent = "";
-    for (const t of [
-      `The river score is the IARI (Indice di Alterazione del Regime Idrologico, ISPRA 2011) as implemented in the fishy package. It compares the 33 IHA indicators of the river below the headworks over the last five years (${YEARS[0]}–${YEARS[YEARS.length - 1]}) with their natural distribution over the record, indicator by indicator: 0 when the five-year value lies inside the natural interquartile range, otherwise the distance outside it relative to that range. The index is the mean over the 33 indicators.`,
+    for (const line of L([
+      `The river score is the IARI (Indice di Alterazione del Regime Idrologico, ISPRA 2011) as implemented in the fishy package. It compares the 33 IHA indicators of the river below the headworks over the last five years (${span}) with their natural distribution over the record, indicator by indicator: 0 when the five-year value lies inside the natural interquartile range, otherwise the distance outside it relative to that range. The index is the mean over the 33 indicators.`,
       `ISPRA's class bounds: ≤ ${CLASSES.elevato} close to natural, ≤ ${GOOD} good, above that altered. fishy calls them "elevato", "buono" and "non buono"; they are numerical classes, not a legal or biological status.`,
       `The natural reference is the Ravatkhoja record 2010–2023: ${META.reference_years.length} years. fishy requires ${META.reference_years_required_by_fishy}; the project lead decided to use the available data, and the game patches that check. With 14 years the natural quartiles are less certain than the method assumes.`,
       "When fishy cannot score an indicator (it then returns no total), the page shows the mean of the indicators it could score, says how many, and lists why. It never fills in a number for an unscored indicator.",
       `Pulse thresholds for the low- and high-pulse indicators: the 25th and 75th percentiles of the record, ${fmt1(META.pulse_thresholds_m3s[0])} and ${fmt1(META.pulse_thresholds_m3s[1])} m³/s.`,
-    ]) score.appendChild(h("p", { text: t }));
+    ], [
+      `Оценка реки — индекс IARI (Indice di Alterazione del Regime Idrologico, ISPRA 2011) в реализации пакета fishy. Он сравнивает 33 показателя IHA реки ниже гидроузла за последние пять лет (${span}) с их естественным распределением за весь ряд, показатель за показателем: 0, когда пятилетнее значение лежит внутри естественного межквартильного размаха, иначе — расстояние за его пределы относительно этого размаха. Индекс — среднее по 33 показателям.`,
+      `Границы классов ISPRA: ≤ ${CLASSES.elevato} близко к естественному, ≤ ${GOOD} хорошо, выше — изменён. В fishy они называются «elevato», «buono» и «non buono»; это численные классы, а не правовой или биологический статус.`,
+      `Естественный эталон — ряд наблюдений у Раватходжи за 2010–2023: ${META.reference_years.length} лет. fishy требует ${META.reference_years_required_by_fishy}; руководитель проекта решил использовать имеющиеся данные, и игра обходит эту проверку. При 14 годах естественные квартили менее надёжны, чем предполагает метод.`,
+      "Когда fishy не может оценить показатель (тогда он не возвращает итог), страница показывает среднее по тем показателям, которые удалось оценить, говорит, сколько их, и перечисляет причины. Она никогда не подставляет число вместо неоценённого показателя.",
+      `Пороги пульсаций для показателей низких и высоких пульсаций: 25-й и 75-й процентили ряда, ${fmt1(META.pulse_thresholds_m3s[0])} и ${fmt1(META.pulse_thresholds_m3s[1])} м³/с.`,
+    ])) score.appendChild(h("p", { text: line }));
     const simpl = $("simplifications");
     simpl.textContent = "";
-    for (const t of [
+    for (const line of L([
       "One canal. At Ravatkhoja the real headworks also feed the transfers to Jizzakh and Kashkadarya and other canals; here only the three Samarkand canals take water, so the canal's share of the river is smaller than in reality.",
       "No storage, no losses, no return flow: the canal has no seepage, the fields drain nothing back, and nothing is carried from one day to the next.",
       "The demand is a fixed monthly curve, the same in every year; a dry year does not change what the crops ask for.",
       "The e-flow rule reserves water on every day in the same way. Real environmental-flow rules vary by season and by the type of year (Suen & Eheart 2006; Chen & Olden 2017).",
       "The river score treats the record of 2010–2023 as natural. The Zarafshan at Ravatkhoja is already regulated upstream; the reference is the recent regime, not a pristine one.",
       "The score has 14 reference years instead of the 20 the method requires, and the five scored years overlap the reference.",
-    ]) simpl.appendChild(h("li", { text: t }));
+    ], [
+      "Один канал. У Раватходжи настоящий гидроузел питает ещё переброски в Джизак и Кашкадарью и другие каналы; здесь воду берут только три самаркандских канала, так что доля канала в реке меньше, чем в действительности.",
+      "Нет хранения, потерь и возвратного стока: канал не фильтрует, поля ничего не дренируют обратно, и ничего не переносится с одного дня на другой.",
+      "Потребность — фиксированная месячная кривая, одна и та же каждый год; сухой год не меняет того, что просят посевы.",
+      "Правило экостока резервирует воду каждый день одинаково. Настоящие правила экологического стока меняются по сезонам и по типу года (Suen & Eheart 2006; Chen & Olden 2017).",
+      "Оценка реки считает ряд 2010–2023 естественным. Зарафшан у Раватходжи уже зарегулирован выше по течению; эталон — недавний режим, а не первозданный.",
+      "У оценки 14 эталонных лет вместо 20, которых требует метод, и пять оцениваемых лет входят в эталон.",
+    ])) simpl.appendChild(h("li", { text: line }));
     const prov = $("provenance-table");
     prov.textContent = "";
+    const ceilings = CEILINGS.filter((c) => c != null).map(fmt0).join("/");
+    const unbeatenN = PLANS.filter((p) => p.unbeaten).length;
     const rows = [
-      ["Daily inflow at Ravatkhoja", `${META.reference_years.length} years, ${fmt0(NATURAL.length)} days shown, mean ${fmt1(META.natural_mean_m3s)} m³/s, minimum ${fmt1(META.natural_min_m3s)} m³/s`, "read", META.inflow_file],
-      ["Canal demand", `monthly mean 2017–2022 of Dargom + Mirzapay + Akkaradarya: ${D.demand_curve_m3s.map((v) => fmt0(v)).join(", ")} m³/s (Jan–Dec); ${fmt0(META.demand_mm3_per_year)} Mm³ a year`, "measured", META.demand_file],
-      ["Plan grid", `${PLANS.length} plans: share 0–100 % in steps of 10 × ceiling ${CEILINGS.filter((c) => c != null).map(fmt0).join("/")} m³/s or none (share 0 once)`, "read", "model.py plan_grid"],
-      ["Runs", `${fmt0(META.runs)} TaqSim runs of one calendar year, ${fmt1(META.mean_run_seconds)} s each on ${META.workers} processes, ${fmt0(META.wall_seconds_total)} s in all`, "measured", `python -m eflow_game.model, ${META.built}`],
-      ["Starting plan", START.name, "assumed", "model.py STARTING_PLAN"],
-      ["Example plans", PAIR ? `${PAIR[0].name} / ${PAIR[1].name}: the share-only and minimum-only plans with crop supply within 3 points and the widest score gap` : "none", "measured", "model.py teaching_pair"],
-      ["Plans not beaten", `${PLANS.filter((p) => p.unbeaten).length} of ${PLANS.length}`, "measured", "model.py mark_unbeaten; checked again in this page"],
-      ["River score", "fishy IARI, median summary, linear quantiles, IHA profile: mean statistic, pulse thresholds = record quartiles, within-year rate boundary", "read", "model.py score_river, iha_profile"],
-      ["IARI class bounds", `${CLASSES.elevato} and ${GOOD}`, "external", "ISPRA 2011 Table 1.4, as coded in fishy classify_iari"],
-      ["Reference years required", `${META.reference_years_required_by_fishy} (fishy); ${META.reference_years.length} used`, "read", "fishy iari.py; lead's decision 2026-10-05"],
+      [L("Daily inflow at Ravatkhoja", "Суточный приток у Раватходжи"), L(`${META.reference_years.length} years, ${fmt0(NATURAL.length)} days shown, mean ${fmt1(META.natural_mean_m3s)} m³/s, minimum ${fmt1(META.natural_min_m3s)} m³/s`, `${META.reference_years.length} лет, показано ${fmt0(NATURAL.length)} дней, средний ${fmt1(META.natural_mean_m3s)} м³/с, минимум ${fmt1(META.natural_min_m3s)} м³/с`), "read", META.inflow_file],
+      [L("Canal demand", "Потребность канала"), L(`monthly mean 2017–2022 of Dargom + Mirzapay + Akkaradarya: ${D.demand_curve_m3s.map((v) => fmt0(v)).join(", ")} m³/s (Jan–Dec); ${fmt0(META.demand_mm3_per_year)} Mm³ a year`, `средние по месяцам за 2017–2022 для Даргома + Мирзапая + Аккарадарьи: ${D.demand_curve_m3s.map((v) => fmt0(v)).join(", ")} м³/с (янв–дек); ${fmt0(META.demand_mm3_per_year)} млн м³ в год`), "measured", META.demand_file],
+      [L("Plan grid", "Сетка планов"), L(`${PLANS.length} plans: share 0–100 % in steps of 10 × ceiling ${ceilings} m³/s or none (share 0 once)`, `${plansOf(PLANS.length)}: доля 0–100 % с шагом 10 × потолок ${ceilings} м³/с или без него (доля 0 один раз)`), "read", "model.py plan_grid"],
+      [L("Runs", "Прогоны"), L(`${fmt0(META.runs)} TaqSim runs of one calendar year, ${fmt1(META.mean_run_seconds)} s each on ${META.workers} processes, ${fmt0(META.wall_seconds_total)} s in all`, `${fmt0(META.runs)} прогонов TaqSim по одному календарному году, ${fmt1(META.mean_run_seconds)} с каждый на ${META.workers} процессах, всего ${fmt0(META.wall_seconds_total)} с`), "measured", `python -m eflow_game.model, ${META.built}`],
+      [t("Starting plan"), planName(START), "assumed", "model.py STARTING_PLAN"],
+      [L("Example plans", "Примеры планов"), PAIR ? L(`${planName(PAIR[0])} / ${planName(PAIR[1])}: the share-only and minimum-only plans with crop supply within 3 points and the widest score gap`, `${planName(PAIR[0])} / ${planName(PAIR[1])}: планы «только доля» и «только минимум» с обеспеченностью посевов в пределах 3 пунктов и наибольшим разрывом оценок`) : t("none"), "measured", "model.py teaching_pair"],
+      [L("Plans not beaten", "Планы, которые не побить"), L(`${unbeatenN} of ${PLANS.length}`, `${unbeatenN} из ${PLANS.length}`), "measured", L("model.py mark_unbeaten; checked again in this page", "model.py mark_unbeaten; проверено ещё раз на этой странице")],
+      [t("River score"), L("fishy IARI, median summary, linear quantiles, IHA profile: mean statistic, pulse thresholds = record quartiles, within-year rate boundary", "fishy IARI, сводка по медиане, линейные квантили, профиль IHA: средняя статистика, пороги пульсаций = квартили ряда, граница скоростей внутри года"), "read", "model.py score_river, iha_profile"],
+      [L("IARI class bounds", "Границы классов IARI"), L(`${CLASSES.elevato} and ${GOOD}`, `${CLASSES.elevato} и ${GOOD}`), "external", L("ISPRA 2011 Table 1.4, as coded in fishy classify_iari", "ISPRA 2011, табл. 1.4, как закодировано в fishy classify_iari")],
+      [L("Reference years required", "Требуемое число эталонных лет"), L(`${META.reference_years_required_by_fishy} (fishy); ${META.reference_years.length} used`, `${META.reference_years_required_by_fishy} (fishy); использовано ${META.reference_years.length}`), "read", L("fishy iari.py; lead's decision 2026-10-05", "fishy iari.py; решение руководителя от 2026-10-05")],
     ];
     prov.appendChild(h("table", { class: "prov" }, [
-      h("thead", {}, [h("tr", {}, ["Number", "Value", "Provenance", "Where"].map((c) => h("th", { text: c })))]),
-      h("tbody", {}, rows.map((r) => h("tr", {}, r.map((c, i) => h("td", { text: c, class: i === 1 ? "wrap" : "" }))))),
+      h("thead", {}, [h("tr", {}, ["Number", "Value", "Provenance", "Where"].map((c) => h("th", { text: t(c) })))]),
+      h("tbody", {}, rows.map((r) => h("tr", {}, r.map((c, i) => h("td", { text: i === 2 ? t(c) : c, class: i === 1 ? "wrap" : "" }))))),
     ]));
     const refs = $("references");
     refs.textContent = "";
@@ -1496,62 +1752,62 @@ const EflowModel = (() => {
   const TASKS = [
     {
       id: "share",
-      what: () => "Leave a share. With no ceiling, raise the reserve share step by step. At what share do the crops first get less than 99.5 %?",
+      what: () => L("Leave a share. With no ceiling, raise the reserve share step by step. At what share do the crops first get less than 99.5 %?", "Оставить долю. Без потолка поднимайте долю резерва шаг за шагом. При какой доле посевы впервые получают меньше 99.5 %?"),
       done: () => currentCeiling() == null && state.share > 0 && state.share < 100 && currentPlan().crops_pct < 99.5,
-      after: () => { const p = currentPlan(); return `At ${p.share_pct} % the canal first goes short: crops ${fmt1(p.crops_pct)} %, river score ${fmt3(p.score)}. Below that share the rule changes nothing: the canal never needs more than the rest. Notice that the score hardly moves until the share is large.`; },
-      hint: () => "Press “Leave a share: no ceiling”, then drag the Reserve share up one step at a time and watch the Crops tile.",
+      after: () => { const p = currentPlan(); return L(`At ${p.share_pct} % the canal first goes short: crops ${fmt1(p.crops_pct)} %, river score ${fmt3(p.score)}. Below that share the rule changes nothing: the canal never needs more than the rest. Notice that the score hardly moves until the share is large.`, `При ${p.share_pct} % канал впервые недополучает: посевы ${fmt1(p.crops_pct)} %, оценка реки ${fmt3(p.score)}. Ниже этой доли правило ничего не меняет: каналу никогда не нужно больше остатка. Заметьте, что оценка почти не двигается, пока доля не велика.`); },
+      hint: () => L("Press “Leave a share: no ceiling”, then drag the Reserve share up one step at a time and watch the Crops tile.", "Нажмите «Оставить долю: без потолка», затем двигайте «Долю резерва» вверх по одному шагу и следите за плиткой посевов."),
     },
     {
       id: "minimum",
-      what: () => `Guarantee a minimum. Set the share to 100 % and find the smallest ceiling at which the river score is “good” (≤ ${GOOD}). What does it cost the crops?`,
+      what: () => L(`Guarantee a minimum. Set the share to 100 % and find the smallest ceiling at which the river score is “good” (≤ ${GOOD}). What does it cost the crops?`, `Гарантировать минимум. Поставьте долю 100 % и найдите наименьший потолок, при котором оценка реки «хорошо» (≤ ${GOOD}). Чего это стоит посевам?`),
       done: () => state.share === 100 && currentCeiling() != null && currentPlan().score <= GOOD,
-      after: () => { const p = currentPlan(); return `With the first ${fmt0(p.ceiling_m3s)} m³/s always in the river the score is ${fmt3(p.score)} and the crops get ${fmt1(p.crops_pct)} %. The minimum protects the low-flow days, which the share leaves exposed.`; },
-      hint: () => "Press “Guarantee a minimum: share 100 %”, then move the Reserve ceiling up until the River score tile says “good”.",
+      after: () => { const p = currentPlan(); return L(`With the first ${fmt0(p.ceiling_m3s)} m³/s always in the river the score is ${fmt3(p.score)} and the crops get ${fmt1(p.crops_pct)} %. The minimum protects the low-flow days, which the share leaves exposed.`, `Когда первые ${fmt0(p.ceiling_m3s)} м³/с всегда остаются в реке, оценка — ${fmt3(p.score)}, а посевы получают ${fmt1(p.crops_pct)} %. Минимум защищает маловодные дни, которые доля оставляет без защиты.`); },
+      hint: () => L("Press “Guarantee a minimum: share 100 %”, then move the Reserve ceiling up until the River score tile says “good”.", "Нажмите «Гарантировать минимум: доля 100 %», затем поднимайте «Потолок резерва», пока плитка оценки реки не скажет «хорошо»."),
     },
     {
       id: "compare",
-      what: () => "Compare the two ways. Load Example A and Example B. They give the crops nearly the same water. Which river is closer to natural, and why?",
+      what: () => L("Compare the two ways. Load Example A and Example B. They give the crops nearly the same water. Which river is closer to natural, and why?", "Сравните два способа. Загрузите Пример A и Пример B. Они дают посевам почти одинаковую воду. Какая река ближе к естественной и почему?"),
       done: () => tasks.loadedA && tasks.loadedB,
-      after: () => PAIR ? `A (${PAIR[0].name}) gives the crops ${fmt1(PAIR[0].crops_pct)} % at a score of ${fmt3(PAIR[0].score)}; B (${PAIR[1].name}) gives ${fmt1(PAIR[1].crops_pct)} % at ${fmt3(PAIR[1].score)}. The share takes most in spring, when the river is lowest and the canal starts; the minimum protects those days. Open The 33 indicators for each to see which indicators differ.` : "Both examples loaded.",
-      hint: () => "Press Example A, read the two tiles, press Example B, read them again. Then open the tab The 33 indicators for each.",
+      after: () => PAIR ? L(`A (${planName(PAIR[0])}) gives the crops ${fmt1(PAIR[0].crops_pct)} % at a score of ${fmt3(PAIR[0].score)}; B (${planName(PAIR[1])}) gives ${fmt1(PAIR[1].crops_pct)} % at ${fmt3(PAIR[1].score)}. The share takes most in spring, when the river is lowest and the canal starts; the minimum protects those days. Open The 33 indicators for each to see which indicators differ.`, `A («${planName(PAIR[0])}») даёт посевам ${fmt1(PAIR[0].crops_pct)} % при оценке ${fmt3(PAIR[0].score)}; B («${planName(PAIR[1])}») даёт ${fmt1(PAIR[1].crops_pct)} % при ${fmt3(PAIR[1].score)}. Доля отнимает больше всего весной, когда река ниже всего, а канал только начинает брать; минимум защищает эти дни. Откройте «33 показателя» для каждого, чтобы увидеть, какие показатели различаются.`) : L("Both examples loaded.", "Оба примера загружены."),
+      hint: () => L("Press Example A, read the two tiles, press Example B, read them again. Then open the tab The 33 indicators for each.", "Нажмите «Пример A», прочитайте две плитки, нажмите «Пример B», прочитайте их снова. Затем откройте вкладку «33 показателя» для каждого."),
     },
     {
       id: "explorer",
-      what: () => "In the Trade-off explorer, click a filled dot (a plan no other plan beats) that keeps the crops above 90 % with a river score below 0.20. What kind of rule is it?",
+      what: () => L("In the Trade-off explorer, click a filled dot (a plan no other plan beats) that keeps the crops above 90 % with a river score below 0.20. What kind of rule is it?", "В «Исследователе компромиссов» нажмите на закрашенную точку (план, который не побить) с посевами выше 90 % и оценкой реки ниже 0.20. Что это за правило?"),
       done: () => tasks.fromExplorer && byId[tasks.fromExplorer] === currentPlan() && currentPlan().unbeaten && currentPlan().crops_pct > 90 && currentPlan().score < 0.2,
-      after: () => { const p = currentPlan(); return `${p.name}: crops ${fmt1(p.crops_pct)} %, score ${fmt3(p.score)}, beaten by no plan. Every filled dot is a compromise that cannot be improved on both results at once. Choosing among them is a decision, not a calculation.`; },
-      hint: () => "Open the tab Trade-off explorer. The filled dots are the unbeaten plans; hover one to the right of 90 % and below 0.20 and click it.",
-      action: () => ({ label: "Open the explorer", run: () => setTab("explorer") }),
+      after: () => { const p = currentPlan(); return L(`${planName(p)}: crops ${fmt1(p.crops_pct)} %, score ${fmt3(p.score)}, beaten by no plan. Every filled dot is a compromise that cannot be improved on both results at once. Choosing among them is a decision, not a calculation.`, `${planName(p)}: посевы ${fmt1(p.crops_pct)} %, оценка ${fmt3(p.score)}, не побит никаким планом. Каждая закрашенная точка — компромисс, который нельзя улучшить по обоим результатам сразу. Выбор между ними — решение, а не расчёт.`); },
+      hint: () => L("Open the tab Trade-off explorer. The filled dots are the unbeaten plans; hover one to the right of 90 % and below 0.20 and click it.", "Откройте вкладку «Исследователь компромиссов». Закрашенные точки — планы, которые не побить; наведите на одну правее 90 % и ниже 0.20 и нажмите."),
+      action: () => ({ label: t("Open the explorer"), run: () => setTab("explorer") }),
     },
     {
       id: "indicators",
-      what: () => "Back to the starting plan: open The 33 indicators. Which indicators are hurt most when the canal takes all it needs, although it takes only a small part of the year's water?",
+      what: () => L("Back to the starting plan: open The 33 indicators. Which indicators are hurt most when the canal takes all it needs, although it takes only a small part of the year's water?", "Вернитесь к исходному плану и откройте «33 показателя». Какие показатели страдают сильнее всего, когда канал берёт всё, что ему нужно, хотя берёт лишь малую часть годовой воды?"),
       done: () => tasks.indicatorsOpenedWith === START.id && currentPlan() === START,
-      after: () => { const worst = Object.entries(START.indicators).filter(([, v]) => v != null).sort((a, b) => b[1] - a[1]).slice(0, 3); return `Worst for the starting plan: ${worst.map(([k, v]) => `${pretty(k)} (${fmt2(v)})`).join(", ")}. The canal takes ${fmt0((100 * yearVolumes(START, state.year).fields) / yearVolumes(START, state.year).inflow)} % of the year's water in ${state.year}, but it takes it in spring and late summer, when the river is lowest.`; },
-      hint: () => "Press Starting plan, then the tab The 33 indicators. The longest bars tell you.",
-      action: () => ({ label: "Starting plan + indicators", run: () => { setLevers(START.share_pct, START.ceiling_m3s); setTab("indicators"); } }),
+      after: () => { const worst = Object.entries(START.indicators).filter(([, v]) => v != null).sort((a, b) => b[1] - a[1]).slice(0, 3); const share = fmt0((100 * yearVolumes(START, state.year).fields) / yearVolumes(START, state.year).inflow); const list = worst.map(([k, v]) => `${pretty(k)} (${fmt2(v)})`).join(", "); return L(`Worst for the starting plan: ${list}. The canal takes ${share} % of the year's water in ${state.year}, but it takes it in spring and late summer, when the river is lowest.`, `Хуже всего для исходного плана: ${list}. В ${state.year} году канал берёт ${share} % годовой воды, но берёт её весной и в конце лета, когда река ниже всего.`); },
+      hint: () => L("Press Starting plan, then the tab The 33 indicators. The longest bars tell you.", "Нажмите «Исходный план», затем вкладку «33 показателя». Самые длинные столбики — ответ."),
+      action: () => ({ label: t("Starting plan + indicators"), run: () => { setLevers(START.share_pct, START.ceiling_m3s); setTab("indicators"); } }),
     },
   ];
   function renderTasks() {
-    const current = TASKS.find((t) => !tasks.done[t.id]);
+    const current = TASKS.find((task) => !tasks.done[task.id]);
     if (current && !settling && current.done()) {
       const feedback = current.after();
       tasks.done[current.id] = feedback;
       save();
-      showNote(`Task ${TASKS.indexOf(current) + 1} done. ${feedback}`, null, null, () => renderTasks());
+      showNote(L(`Task ${TASKS.indexOf(current) + 1} done. ${feedback}`, `Задание ${TASKS.indexOf(current) + 1} выполнено. ${feedback}`), null, null, () => renderTasks());
     }
-    const next = TASKS.find((t) => !tasks.done[t.id]);
+    const next = TASKS.find((task) => !tasks.done[task.id]);
     const list = $("tasks");
     list.textContent = "";
-    for (const t of TASKS) {
-      const done = tasks.done[t.id];
-      list.appendChild(h("li", { class: `${done ? "done" : ""}${t === next ? " current" : ""}` }, [
+    for (const task of TASKS) {
+      const done = tasks.done[task.id];
+      list.appendChild(h("li", { class: `${done ? "done" : ""}${task === next ? " current" : ""}` }, [
         h("span", { class: "box", "aria-hidden": "true", text: done ? "✓" : "" }),
-        h("div", {}, [h("span", { class: "visually-hidden", text: done ? "Done: " : "To do: " }), h("span", { class: "what", text: t.what() }), done ? h("p", { class: "after", text: done }) : null]),
+        h("div", {}, [h("span", { class: "visually-hidden", text: t(done ? "Done: " : "To do: ") }), h("span", { class: "what", text: task.what() }), done ? h("p", { class: "after", text: done }) : null]),
       ]));
     }
-    const n = TASKS.filter((t) => tasks.done[t.id]).length;
-    $("tasks-sub").textContent = `${n} of ${TASKS.length} done · about 15 minutes, then 10 minutes of discussion`;
+    const n = TASKS.filter((task) => tasks.done[task.id]).length;
+    $("tasks-sub").textContent = L(`${n} of ${TASKS.length} done · about 15 minutes, then 10 minutes of discussion`, `${n} из ${TASKS.length} выполнено · около 15 минут, затем 10 минут обсуждения`);
     const banner = $("now");
     const signature = JSON.stringify([next ? next.id : "done", next ? next.what() : ""]);
     if (banner.dataset.signature === signature) return;
@@ -1559,29 +1815,29 @@ const EflowModel = (() => {
     banner.textContent = "";
     banner.classList.toggle("all-done", !next);
     if (!next) {
-      banner.appendChild(h("span", { class: "step", text: "All tasks done." }));
-      banner.appendChild(h("span", { class: "what", text: "Debrief: for the same water to the crops, which rule gives the better river, and what does the score not see?" }));
+      banner.appendChild(h("span", { class: "step", text: t("All tasks done.") }));
+      banner.appendChild(h("span", { class: "what", text: L("Debrief: for the same water to the crops, which rule gives the better river, and what does the score not see?", "Обсуждение: при одной и той же воде посевам какое правило даёт лучшую реку, и чего оценка не видит?") }));
       return;
     }
-    banner.appendChild(h("span", { class: "step", text: `Task ${TASKS.indexOf(next) + 1} of ${TASKS.length}` }));
+    banner.appendChild(h("span", { class: "step", text: L(`Task ${TASKS.indexOf(next) + 1} of ${TASKS.length}`, `Задание ${TASKS.indexOf(next) + 1} из ${TASKS.length}`) }));
     banner.appendChild(h("span", { class: "what", text: next.what() }));
     if (next.action) { const a = next.action(); banner.appendChild(h("button", { class: "btn small", type: "button", text: a.label, onclick: a.run })); }
-    const hint = h("button", { class: "btn small", type: "button", text: "Hint", onclick: () => showNote(next.hint(), hint) });
+    const hint = h("button", { class: "btn small", type: "button", text: t("Hint"), onclick: () => showNote(next.hint(), hint) });
     banner.appendChild(hint);
   }
   $("reset-tasks").addEventListener("click", () => {
-    if (!$("reset-tasks").dataset.armed) { $("reset-tasks").dataset.armed = "1"; $("reset-tasks").textContent = "Click again to clear"; setTimeout(() => { delete $("reset-tasks").dataset.armed; $("reset-tasks").textContent = "Start fresh"; }, 4000); return; }
+    if (!$("reset-tasks").dataset.armed) { $("reset-tasks").dataset.armed = "1"; $("reset-tasks").textContent = t("Click again to clear"); setTimeout(() => { delete $("reset-tasks").dataset.armed; $("reset-tasks").textContent = t("Start fresh"); }, 4000); return; }
     store.clear();
     Object.assign(tasks, { done: {}, loadedA: false, loadedB: false, fromExplorer: null, indicatorsOpenedWith: null });
     Object.assign(state, defaults());
     history.length = 0;
     $("undo").disabled = true;
     delete $("reset-tasks").dataset.armed;
-    $("reset-tasks").textContent = "Start fresh";
+    $("reset-tasks").textContent = t("Start fresh");
     syncSliders();
     setYear(state.year);
     setTab(state.tab);
-    toast("Tasks and levers reset.");
+    toast(t("Tasks and levers reset."));
   });
 
   // ---------- self-check ----------
@@ -1594,7 +1850,36 @@ const EflowModel = (() => {
     return disagree.length === 0;
   }
 
+  // Text that appears in more than one place on the page (the two footers).
+  function setAll(cls, value) {
+    for (const el of document.querySelectorAll(`.${cls}`)) el.textContent = value;
+  }
+  function applyLanguage() {
+    document.documentElement.lang = LANG;
+    if (LANG === "ru") {
+      document.title = "Река для природы";
+      const title = $("page-title");
+      title.textContent = "";
+      title.append("Вода реки: природе или орошению ", h("span", { class: "thin", text: "Зарафшан у Раватходжи" }));
+      for (const el of document.querySelectorAll("[data-i18n]")) {
+        const ru = RU[el.textContent.trim()];
+        if (ru) el.textContent = ru;
+      }
+    }
+    // the blocks written in both languages (intro, caption, footer); the language buttons carry data-lang too
+    for (const el of document.querySelectorAll("[data-lang]")) if (!el.closest("#lang-buttons")) el.hidden = el.dataset.lang !== LANG;
+    for (const b of $("lang-buttons").children) {
+      b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));
+      b.addEventListener("click", () => {
+        if (b.dataset.lang === LANG) return;
+        try { localStorage.setItem(KEY.lang, b.dataset.lang); } catch (e) { /* no storage: stay in English */ }
+        location.reload();
+      });
+    }
+  }
+
   function start() {
+    applyLanguage();
     setupTheme();
     buildYearButtons();
     buildLevers();
