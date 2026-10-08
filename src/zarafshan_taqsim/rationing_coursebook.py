@@ -86,6 +86,104 @@ FORECAST_SEED = SEED + 1  # the forecaster's noise; a different seed from the ri
 # The trade-off charts stop here on the average-shortage axis; plans beyond it are far from any sensible choice.
 MEAN_SHORTAGE_AXIS_MAX = 12.0
 
+
+def _setting(given, current):
+    """An argument given as None means: the current setting."""
+    return current if given is None else given
+
+
+def configure(
+    *,
+    capacity: float | None = None,
+    summer_need: float | None = None,
+    winter_need: float | None = None,
+    winter_inflow: tuple[float, float] | None = None,
+    summer_inflow: tuple[float, float] | None = None,
+    start_storage: float | None = None,
+    years: int | None = None,
+    seed: int | None = None,
+) -> pd.DataFrame:
+    """Set the numbers of the model for this session; a value not given keeps its current setting.
+
+    The helpers of this module read these numbers when they are called, so a notebook can set them in one cell
+    at the top and every run, table and figure after it follows. The text of the coursebook quotes the defaults.
+
+    Args:
+        capacity: Reservoir capacity, Mm³.
+        summer_need: What the farm needs over the six summer months, Mm³.
+        winter_need: What the farm needs over the six winter months, Mm³.
+        winter_inflow: Mean and standard deviation of the winter inflow, Mm³ per season.
+        summer_inflow: Mean and standard deviation of the summer inflow, Mm³ per season.
+        start_storage: Water in the reservoir when a simulation starts, Mm³.
+        years: Length of the synthetic river in years.
+        seed: Random seed of the river; another seed gives another river with the same statistics.
+
+    Returns:
+        A table of the settings now in force, one row per number.
+
+    Raises:
+        ValueError: If a number is impossible (a negative need, a start above the capacity, ...).
+    """
+    global CAPACITY_MM3, SUMMER_NEED_MM3, WINTER_NEED_MM3, YEARLY_NEED_MM3, MONTHLY_NEED_MM3, START_STORAGE_MM3
+    global \
+        DEFAULT_REGIME, \
+        WINTER_FLOW_MEAN, \
+        WINTER_FLOW_SD, \
+        SUMMER_FLOW_MEAN, \
+        SUMMER_FLOW_SD, \
+        YEARS, \
+        SEED, \
+        FORECAST_SEED
+    capacity = float(_setting(capacity, CAPACITY_MM3))
+    summer_need, winter_need = (
+        float(_setting(summer_need, SUMMER_NEED_MM3)),
+        float(_setting(winter_need, WINTER_NEED_MM3)),
+    )
+    winter, summer = _setting(winter_inflow, DEFAULT_REGIME.winter), _setting(summer_inflow, DEFAULT_REGIME.summer)
+    start_storage, years, seed = (
+        float(_setting(start_storage, START_STORAGE_MM3)),
+        int(_setting(years, YEARS)),
+        int(_setting(seed, SEED)),
+    )
+    if capacity <= 0 or summer_need < 0 or winter_need < 0 or years < 1:
+        raise ValueError("capacity must be positive, the needs zero or more, the years at least one")
+    for name, (mean, sd) in (("winter_inflow", winter), ("summer_inflow", summer)):
+        if mean <= 0 or sd < 0:
+            raise ValueError(
+                f"{name}: the mean must be positive and the standard deviation zero or more, got {mean}, {sd}"
+            )
+    if not 0.0 <= start_storage <= capacity:
+        raise ValueError(f"start_storage must be between 0 and the capacity ({capacity:g} Mm³), got {start_storage}")
+    CAPACITY_MM3, SUMMER_NEED_MM3, WINTER_NEED_MM3 = capacity, summer_need, winter_need
+    YEARLY_NEED_MM3 = summer_need + winter_need
+    MONTHLY_NEED_MM3 = (winter_need / MONTHS_PER_SEASON,) * MONTHS_PER_SEASON + (
+        summer_need / MONTHS_PER_SEASON,
+    ) * MONTHS_PER_SEASON
+    START_STORAGE_MM3, YEARS, SEED, FORECAST_SEED = start_storage, years, seed, seed + 1
+    if (winter, summer) != (DEFAULT_REGIME.winter, DEFAULT_REGIME.summer):
+        DEFAULT_REGIME = Regime(
+            "notebook",
+            (float(winter[0]), float(winter[1])),
+            (float(summer[0]), float(summer[1])),
+            "set with configure()",
+        )
+    WINTER_FLOW_MEAN, WINTER_FLOW_SD = DEFAULT_REGIME.winter
+    SUMMER_FLOW_MEAN, SUMMER_FLOW_SD = DEFAULT_REGIME.summer
+    return pd.DataFrame(
+        [
+            ("Reservoir capacity", f"{capacity:g} Mm³"),
+            ("What the farm needs in summer", f"{summer_need:g} Mm³ ({summer_need / MONTHS_PER_SEASON:.2f} a month)"),
+            ("What the farm needs in winter", f"{winter_need:g} Mm³ ({winter_need / MONTHS_PER_SEASON:.2f} a month)"),
+            ("River inflow in winter", f"{winter[0]:g} Mm³ on average, standard deviation {winter[1]:g}"),
+            ("River inflow in summer", f"{summer[0]:g} Mm³ on average, standard deviation {summer[1]:g}"),
+            ("Water in the reservoir at the start", f"{start_storage:g} Mm³"),
+            ("Years in the synthetic river", str(years)),
+            ("Random seed of the river", str(seed)),
+        ],
+        columns=["setting", "value"],
+    )
+
+
 # --- Colours (validated categorical slots 1-2, one-hue blue ramp, neutral inks) ---------------------------
 WATER, SHORTAGE = "#2a78d6", "#d95926"
 INK, SECONDARY, MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#6b6a66", "#e1e0d9", "#fcfcfb"
@@ -183,7 +281,9 @@ def _season_totals(years: int, seed: int, regime: Regime) -> tuple[np.ndarray, n
     return winter, summer
 
 
-def synthetic_inflows(years: int = YEARS, seed: int = SEED, regime: Regime = DEFAULT_REGIME) -> tuple[float, ...]:
+def synthetic_inflows(
+    years: int | None = None, seed: int | None = None, regime: Regime | None = None
+) -> tuple[float, ...]:
     """Generate a synthetic river with the given seasonal statistics.
 
     Each year has a winter and a summer total drawn from log-normal distributions; a dry season tends to follow
@@ -200,6 +300,7 @@ def synthetic_inflows(years: int = YEARS, seed: int = SEED, regime: Regime = DEF
     Raises:
         ValueError: If `years` is less than one.
     """
+    years, seed, regime = _setting(years, YEARS), _setting(seed, SEED), _setting(regime, DEFAULT_REGIME)
     if years < 1:
         raise ValueError(f"need at least one year, got {years}")
     winter, summer = _season_totals(years, seed, regime)
@@ -213,8 +314,9 @@ def season_totals(inflows: tuple[float, ...]) -> tuple[np.ndarray, np.ndarray]:
     return by_year[:, :MONTHS_PER_SEASON].sum(axis=1), by_year[:, MONTHS_PER_SEASON:].sum(axis=1)
 
 
-def season_statistics(inflows: tuple[float, ...], regime: Regime = DEFAULT_REGIME) -> pd.DataFrame:
+def season_statistics(inflows: tuple[float, ...], regime: Regime | None = None) -> pd.DataFrame:
     """Compare the river's seasonal statistics with the regime it was drawn from."""
+    regime = _setting(regime, DEFAULT_REGIME)
     winter, summer = season_totals(inflows)
     rows = [
         ("Winter inflow, mean (Mm³)", regime.winter[0], winter.mean()),
@@ -235,7 +337,7 @@ def season_statistics(inflows: tuple[float, ...], regime: Regime = DEFAULT_REGIM
 
 
 def seasonal_forecast(
-    inflows: tuple[float, ...], skill: float, seed: int = FORECAST_SEED, regime: Regime = DEFAULT_REGIME
+    inflows: tuple[float, ...], skill: float, seed: int | None = None, regime: Regime | None = None
 ) -> tuple[float, ...]:
     """A forecast of each summer's inflow, one number per year, with the given skill.
 
@@ -255,6 +357,7 @@ def seasonal_forecast(
     Raises:
         ValueError: If `skill` is outside 0 to 1.
     """
+    seed, regime = _setting(seed, FORECAST_SEED), _setting(regime, DEFAULT_REGIME)
     if not 0.0 <= skill <= 1.0:
         raise ValueError(f"skill must be between 0 and 1, got {skill}")
     _, summer = season_totals(inflows)
@@ -343,7 +446,7 @@ def build_system(
     inflows: tuple[float, ...],
     plan: Plan = NO_RATIONING,
     evaporation_share: float = 0.0,
-    start_storage: float = START_STORAGE_MM3,
+    start_storage: float | None = None,
     winter: WinterPlan | None = None,
     forecast: tuple[float, ...] | None = None,
 ) -> WaterSystem:
@@ -365,6 +468,7 @@ def build_system(
     Raises:
         ValueError: If the forecast does not have one value per year.
     """
+    start_storage = _setting(start_storage, START_STORAGE_MM3)
     years = len(inflows) // 12
     if winter is None:
         policy: Strategy = RationingRelease(trigger=plan.trigger, ration=plan.ration)
@@ -489,7 +593,7 @@ def simulate_plan(
     inflows: tuple[float, ...],
     plan: Plan,
     evaporation_share: float = 0.0,
-    start_storage: float = START_STORAGE_MM3,
+    start_storage: float | None = None,
 ) -> RunResult:
     """Run one plan through TaqSim and read off storage, monthly shortages and scores."""
     system = build_system(inflows, plan, evaporation_share=evaporation_share, start_storage=start_storage)
@@ -974,8 +1078,9 @@ def plot_network(winter: bool = False, reservoir: bool = True) -> Figure:
 
 
 @_styled
-def plot_system_sketch(regime: Regime = DEFAULT_REGIME) -> Figure:
+def plot_system_sketch(regime: Regime | None = None) -> Figure:
     """The four blocks and what moves between them."""
+    regime = _setting(regime, DEFAULT_REGIME)
     fig, ax = plt.subplots(figsize=(8.0, 1.9))
     blocks = [
         ("River", f"winter {regime.winter[0]:g}, summer {regime.summer[0]:g}\nMm³ on average", "Source"),
