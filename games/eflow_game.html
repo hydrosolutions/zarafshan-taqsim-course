@@ -1003,6 +1003,12 @@ const EflowModel = (() => {
     minimum: { label: t("Guarantee a minimum (share 100 %)"), color: "var(--environment)" },
     mixed: { label: t("Share with a ceiling"), color: "var(--muted)" },
   };
+  // The reserve of the day in words: "60 % × Q", "min(Q, 80 m³/s)" or "min(60 % × Q, 80 m³/s)"; no min() with one argument.
+  const ruleFormula = (p, flow, unit) => {
+    const cap = p.ceiling_m3s == null ? null : `${fmt0(p.ceiling_m3s)}${unit ? ` ${unit}` : ""}`;
+    const share = p.share_pct === 100 ? flow : `${p.share_pct} % × ${flow}`;
+    return cap == null ? share : `min(${share}, ${cap})`;
+  };
   const className = (score) => t(score <= CLASSES.elevato ? "close to natural" : score <= GOOD ? "good" : "altered");
   const classWord = (score) => `${score <= GOOD ? "≤" : ">"} ${score <= CLASSES.elevato ? CLASSES.elevato : GOOD}: ${className(score)}`;
   // Dominance over the whole grid, computed here so that the page carries no list of winners it cannot check.
@@ -1257,7 +1263,7 @@ const EflowModel = (() => {
       const v = yearVolumes(p, state.year);
       const beaten = beatenBy(p);
       const items = [
-        { key: "rule", label: t("Rule today"), value: p.share_pct === 0 ? L("reserve 0", "резерв 0") : `${L("reserve", "резерв")} = min(${p.share_pct} % × ${L("flow", "сток")}${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)} ${M3S}`})`, note: L("What the Headworks block reserves for the river on every day.", "Что блок «Гидроузел» резервирует для реки каждый день.") },
+        { key: "rule", label: t("Rule today"), value: p.share_pct === 0 ? L("reserve 0", "резерв 0") : `${L("reserve", "резерв")} = ${ruleFormula(p, L("flow", "сток"), M3S)}`, note: L("What the Headworks block reserves for the river on every day.", "Что блок «Гидроузел» резервирует для реки каждый день.") },
         { key: "river", label: L(`River end ${state.year}`, `Конец реки ${state.year}`), value: `${fmt0(v.river)} ${MM3}`, note: L(`Of ${fmt0(v.inflow)} Mm³ that arrived in ${state.year}: ${fmt0(v.reserve)} reserved by the rule, ${fmt0(v.rest)} not needed by the canal.`, `Из ${fmt0(v.inflow)} млн м³, пришедших в ${state.year} году: ${fmt0(v.reserve)} зарезервировано правилом, ${fmt0(v.rest)} не понадобилось каналу.`) },
         { key: "fields", label: L(`Fields ${state.year}`, `Поля ${state.year}`), value: L(`${fmt0(v.fields)} of ${fmt0(v.demand)} Mm³`, `${fmt0(v.fields)} из ${fmt0(v.demand)} млн м³`), note: L("Water that reached the fields against the canal's demand in the year shown.", "Вода, дошедшая до полей, против потребности канала в показанном году.") },
         { key: "beaten", label: t("Beaten by"), value: beaten.length ? planCount(beaten.length) : t("no plan"), ok: !beaten.length, note: beaten.length ? L(`For example ${planName(beaten[0])}: crops ${fmt1(beaten[0].crops_pct)} %, score ${fmt3(beaten[0].score)}.`, `Например, «${planName(beaten[0])}»: посевы ${fmt1(beaten[0].crops_pct)} %, оценка ${fmt3(beaten[0].score)}.`) : L("No other plan of the grid is at least as good on both results and better on one.", "Ни один другой план сетки не является не хуже по обоим результатам и лучше хотя бы по одному.") },
@@ -1320,7 +1326,7 @@ const EflowModel = (() => {
   // What each block says on its third line, under the plan and the year shown.
   function blockSub(id, p, v) {
     const [from, to] = yearRange(state.year);
-    if (id === "headworks") return p.share_pct === 0 ? L("reserve 0", "резерв 0") : `min(${p.share_pct} % × Q${p.ceiling_m3s == null ? "" : `, ${fmt0(p.ceiling_m3s)}`})`;
+    if (id === "headworks") return p.share_pct === 0 ? L("reserve 0", "резерв 0") : ruleFormula(p, "Q", "");
     if (id === "fields") return L(`${fmt1(p.crops_by_year_pct[String(state.year)])} % of demand`, `${fmt1(p.crops_by_year_pct[String(state.year)])} % потребности`);
     if (id === "river_end") return L(`lowest ${fmt1(lowestInYear(p))} m³/s`, `минимум ${fmt1(lowestInYear(p))} м³/с`);
     if (id === "inflow") return L(`mean ${fmt0((v.inflow * 1e6) / ((to - from) * 86400))} m³/s`, `средний ${fmt0((v.inflow * 1e6) / ((to - from) * 86400))} м³/с`);
