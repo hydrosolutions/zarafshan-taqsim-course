@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import ClassVar
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -86,8 +87,9 @@ FORECAST_SEED = SEED + 1  # the forecaster's noise; a different seed from the ri
 MEAN_SHORTAGE_AXIS_MAX = 12.0
 
 # --- Colours (validated categorical slots 1-2, one-hue blue ramp, neutral inks) ---------------------------
-WATER, SHORTAGE = "#2a78d6", "#eb6834"
-INK, SECONDARY, MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#fcfcfb"
+WATER, SHORTAGE = "#2a78d6", "#d95926"
+INK, SECONDARY, MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#6b6a66", "#e1e0d9", "#fcfcfb"
+AXIS, REFERENCE, GREEN = "#b8b7ae", "#c3c2b7", "#1baf7a"
 BLUE_RAMP = LinearSegmentedColormap.from_list("blue_ramp", ["#cde2fb", "#6da7ec", "#256abf", "#0d366b"])
 
 _EXPLORER_DIR = Path(__file__).parent / "rationing_explorer"
@@ -399,6 +401,26 @@ def build_system(
     return system
 
 
+def build_river_farm(inflows: tuple[float, ...]) -> WaterSystem:
+    """Build the three-block system river → farm → downstream: no reservoir, the farm takes what the river brings.
+
+    Args:
+        inflows: Monthly river inflow in Mm³.
+
+    Returns:
+        A validated system, not yet simulated.
+    """
+    years = len(inflows) // 12
+    system = WaterSystem(frequency=Frequency.MONTHLY)
+    system.add_node(Source(id="river", inflow=TimeSeries(values=list(inflows))))
+    system.add_node(Demand(id="farm", requirement=TimeSeries(values=list(MONTHLY_NEED_MM3) * years)))
+    system.add_node(Sink(id="downstream"))
+    for source, target in (("river", "farm"), ("farm", "downstream")):
+        system.add_edge(Edge(id=f"{source}_to_{target}", source=source, target=target))
+    system.validate()
+    return system
+
+
 # --- Reading a run ------------------------------------------------------------------------------------------
 
 
@@ -447,6 +469,20 @@ def drought_window_start(run: RunResult, window_years: int = 20) -> int:
     years = len(run.worst_month_by_year)
     worst = int(run.worst_month_by_year.argmax())
     return int(np.clip(worst - window_years * 3 // 5, 0, years - window_years)) + 1
+
+
+def simulate_without_reservoir(inflows: tuple[float, ...]) -> RunResult:
+    """Run the three-block system (no reservoir) through TaqSim: what the farm gets straight from the river.
+
+    The result has the shape of a plan's run so that it can be drawn next to one; its plan is "no rationing" and
+    its storage is zero throughout, as there is nothing to store water in.
+    """
+    system = build_river_farm(inflows)
+    system.simulate(len(inflows))
+    shortage = shortage_by_month(system)
+    return RunResult(
+        plan=NO_RATIONING, scores=_scores(shortage), storage=np.zeros(len(inflows)), shortage_by_month=shortage
+    )
 
 
 def simulate_plan(
@@ -772,20 +808,96 @@ def explorer_html(payload: dict, compact: bool = False) -> str:
 
 # --- Figures ------------------------------------------------------------------------------------------------
 
+# One look for every figure of the coursebook, the notebooks and the slides: the typeface and palette of the course
+# pages, no chart junk, text kept as text in SVG so that the web page renders it crisp at any size. The settings are
+# applied when a figure is made (`_styled`), not globally, so that other notebooks in the same kernel are untouched.
+_RC = {
+    "font.family": "sans-serif",
+    "font.sans-serif": ["Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
+    "font.size": 9.5,
+    "axes.titlesize": 10.5,
+    "axes.titleweight": "bold",
+    "axes.titlelocation": "left",
+    "axes.titlecolor": INK,
+    "axes.titlepad": 8.0,
+    "axes.labelsize": 9.0,
+    "axes.labelcolor": SECONDARY,
+    "axes.edgecolor": AXIS,
+    "axes.linewidth": 0.8,
+    "axes.facecolor": SURFACE,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+    "axes.grid": True,
+    "axes.axisbelow": True,
+    "grid.color": GRID,
+    "grid.linewidth": 0.6,
+    "xtick.labelsize": 8.5,
+    "ytick.labelsize": 8.5,
+    "xtick.color": MUTED,
+    "ytick.color": MUTED,
+    "xtick.major.size": 3.0,
+    "ytick.major.size": 3.0,
+    "legend.fontsize": 8.5,
+    "legend.frameon": False,
+    "legend.labelcolor": SECONDARY,
+    "lines.linewidth": 1.6,
+    "lines.solid_capstyle": "round",
+    "figure.facecolor": "white",
+    "figure.dpi": 150,  # the notebooks show PNG; the web page and the slides use SVG
+    "savefig.dpi": 200,
+    "svg.fonttype": "none",  # text stays text in SVG
+    "axes.prop_cycle": mpl.cycler(color=[WATER, SHORTAGE, GREEN, "#8e6bd6", MUTED]),
+}
+
+
+def _styled(draw):
+    """Apply the coursebook's figure style while `draw` makes its figure."""
+
+    def wrapped(*args, **kwargs):
+        with mpl.rc_context(_RC):
+            return draw(*args, **kwargs)
+
+    wrapped.__name__, wrapped.__doc__ = draw.__name__, draw.__doc__
+    return wrapped
+
 
 def _style(ax: plt.Axes) -> None:
-    ax.set_facecolor(SURFACE)
-    ax.grid(True, color=GRID, linewidth=0.6)
-    ax.set_axisbelow(True)
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("left", "bottom"):
-        ax.spines[side].set_color("#c3c2b7")
-    ax.tick_params(colors=MUTED, labelsize=8)
-    ax.xaxis.label.set_color(SECONDARY)
-    ax.yaxis.label.set_color(SECONDARY)
-    ax.xaxis.label.set_size(9)
-    ax.yaxis.label.set_size(9)
+    """What the rc settings cannot do per axis: a y axis that starts at the bottom spine, no clutter."""
+    ax.grid(True, axis="y", color=GRID, linewidth=0.6)
+    ax.grid(False, axis="x")
+    ax.tick_params(length=3.0, width=0.6)
+    ax.spines["bottom"].set_color(AXIS)
+    ax.spines["left"].set_color(AXIS)
+
+
+def _label_line(ax: plt.Axes, x: float, y: float, text: str, color: str, dy: float = 0.0, ha: str = "left") -> None:
+    """A label written at the end of a line, in the line's colour, instead of a legend entry."""
+    ax.annotate(
+        text,
+        (x, y),
+        xytext=(4 if ha == "left" else -4, dy),
+        textcoords="offset points",
+        ha=ha,
+        va="center",
+        fontsize=8.5,
+        color=color,
+    )
+
+
+def _score_line(scores: Scores) -> str:
+    return (
+        f"{scores.years_short} of {YEARS} years short · {scores.mean_shortage:.1f} Mm³/yr missed · "
+        f"worst month {scores.worst_month:.0f} %"
+    )
+
+
+def _titles(ax: plt.Axes, label: str, scores: Scores | None) -> None:
+    """A two-line header: the plan's name in bold, its scores in a muted line under it."""
+    if scores is None:
+        ax.set_title(label, loc="left")
+        return
+    ax.set_title(label, loc="left", pad=16)
+    ax.text(0, 1.015, _score_line(scores), transform=ax.transAxes, fontsize=8.5, color=SECONDARY, va="bottom")
 
 
 NETWORK_NODES: tuple[tuple[str, str, str], ...] = (
@@ -811,10 +923,20 @@ WINTER_NETWORK_EDGES: tuple[tuple[str, str], ...] = (
 )
 
 
-def plot_network(winter: bool = False) -> Figure:
+RIVER_FARM_NODES: tuple[tuple[str, str, str], ...] = (NETWORK_NODES[0], NETWORK_NODES[2], NETWORK_NODES[3])
+RIVER_FARM_EDGES: tuple[tuple[str, str], ...] = (("river", "farm"), ("farm", "downstream"))
+
+
+@_styled
+def plot_network(winter: bool = False, reservoir: bool = True) -> Figure:
     """The model as TaqSim sees it: four nodes joined by three edges, water flowing left to right (five nodes and
-    four edges with the winter fields)."""
-    nodes, edges = (WINTER_NETWORK_NODES, WINTER_NETWORK_EDGES) if winter else (NETWORK_NODES, NETWORK_EDGES)
+    four edges with the winter fields; three nodes and two edges without the reservoir)."""
+    if winter:
+        nodes, edges = WINTER_NETWORK_NODES, WINTER_NETWORK_EDGES
+    elif reservoir:
+        nodes, edges = NETWORK_NODES, NETWORK_EDGES
+    else:
+        nodes, edges = RIVER_FARM_NODES, RIVER_FARM_EDGES
     spacing = 3.4 if winter else 2.4
     fig, ax = plt.subplots(figsize=(11.2 if winter else 8.0, 2.4))
     positions = {node_id: (i * spacing, 0.0) for i, (node_id, _, _) in enumerate(nodes)}
@@ -831,7 +953,7 @@ def plot_network(winter: bool = False) -> Figure:
             0.2,
             f"{source}_to_{target}",
             ha="center",
-            fontsize=6 if winter else 7,
+            fontsize=6.5 if winter else 7.5,
             color=MUTED,
             family="monospace",
         )
@@ -839,17 +961,19 @@ def plot_network(winter: bool = False) -> Figure:
         x, y = positions[node_id]
         ax.scatter(x, y, s=3000, marker=_NODE_MARKERS[kind], color=SURFACE, edgecolors=INK, linewidths=1.4, zorder=3)
         label_y = y + 0.08 if kind == "Sink" else y  # a triangle's visual centre sits above its middle
-        size = 8 if len(node_id) <= 10 else 6.5  # "winter_fields" must fit inside its hexagon
+        size = 7 if kind == "Sink" or len(node_id) > 10 else 8  # "downstream" and "winter_fields" must fit their shapes
         ax.text(x, label_y, node_id, ha="center", va="center", fontsize=size, color=INK, weight="bold", zorder=4)
         ax.text(x, -0.62, kind, ha="center", va="top", fontsize=8.5, color=SECONDARY)
         ax.text(x, -0.85, note, ha="center", va="top", fontsize=7.5, color=MUTED)
-    ax.set_xlim(-0.9, positions["downstream"][0] + 0.9)
+    pad = (spacing * (len(NETWORK_NODES) - 1) - positions["downstream"][0]) / 2  # the three blocks stay centred
+    ax.set_xlim(-0.9 - pad, positions["downstream"][0] + 0.9 + pad)
     ax.set_ylim(-1.2, 0.55)
     ax.axis("off")
     fig.tight_layout()
     return fig
 
 
+@_styled
 def plot_system_sketch(regime: Regime = DEFAULT_REGIME) -> Figure:
     """The four blocks and what moves between them."""
     fig, ax = plt.subplots(figsize=(8.0, 1.9))
@@ -880,27 +1004,37 @@ def plot_system_sketch(regime: Regime = DEFAULT_REGIME) -> Figure:
     return fig
 
 
+@_styled
 def plot_inflows(inflows: tuple[float, ...]) -> Figure:
     """Winter and summer inflow of every year, against the reservoir size and the summer need."""
     winter, summer = season_totals(inflows)
     years = np.arange(1, len(winter) + 1)
-    fig, ax = plt.subplots(figsize=(8.0, 3.0))
-    ax.plot(
-        years,
-        summer,
+    fig, ax = plt.subplots(figsize=(8.0, 3.2))
+    ax.plot(years, summer, color=SHORTAGE, linewidth=1.5)
+    ax.plot(years, winter, color=WATER, linewidth=1.5)
+    ax.axhline(SUMMER_NEED_MM3, color=INK, linewidth=0.9, linestyle=(0, (4, 3)))
+    top = max(summer.max(), winter.max()) * 1.12
+    ax.text(
+        1,
+        top * 0.97,
+        "Summer inflow, April to September: when the farm irrigates",
         color=SHORTAGE,
-        linewidth=1.6,
-        label="Summer inflow (April to September, when the farm irrigates)",
+        fontsize=8.5,
+        va="top",
     )
-    ax.plot(
-        years, winter, color=WATER, linewidth=1.6, label="Winter inflow (October to March, when the reservoir fills)"
+    ax.text(
+        1, top * 0.88, "Winter inflow, October to March: when the reservoir fills", color=WATER, fontsize=8.5, va="top"
     )
-    ax.axhline(
-        SUMMER_NEED_MM3, color=MUTED, linewidth=1.0, label=f"What the farm needs in summer, {SUMMER_NEED_MM3:g} Mm³"
+    ax.text(
+        1,
+        top * 0.79,
+        f"Dashed: what the farm needs in summer, {SUMMER_NEED_MM3:g} Mm³",
+        color=INK,
+        fontsize=8.5,
+        va="top",
     )
     ax.set_xlim(0, len(years) + 1)
-    ax.set_ylim(0, max(summer.max(), winter.max()) * 1.35)
-    ax.legend(loc="upper left", frameon=False, fontsize=8, ncol=1)
+    ax.set_ylim(0, top)
     ax.set_xlabel("Year")
     ax.set_ylabel("Inflow (Mm³ per season)")
     _style(ax)
@@ -908,43 +1042,68 @@ def plot_inflows(inflows: tuple[float, ...]) -> Figure:
     return fig
 
 
+@_styled
 def plot_runs(runs: dict[str, RunResult], first_year: int = 1, window_years: int = 20) -> Figure:
     """One row per plan: each year's worst month over all years (left, the shown window shaded) and storage over
     a window of years (right)."""
     fig, axes = plt.subplots(
-        len(runs), 2, figsize=(8.0, 2.1 * len(runs) + 0.4), sharex="col", sharey="col", squeeze=False
+        len(runs),
+        2,
+        figsize=(8.0, 2.45 * len(runs) + 0.5),
+        sharex="col",
+        sharey="col",
+        squeeze=False,
+        gridspec_kw={"width_ratios": [1.25, 1.0]},
     )
     for (label, run), (left, right) in zip(runs.items(), axes, strict=True):
         worst = run.worst_month_by_year
-        left.axvspan(first_year - 0.5, first_year + window_years - 0.5, color=WATER, alpha=0.12, linewidth=0)
-        left.bar(np.arange(1, len(worst) + 1), worst, width=0.7, color=SHORTAGE)
+        left.axvspan(first_year - 0.5, first_year + window_years - 0.5, color=WATER, alpha=0.1, linewidth=0)
+        left.bar(np.arange(1, len(worst) + 1), worst, width=0.75, color=SHORTAGE, linewidth=0)
+        left.set_xlim(0, len(worst) + 1)
         left.set_ylim(0, 100)
+        left.set_yticks([0, 25, 50, 75, 100])
         left.set_ylabel("Worst month of the year\n(% of its need not delivered)")
-        left.set_title(label, loc="left", fontsize=9.5, color=INK, weight="bold")
+        _titles(left, label, run.scores)
         months = np.arange(12 * (first_year - 1), 12 * (first_year - 1 + window_years))
-        right.plot(months / 12 + 1, run.storage[months], color=WATER, linewidth=1.4)
-        if run.plan.trigger > 0.0 and run.plan.ration < 1.0:
-            right.axhline(run.plan.trigger, color=MUTED, linewidth=1.0)
-            right.text(first_year + 0.1, run.plan.trigger + 1.0, "trigger", color=MUTED, fontsize=7.5)
-        right.xaxis.set_major_locator(MaxNLocator(integer=True))
-        right.set_ylim(0, CAPACITY_MM3 * 1.05)
-        right.set_ylabel("Storage (Mm³)")
-        scores = run.scores
-        right.set_title(
-            f"{scores.mean_shortage:.1f} Mm³/yr short · worst month {scores.worst_month:.0f} % · "
-            f"{scores.years_short} years short",
-            loc="left",
-            fontsize=8.5,
-            color=SECONDARY,
+        right.axhline(CAPACITY_MM3, color=AXIS, linewidth=0.8, linestyle=(0, (3, 3)))
+        right.text(
+            first_year + window_years - 0.2, CAPACITY_MM3, "full", color=MUTED, fontsize=8, ha="right", va="bottom"
         )
+        right.plot(months / 12 + 1, run.storage[months], color=WATER, linewidth=1.3)
+        if run.plan.trigger > 0.0 and run.plan.ration < 1.0:
+            right.axhline(run.plan.trigger, color=SHORTAGE, linewidth=0.9, linestyle=(0, (3, 3)))
+            right.text(first_year + 0.1, run.plan.trigger, "trigger", color=SHORTAGE, fontsize=8, va="bottom")
+        right.xaxis.set_major_locator(MaxNLocator(integer=True))
+        right.set_xlim(first_year, first_year + window_years)
+        right.set_ylim(0, CAPACITY_MM3 * 1.12)
+        right.set_ylabel("Water in the reservoir (Mm³)")
         _style(left)
         _style(right)
-    axes[-1][0].set_xlabel("Year (all years; shaded: the years shown on the right)")
-    axes[-1][1].set_xlabel(f"Year (a window of {window_years} years)")
-    fig.tight_layout()
+    axes[-1][0].set_xlabel("Year (all 100 years; shaded: the window shown on the right)")
+    axes[-1][1].set_xlabel(f"Year ({window_years} years around the worst drought)")
+    fig.tight_layout(h_pad=1.4)
     return fig
 
 
+@_styled
+def plot_shortage_years(runs: dict[str, RunResult]) -> Figure:
+    """One row per run: the worst month of each of the 100 years, so that two systems can be compared year by year."""
+    fig, axes = plt.subplots(len(runs), 1, figsize=(8.0, 2.05 * len(runs) + 0.5), sharex=True, squeeze=False)
+    for (label, run), (ax,) in zip(runs.items(), axes, strict=True):
+        worst = run.worst_month_by_year
+        ax.bar(np.arange(1, len(worst) + 1), worst, width=0.75, color=SHORTAGE, linewidth=0)
+        ax.set_xlim(0, len(worst) + 1)
+        ax.set_ylim(0, 100)
+        ax.set_yticks([0, 50, 100])
+        ax.set_ylabel("Worst month\n(% short)")
+        _titles(ax, label, run.scores)
+        _style(ax)
+    axes[-1][0].set_xlabel("Year")
+    fig.tight_layout(h_pad=1.4)
+    return fig
+
+
+@_styled
 def plot_score_maps(table: pd.DataFrame) -> Figure:
     """Each score for every plan: trigger across, ration up, darker = worse."""
     columns = [
@@ -952,15 +1111,15 @@ def plot_score_maps(table: pd.DataFrame) -> Figure:
         ("worst_month", "Worst month (% short)"),
         ("years_short", "Years short (of 100)"),
     ]
-    fig, axes = plt.subplots(1, 3, figsize=(9.0, 3.1), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=(9.0, 3.2), sharey=True)
     triggers, rations = np.sort(table["trigger"].unique()), np.sort(table["ration"].unique())
     for ax, (column, title) in zip(axes, columns, strict=True):
         values = table.pivot(index="ration", columns="trigger", values=column).to_numpy()
-        mesh = ax.pcolormesh(triggers, rations * 100, values, cmap=BLUE_RAMP, shading="nearest")
+        mesh = ax.pcolormesh(triggers, rations * 100, values, cmap=BLUE_RAMP, shading="nearest", rasterized=True)
         colorbar = fig.colorbar(mesh, ax=ax, fraction=0.05, pad=0.03)
-        colorbar.ax.tick_params(labelsize=7, colors=MUTED)
+        colorbar.ax.tick_params(labelsize=7.5, colors=MUTED, length=2)
         colorbar.outline.set_visible(False)
-        ax.set_title(title, loc="left", fontsize=9, color=INK)
+        ax.set_title(title, fontsize=9.5)
         ax.set_xlabel("Trigger (Mm³ in store)")
         _style(ax)
         ax.grid(False)
@@ -969,6 +1128,7 @@ def plot_score_maps(table: pd.DataFrame) -> Figure:
     return fig
 
 
+@_styled
 def plot_tradeoff(
     table: pd.DataFrame,
     found: pd.DataFrame | None = None,
@@ -981,10 +1141,10 @@ def plot_tradeoff(
         found: Plans the optimizer returned, drawn on top.
         named: Runs to label by name.
     """
-    fig, ax = plt.subplots(figsize=(7.0, 4.2))
+    fig, ax = plt.subplots(figsize=(7.4, 4.4))
     beaten = table[~table["unbeaten"]]
     front = front_of(table)
-    ax.scatter(beaten["mean_shortage"], beaten["worst_month"], s=14, color="#c3c2b7", linewidths=0, label="beaten plan")
+    ax.scatter(beaten["mean_shortage"], beaten["worst_month"], s=13, color=REFERENCE, linewidths=0, label="beaten plan")
     ax.plot(front["mean_shortage"], front["worst_month"], color=INK, linewidth=1.0, drawstyle="steps-post", zorder=2)
     ax.scatter(
         front["mean_shortage"],
@@ -1018,22 +1178,38 @@ def plot_tradeoff(
         ax.text(
             0.99,
             0.03,
-            f"{beyond} plans lie further right →",
+            f"{beyond} plans lie further right",
             transform=ax.transAxes,
             ha="right",
             fontsize=8,
             color=MUTED,
         )
-    ax.set_xlabel("Average shortage (Mm³ per year) — less is better")
-    ax.set_ylabel("Worst month (% of need not delivered) — lower is better")
+    ax.set_xlabel("Average shortage (Mm³ per year)")
+    ax.set_ylabel("Worst month (% of its need not delivered)")
     ax.set_xlim(0, MEAN_SHORTAGE_AXIS_MAX)
     ax.set_ylim(0, 100)
-    ax.legend(frameon=False, fontsize=8, labelcolor=SECONDARY, loc="upper right")
+    _better_arrows(ax)
+    ax.legend(loc="upper right")
     _style(ax)
     fig.tight_layout()
     return fig
 
 
+def _better_arrows(ax: plt.Axes) -> None:
+    """Two small reminders in the corner: left is better, down is better."""
+    ax.text(
+        0.01,
+        0.02,
+        "better: further left (less water missed) and further down (milder worst month)",
+        transform=ax.transAxes,
+        fontsize=8,
+        color=MUTED,
+        ha="left",
+        va="bottom",
+    )
+
+
+@_styled
 def plot_front_shift(fronts: dict[str, pd.DataFrame]) -> Figure:
     """Compare the unbeaten plans of two or more score tables (e.g. without and with evaporation)."""
     fig, ax = plt.subplots(figsize=(7.0, 3.8))
@@ -1051,16 +1227,18 @@ def plot_front_shift(fronts: dict[str, pd.DataFrame]) -> Figure:
             markeredgecolor=SURFACE,
             label=label,
         )
-    ax.set_xlabel("Average shortage (Mm³ per year) — less is better")
-    ax.set_ylabel("Worst month (% short) — lower is better")
+    ax.set_xlabel("Average shortage (Mm³ per year)")
+    ax.set_ylabel("Worst month (% of its need not delivered)")
     ax.set_xlim(0, MEAN_SHORTAGE_AXIS_MAX)
     ax.set_ylim(0, 100)
-    ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY, loc="upper right")
+    _better_arrows(ax)
+    ax.legend(loc="upper right")
     _style(ax)
     fig.tight_layout()
     return fig
 
 
+@_styled
 def plot_regime_comparison(cases: dict[str, tuple[tuple[float, ...], pd.DataFrame]]) -> Figure:
     """Two or three rivers side by side: their average month (left) and their unbeaten plans (right).
 
@@ -1105,11 +1283,12 @@ def plot_regime_comparison(cases: dict[str, tuple[tuple[float, ...], pd.DataFram
     left.set_title("Same water per year, different timing", loc="left", fontsize=10, color=INK)
     right.set_xlim(0, MEAN_SHORTAGE_AXIS_MAX)
     right.set_ylim(0, 100)
-    right.set_xlabel("Average shortage (Mm³ per year) — less is better")
-    right.set_ylabel("Worst month (% short) — lower is better")
+    right.set_xlabel("Average shortage (Mm³ per year)")
+    right.set_ylabel("Worst month (% of its need not delivered)")
     right.set_title("The unbeaten plans", loc="left", fontsize=10, color=INK)
+    _better_arrows(right)
     for ax in (left, right):
-        ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY)
+        ax.legend()
         _style(ax)
     fig.tight_layout()
     return fig
@@ -1121,6 +1300,7 @@ def plot_regime_comparison(cases: dict[str, tuple[tuple[float, ...], pd.DataFram
 _FRONT_COLORS = (WATER, SHORTAGE, "#1baf7a", "#8e6bd6", MUTED)
 
 
+@_styled
 def plot_winter_fronts(fronts: dict[str, pd.DataFrame]) -> Figure:
     """Compare the unbeaten winter plans of two or more winter score tables (e.g. without and with a forecast)."""
     fig, ax = plt.subplots(figsize=(7.0, 3.8))
@@ -1137,16 +1317,27 @@ def plot_winter_fronts(fronts: dict[str, pd.DataFrame]) -> Figure:
             markeredgecolor=SURFACE,
             label=label,
         )
-    ax.set_xlabel("Summer shortage: water the farm did not get (Mm³ per year) — less is better")
-    ax.set_ylabel("Winter shortage: water the winter fields\ndid not get (Mm³ per year) — less is better")
+    ax.set_xlabel("Summer shortage: water the farm did not get (Mm³ per year)")
+    ax.set_ylabel("Winter shortage: water the winter fields\ndid not get (Mm³ per year)")
     ax.set_xlim(left=0)
     ax.set_ylim(0, WINTER_FIELDS_TOTAL_MM3 * 1.05)
-    ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY, loc="upper right")
+    ax.text(
+        0.01,
+        0.02,
+        "better: further left and further down",
+        transform=ax.transAxes,
+        fontsize=8,
+        color=MUTED,
+        ha="left",
+        va="bottom",
+    )
+    ax.legend(loc="upper right")
     _style(ax)
     fig.tight_layout()
     return fig
 
 
+@_styled
 def plot_winter_decisions(
     runs: dict[str, WinterRun], inflows: tuple[float, ...], first_year: int = 1, window_years: int = 20
 ) -> Figure:
@@ -1162,7 +1353,7 @@ def plot_winter_decisions(
     top.text(years[0] - 0.4, WINTER_FIELDS_TOTAL_MM3 + 0.3, "what the winter fields ask for", color=MUTED, fontsize=7.5)
     top.set_ylim(0, WINTER_FIELDS_TOTAL_MM3 * 1.25)
     top.set_ylabel("Delivered in winter (Mm³)")
-    top.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY, loc="upper right", ncol=len(runs))
+    top.legend(loc="upper right", ncol=len(runs))
     bottom.bar(years, summer[years - 1], width=0.7, color=WATER, alpha=0.75)
     bottom.axhline(SUMMER_NEED_MM3, color=MUTED, linewidth=1.0)
     bottom.text(years[0] - 0.4, SUMMER_NEED_MM3 + 1.0, "what the farm needs in summer", color=MUTED, fontsize=7.5)
@@ -1175,6 +1366,7 @@ def plot_winter_decisions(
     return fig
 
 
+@_styled
 def plot_forecast_skill(inflows: tuple[float, ...], skills: tuple[float, ...] = (0.5, 0.9)) -> Figure:
     """One panel per skill: the forecast of each summer against the summer that came."""
     _, summer = season_totals(inflows)
@@ -1184,7 +1376,7 @@ def plot_forecast_skill(inflows: tuple[float, ...], skills: tuple[float, ...] = 
         forecast = np.asarray(seasonal_forecast(inflows, skill))
         ax.plot([0, top], [0, top], color=MUTED, linewidth=1.0)
         ax.scatter(summer, forecast, s=14, color=WATER, alpha=0.8, edgecolors="none")
-        ax.set_title(f"skill {skill:g}", loc="left", fontsize=9.5, color=INK, weight="bold")
+        ax.set_title(f"skill {skill:g}", fontsize=9.5)
         ax.set_xlabel("The summer that came (Mm³)")
         ax.set_xlim(0, top)
         ax.set_ylim(0, top)
@@ -1194,9 +1386,10 @@ def plot_forecast_skill(inflows: tuple[float, ...], skills: tuple[float, ...] = 
     return fig
 
 
+@_styled
 def plot_forecast_value(curve: pd.DataFrame, no_forecast: float, summer_cap: float) -> Figure:
     """The winter shortage the forecast leaves, against its skill, with the no-forecast level for comparison."""
-    fig, ax = plt.subplots(figsize=(6.4, 3.4))
+    fig, ax = plt.subplots(figsize=(6.8, 3.6))
     ax.axhline(no_forecast, color=SHORTAGE, linewidth=1.4, label="no forecast: storage alone")
     ax.plot(
         curve["skill"],
@@ -1212,7 +1405,7 @@ def plot_forecast_value(curve: pd.DataFrame, no_forecast: float, summer_cap: flo
     ax.set_ylabel(f"Winter shortage (Mm³ per year)\nwith the summer shortage held to {summer_cap:g} Mm³")
     ax.set_xlim(0, 1)
     ax.set_ylim(bottom=0)
-    ax.legend(frameon=False, fontsize=8.5, labelcolor=SECONDARY)
+    ax.legend()
     _style(ax)
     fig.tight_layout()
     return fig
