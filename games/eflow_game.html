@@ -165,6 +165,10 @@ header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: cent
 .tile .label { color: var(--ink-2); font-size: 0.9rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 .tile .value { font-size: 1.3rem; font-weight: 650; line-height: 1.15; white-space: nowrap; display: block; }
 .tile .value small { font-size: 0.9rem; font-weight: 500; color: var(--ink-2); margin-left: 2px; }
+.tile .cls { display: inline-block; font-size: 0.86rem; font-weight: 650; line-height: 1.3; padding: 1px 7px; border-radius: 999px; color: #fff; margin-left: 7px; vertical-align: middle; }
+.tile .cls-natural { background: var(--environment); }
+.tile .cls-good { background: var(--energy); }
+.tile .cls-altered { background: var(--deficit); }
 .tile .band { display: block; }
 .tile .band svg { display: block; width: 100%; height: 12px; overflow: visible; }
 .tile .detail { color: var(--muted); font-size: 0.9rem; line-height: 1.2; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -508,7 +512,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       Akkaradarya take their water, day by day for the five years 2019–2023, with the recorded river and the canals' real
       monthly demand. The model has five TaqSim blocks: the inflow, the headworks with TaqSim's environmental-flow rule, the
       canal gate, the fields and the river end. Nothing is stored and nothing is lost between them: on every day, what
-      arrives either goes to the fields or stays in the river. The same kinds of block build the full basin model.</p>
+      arrives either goes to the fields or stays in the river. The same kinds of block build the full basin model. The tab
+      <i>How it works</i>, below the charts, gives the arithmetic of one day and how the river score is made.</p>
       <p><b>What you can change.</b> Two levers, both numbers in the rule of the headworks. The <i>reserve share</i>: the part
       of each day's flow that is kept for the river before the canal takes anything. The <i>reserve ceiling</i>: the most the
       rule ever reserves on one day. With the share at 100 % the ceiling becomes a <i>guaranteed minimum</i>: the first
@@ -516,13 +521,15 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       how much water to leave in the river, but how: as a share of each day, or as a floor that is never crossed.</p>
       <p><b>What you watch.</b> Two results. <i>Crops supplied</i>: the water the fields received over the five years, as a
       share of what the canals asked for. <i>River score</i>: how far the river below the headworks is from its natural
-      regime, on the 33 indicators of hydrologic alteration (monthly flows, extremes and their timing, pulses, rates of
-      change), summarised by the IARI index as implemented in the fishy package. 0 is natural; up to 0.05 counts as close to
+      regime, on the 33 indicators of hydrologic alteration (the mean flow of each month, computed from the daily series;
+      extremes and their timing; pulses; rates of change), summarised by the IARI index as implemented in the fishy package. 0 is natural; up to 0.05 counts as close to
       natural, up to 0.15 as good, above that as altered. Lower is better. Under the tiles, <i>Beaten by</i> says whether
       another plan is at least as good on both results and better on one.</p>
-      <p><b>Why this river is interesting.</b> The canal takes only 16 % of the water, yet with no reserve the river scores
-      0.30, "altered". The reason is <i>when</i> it takes it: the demand starts in March, the month of lowest flow, and the river
-      below the headworks drops to 17 m³/s where in the record it never fell below 26. Leaving a share does little until the
+      <p><b>Why this river is interesting.</b> The canal takes only 16 % of the five years' water (13 % in wet 2019, 21 % in dry 2021), yet with no reserve the river scores
+      0.30, "altered". The reason is <i>when</i> it takes it. The canal starts in March, while the river is still at its winter low,
+      and in September it still asks for 43 m³/s when the summer flood has receded. Under the starting plan the river below
+      the headworks drops to 17 m³/s (late September 2023) where in the record it never fell below 26, and it is below that
+      on 15 days, in April 2021 and September 2023. Leaving a share does little until the
       share is large: up to 50 % the crops still get 99.7 % of their water, and the river is still "altered". A guaranteed
       minimum protects exactly the low days: keeping the first 100 m³/s in the river makes the score "good", at the cost of
       about a quarter of the crops' water. Two plans that give the crops nearly the same water, "leave 80 %" and "the first
@@ -544,7 +551,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       и Аккарадарья, день за днём в течение пяти лет, 2019–2023, с фактическим стоком реки и реальной месячной потребностью
       каналов. В модели пять блоков TaqSim: приток, гидроузел с правилом экологического стока TaqSim, голова канала, поля и
       конец реки. Между ними ничего не хранится и не теряется: каждый день пришедшая вода либо уходит на поля, либо
-      остаётся в реке. Из блоков тех же видов собрана полная модель бассейна.</p>
+      остаётся в реке. Из блоков тех же видов собрана полная модель бассейна. Вкладка <i>Как это работает</i> под
+      графиками показывает арифметику одного дня и то, как складывается оценка реки.</p>
       <p><b>Что вы можете менять.</b> Два рычага, оба — числа в правиле гидроузла. <i>Доля резерва</i>: часть суточного стока,
       которая остаётся реке прежде, чем канал возьмёт что-либо. <i>Потолок резерва</i>: больше этого правило за день не
       резервирует никогда. При доле 100 % потолок становится <i>гарантированным минимумом</i>: первые столько-то кубометров
@@ -552,13 +560,15 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       оставить реке, но и как: долей каждого дня или порогом, ниже которого река не опускается.</p>
       <p><b>За чем вы следите.</b> Два результата. <i>Обеспеченность посевов</i>: вода, полученная полями за пять лет, в долях
       от запрошенного каналами. <i>Оценка реки</i>: насколько река ниже гидроузла отошла от естественного режима по 33
-      показателям гидрологической изменённости (месячные расходы, экстремумы и их сроки, пульсации, скорости изменения),
-      сведённым в индекс IARI в реализации пакета fishy. 0 — естественный режим; до 0.05 считается близким к естественному,
+      показателям гидрологической изменённости (средний расход каждого месяца, вычисленный по суточному ряду; экстремумы
+      и их сроки; пульсации; скорости изменения), сведённым в индекс IARI в реализации пакета fishy. 0 — естественный режим; до 0.05 считается близким к естественному,
       до 0.15 — хорошим, выше — изменённым. Чем меньше, тем лучше. Под плитками строка <i>Побит</i> говорит, есть ли план,
       который не хуже по обоим результатам и лучше хотя бы по одному.</p>
-      <p><b>Чем интересна эта река.</b> Канал берёт лишь 16 % воды, а без резерва оценка реки — 0.30, «изменена». Причина
-      в том, <i>когда</i> он берёт: потребность начинается в марте, в месяц самого низкого стока, и река ниже гидроузла
-      падает до 17 м³/с там, где за весь ряд наблюдений не опускалась ниже 26. Оставлять долю почти бесполезно, пока доля
+      <p><b>Чем интересна эта река.</b> Канал берёт лишь 16 % воды за пять лет (13 % во влажном 2019-м, 21 % в сухом 2021-м), а без резерва оценка реки — 0.30, «изменена». Причина
+      в том, <i>когда</i> он берёт. Канал начинает брать в марте, когда река ещё в зимней межени, а в сентябре всё ещё просит
+      43 м³/с, когда летний паводок уже спал. При исходном плане река ниже гидроузла падает до 17 м³/с (конец сентября
+      2023 года) там, где за весь ряд наблюдений не опускалась ниже 26, и бывает ниже этого 15 дней: в апреле 2021 и в
+      сентябре 2023 года. Оставлять долю почти бесполезно, пока доля
       не велика: до 50 % посевы по-прежнему получают 99.7 % своей воды, а река по-прежнему «изменена». Гарантированный
       минимум защищает именно маловодные дни: первые 100 м³/с, оставленные реке, делают оценку «хорошей» ценой примерно
       четверти воды посевов. Два плана, дающие посевам почти одинаковую воду, «оставить 80 %» и «первые 80 м³/с всегда
@@ -626,6 +636,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
     <section class="tabs-area" id="tabs-area">
       <div class="tabs" role="tablist" aria-label="More">
         <button class="tab" role="tab" id="tabbtn-explorer" aria-controls="tab-explorer" aria-selected="true" type="button" data-i18n>Trade-off explorer</button>
+        <button class="tab" role="tab" id="tabbtn-how" aria-controls="tab-how" aria-selected="false" type="button" data-i18n>How it works</button>
         <button class="tab" role="tab" id="tabbtn-indicators" aria-controls="tab-indicators" aria-selected="false" type="button" data-i18n>The 33 indicators</button>
         <button class="tab" role="tab" id="tabbtn-supply" aria-controls="tab-supply" aria-selected="false" type="button" data-i18n>Canal supply</button>
         <button class="tab" role="tab" id="tabbtn-sources" aria-controls="tab-sources" aria-selected="false" type="button" data-i18n>Sources &amp; assumptions</button>
@@ -661,7 +672,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
         </div>
       </section>
 
-      <section class="tab-panel" id="tab-sources" role="tabpanel" aria-labelledby="tabbtn-sources" hidden>
+      <section class="tab-panel" id="tab-how" role="tabpanel" aria-labelledby="tabbtn-how" hidden>
         <div class="two-col">
           <section class="card" aria-labelledby="model-title">
             <header><div><h2 id="model-title" data-i18n>How one day is computed</h2></div></header>
@@ -672,6 +683,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
             <div id="score-notes" class="prose"></div>
           </section>
         </div>
+      </section>
+      <section class="tab-panel" id="tab-sources" role="tabpanel" aria-labelledby="tabbtn-sources" hidden>
         <div class="two-col">
           <section class="card" aria-labelledby="balance-title">
             <header><div><h2 id="balance-title" data-i18n>Water balance</h2><span class="sub" id="balance-sub"></span></div></header>
@@ -776,7 +789,7 @@ const EflowModel = (() => {
     "Both are numbers in the rule of the Headworks block. The river gets at least the reserve; it also gets whatever the canal does not need.": "Оба — числа в правиле блока «Гидроузел». Река получает как минимум резерв, а сверх того — всё, что не нужно каналу.",
     "Starting plan": "Исходный план", "Example A": "Пример A", "Example B": "Пример B", "Undo": "Отменить", "The plan": "План",
     "Tasks": "Задания", "Start fresh": "Начать заново", "Click again to clear": "Нажмите ещё раз, чтобы сбросить", "Tasks and levers reset.": "Задания и рычаги сброшены.",
-    "Trade-off explorer": "Исследователь компромиссов", "The 33 indicators": "33 показателя", "Canal supply": "Подача в канал", "Sources & assumptions": "Источники и допущения",
+    "Trade-off explorer": "Исследователь компромиссов", "How it works": "Как это работает", "The 33 indicators": "33 показателя", "Canal supply": "Подача в канал", "Sources & assumptions": "Источники и допущения",
     "Crops against the river": "Посевы против реки",
     "Hover a dot for its levers and numbers. Click a dot to load that plan into the levers.": "Наведите на точку, чтобы увидеть её рычаги и числа. Нажмите на точку, чтобы загрузить этот план в рычаги.",
     "How the river score is made": "Как складывается оценка реки",
@@ -1226,7 +1239,7 @@ const EflowModel = (() => {
       const river = h("div", { class: "tile", tabindex: 0, "data-key": "score", role: "group", "aria-label": `${t("River score")}: ${fmt3(p.score)}, ${className(p.score)}` }, [
         h("span", { class: "key", style: "background:var(--environment)" }),
         h("span", { class: "label", text: p.score_is_total ? L("River score (IARI, all 33 indicators)", "Оценка реки (IARI, все 33 показателя)") : L(`River score (mean of ${p.scored} of 33 indicators)`, `Оценка реки (среднее ${p.scored} из 33 показателей)`) }),
-        h("span", { class: "value" }, [fmt3(p.score), " ", h("small", {}, [delta(p.score, START.score, fmt3, "", true)]), warn ? h("span", { class: "mark bad", text: ` ⚠ ${warn}`, title: L(`${warn} warning${warn > 1 ? "s" : ""}: see The 33 indicators`, `Предупреждений: ${warn}; см. вкладку «33 показателя»`) }) : null]),
+        h("span", { class: "value" }, [fmt3(p.score), h("span", { class: `cls ${p.score <= CLASSES.elevato ? "cls-natural" : p.score <= GOOD ? "cls-good" : "cls-altered"}`, text: className(p.score) }), " ", h("small", {}, [delta(p.score, START.score, fmt3, "", true)]), warn ? h("span", { class: "mark bad", text: ` ⚠ ${warn}`, title: L(`${warn} warning${warn > 1 ? "s" : ""}: see The 33 indicators`, `Предупреждений: ${warn}; см. вкладку «33 показателя»`) }) : null]),
         h("span", { class: "detail", text: L(`0 = natural · ${classWord(p.score)} · lowest flow ${fmt1(p.lowest_flow_m3s)} m³/s`, `0 = естественный · ${classWord(p.score)} · минимальный расход ${fmt1(p.lowest_flow_m3s)} м³/с`) }),
       ]);
       attachTip(river, t("River score"), () => [
@@ -1754,7 +1767,7 @@ const EflowModel = (() => {
       id: "share",
       what: () => L("Leave a share. With no ceiling, raise the reserve share step by step. At what share do the crops first get less than 99.5 %?", "Оставить долю. Без потолка поднимайте долю резерва шаг за шагом. При какой доле посевы впервые получают меньше 99.5 %?"),
       done: () => currentCeiling() == null && state.share > 0 && state.share < 100 && currentPlan().crops_pct < 99.5,
-      after: () => { const p = currentPlan(); return L(`At ${p.share_pct} % the canal first goes short: crops ${fmt1(p.crops_pct)} %, river score ${fmt3(p.score)}. Below that share the rule changes nothing: the canal never needs more than the rest. Notice that the score hardly moves until the share is large.`, `При ${p.share_pct} % канал впервые недополучает: посевы ${fmt1(p.crops_pct)} %, оценка реки ${fmt3(p.score)}. Ниже этой доли правило ничего не меняет: каналу никогда не нужно больше остатка. Заметьте, что оценка почти не двигается, пока доля не велика.`); },
+      after: () => { const p = currentPlan(); const g = PLANS.filter((o) => o.ceiling_m3s == null && o.share_pct < 100 && o.score <= GOOD).sort((a, b) => a.share_pct - b.share_pct)[0]; return L(`At ${p.share_pct} % the canal first goes short: crops ${fmt1(p.crops_pct)} %, river score ${fmt3(p.score)}. Below that share the crops lose almost nothing: the canal rarely needs more than the rest. The score has fallen${p.score > GOOD ? ", but the river is still “altered”" : ""}${g ? `; it is “good” only at ${g.share_pct} %, when the crops get ${fmt1(g.crops_pct)} %` : ""}.`, `При ${p.share_pct} % канал впервые недополучает: посевы ${fmt1(p.crops_pct)} %, оценка реки ${fmt3(p.score)}. Ниже этой доли посевы почти ничего не теряют: каналу редко нужно больше остатка. Оценка снизилась${p.score > GOOD ? ", но река всё ещё «изменена»" : ""}${g ? `; «хорошей» она становится лишь при ${g.share_pct} %, когда посевы получают ${fmt1(g.crops_pct)} %` : ""}.`); },
       hint: () => L("Press “Leave a share: no ceiling”, then drag the Reserve share up one step at a time and watch the Crops tile.", "Нажмите «Оставить долю: без потолка», затем двигайте «Долю резерва» вверх по одному шагу и следите за плиткой посевов."),
     },
     {
@@ -1768,7 +1781,7 @@ const EflowModel = (() => {
       id: "compare",
       what: () => L("Compare the two ways. Load Example A and Example B. They give the crops nearly the same water. Which river is closer to natural, and why?", "Сравните два способа. Загрузите Пример A и Пример B. Они дают посевам почти одинаковую воду. Какая река ближе к естественной и почему?"),
       done: () => tasks.loadedA && tasks.loadedB,
-      after: () => PAIR ? L(`A (${planName(PAIR[0])}) gives the crops ${fmt1(PAIR[0].crops_pct)} % at a score of ${fmt3(PAIR[0].score)}; B (${planName(PAIR[1])}) gives ${fmt1(PAIR[1].crops_pct)} % at ${fmt3(PAIR[1].score)}. The share takes most in spring, when the river is lowest and the canal starts; the minimum protects those days. Open The 33 indicators for each to see which indicators differ.`, `A («${planName(PAIR[0])}») даёт посевам ${fmt1(PAIR[0].crops_pct)} % при оценке ${fmt3(PAIR[0].score)}; B («${planName(PAIR[1])}») даёт ${fmt1(PAIR[1].crops_pct)} % при ${fmt3(PAIR[1].score)}. Доля отнимает больше всего весной, когда река ниже всего, а канал только начинает брать; минимум защищает эти дни. Откройте «33 показателя» для каждого, чтобы увидеть, какие показатели различаются.`) : L("Both examples loaded.", "Оба примера загружены."),
+      after: () => PAIR ? L(`A (${planName(PAIR[0])}) gives the crops ${fmt1(PAIR[0].crops_pct)} % at a score of ${fmt3(PAIR[0].score)}; B (${planName(PAIR[1])}) gives ${fmt1(PAIR[1].crops_pct)} % at ${fmt3(PAIR[1].score)}. A takes its ${100 - PAIR[0].share_pct} % on every day, including the lowest days of spring, when the canal starts; B takes nothing below ${fmt0(PAIR[1].ceiling_m3s)} m³/s and more in August and September instead. Open The 33 indicators for each: A's bars are the minima and the March–April flows, B's are August and September.`, `A («${planName(PAIR[0])}») даёт посевам ${fmt1(PAIR[0].crops_pct)} % при оценке ${fmt3(PAIR[0].score)}; B («${planName(PAIR[1])}») даёт ${fmt1(PAIR[1].crops_pct)} % при ${fmt3(PAIR[1].score)}. A отнимает свои ${100 - PAIR[0].share_pct} % каждый день, включая самые маловодные дни весны, когда канал только начинает брать; B не берёт ничего ниже ${fmt0(PAIR[1].ceiling_m3s)} м³/с и вместо этого берёт больше в августе и сентябре. Откройте «33 показателя» для каждого: у A столбики — минимумы и расходы марта–апреля, у B — август и сентябрь.`) : L("Both examples loaded.", "Оба примера загружены."),
       hint: () => L("Press Example A, read the two tiles, press Example B, read them again. Then open the tab The 33 indicators for each.", "Нажмите «Пример A», прочитайте две плитки, нажмите «Пример B», прочитайте их снова. Затем откройте вкладку «33 показателя» для каждого."),
     },
     {
@@ -1783,7 +1796,7 @@ const EflowModel = (() => {
       id: "indicators",
       what: () => L("Back to the starting plan: open The 33 indicators. Which indicators are hurt most when the canal takes all it needs, although it takes only a small part of the year's water?", "Вернитесь к исходному плану и откройте «33 показателя». Какие показатели страдают сильнее всего, когда канал берёт всё, что ему нужно, хотя берёт лишь малую часть годовой воды?"),
       done: () => tasks.indicatorsOpenedWith === START.id && currentPlan() === START,
-      after: () => { const worst = Object.entries(START.indicators).filter(([, v]) => v != null).sort((a, b) => b[1] - a[1]).slice(0, 3); const share = fmt0((100 * yearVolumes(START, state.year).fields) / yearVolumes(START, state.year).inflow); const list = worst.map(([k, v]) => `${pretty(k)} (${fmt2(v)})`).join(", "); return L(`Worst for the starting plan: ${list}. The canal takes ${share} % of the year's water in ${state.year}, but it takes it in spring and late summer, when the river is lowest.`, `Хуже всего для исходного плана: ${list}. В ${state.year} году канал берёт ${share} % годовой воды, но берёт её весной и в конце лета, когда река ниже всего.`); },
+      after: () => { const worst = Object.entries(START.indicators).filter(([, v]) => v != null).sort((a, b) => b[1] - a[1]).slice(0, 3); const share = fmt0((100 * yearVolumes(START, state.year).fields) / yearVolumes(START, state.year).inflow); const five = fmt0((100 * YEARS.reduce((a, y) => a + yearVolumes(START, y).fields, 0)) / YEARS.reduce((a, y) => a + yearVolumes(START, y).inflow, 0)); const list = worst.map(([k, v]) => `${pretty(k)} (${fmt2(v)})`).join(", "); return L(`Worst for the starting plan: ${list}. The canal takes ${share} % of the year's water in ${state.year} (${five} % over the five years), but it hurts the river twice: in April, when it starts while the river is still at its winter low, and in September, when it still asks for ${fmt0(D.demand_curve_m3s[8])} m³/s after the summer flood has receded.`, `Хуже всего для исходного плана: ${list}. В ${state.year} году канал берёт ${share} % годовой воды (${five} % за пять лет), но бьёт по реке дважды: в апреле, когда начинает брать, а река ещё в зимней межени, и в сентябре, когда всё ещё просит ${fmt0(D.demand_curve_m3s[8])} м³/с после спада летнего паводка.`); },
       hint: () => L("Press Starting plan, then the tab The 33 indicators. The longest bars tell you.", "Нажмите «Исходный план», затем вкладку «33 показателя». Самые длинные столбики — ответ."),
       action: () => ({ label: t("Starting plan + indicators"), run: () => { setLevers(START.share_pct, START.ceiling_m3s); setTab("indicators"); } }),
     },
