@@ -24,6 +24,74 @@
   const tooltip = $("rx-tooltip");
   let current = reference;
 
+  // --- Language ------------------------------------------------------------------------------------------
+  // The explorer follows the page: `data-lang` (or `lang`) on <html>, as the coursebook's switcher and the
+  // standalone page set it. English is the default; Russian is the other language. Texts in the markup carry a
+  // data-rx key; the texts written by this script go through txt().
+  const TEXT = {
+    en: {
+      "trigger-before": "Trigger: start rationing when the reservoir holds less than ", "trigger-after": "",
+      "ration-before": "Ration: then deliver ", "ration-after": " of the summer need",
+      "preset-none": "No rationing", "preset-light": "Ration lightly", "preset-deep": "Cut deep",
+      "tile-mean": "Average shortage", "tile-mean-unit": " Mm³ per year not delivered",
+      "tile-worst": "Worst month", "tile-worst-unit": " % of need not delivered",
+      "tile-years": "Years short", "tile-years-unit": " of 100",
+      "load-plan": "Load that plan",
+      "cap-tradeoff-strong": "Every plan is a dot.", "cap-tradeoff": "Left is better (less water undelivered), down is better (milder worst month). Click a dot to load that plan.",
+      "key-current": "your plan", "key-front": "unbeaten plan", "key-beaten": "beaten plan", "key-reference": "no rationing", "key-trigger": "trigger",
+      "cap-shortage-strong": "The worst month of each of the 100 years", "cap-shortage": "(% of that month's need not delivered)",
+      "cap-storage-strong": "Water in the reservoir", "cap-storage": "(Mm³),",
+      mm3: "Mm³", "axis-mean": "Average shortage (Mm³ per year)", "axis-worst": "Worst month (% of need not delivered)", "axis-year": "Year",
+      "further-right": (n) => `${n} plans lie further right →`, "no-rationing": "no rationing", trigger: "trigger",
+      "tip-mean": " not delivered per year, on average", "tip-worst": " short in the worst month", years: (n) => `${n} years`, "tip-years": " of 100 with a shortage",
+      "tip-plan": (trigger, ration, unbeaten) => `Trigger ${trigger} Mm³, ration ${ration} · ${unbeaten ? "unbeaten" : "beaten"}`,
+      year: (y) => `Year ${y}`, "tip-short-yours": " short in its worst month, your plan", "tip-short-ref": " with no rationing",
+      season: (m) => (m < 6 ? `winter month ${m + 1}` : `summer month ${m - 5}`),
+      "tip-store-yours": " in store with your plan", "tip-store-ref": " with no rationing",
+      same: "same as no rationing", "ref-value": (v) => `no rationing: ${v}`,
+      beaten: (trigger, ration, mean, worst) => `This plan is beaten. Trigger ${trigger} Mm³ with ration ${ration} leaves ${mean} Mm³ per year undelivered and is ${worst} % short in its worst month: no worse on either count, better on at least one.`,
+      unbeaten: "No plan on the grid beats this one: every plan with a milder worst month leaves more water undelivered.",
+      window: (a, b) => `years ${a}–${b}, around the worst year`,
+    },
+    ru: {
+      "trigger-before": "Порог: начинать лимитирование, когда в водохранилище меньше ", "trigger-after": "",
+      "ration-before": "Лимит: затем подавать ", "ration-after": " летней потребности",
+      "preset-none": "Без лимитирования", "preset-light": "Лёгкое лимитирование", "preset-deep": "Жёсткое лимитирование",
+      "tile-mean": "Средний дефицит", "tile-mean-unit": " млн м³ в год не подано",
+      "tile-worst": "Худший месяц", "tile-worst-unit": " % потребности не подано",
+      "tile-years": "Лет с дефицитом", "tile-years-unit": " из 100",
+      "load-plan": "Загрузить этот план",
+      "cap-tradeoff-strong": "Каждый план — точка.", "cap-tradeoff": "Левее — лучше (меньше неподанной воды), ниже — лучше (мягче худший месяц). Нажмите на точку, чтобы загрузить этот план.",
+      "key-current": "ваш план", "key-front": "непревзойдённый план", "key-beaten": "превзойдённый план", "key-reference": "без лимитирования", "key-trigger": "порог",
+      "cap-shortage-strong": "Худший месяц каждого из 100 лет", "cap-shortage": "(% потребности этого месяца не подано)",
+      "cap-storage-strong": "Вода в водохранилище", "cap-storage": "(млн м³),",
+      mm3: "млн м³", "axis-mean": "Средний дефицит (млн м³ в год)", "axis-worst": "Худший месяц (% потребности не подано)", "axis-year": "Год",
+      "further-right": (n) => `ещё ${n} планов лежат правее →`, "no-rationing": "без лимитирования", trigger: "порог",
+      "tip-mean": " не подано в год в среднем", "tip-worst": " дефицита в худшем месяце", years: (n) => `${n} лет`, "tip-years": " из 100 с дефицитом",
+      "tip-plan": (trigger, ration, unbeaten) => `Порог ${trigger} млн м³, лимит ${ration} · ${unbeaten ? "непревзойдён" : "превзойдён"}`,
+      year: (y) => `Год ${y}`, "tip-short-yours": " дефицита в худшем месяце, ваш план", "tip-short-ref": " без лимитирования",
+      season: (m) => (m < 6 ? `зимний месяц ${m + 1}` : `летний месяц ${m - 5}`),
+      "tip-store-yours": " в запасе при вашем плане", "tip-store-ref": " без лимитирования",
+      same: "как без лимитирования", "ref-value": (v) => `без лимитирования: ${v}`,
+      beaten: (trigger, ration, mean, worst) => `Этот план превзойдён. Порог ${trigger} млн м³ с лимитом ${ration} оставляет неподанными ${mean} млн м³ в год и даёт ${worst} % дефицита в худшем месяце: не хуже ни по одному счёту, лучше хотя бы по одному.`,
+      unbeaten: "Ни один план сетки не превосходит этот: каждый план с более мягким худшим месяцем оставляет больше неподанной воды.",
+      window: (a, b) => `годы ${a}–${b}, вокруг худшего года`,
+    },
+  };
+  const pageLang = () => {
+    const html = document.documentElement;
+    const l = (html.getAttribute("data-lang") || html.getAttribute("lang") || "en").slice(0, 2).toLowerCase();
+    return l === "ru" ? "ru" : "en";
+  };
+  let lang = pageLang();
+  const txt = (key, ...args) => {
+    const v = TEXT[lang][key] ?? TEXT.en[key];
+    return typeof v === "function" ? v(...args) : v;
+  };
+  function applyLanguage() {
+    for (const el of root.querySelectorAll("[data-rx]")) el.textContent = txt(el.dataset.rx);
+  }
+
   function el(name, attrs, parent) {
     const node = document.createElementNS(NS, name);
     for (const [k, v] of Object.entries(attrs || {})) node.setAttribute(k, v);
@@ -37,15 +105,19 @@
   }
   const scale = (d0, d1, r0, r1) => (v) => r0 + ((v - d0) / (d1 - d0)) * (r1 - r0);
   const cssVar = (name) => getComputedStyle(root).getPropertyValue(name).trim();
-  const C = {
-    water: cssVar("--water"),
-    shortage: cssVar("--shortage"),
-    reference: cssVar("--reference"),
-    ink: cssVar("--ink"),
-    muted: cssVar("--muted"),
-    grid: cssVar("--grid"),
-    axis: cssVar("--axis"),
-    surface: cssVar("--surface"),
+  // Colours are read when the charts are drawn, so that a theme change is picked up by a redraw.
+  let C = {};
+  const readColors = () => {
+    C = {
+      water: cssVar("--water"),
+      shortage: cssVar("--shortage"),
+      reference: cssVar("--reference"),
+      ink: cssVar("--ink"),
+      muted: cssVar("--muted"),
+      grid: cssVar("--grid"),
+      axis: cssVar("--axis"),
+      surface: cssVar("--surface"),
+    };
   };
   const fmt = (v, digits) => v.toFixed(digits === undefined ? 0 : digits);
   const percent = (ration) => fmt(ration * 100) + " %";
@@ -110,11 +182,11 @@
       y: [0, 100],
       xTicks: Array.from({ length: meanTop / 2 + 1 }, (_, i) => i * 2),
       yTicks: [0, 20, 40, 60, 80, 100],
-      xTitle: "Average shortage (Mm³ per year)",
+      xTitle: txt("axis-mean"),
       margin: { t: 22 },
     });
     const { x, y, m, W } = tradeoff;
-    text(tradeoffSvg, m.l - 30, 12, "Worst month (% of need not delivered)", { class: "rx-axis-title" });
+    text(tradeoffSvg, m.l - 30, 12, txt("axis-worst"), { class: "rx-axis-title" });
     for (const p of plans) {
       if (!p.unbeaten && onChart(p)) el("circle", { cx: x(p.mean_shortage), cy: y(p.worst_month), r: 2.6, fill: C.reference }, tradeoffSvg);
     }
@@ -128,8 +200,8 @@
       el("circle", { cx: x(p.mean_shortage), cy: y(p.worst_month), r: 4, fill: C.ink, stroke: C.surface, "stroke-width": 1.5 }, tradeoffSvg);
     }
     const beyond = plans.filter((p) => !onChart(p)).length;
-    if (beyond) text(tradeoffSvg, W - m.r, y(0) - 8, `${beyond} plans lie further right →`, { "text-anchor": "end" });
-    const refLabel = text(tradeoffSvg, x(reference.mean_shortage) + 10, y(reference.worst_month) - 8, "no rationing", { class: "rx-label" });
+    if (beyond) text(tradeoffSvg, W - m.r, y(0) - 8, txt("further-right", beyond), { "text-anchor": "end" });
+    const refLabel = text(tradeoffSvg, x(reference.mean_shortage) + 10, y(reference.worst_month) - 8, txt("no-rationing"), { class: "rx-label" });
     refLabel.setAttribute("pointer-events", "none");
     hoverRing = el("circle", { r: 8, fill: "none", stroke: C.muted, "stroke-width": 1.5, visibility: "hidden" }, tradeoffSvg);
     marker = el("circle", { r: 7, fill: C.water, stroke: C.surface, "stroke-width": 2 }, tradeoffSvg);
@@ -161,10 +233,10 @@
     hoverRing.setAttribute("cy", tradeoff.y(p.worst_month));
     hoverRing.setAttribute("visibility", "visible");
     showTooltip(event, [
-      [fmt(p.mean_shortage, 1) + " Mm³", " not delivered per year, on average"],
-      [fmt(p.worst_month) + " %", " short in the worst month"],
-      [p.years_short + " years", " of 100 with a shortage"],
-      ["", `Trigger ${fmt(p.trigger)} Mm³, ration ${percent(p.ration)} · ${p.unbeaten ? "unbeaten" : "beaten"}`],
+      [fmt(p.mean_shortage, 1) + " " + txt("mm3"), txt("tip-mean")],
+      [fmt(p.worst_month) + " %", txt("tip-worst")],
+      [txt("years", p.years_short), txt("tip-years")],
+      ["", txt("tip-plan", fmt(p.trigger), percent(p.ration), p.unbeaten)],
     ]);
   });
   tradeoffSvg.addEventListener("pointerleave", () => {
@@ -189,7 +261,7 @@
       y: [0, 100],
       xTicks: [1, 20, 40, 60, 80, 100],
       yTicks: [0, 50, 100],
-      xTitle: "Year",
+      xTitle: txt("axis-year"),
     });
     const { x, y } = shortage;
     const band = x(2) - x(1);
@@ -207,9 +279,9 @@
     shortageCross.setAttribute("x2", shortage.x(year));
     shortageCross.setAttribute("visibility", "visible");
     showTooltip(event, [
-      ["Year " + year, ""],
-      [fmt(current.shortage[year - 1], 1) + " %", " short in its worst month, your plan"],
-      [fmt(reference.shortage[year - 1], 1) + " %", " with no rationing"],
+      [txt("year", year), ""],
+      [fmt(current.shortage[year - 1], 1) + " %", txt("tip-short-yours")],
+      [fmt(reference.shortage[year - 1], 1) + " %", txt("tip-short-ref")],
     ]);
   });
   shortageSvg.addEventListener("pointerleave", () => {
@@ -237,11 +309,11 @@
       xTicks: Array.from({ length: data.window.years / 5 + 1 }, (_, i) => Math.min(i * 60, months - 1)),
       xTickLabel: (tick) => String(first + Math.round(tick / 12)),
       yTicks: [0, data.capacity / 2, data.capacity],
-      xTitle: "Year",
+      xTitle: txt("axis-year"),
     });
     el("path", { d: linePath(reference.storage), fill: "none", stroke: C.reference, "stroke-width": 1.5 }, storageSvg);
     triggerLine = el("line", { x1: storage.x(0), x2: storage.x(months - 1), stroke: C.muted, "stroke-width": 1 }, storageSvg);
-    triggerLabel = text(storageSvg, storage.x(0) + 4, 0, "trigger");
+    triggerLabel = text(storageSvg, storage.x(0) + 4, 0, txt("trigger"));
     storageLine = el("path", { fill: "none", stroke: C.water, "stroke-width": 2, "stroke-linejoin": "round" }, storageSvg);
     storageCross = el("line", { y1: storage.y(data.capacity), y2: storage.y(0), stroke: C.muted, "stroke-width": 1, visibility: "hidden" }, storageSvg);
   }
@@ -252,12 +324,10 @@
     storageCross.setAttribute("x1", storage.x(i));
     storageCross.setAttribute("x2", storage.x(i));
     storageCross.setAttribute("visibility", "visible");
-    const month = i % 12;
-    const season = month < 6 ? `winter month ${month + 1}` : `summer month ${month - 5}`;
     showTooltip(event, [
-      [`Year ${data.window.start_year + Math.floor(i / 12)}`, `, ${season}`],
-      [fmt(current.storage[i], 1) + " Mm³", " in store with your plan"],
-      [fmt(reference.storage[i], 1) + " Mm³", " with no rationing"],
+      [txt("year", data.window.start_year + Math.floor(i / 12)), `, ${txt("season", i % 12)}`],
+      [fmt(current.storage[i], 1) + " " + txt("mm3"), txt("tip-store-yours")],
+      [fmt(reference.storage[i], 1) + " " + txt("mm3"), txt("tip-store-ref")],
     ]);
   });
   storageSvg.addEventListener("pointerleave", () => {
@@ -281,14 +351,14 @@
     const gain = (p) => (plan.mean_shortage - p.mean_shortage) / meanTop + (plan.worst_month - p.worst_month) / 100;
     return candidates.sort((a, b) => gain(b) - gain(a))[0] || null;
   }
-  const compare = (value, base, digits) => (Math.abs(value - base) < 1e-9 ? "same as no rationing" : `no rationing: ${fmt(base, digits)}`);
+  const compare = (value, base, digits) => (Math.abs(value - base) < 1e-9 ? txt("same") : txt("ref-value", fmt(base, digits)));
 
   let suggestion = null;
   function select(plan) {
     current = plan;
     triggerInput.value = triggers.indexOf(plan.trigger);
     rationInput.value = rations.indexOf(plan.ration);
-    $("rx-trigger-out").textContent = fmt(plan.trigger) + " Mm³";
+    $("rx-trigger-out").textContent = fmt(plan.trigger) + " " + txt("mm3");
     $("rx-ration-out").textContent = percent(plan.ration);
     $("rx-mean").textContent = fmt(plan.mean_shortage, 1);
     $("rx-worst").textContent = fmt(plan.worst_month);
@@ -299,8 +369,8 @@
 
     suggestion = plan.unbeaten ? null : betterPlan(plan);
     $("rx-verdict-text").textContent = suggestion
-      ? `This plan is beaten. Trigger ${fmt(suggestion.trigger)} Mm³ with ration ${percent(suggestion.ration)} leaves ${fmt(suggestion.mean_shortage, 1)} Mm³ per year undelivered and is ${fmt(suggestion.worst_month)} % short in its worst month: no worse on either count, better on at least one.`
-      : "No plan on the grid beats this one: every plan with a milder worst month leaves more water undelivered.";
+      ? txt("beaten", fmt(suggestion.trigger), percent(suggestion.ration), fmt(suggestion.mean_shortage, 1), fmt(suggestion.worst_month))
+      : txt("unbeaten");
     $("rx-verdict-load").hidden = !suggestion;
 
     marker.setAttribute("cx", tradeoff.x(Math.min(plan.mean_shortage, meanTop)));
@@ -330,9 +400,11 @@
   });
   $("rx-verdict-load").addEventListener("click", () => suggestion && select(suggestion));
 
-  const last = data.window.start_year + data.window.years - 1;
-  $("rx-window").textContent = `years ${data.window.start_year}–${last}, around the worst year`;
   function drawAll() {
+    readColors();
+    applyLanguage();
+    const last = data.window.start_year + data.window.years - 1;
+    $("rx-window").textContent = txt("window", data.window.start_year, last);
     drawTradeoff();
     drawShortage();
     drawStorage();
@@ -342,11 +414,23 @@
   drawAll();
   let lastWidth = root.getBoundingClientRect().width;
   let pending = 0;
+  const redrawSoon = () => {
+    clearTimeout(pending);
+    pending = setTimeout(drawAll, 80);
+  };
   new ResizeObserver(() => {
     const width = root.getBoundingClientRect().width;
     if (Math.abs(width - lastWidth) < 1) return;
     lastWidth = width;
-    clearTimeout(pending);
-    pending = setTimeout(drawAll, 80);
+    redrawSoon();
   }).observe(root);
+  // A change of language or theme on the page: new texts and colours.
+  if (typeof MutationObserver !== "undefined") {
+    new MutationObserver(() => {
+      const now = pageLang();
+      if (now !== lang) lang = now;
+      redrawSoon();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "lang", "data-theme"] });
+  }
+  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redrawSoon);
 })();

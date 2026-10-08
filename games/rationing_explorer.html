@@ -3,19 +3,236 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A reservoir and a farm: the plan explorer</title>
+<title>A reservoir and a farm</title>
+<meta name="description" content="A reservoir and a farm: the plan explorer. Every one of the 441 rationing plans of the TaqSim course notebook, scored in TaqSim on the same synthetic river. Two knobs (trigger and ration), three scores, the unbeaten plans. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026. English and Russian.">
 <style>
-  body { margin: 0; padding: 24px 16px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-         color: #1f2328; background: #ffffff; max-width: 1100px; margin-inline: auto; }
-  h1 { font-size: 1.5rem; margin: 0 0 4px; }
-  p.lead { margin: 0 0 20px; color: #57606a; }
+/* Tokens: the same palette as the two other game pages of the course, in light and dark */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --secondary: #52514e;
+  --muted: #6b6a66;
+  --grid: #e1e0d9;
+  --axis: #878680;
+  --border: rgba(11, 11, 11, 0.14);
+  --river: #4a6d8c;
+  --storage: #56657a;
+  --irrigation: #007a00;
+  --environment: #0f7f58;
+  --water: #2a78d6;
+  --shortage: #d95926;
+  --reference: #b8b7ae;
+  --accent: #1f66c1;
+  --focus: #1f66c1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --secondary: #c3c2b7;
+    --muted: #a3a29a;
+    --grid: #2c2c2a;
+    --axis: #6e6d68;
+    --border: rgba(255, 255, 255, 0.16);
+    --river: #7f9fbb;
+    --storage: #94a3b8;
+    --irrigation: #1a9a1a;
+    --environment: #199e70;
+    --water: #3987e5;
+    --shortage: #f0865a;
+    --reference: #5f5e58;
+    --accent: #5b9cee;
+    --focus: #5b9cee;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --ink: #ffffff;
+  --ink-2: #c3c2b7;
+  --secondary: #c3c2b7;
+  --muted: #a3a29a;
+  --grid: #2c2c2a;
+  --axis: #6e6d68;
+  --border: rgba(255, 255, 255, 0.16);
+  --river: #7f9fbb;
+  --storage: #94a3b8;
+  --irrigation: #1a9a1a;
+  --environment: #199e70;
+  --water: #3987e5;
+  --shortage: #f0865a;
+  --reference: #5f5e58;
+  --accent: #5b9cee;
+  --focus: #5b9cee;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; font-size: 14px; font-size: clamp(14px, 0.85vw + 3px, 18px); }
+body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1, h2, h3 { line-height: 1.25; margin: 0; }
+h1 { font-size: 1.25rem; font-weight: 650; }
+h1 .thin { font-weight: 400; color: var(--ink-2); }
+h2 { font-size: 1.02rem; font-weight: 620; }
+p { margin: 0.35rem 0; }
+button { font: inherit; color: inherit; }
+code { font: 0.9rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px 32px; }
+header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.top-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.segmented button { border: 0; background: transparent; min-height: 28px; padding: 4px 10px; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.btn { border: 1px solid var(--border); background: var(--surface-2); border-radius: 8px; padding: 5px 10px; min-height: 28px; cursor: pointer; color: var(--ink); }
+.btn.small { padding: 2px 9px; font-size: 0.9rem; min-height: 28px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+.prose { font-size: 0.95rem; color: var(--ink-2); }
+.prose p { margin: 0 0 10px; break-inside: avoid; }
+.prose b, .prose strong { color: var(--ink); }
+/* the "Before you play" panel, as on the two other game pages */
+.intro { margin: 0 0 10px; padding: 10px 16px; }
+.intro summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.intro summary::-webkit-details-marker { display: none; }
+.intro summary::before { content: "▸"; font-size: 0.9em; opacity: 0.7; }
+.intro[open] summary::before { content: "▾"; }
+.intro summary h2 { margin: 0; font-size: 1.05rem; }
+.intro .prose { column-width: 52ch; column-gap: 36px; margin-top: 6px; }
+.intro .sketch { column-span: all; margin: 4px 0 10px; }
+.intro .sketch svg { display: block; width: 100%; max-width: 820px; height: auto; }
+.sketch text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--ink); font-size: 15px; }
+.sketch .tag { fill: var(--ink-2); font-size: 11px; font-weight: 650; letter-spacing: 0.06em; }
+.sketch .name { font-weight: 620; font-size: 17px; }
+.sketch .small { fill: var(--ink-2); font-size: 13px; }
+.sketch .box { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.4; }
+.sketch .box.river { stroke: var(--river); fill: color-mix(in srgb, var(--river) 12%, var(--surface)); }
+.sketch .box.store { stroke: var(--storage); stroke-width: 1.8; }
+.sketch .box.farm { stroke: var(--irrigation); fill: color-mix(in srgb, var(--irrigation) 12%, var(--surface)); }
+.sketch .box.sink { stroke: var(--environment); fill: color-mix(in srgb, var(--environment) 12%, var(--surface)); }
+.sketch .link { fill: none; stroke: var(--river); stroke-width: 6; }
+.sketch .head { fill: var(--river); }
+.sketch .edge { fill: var(--muted); font-size: 12px; }
+footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
+/* the explorer fragment follows the page's tokens and type size; its own stylesheet (written for the coursebook) comes
+   later in the document, so these rules need the extra specificity of `html` */
+html #rationing-explorer { color-scheme: inherit; --surface: inherit; --ink: inherit; --secondary: inherit; --muted: inherit; --grid: inherit; --axis: inherit; --border: inherit; --water: inherit; --shortage: inherit; --reference: inherit; --page: var(--surface); font-size: 1rem; margin: 0; }
+html #rationing-explorer button:hover { background: var(--surface-2); }
+html #rationing-explorer .rx-tile-label, html #rationing-explorer .rx-tile-value small, html #rationing-explorer .rx-tile-note, html #rationing-explorer figcaption, html #rationing-explorer .rx-legend, html #rationing-explorer .rx-tooltip { font-size: 0.9rem; }
+html #rationing-explorer .rx-tile-value { font-size: 1.7rem; }
+html #rationing-explorer svg text { font-size: 12px; }
 </style>
+<script>
+// language and theme, before the page is drawn: the explorer fragment reads data-lang and data-theme from <html>
+(function () {
+  var lang = "en", theme = "auto";
+  try { lang = localStorage.getItem("rationingExplorer.lang") === "ru" ? "ru" : "en"; theme = localStorage.getItem("rationingExplorer.theme") || "auto"; } catch (e) { /* no storage */ }
+  document.documentElement.setAttribute("lang", lang);
+  document.documentElement.setAttribute("data-lang", lang);
+  if (theme === "light" || theme === "dark") document.documentElement.setAttribute("data-theme", theme);
+})();
+</script>
 </head>
 <body>
-<h1>A reservoir and a farm: the plan explorer</h1>
-<p class="lead">Every one of the 441 rationing plans of the course notebook, scored in TaqSim on the same river.
-Click a plan to see its storage and its shortages; the unbeaten plans are the ones no other plan beats on every score.
-Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the TaqSim course; works offline.</p>
+<div class="wrap">
+  <header class="top">
+    <h1 id="page-title"><span data-lang="en">A reservoir and a farm <span class="thin">the plan explorer</span></span><span data-lang="ru" hidden>Водохранилище и поле <span class="thin">исследователь планов</span></span></h1>
+    <div class="top-controls">
+      <div class="segmented" id="lang-buttons" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></div>
+      <button class="btn small" id="theme-toggle" type="button">Theme: auto</button>
+    </div>
+  </header>
+
+  <!-- intro:start -->
+  <details class="card intro" id="intro" open>
+    <summary><h2><span data-lang="en">Before you play: what this explorer shows, and why</span><span data-lang="ru" hidden>Прежде чем играть: что показывает этот исследователь и зачем</span></h2></summary>
+    <div class="prose" data-lang="en">
+      <div class="sketch" aria-label="Four TaqSim blocks: river, reservoir, farm, downstream"><svg viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
+  <g>
+    <rect class="box river" x="10" y="22" width="170" height="66" rx="8"/>
+    <text class="tag" x="95" y="43" text-anchor="middle">SOURCE</text>
+    <text class="name" x="95" y="64" text-anchor="middle">River</text>
+    <text class="small" x="95" y="81" text-anchor="middle">100 synthetic years</text>
+  </g>
+  <path class="link" d="M 182 55 L 214 55"/><path class="head" d="M 212 47 L 226 55 L 212 63 Z"/>
+  <g>
+    <rect class="box store" x="228" y="22" width="190" height="66" rx="8"/>
+    <text class="tag" x="323" y="43" text-anchor="middle">STORAGE</text>
+    <text class="name" x="323" y="64" text-anchor="middle">Reservoir</text>
+    <text class="small" x="323" y="81" text-anchor="middle">40 Mm³, two knobs</text>
+  </g>
+  <path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
+  <text class="edge" x="436" y="40" text-anchor="middle">release</text>
+  <g>
+    <rect class="box farm" x="466" y="22" width="190" height="66" rx="8"/>
+    <text class="tag" x="561" y="43" text-anchor="middle">DEMAND</text>
+    <text class="name" x="561" y="64" text-anchor="middle">Farm</text>
+    <text class="small" x="561" y="81" text-anchor="middle">45 Mm³ summer · 5 winter</text>
+  </g>
+  <path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/>
+  <g>
+    <rect class="box sink" x="704" y="22" width="106" height="66" rx="8"/>
+    <text class="tag" x="757" y="43" text-anchor="middle">SINK</text>
+    <text class="name" x="757" y="64" text-anchor="middle">Downstream</text>
+    <text class="small" x="757" y="81" text-anchor="middle">unused water</text>
+  </g>
+</svg></div>
+      <p><b>What you see.</b> The smallest water system that shows a real trade-off: a river, a reservoir of 40 Mm³ that fills in winter, a farm that needs 45 Mm³ in summer and 5 in winter, and the outlet where unused water leaves. Four TaqSim blocks, three edges, 100 model years of a made-up river built from the averages of a classic study (Hashimoto, Stedinger and Loucks, 1982), with the seasons swapped so that the river peaks in summer, as rivers in Central Asia do. Every one of the 441 plans was run in TaqSim over the 100 years; nothing is recalculated in the browser.</p>
+      <p><b>What you can change.</b> The two knobs of the reservoir's release rule. The <i>trigger</i>: start rationing when the reservoir holds less than this. The <i>ration</i>: then deliver only this share of the summer need. A trigger of 0, or a ration of 100 %, means no rationing: deliver in full until the reservoir is empty.</p>
+      <p><b>What you watch.</b> Three scores over the 100 years. <i>Average shortage</i>: water not delivered per year. <i>Worst month</i>: the largest share of a month's need that was not delivered. <i>Years short</i>: how many of the 100 years had a shortage at all. A plan is <i>unbeaten</i> when no other plan is at least as good on the first two scores and better on one; those plans are the filled dots and the stepped line in the chart.</p>
+      <p><b>Why this is interesting.</b> Delivering in full until the reservoir is empty wastes nothing: it has the lowest average shortage of all 441 plans, 1.11 Mm³ a year. But when the water runs out, the last weeks of summer get almost nothing: its worst month is 72 % short. Rationing early spreads the shortage over more months and more years: the worst month gets milder, the average shortage grows. The line of unbeaten plans bends: from 72 % to 50 % in the worst month costs 0.3 Mm³ a year; going on to 35 % costs another 2.3 Mm³ a year. The first steps are cheap, the last ones expensive. And 336 of the 441 plans are beaten by some other plan, including the reasonable-sounding “ration lightly”.</p>
+      <p><b>What to try.</b> Drag the two knobs, or click a dot in the trade-off chart. Load the three example plans and read the three tiles. Find the bend of the line: the plan from which a milder worst month starts to cost much more water. Then look at the two lower charts: the worst month of each year, and the reservoir's storage around the worst drought, with the trigger line that starts the rationing.</p>
+      <p><b>What a water manager takes away.</b> What you count decides the answer: with one goal there is one best plan; with two goals there is a line of compromises, and choosing among them is a decision, not a calculation. Choosing the goals is the most important modelling decision, and it is not a technical one. Intuition is a poor guide to which plans are beaten; the search is not. Real reservoir rules have these two knobs many times over, one pair for each month, which is why the full basin model hands the search to an optimiser. The notebook <i>A reservoir and a farm</i> builds this system block by block and goes on to a winter user and a seasonal forecast.</p>
+    </div>
+    <div class="prose" data-lang="ru" hidden>
+      <div class="sketch" aria-label="Четыре блока TaqSim: река, водохранилище, поле, низовье"><svg viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
+  <g>
+    <rect class="box river" x="10" y="22" width="170" height="66" rx="8"/>
+    <text class="tag" x="95" y="43" text-anchor="middle">SOURCE</text>
+    <text class="name" x="95" y="64" text-anchor="middle">Река</text>
+    <text class="small" x="95" y="81" text-anchor="middle">100 искусственных лет</text>
+  </g>
+  <path class="link" d="M 182 55 L 214 55"/><path class="head" d="M 212 47 L 226 55 L 212 63 Z"/>
+  <g>
+    <rect class="box store" x="228" y="22" width="190" height="66" rx="8"/>
+    <text class="tag" x="323" y="43" text-anchor="middle">STORAGE</text>
+    <text class="name" x="323" y="64" text-anchor="middle">Водохранилище</text>
+    <text class="small" x="323" y="81" text-anchor="middle">40 млн м³, два рычага</text>
+  </g>
+  <path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
+  <text class="edge" x="436" y="40" text-anchor="middle">попуск</text>
+  <g>
+    <rect class="box farm" x="466" y="22" width="190" height="66" rx="8"/>
+    <text class="tag" x="561" y="43" text-anchor="middle">DEMAND</text>
+    <text class="name" x="561" y="64" text-anchor="middle">Поле</text>
+    <text class="small" x="561" y="81" text-anchor="middle">45 млн м³ летом · 5 зимой</text>
+  </g>
+  <path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/>
+  <g>
+    <rect class="box sink" x="704" y="22" width="106" height="66" rx="8"/>
+    <text class="tag" x="757" y="43" text-anchor="middle">SINK</text>
+    <text class="name" x="757" y="64" text-anchor="middle">Низовье</text>
+    <text class="small" x="757" y="81" text-anchor="middle">лишняя вода</text>
+  </g>
+</svg></div>
+      <p><b>Что вы видите.</b> Самая маленькая водная система, в которой есть настоящий компромисс: река, водохранилище ёмкостью 40 млн м³, которое наполняется зимой, хозяйство, которому летом нужно 45 млн м³, а зимой 5, и выход, через который уходит неиспользованная вода. Четыре блока TaqSim, три ребра, 100 модельных лет искусственной реки, построенной по средним из классической работы (Hashimoto, Stedinger and Loucks, 1982) с переставленными сезонами, чтобы пик стока приходился на лето, как у рек Центральной Азии. Каждый из 441 планов прогнан в TaqSim за 100 лет; в браузере ничего не пересчитывается.</p>
+      <p><b>Что вы можете менять.</b> Два рычага правила попуска водохранилища. <i>Порог</i>: начинать лимитирование, когда в водохранилище меньше этого объёма. <i>Лимит</i>: затем подавать только эту долю летней потребности. Порог 0 или лимит 100 % означают отсутствие лимитирования: подавать полностью, пока водохранилище не опустеет.</p>
+      <p><b>За чем вы следите.</b> Три оценки за 100 лет. <i>Средний дефицит</i>: неподанная вода за год. <i>Худший месяц</i>: наибольшая доля месячной потребности, которая не была подана. <i>Лет с дефицитом</i>: в скольких из 100 лет дефицит вообще был. План <i>непревзойдён</i>, когда никакой другой план не является не хуже по первым двум оценкам и лучше хотя бы по одной; такие планы — закрашенные точки и ступенчатая линия на графике.</p>
+      <p><b>Чем это интересно.</b> Подавать полностью, пока водохранилище не опустеет, — значит ничего не терять: у такого плана наименьший средний дефицит из всех 441 планов, 1.11 млн м³ в год. Но когда вода кончается, последние недели лета остаются почти ни с чем: его худший месяц — 72 % дефицита. Раннее лимитирование размазывает дефицит на больше месяцев и лет: худший месяц становится мягче, средний дефицит растёт. Линия непревзойдённых планов изгибается: переход от 72 % к 50 % в худшем месяце стоит 0.3 млн м³ в год; дальнейший переход к 35 % стоит ещё 2.3 млн м³ в год. Первые шаги дёшевы, последние дороги. И 336 из 441 планов превзойдены каким-нибудь другим планом, включая разумное на слух «лёгкое лимитирование».</p>
+      <p><b>Что попробовать.</b> Двигайте два ползунка или нажимайте на точки в графике компромисса. Загрузите три примера планов и прочитайте три плитки. Найдите изгиб линии: план, начиная с которого более мягкий худший месяц начинает стоить гораздо больше воды. Затем посмотрите на два нижних графика: худший месяц каждого года и запас в водохранилище вокруг самой сильной засухи, с линией порога, с которой начинается лимитирование.</p>
+      <p><b>Что вынесет управляющий водой.</b> Ответ определяет то, что вы считаете: при одной цели есть один лучший план; при двух целях — линия компромиссов, и выбор между ними — решение, а не расчёт. Выбор целей — самое важное решение при моделировании, и оно не техническое. Интуиция плохо подсказывает, какие планы превзойдены; поиск — хорошо. У настоящих правил водохранилищ эти два рычага повторяются много раз, по паре на каждый месяц, поэтому полная модель бассейна поручает поиск оптимизатору. Блокнот <i>Водохранилище и поле</i> собирает эту систему блок за блоком и идёт дальше: к зимнему водопользователю и сезонному прогнозу.</p>
+    </div>
+  </details>
+  <!-- intro:end -->
+
 <style>#rationing-explorer {
   color-scheme: light;
   --surface: #fcfcfb;
@@ -274,71 +491,70 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
 <div class="viz-root" id="rationing-explorer">
   <div class="rx-controls">
     <label class="rx-slider" for="rx-trigger">
-      <span>Trigger: start rationing when the reservoir holds less than <strong id="rx-trigger-out"></strong></span>
+      <span><span data-rx="trigger-before">Trigger: start rationing when the reservoir holds less than </span><strong id="rx-trigger-out"></strong><span data-rx="trigger-after"></span></span>
       <input type="range" id="rx-trigger" min="0" step="1" />
     </label>
     <label class="rx-slider" for="rx-ration">
-      <span>Ration: then deliver <strong id="rx-ration-out"></strong> of the summer need</span>
+      <span><span data-rx="ration-before">Ration: then deliver </span><strong id="rx-ration-out"></strong><span data-rx="ration-after"> of the summer need</span></span>
       <input type="range" id="rx-ration" min="0" step="1" />
     </label>
     <div class="rx-presets" role="group" aria-label="Example plans">
-      <button type="button" data-trigger="0" data-ration="1">No rationing</button>
-      <button type="button" data-trigger="16" data-ration="0.8">Ration lightly</button>
-      <button type="button" data-trigger="16" data-ration="0.5">Cut deep</button>
+      <button type="button" data-trigger="0" data-ration="1" data-rx="preset-none">No rationing</button>
+      <button type="button" data-trigger="16" data-ration="0.8" data-rx="preset-light">Ration lightly</button>
+      <button type="button" data-trigger="16" data-ration="0.5" data-rx="preset-deep">Cut deep</button>
     </div>
   </div>
 
   <div class="rx-tiles">
     <div class="rx-tile">
-      <div class="rx-tile-label">Average shortage</div>
-      <div class="rx-tile-value"><span id="rx-mean"></span><small> Mm³ per year not delivered</small></div>
+      <div class="rx-tile-label" data-rx="tile-mean">Average shortage</div>
+      <div class="rx-tile-value"><span id="rx-mean"></span><small data-rx="tile-mean-unit"> Mm³ per year not delivered</small></div>
       <div class="rx-tile-note" id="rx-mean-note"></div>
     </div>
     <div class="rx-tile">
-      <div class="rx-tile-label">Worst month</div>
-      <div class="rx-tile-value"><span id="rx-worst"></span><small> % of need not delivered</small></div>
+      <div class="rx-tile-label" data-rx="tile-worst">Worst month</div>
+      <div class="rx-tile-value"><span id="rx-worst"></span><small data-rx="tile-worst-unit"> % of need not delivered</small></div>
       <div class="rx-tile-note" id="rx-worst-note"></div>
     </div>
     <div class="rx-tile">
-      <div class="rx-tile-label">Years short</div>
-      <div class="rx-tile-value"><span id="rx-years"></span><small> of 100</small></div>
+      <div class="rx-tile-label" data-rx="tile-years">Years short</div>
+      <div class="rx-tile-value"><span id="rx-years"></span><small data-rx="tile-years-unit"> of 100</small></div>
       <div class="rx-tile-note" id="rx-years-note"></div>
     </div>
   </div>
 
   <p class="rx-verdict" id="rx-verdict">
     <span id="rx-verdict-text"></span>
-    <button type="button" id="rx-verdict-load" hidden>Load that plan</button>
+    <button type="button" id="rx-verdict-load" data-rx="load-plan" hidden>Load that plan</button>
   </p>
 
   <div class="rx-charts">
     <figure class="rx-card">
       <figcaption>
-        <strong>Every plan is a dot.</strong> Left is better (less water undelivered), down is better (milder worst month).
-        Click a dot to load that plan.
+        <strong data-rx="cap-tradeoff-strong">Every plan is a dot.</strong> <span data-rx="cap-tradeoff">Left is better (less water undelivered), down is better (milder worst month). Click a dot to load that plan.</span>
       </figcaption>
       <div class="rx-legend">
-        <span><i class="rx-key rx-key-dot rx-key-current"></i>your plan</span>
-        <span><i class="rx-key rx-key-dot rx-key-front"></i>unbeaten plan</span>
-        <span><i class="rx-key rx-key-dot rx-key-beaten"></i>beaten plan</span>
+        <span><i class="rx-key rx-key-dot rx-key-current"></i><span data-rx="key-current">your plan</span></span>
+        <span><i class="rx-key rx-key-dot rx-key-front"></i><span data-rx="key-front">unbeaten plan</span></span>
+        <span><i class="rx-key rx-key-dot rx-key-beaten"></i><span data-rx="key-beaten">beaten plan</span></span>
       </div>
       <svg id="rx-tradeoff" role="img" aria-label="All plans: average shortage against worst month"></svg>
     </figure>
     <div class="rx-column">
       <figure class="rx-card">
-        <figcaption><strong>The worst month of each of the 100 years</strong> (% of that month's need not delivered)</figcaption>
+        <figcaption><strong data-rx="cap-shortage-strong">The worst month of each of the 100 years</strong> <span data-rx="cap-shortage">(% of that month's need not delivered)</span></figcaption>
         <div class="rx-legend">
-          <span><i class="rx-key rx-key-bar rx-key-shortage"></i>your plan</span>
-          <span><i class="rx-key rx-key-bar rx-key-reference"></i>no rationing</span>
+          <span><i class="rx-key rx-key-bar rx-key-shortage"></i><span data-rx="key-current">your plan</span></span>
+          <span><i class="rx-key rx-key-bar rx-key-reference"></i><span data-rx="key-reference">no rationing</span></span>
         </div>
         <svg id="rx-shortage" role="img" aria-label="Worst month of each year"></svg>
       </figure>
       <figure class="rx-card">
-        <figcaption><strong>Water in the reservoir</strong> (Mm³), <span id="rx-window"></span></figcaption>
+        <figcaption><strong data-rx="cap-storage-strong">Water in the reservoir</strong> <span data-rx="cap-storage">(Mm³),</span> <span id="rx-window"></span></figcaption>
         <div class="rx-legend">
-          <span><i class="rx-key rx-key-line rx-key-current"></i>your plan</span>
-          <span><i class="rx-key rx-key-line rx-key-reference"></i>no rationing</span>
-          <span><i class="rx-key rx-key-line rx-key-trigger"></i>trigger</span>
+          <span><i class="rx-key rx-key-line rx-key-current"></i><span data-rx="key-current">your plan</span></span>
+          <span><i class="rx-key rx-key-line rx-key-reference"></i><span data-rx="key-reference">no rationing</span></span>
+          <span><i class="rx-key rx-key-line rx-key-trigger"></i><span data-rx="key-trigger">trigger</span></span>
         </div>
         <svg id="rx-storage" role="img" aria-label="Reservoir storage over time"></svg>
       </figure>
@@ -374,6 +590,74 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
   const tooltip = $("rx-tooltip");
   let current = reference;
 
+  // --- Language ------------------------------------------------------------------------------------------
+  // The explorer follows the page: `data-lang` (or `lang`) on <html>, as the coursebook's switcher and the
+  // standalone page set it. English is the default; Russian is the other language. Texts in the markup carry a
+  // data-rx key; the texts written by this script go through txt().
+  const TEXT = {
+    en: {
+      "trigger-before": "Trigger: start rationing when the reservoir holds less than ", "trigger-after": "",
+      "ration-before": "Ration: then deliver ", "ration-after": " of the summer need",
+      "preset-none": "No rationing", "preset-light": "Ration lightly", "preset-deep": "Cut deep",
+      "tile-mean": "Average shortage", "tile-mean-unit": " Mm³ per year not delivered",
+      "tile-worst": "Worst month", "tile-worst-unit": " % of need not delivered",
+      "tile-years": "Years short", "tile-years-unit": " of 100",
+      "load-plan": "Load that plan",
+      "cap-tradeoff-strong": "Every plan is a dot.", "cap-tradeoff": "Left is better (less water undelivered), down is better (milder worst month). Click a dot to load that plan.",
+      "key-current": "your plan", "key-front": "unbeaten plan", "key-beaten": "beaten plan", "key-reference": "no rationing", "key-trigger": "trigger",
+      "cap-shortage-strong": "The worst month of each of the 100 years", "cap-shortage": "(% of that month's need not delivered)",
+      "cap-storage-strong": "Water in the reservoir", "cap-storage": "(Mm³),",
+      mm3: "Mm³", "axis-mean": "Average shortage (Mm³ per year)", "axis-worst": "Worst month (% of need not delivered)", "axis-year": "Year",
+      "further-right": (n) => `${n} plans lie further right →`, "no-rationing": "no rationing", trigger: "trigger",
+      "tip-mean": " not delivered per year, on average", "tip-worst": " short in the worst month", years: (n) => `${n} years`, "tip-years": " of 100 with a shortage",
+      "tip-plan": (trigger, ration, unbeaten) => `Trigger ${trigger} Mm³, ration ${ration} · ${unbeaten ? "unbeaten" : "beaten"}`,
+      year: (y) => `Year ${y}`, "tip-short-yours": " short in its worst month, your plan", "tip-short-ref": " with no rationing",
+      season: (m) => (m < 6 ? `winter month ${m + 1}` : `summer month ${m - 5}`),
+      "tip-store-yours": " in store with your plan", "tip-store-ref": " with no rationing",
+      same: "same as no rationing", "ref-value": (v) => `no rationing: ${v}`,
+      beaten: (trigger, ration, mean, worst) => `This plan is beaten. Trigger ${trigger} Mm³ with ration ${ration} leaves ${mean} Mm³ per year undelivered and is ${worst} % short in its worst month: no worse on either count, better on at least one.`,
+      unbeaten: "No plan on the grid beats this one: every plan with a milder worst month leaves more water undelivered.",
+      window: (a, b) => `years ${a}–${b}, around the worst year`,
+    },
+    ru: {
+      "trigger-before": "Порог: начинать лимитирование, когда в водохранилище меньше ", "trigger-after": "",
+      "ration-before": "Лимит: затем подавать ", "ration-after": " летней потребности",
+      "preset-none": "Без лимитирования", "preset-light": "Лёгкое лимитирование", "preset-deep": "Жёсткое лимитирование",
+      "tile-mean": "Средний дефицит", "tile-mean-unit": " млн м³ в год не подано",
+      "tile-worst": "Худший месяц", "tile-worst-unit": " % потребности не подано",
+      "tile-years": "Лет с дефицитом", "tile-years-unit": " из 100",
+      "load-plan": "Загрузить этот план",
+      "cap-tradeoff-strong": "Каждый план — точка.", "cap-tradeoff": "Левее — лучше (меньше неподанной воды), ниже — лучше (мягче худший месяц). Нажмите на точку, чтобы загрузить этот план.",
+      "key-current": "ваш план", "key-front": "непревзойдённый план", "key-beaten": "превзойдённый план", "key-reference": "без лимитирования", "key-trigger": "порог",
+      "cap-shortage-strong": "Худший месяц каждого из 100 лет", "cap-shortage": "(% потребности этого месяца не подано)",
+      "cap-storage-strong": "Вода в водохранилище", "cap-storage": "(млн м³),",
+      mm3: "млн м³", "axis-mean": "Средний дефицит (млн м³ в год)", "axis-worst": "Худший месяц (% потребности не подано)", "axis-year": "Год",
+      "further-right": (n) => `ещё ${n} планов лежат правее →`, "no-rationing": "без лимитирования", trigger: "порог",
+      "tip-mean": " не подано в год в среднем", "tip-worst": " дефицита в худшем месяце", years: (n) => `${n} лет`, "tip-years": " из 100 с дефицитом",
+      "tip-plan": (trigger, ration, unbeaten) => `Порог ${trigger} млн м³, лимит ${ration} · ${unbeaten ? "непревзойдён" : "превзойдён"}`,
+      year: (y) => `Год ${y}`, "tip-short-yours": " дефицита в худшем месяце, ваш план", "tip-short-ref": " без лимитирования",
+      season: (m) => (m < 6 ? `зимний месяц ${m + 1}` : `летний месяц ${m - 5}`),
+      "tip-store-yours": " в запасе при вашем плане", "tip-store-ref": " без лимитирования",
+      same: "как без лимитирования", "ref-value": (v) => `без лимитирования: ${v}`,
+      beaten: (trigger, ration, mean, worst) => `Этот план превзойдён. Порог ${trigger} млн м³ с лимитом ${ration} оставляет неподанными ${mean} млн м³ в год и даёт ${worst} % дефицита в худшем месяце: не хуже ни по одному счёту, лучше хотя бы по одному.`,
+      unbeaten: "Ни один план сетки не превосходит этот: каждый план с более мягким худшим месяцем оставляет больше неподанной воды.",
+      window: (a, b) => `годы ${a}–${b}, вокруг худшего года`,
+    },
+  };
+  const pageLang = () => {
+    const html = document.documentElement;
+    const l = (html.getAttribute("data-lang") || html.getAttribute("lang") || "en").slice(0, 2).toLowerCase();
+    return l === "ru" ? "ru" : "en";
+  };
+  let lang = pageLang();
+  const txt = (key, ...args) => {
+    const v = TEXT[lang][key] ?? TEXT.en[key];
+    return typeof v === "function" ? v(...args) : v;
+  };
+  function applyLanguage() {
+    for (const el of root.querySelectorAll("[data-rx]")) el.textContent = txt(el.dataset.rx);
+  }
+
   function el(name, attrs, parent) {
     const node = document.createElementNS(NS, name);
     for (const [k, v] of Object.entries(attrs || {})) node.setAttribute(k, v);
@@ -387,15 +671,19 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
   }
   const scale = (d0, d1, r0, r1) => (v) => r0 + ((v - d0) / (d1 - d0)) * (r1 - r0);
   const cssVar = (name) => getComputedStyle(root).getPropertyValue(name).trim();
-  const C = {
-    water: cssVar("--water"),
-    shortage: cssVar("--shortage"),
-    reference: cssVar("--reference"),
-    ink: cssVar("--ink"),
-    muted: cssVar("--muted"),
-    grid: cssVar("--grid"),
-    axis: cssVar("--axis"),
-    surface: cssVar("--surface"),
+  // Colours are read when the charts are drawn, so that a theme change is picked up by a redraw.
+  let C = {};
+  const readColors = () => {
+    C = {
+      water: cssVar("--water"),
+      shortage: cssVar("--shortage"),
+      reference: cssVar("--reference"),
+      ink: cssVar("--ink"),
+      muted: cssVar("--muted"),
+      grid: cssVar("--grid"),
+      axis: cssVar("--axis"),
+      surface: cssVar("--surface"),
+    };
   };
   const fmt = (v, digits) => v.toFixed(digits === undefined ? 0 : digits);
   const percent = (ration) => fmt(ration * 100) + " %";
@@ -460,11 +748,11 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
       y: [0, 100],
       xTicks: Array.from({ length: meanTop / 2 + 1 }, (_, i) => i * 2),
       yTicks: [0, 20, 40, 60, 80, 100],
-      xTitle: "Average shortage (Mm³ per year)",
+      xTitle: txt("axis-mean"),
       margin: { t: 22 },
     });
     const { x, y, m, W } = tradeoff;
-    text(tradeoffSvg, m.l - 30, 12, "Worst month (% of need not delivered)", { class: "rx-axis-title" });
+    text(tradeoffSvg, m.l - 30, 12, txt("axis-worst"), { class: "rx-axis-title" });
     for (const p of plans) {
       if (!p.unbeaten && onChart(p)) el("circle", { cx: x(p.mean_shortage), cy: y(p.worst_month), r: 2.6, fill: C.reference }, tradeoffSvg);
     }
@@ -478,8 +766,8 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
       el("circle", { cx: x(p.mean_shortage), cy: y(p.worst_month), r: 4, fill: C.ink, stroke: C.surface, "stroke-width": 1.5 }, tradeoffSvg);
     }
     const beyond = plans.filter((p) => !onChart(p)).length;
-    if (beyond) text(tradeoffSvg, W - m.r, y(0) - 8, `${beyond} plans lie further right →`, { "text-anchor": "end" });
-    const refLabel = text(tradeoffSvg, x(reference.mean_shortage) + 10, y(reference.worst_month) - 8, "no rationing", { class: "rx-label" });
+    if (beyond) text(tradeoffSvg, W - m.r, y(0) - 8, txt("further-right", beyond), { "text-anchor": "end" });
+    const refLabel = text(tradeoffSvg, x(reference.mean_shortage) + 10, y(reference.worst_month) - 8, txt("no-rationing"), { class: "rx-label" });
     refLabel.setAttribute("pointer-events", "none");
     hoverRing = el("circle", { r: 8, fill: "none", stroke: C.muted, "stroke-width": 1.5, visibility: "hidden" }, tradeoffSvg);
     marker = el("circle", { r: 7, fill: C.water, stroke: C.surface, "stroke-width": 2 }, tradeoffSvg);
@@ -511,10 +799,10 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
     hoverRing.setAttribute("cy", tradeoff.y(p.worst_month));
     hoverRing.setAttribute("visibility", "visible");
     showTooltip(event, [
-      [fmt(p.mean_shortage, 1) + " Mm³", " not delivered per year, on average"],
-      [fmt(p.worst_month) + " %", " short in the worst month"],
-      [p.years_short + " years", " of 100 with a shortage"],
-      ["", `Trigger ${fmt(p.trigger)} Mm³, ration ${percent(p.ration)} · ${p.unbeaten ? "unbeaten" : "beaten"}`],
+      [fmt(p.mean_shortage, 1) + " " + txt("mm3"), txt("tip-mean")],
+      [fmt(p.worst_month) + " %", txt("tip-worst")],
+      [txt("years", p.years_short), txt("tip-years")],
+      ["", txt("tip-plan", fmt(p.trigger), percent(p.ration), p.unbeaten)],
     ]);
   });
   tradeoffSvg.addEventListener("pointerleave", () => {
@@ -539,7 +827,7 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
       y: [0, 100],
       xTicks: [1, 20, 40, 60, 80, 100],
       yTicks: [0, 50, 100],
-      xTitle: "Year",
+      xTitle: txt("axis-year"),
     });
     const { x, y } = shortage;
     const band = x(2) - x(1);
@@ -557,9 +845,9 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
     shortageCross.setAttribute("x2", shortage.x(year));
     shortageCross.setAttribute("visibility", "visible");
     showTooltip(event, [
-      ["Year " + year, ""],
-      [fmt(current.shortage[year - 1], 1) + " %", " short in its worst month, your plan"],
-      [fmt(reference.shortage[year - 1], 1) + " %", " with no rationing"],
+      [txt("year", year), ""],
+      [fmt(current.shortage[year - 1], 1) + " %", txt("tip-short-yours")],
+      [fmt(reference.shortage[year - 1], 1) + " %", txt("tip-short-ref")],
     ]);
   });
   shortageSvg.addEventListener("pointerleave", () => {
@@ -587,11 +875,11 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
       xTicks: Array.from({ length: data.window.years / 5 + 1 }, (_, i) => Math.min(i * 60, months - 1)),
       xTickLabel: (tick) => String(first + Math.round(tick / 12)),
       yTicks: [0, data.capacity / 2, data.capacity],
-      xTitle: "Year",
+      xTitle: txt("axis-year"),
     });
     el("path", { d: linePath(reference.storage), fill: "none", stroke: C.reference, "stroke-width": 1.5 }, storageSvg);
     triggerLine = el("line", { x1: storage.x(0), x2: storage.x(months - 1), stroke: C.muted, "stroke-width": 1 }, storageSvg);
-    triggerLabel = text(storageSvg, storage.x(0) + 4, 0, "trigger");
+    triggerLabel = text(storageSvg, storage.x(0) + 4, 0, txt("trigger"));
     storageLine = el("path", { fill: "none", stroke: C.water, "stroke-width": 2, "stroke-linejoin": "round" }, storageSvg);
     storageCross = el("line", { y1: storage.y(data.capacity), y2: storage.y(0), stroke: C.muted, "stroke-width": 1, visibility: "hidden" }, storageSvg);
   }
@@ -602,12 +890,10 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
     storageCross.setAttribute("x1", storage.x(i));
     storageCross.setAttribute("x2", storage.x(i));
     storageCross.setAttribute("visibility", "visible");
-    const month = i % 12;
-    const season = month < 6 ? `winter month ${month + 1}` : `summer month ${month - 5}`;
     showTooltip(event, [
-      [`Year ${data.window.start_year + Math.floor(i / 12)}`, `, ${season}`],
-      [fmt(current.storage[i], 1) + " Mm³", " in store with your plan"],
-      [fmt(reference.storage[i], 1) + " Mm³", " with no rationing"],
+      [txt("year", data.window.start_year + Math.floor(i / 12)), `, ${txt("season", i % 12)}`],
+      [fmt(current.storage[i], 1) + " " + txt("mm3"), txt("tip-store-yours")],
+      [fmt(reference.storage[i], 1) + " " + txt("mm3"), txt("tip-store-ref")],
     ]);
   });
   storageSvg.addEventListener("pointerleave", () => {
@@ -631,14 +917,14 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
     const gain = (p) => (plan.mean_shortage - p.mean_shortage) / meanTop + (plan.worst_month - p.worst_month) / 100;
     return candidates.sort((a, b) => gain(b) - gain(a))[0] || null;
   }
-  const compare = (value, base, digits) => (Math.abs(value - base) < 1e-9 ? "same as no rationing" : `no rationing: ${fmt(base, digits)}`);
+  const compare = (value, base, digits) => (Math.abs(value - base) < 1e-9 ? txt("same") : txt("ref-value", fmt(base, digits)));
 
   let suggestion = null;
   function select(plan) {
     current = plan;
     triggerInput.value = triggers.indexOf(plan.trigger);
     rationInput.value = rations.indexOf(plan.ration);
-    $("rx-trigger-out").textContent = fmt(plan.trigger) + " Mm³";
+    $("rx-trigger-out").textContent = fmt(plan.trigger) + " " + txt("mm3");
     $("rx-ration-out").textContent = percent(plan.ration);
     $("rx-mean").textContent = fmt(plan.mean_shortage, 1);
     $("rx-worst").textContent = fmt(plan.worst_month);
@@ -649,8 +935,8 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
 
     suggestion = plan.unbeaten ? null : betterPlan(plan);
     $("rx-verdict-text").textContent = suggestion
-      ? `This plan is beaten. Trigger ${fmt(suggestion.trigger)} Mm³ with ration ${percent(suggestion.ration)} leaves ${fmt(suggestion.mean_shortage, 1)} Mm³ per year undelivered and is ${fmt(suggestion.worst_month)} % short in its worst month: no worse on either count, better on at least one.`
-      : "No plan on the grid beats this one: every plan with a milder worst month leaves more water undelivered.";
+      ? txt("beaten", fmt(suggestion.trigger), percent(suggestion.ration), fmt(suggestion.mean_shortage, 1), fmt(suggestion.worst_month))
+      : txt("unbeaten");
     $("rx-verdict-load").hidden = !suggestion;
 
     marker.setAttribute("cx", tradeoff.x(Math.min(plan.mean_shortage, meanTop)));
@@ -680,9 +966,11 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
   });
   $("rx-verdict-load").addEventListener("click", () => suggestion && select(suggestion));
 
-  const last = data.window.start_year + data.window.years - 1;
-  $("rx-window").textContent = `years ${data.window.start_year}–${last}, around the worst year`;
   function drawAll() {
+    readColors();
+    applyLanguage();
+    const last = data.window.start_year + data.window.years - 1;
+    $("rx-window").textContent = txt("window", data.window.start_year, last);
     drawTradeoff();
     drawShortage();
     drawStorage();
@@ -692,13 +980,61 @@ Companion to the notebook <em>A reservoir and a farm</em> (01_rationing) of the 
   drawAll();
   let lastWidth = root.getBoundingClientRect().width;
   let pending = 0;
+  const redrawSoon = () => {
+    clearTimeout(pending);
+    pending = setTimeout(drawAll, 80);
+  };
   new ResizeObserver(() => {
     const width = root.getBoundingClientRect().width;
     if (Math.abs(width - lastWidth) < 1) return;
     lastWidth = width;
-    clearTimeout(pending);
-    pending = setTimeout(drawAll, 80);
+    redrawSoon();
   }).observe(root);
+  // A change of language or theme on the page: new texts and colours.
+  if (typeof MutationObserver !== "undefined") {
+    new MutationObserver(() => {
+      const now = pageLang();
+      if (now !== lang) lang = now;
+      redrawSoon();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "lang", "data-theme"] });
+  }
+  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redrawSoon);
+})();
+</script>
+
+  <footer class="foot" data-lang="en">The 441 plans were run in TaqSim by <code>scripts/build_rationing_explorer.py</code> with the model of <code>src/zarafshan_taqsim/rationing_coursebook.py</code>; the same explorer is embedded in the coursebook <i>A reservoir and a farm</i>, whose Colab notebooks compute these numbers again. hydrosolutions, TaqSim workshop Tashkent, 12–13 October 2026.</footer>
+  <footer class="foot" data-lang="ru" hidden>441 планов прогнаны в TaqSim скриптом <code>scripts/build_rationing_explorer.py</code> по модели из <code>src/zarafshan_taqsim/rationing_coursebook.py</code>; тот же исследователь встроен в учебник <i>Водохранилище и поле</i>, тетради которого в Colab вычисляют эти числа заново. hydrosolutions, семинар по TaqSim, Ташкент, 12–13 октября 2026 г.</footer>
+</div>
+<script>
+(function () {
+  var html = document.documentElement;
+  var KEY = { lang: "rationingExplorer.lang", theme: "rationingExplorer.theme" };
+  var TITLE = { en: "A reservoir and a farm", ru: "Водохранилище и поле" };
+  var THEME = { en: { auto: "Theme: auto", light: "Theme: light", dark: "Theme: dark" }, ru: { auto: "Тема: авто", light: "Тема: светлая", dark: "Тема: тёмная" } };
+  var mode = html.getAttribute("data-theme") || "auto";
+  function lang() { return html.getAttribute("data-lang") === "ru" ? "ru" : "en"; }
+  function applyLanguage(l) {
+    html.setAttribute("lang", l);
+    html.setAttribute("data-lang", l);
+    document.title = TITLE[l];
+    // the blocks written in both languages (title, intro, footer); the language buttons carry data-lang too
+    document.querySelectorAll("[data-lang]").forEach(function (el) { if (!el.closest("#lang-buttons")) el.hidden = el.dataset.lang !== l; });
+    document.querySelectorAll("#lang-buttons button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.lang === l)); });
+    document.getElementById("theme-toggle").textContent = THEME[l][mode];
+  }
+  document.querySelectorAll("#lang-buttons button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      try { localStorage.setItem(KEY.lang, b.dataset.lang); } catch (e) { /* no storage */ }
+      applyLanguage(b.dataset.lang);
+    });
+  });
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    mode = mode === "auto" ? "light" : mode === "light" ? "dark" : "auto";
+    if (mode === "auto") html.removeAttribute("data-theme"); else html.setAttribute("data-theme", mode);
+    try { localStorage.setItem(KEY.theme, mode); } catch (e) { /* no storage */ }
+    document.getElementById("theme-toggle").textContent = THEME[lang()][mode];
+  });
+  applyLanguage(lang());
 })();
 </script>
 </body>
