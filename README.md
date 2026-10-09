@@ -49,8 +49,8 @@ Every step offers up to three things. The table below always names them the same
 - **Run: notebook.** The same text in Colab, with the code behind it, folded until you want to see it. Change a number,
   run again, see what happens. Needs a Google account.
 - **Play: game.** An interactive web page: you move the levers, the results were computed in advance. No code, no
-  account. There are three games: the reservoir game (step 2), the Zarafshan in sixteen blocks (step 3) and the river
-  for nature (step 6).
+  account. There are four games: TaqSim block by block (step 2), the reservoir game (step 3), the Zarafshan in
+  sixteen blocks (step 4) and the river for nature (step 7).
 
 After each link, the languages it comes in: EN English, RU Russian, UZ Uzbek. The data the coursebooks use are in
 the folder `data/` of this package.
@@ -60,24 +60,20 @@ the folder `data/` of this package.
 Each step adds one thing to the step before. Start at the top, even if you know water models already: the tools are
 new to everyone.
 
-**In the course afternoon** we do steps 1 and 2 together, and step 3 if there is time. **Steps 4 to 6 are for
-afterwards**, at your own pace, with this page as your guide. Everything stays online.
+**In the course afternoon** we do steps 1 and 3 together, with step 2 open as the reference, and step 4 if there is
+time. **Steps 5 to 7 are for afterwards**, at your own pace, with this page as your guide. Everything stays online.
 
 | Step | What | New in this step | Open |
 |---|---|---|---|
 | 1 | **Starter notebook** | The tools: Colab, a notebook, a tiny river system, and Gemini changing it for you | Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) (EN) |
-| 2 | **A reservoir and a farm** | Your first water plan: two levers, a few results, and the set of plans no other plan beats. That is the Pareto idea, before the word. Then a winter water user and a seasonal forecast of the summer, first perfect, then one that can be wrong: what a forecast is worth | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Run: notebook in [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_uz.ipynb) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
-| 3 | **The Zarafshan in sixteen blocks** | A first model of the whole oasis, as a game: three levers, four results, and the question "can any other plan beat mine?". Five worlds to play in: a dry, a mean and a wet year, and the mean year as the climate models project it for 2041–2070 and 2071–2099. No code | Read: [what the model shows](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [one-page handout, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
-| 4 | **Simulation coursebook** | The real system in full detail: 61 elements, six years, day by day. A full coursebook: the basin, the canals, the data and their sources, the model, the water balance | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_simulation.ipynb) (EN) |
-| 5 | **Optimisation coursebook** | The computer does the searching: thousands of plans, the Pareto front by its name, and how to read it. Builds on the simulation coursebook | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) (EN) |
-| 6 | **River for nature, game and notebook** | A different kind of trade-off: water for the crops against a river that still behaves like a river | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) (EN) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
+| 2 | **TaqSim block by block** | The seven kinds of block TaqSim is made of, each with an everyday picture, the smallest system that shows what it does, and its rule card: the few lines of code that tell it what to do each month. Then all seven in one small river, and the check that every drop is accounted for | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb) (EN) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html) (EN · RU) |
+| 3 | **A reservoir and a farm** | Your first water plan: two levers, a few results, and the set of plans no other plan beats. That is the Pareto idea, before the word. Then a winter water user and a seasonal forecast of the summer, first perfect, then one that can be wrong: what a forecast is worth | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Run: notebook in [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
+| 4 | **The Zarafshan in sixteen blocks** | A first model of the whole oasis, as a game: three levers, four results, and the question "can any other plan beat mine?". Five worlds to play in: a dry, a mean and a wet year, and the mean year as the climate models project it for 2041–2070 and 2071–2099. No code | Read: [what the model shows](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [one-page handout, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
+| 5 | **Simulation coursebook** | The real system in full detail: 61 elements, six years, day by day. A full coursebook: the basin, the canals, the data and their sources, the model, the water balance | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb) (EN) |
+| 6 | **Optimisation coursebook** | The computer does the searching: thousands of plans, the Pareto front by its name, and how to read it. Builds on the simulation coursebook | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb) (EN) |
+| 7 | **River for nature, game and notebook** | A different kind of trade-off: water for the crops against a river that still behaves like a river | Read: [coursebook](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Run: [notebook](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb) (EN) · Play: [game](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
 
 Every notebook starts with a setup box that takes about a minute. Always run that box first.
-
-Three steps have a page to play with, no code needed: the reservoir-and-farm notebook has its explorer page, the
-sixteen-blocks game is a page in itself, and the river-for-nature notebook has its own game. The starter notebook's
-playground is Gemini itself. The simulation and optimisation coursebooks are read and run.
-
 The games are single web pages: click the link and play, nothing to install. For a room without internet, open
 the `games` folder on GitHub, click the file, click the download button (an arrow pointing down, top right), and open
 the downloaded file in any browser.
@@ -110,12 +106,12 @@ The setup box at the top of each notebook notices that the software is already i
 
 ## What is in the folder
 
-- `00_starter.ipynb` to `04_eflow.ipynb`: the course notebooks, numbered in order of increasing complexity.
+- `00_starter.ipynb` to `05_eflow.ipynb`: the course notebooks, numbered in order of increasing complexity.
 - `src/zarafshan_taqsim/`: the Zarafshan model code the notebooks use.
 - `data/ZRB_baseline/`: the inflow, demand, reservoir and canal data, 2010 to 2023.
 - `eflow_game/`: the model behind the river-for-nature notebook and game, with its precomputed results.
-- `coursebooks/`: the four coursebooks as web pages, to read without running anything.
-- `games/`: the three games.
+- `coursebooks/`: the five coursebooks as web pages, to read without running anything.
+- `games/`: the four games.
 - `_cache/`: results of long computer runs, so the optimisation notebook opens in seconds.
 
 The model software is [TaqSim](https://github.com/hydrosolutions/taqsim), by hydrosolutions GmbH. The course material
@@ -176,7 +172,8 @@ was prepared for the TaqSim training in Tashkent, 12 to 13 October 2026.
 - **Запустить: тетрадь.** Тот же текст в Colab, вместе со стоящим за ним кодом, свёрнутым, пока он вам не нужен.
   Измените число, запустите заново, посмотрите, что изменилось. Нужен аккаунт Google.
 - **Играть: игра.** Интерактивная веб-страница: вы двигаете рычаги, результаты рассчитаны заранее. Без кода, без
-  аккаунта. Игр три: игра с водохранилищем (шаг 2), Зарафшан в шестнадцати блоках (шаг 3) и вода для реки (шаг 6).
+  аккаунта. Игр четыре: TaqSim блок за блоком (шаг 2), игра с водохранилищем (шаг 3), Зарафшан в шестнадцати блоках
+  (шаг 4) и вода для реки (шаг 7).
 
 После каждой ссылки указаны языки: EN английский, RU русский, UZ узбекский. Данные, которые используют учебники,
 лежат в папке `data/` этого пакета.
@@ -186,25 +183,21 @@ was prepared for the TaqSim training in Tashkent, 12 to 13 October 2026.
 Каждый шаг добавляет одну вещь к предыдущему. Начинайте сверху, даже если водные модели вам знакомы: инструменты новы
 для всех.
 
-**На занятии во второй половине дня** мы вместе проходим шаги 1 и 2, а шаг 3 — если останется время. **Шаги с 4 по
-6 — для самостоятельной работы после курса**, в своём темпе, с этой страницей в качестве путеводителя. Всё остаётся
+**На занятии во второй половине дня** мы вместе проходим шаги 1 и 3, держа шаг 2 открытым как справочник, а шаг 4 —
+если останется время. **Шаги с 5 по 7 — для самостоятельной работы после курса**, в своём темпе, с этой страницей в качестве путеводителя. Всё остаётся
 в открытом доступе.
 
 | Шаг | Что | Что нового на этом шаге | Открыть |
 |---|---|---|---|
 | 1 | **Стартовая тетрадь** | Инструменты: Colab, тетрадь, крошечная речная система и Gemini, который меняет её за вас | Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) (EN) |
-| 2 | **Водохранилище и поле** | Ваш первый план водопользования: два рычага, несколько результатов и набор планов, которые не побить никаким другим. Это идея Парето, пока без самого слова | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Запустить: тетрадь на [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_uz.ipynb) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
-| 3 | **Зарафшан в шестнадцати блоках** | Первая модель всего оазиса в виде игры: три рычага, четыре результата и вопрос «может ли другой план побить мой?». Пять «миров»: сухой, средний и влажный год, а также средний год, каким его проецируют климатические модели на 2041–2070 и 2071–2099. Без кода | Читать: [что показывает модель](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [памятка на одной странице, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
-| 4 | **Учебник по моделированию** | Настоящая система во всех деталях: 61 элемент, шесть лет, день за днём. Полный учебник: бассейн, каналы, данные и их источники, модель, водный баланс | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_simulation.ipynb) (EN) |
-| 5 | **Учебник по оптимизации** | Поиск делает компьютер: тысячи планов, фронт Парето под своим именем и как его читать. Опирается на учебник по моделированию | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) (EN) |
-| 6 | **Вода для реки: игра и тетрадь** | Компромисс другого рода: вода для полей против реки, которая всё ещё ведёт себя как река | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) (EN) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
+| 2 | **TaqSim блок за блоком** | Семь видов блоков, из которых состоит TaqSim: у каждого бытовая картинка, самая маленькая система, показывающая, что он делает, и его «карточка правила» — несколько строк кода, которые говорят ему, что делать каждый месяц. Затем все семь в одной маленькой реке и проверка, что учтена каждая капля | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb) (EN) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html) (EN · RU) |
+| 3 | **Водохранилище и поле** | Ваш первый план водопользования: два рычага, несколько результатов и набор планов, которые не побить никаким другим. Это идея Парето, пока без самого слова | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Запустить: тетрадь на [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
+| 4 | **Зарафшан в шестнадцати блоках** | Первая модель всего оазиса в виде игры: три рычага, четыре результата и вопрос «может ли другой план побить мой?». Пять «миров»: сухой, средний и влажный год, а также средний год, каким его проецируют климатические модели на 2041–2070 и 2071–2099. Без кода | Читать: [что показывает модель](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [памятка на одной странице, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
+| 5 | **Учебник по моделированию** | Настоящая система во всех деталях: 61 элемент, шесть лет, день за днём. Полный учебник: бассейн, каналы, данные и их источники, модель, водный баланс | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb) (EN) |
+| 6 | **Учебник по оптимизации** | Поиск делает компьютер: тысячи планов, фронт Парето под своим именем и как его читать. Опирается на учебник по моделированию | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb) (EN) |
+| 7 | **Вода для реки: игра и тетрадь** | Компромисс другого рода: вода для полей против реки, которая всё ещё ведёт себя как река | Читать: [учебник](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Запустить: [тетрадь](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb) (EN) · Играть: [игра](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
 
 Каждая тетрадь начинается с блока настройки, который занимает около минуты. Всегда запускайте этот блок первым.
-
-У трёх шагов есть страница, с которой можно играть без кода: у тетради «водохранилище и поле» — страница-
-исследователь, «Зарафшан в шестнадцати блоках» — сам по себе страница, у тетради «вода для реки» — своя игра.
-Площадка для стартовой тетради — сам Gemini. Учебники по моделированию и оптимизации читают и запускают.
-
 Игры — это отдельные веб-страницы: нажмите на ссылку и играйте, устанавливать ничего не нужно. Для зала без
 интернета откройте папку `games` на GitHub, нажмите на файл, затем на кнопку скачивания (стрелка вниз, справа вверху)
 и откройте скачанный файл в любом браузере.
@@ -238,12 +231,12 @@ jupyter lab
 
 ## Что в папке
 
-- `00_starter.ipynb` … `04_eflow.ipynb`: тетради курса, пронумерованные по возрастанию сложности.
+- `00_starter.ipynb` … `05_eflow.ipynb`: тетради курса, пронумерованные по возрастанию сложности.
 - `src/zarafshan_taqsim/`: код модели Зарафшана, который используют тетради.
 - `data/ZRB_baseline/`: данные о притоке, водопотреблении, водохранилищах и каналах, 2010–2023.
 - `eflow_game/`: модель, стоящая за тетрадью и игрой «вода для реки», с заранее рассчитанными результатами.
-- `coursebooks/`: четыре учебника в виде веб-страниц, для чтения без запуска.
-- `games/`: три игры.
+- `coursebooks/`: пять учебников в виде веб-страниц, для чтения без запуска.
+- `games/`: четыре игры.
 - `_cache/`: результаты долгих расчётов, чтобы тетрадь по оптимизации открывалась за секунды.
 
 Программа модели — [TaqSim](https://github.com/hydrosolutions/taqsim), разработка hydrosolutions GmbH. Материалы
@@ -305,7 +298,8 @@ Har bir qadam uchtagacha narsa taklif qiladi. Quyidagi jadvalda ular doim bir xi
 - **Ishga tushirish: daftar.** Oʻsha matn Colab da, orqasidagi kod bilan, siz koʻrmoqchi boʻlguncha yigʻilgan holda.
   Raqamni oʻzgartiring, qayta ishga tushiring, nima oʻzgarganini koʻring. Google hisobi kerak.
 - **Oʻynash: oʻyin.** Interaktiv veb-sahifa: richaglarni siz surasiz, natijalar oldindan hisoblangan. Kodsiz, hisobsiz.
-  Oʻyinlar uchta: suv ombori oʻyini (2-qadam), oʻn olti blokdagi Zarafshon (3-qadam) va daryo uchun suv (6-qadam).
+  Oʻyinlar toʻrtta: TaqSim blokma-blok (2-qadam), suv ombori oʻyini (3-qadam), oʻn olti blokdagi Zarafshon (4-qadam)
+  va daryo uchun suv (7-qadam).
 
 Har bir havoladan keyin uning tillari koʻrsatilgan: EN inglizcha, RU ruscha, UZ oʻzbekcha. Darsliklar ishlatadigan
 maʼlumotlar ushbu paketning `data/` papkasida.
@@ -315,25 +309,21 @@ maʼlumotlar ushbu paketning `data/` papkasida.
 Har bir qadam oldingisiga bitta narsa qoʻshadi. Suv modellarini bilsangiz ham yuqoridan boshlang: vositalar hamma uchun
 yangi.
 
-**Kursning tushdan keyingi mashgʻulotida** 1- va 2-qadamlarni birga bajaramiz, vaqt qolsa 3-qadamni ham. **4-dan
-6-gacha boʻlgan qadamlar kursdan keyin**, oʻz surʼatingizda, shu sahifani yoʻl koʻrsatkich qilib bajarish uchun.
+**Kursning tushdan keyingi mashgʻulotida** 1- va 3-qadamlarni birga bajaramiz, 2-qadamni maʼlumotnoma sifatida ochiq
+tutamiz, vaqt qolsa 4-qadamni ham. **5-dan 7-gacha boʻlgan qadamlar kursdan keyin**, oʻz surʼatingizda, shu sahifani yoʻl koʻrsatkich qilib bajarish uchun.
 Hammasi onlayn qoladi.
 
 | Qadam | Nima | Bu qadamda nima yangi | Ochish |
 |---|---|---|---|
 | 1 | **Boshlanish daftari** | Vositalar: Colab, daftar, kichkina daryo tizimi va uni siz uchun oʻzgartiradigan Gemini | Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb) (EN) |
-| 2 | **Suv ombori va dala** | Birinchi suv rejangiz: ikkita richag, bir nechta natija va boshqa hech qaysi reja yenga olmaydigan rejalar toʻplami. Bu Pareto gʻoyasi, hozircha soʻzsiz | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Ishga tushirish: daftar [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_rationing_uz.ipynb) tilida · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
-| 3 | **Oʻn olti blokdagi Zarafshon** | Butun vohaning oʻyin shaklidagi birinchi modeli: uchta richag, toʻrtta natija va «boshqa biror reja menikini yenga oladimi?» degan savol. Beshta «dunyo»: qurgʻoqchil, oʻrtacha va seryogʻin yil, hamda iqlim modellari 2041–2070 va 2071–2099 uchun bashorat qilgan oʻrtacha yil. Kodsiz | Oʻqish: [model nimani koʻrsatadi](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [bir sahifali eslatma, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
-| 4 | **Modellashtirish darsligi** | Haqiqiy tizim barcha tafsilotlari bilan: 61 element, olti yil, kun-bakun. Toʻliq darslik: havza, kanallar, maʼlumotlar va ularning manbalari, model, suv balansi | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_simulation.ipynb) (EN) |
-| 5 | **Optimallashtirish darsligi** | Qidiruvni kompyuter qiladi: minglab rejalar, oʻz nomi bilan Pareto fronti va uni qanday oʻqish. Modellashtirish darsligiga tayanadi | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_optimization.ipynb) (EN) |
-| 6 | **Daryo uchun suv: oʻyin va daftar** | Boshqa turdagi murosa: ekinlar uchun suv va hali ham daryodek oqadigan daryo | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_eflow.ipynb) (EN) · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
+| 2 | **TaqSim blokma-blok** | TaqSim tashkil topgan yetti xil blok: har birining kundalik hayotdan olingan tasviri, nima qilishini koʻrsatadigan eng kichik tizim va uning «qoida kartasi» — har oy nima qilishni aytadigan bir necha qator kod. Soʻng yettalasi bitta kichik daryoda va har bir tomchi hisobga olinganini tekshirish | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb) (EN) · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html) (EN · RU) |
+| 3 | **Suv ombori va dala** | Birinchi suv rejangiz: ikkita richag, bir nechta natija va boshqa hech qaysi reja yenga olmaydigan rejalar toʻplami. Bu Pareto gʻoyasi, hozircha soʻzsiz | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html) (EN · RU · UZ) · Ishga tushirish: daftar [English](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb) · [Русский](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb) · [Oʻzbekcha](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb) tilida · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html) (EN · RU) |
+| 4 | **Oʻn olti blokdagi Zarafshon** | Butun vohaning oʻyin shaklidagi birinchi modeli: uchta richag, toʻrtta natija va «boshqa biror reja menikini yenga oladimi?» degan savol. Beshta «dunyo»: qurgʻoqchil, oʻrtacha va seryogʻin yil, hamda iqlim modellari 2041–2070 va 2071–2099 uchun bashorat qilgan oʻrtacha yil. Kodsiz | Oʻqish: [model nimani koʻrsatadi](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html) (EN) · [bir sahifali eslatma, PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf) (EN) · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html) (EN · RU) |
+| 5 | **Modellashtirish darsligi** | Haqiqiy tizim barcha tafsilotlari bilan: 61 element, olti yil, kun-bakun. Toʻliq darslik: havza, kanallar, maʼlumotlar va ularning manbalari, model, suv balansi | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html) · [PDF](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb) (EN) |
+| 6 | **Optimallashtirish darsligi** | Qidiruvni kompyuter qiladi: minglab rejalar, oʻz nomi bilan Pareto fronti va uni qanday oʻqish. Modellashtirish darsligiga tayanadi | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb) (EN) |
+| 7 | **Daryo uchun suv: oʻyin va daftar** | Boshqa turdagi murosa: ekinlar uchun suv va hali ham daryodek oqadigan daryo | Oʻqish: [darslik](https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html) (EN) · Ishga tushirish: [daftar](https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb) (EN) · Oʻynash: [oʻyin](https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html) (EN · RU) |
 
 Har bir daftar bir daqiqacha davom etadigan sozlash bloki bilan boshlanadi. Doim avval shu blokni ishga tushiring.
-
-Uchta qadamning kodsiz oʻynash mumkin boʻlgan sahifasi bor: «suv ombori va dala» daftarida tadqiqot sahifasi,
-«oʻn olti blokdagi Zarafshon» oʻzi bir sahifa, «daryo uchun suv» daftarida oʻz oʻyini. Boshlanish daftarining
-maydoni — Gemini ning oʻzi. Modellashtirish va optimallashtirish darsliklari oʻqiladi va ishga tushiriladi.
-
 Oʻyinlar alohida veb-sahifalardir: havolani bosing va oʻynang, hech narsa oʻrnatish shart emas. Internetsiz xona
 uchun GitHub da `games` papkasini oching, faylni bosing, yuklab olish tugmasini (oʻng yuqoridagi pastga strelka) bosing
 va yuklangan faylni istalgan brauzerda oching.
@@ -367,12 +357,12 @@ Har bir daftarning boshidagi sozlash bloki dastur allaqachon oʻrnatilganini sez
 
 ## Papkada nima bor
 
-- `00_starter.ipynb` … `04_eflow.ipynb`: kurs daftarlari, murakkablik ortib borishi tartibida raqamlangan.
+- `00_starter.ipynb` … `05_eflow.ipynb`: kurs daftarlari, murakkablik ortib borishi tartibida raqamlangan.
 - `src/zarafshan_taqsim/`: daftarlar ishlatadigan Zarafshon modelining kodi.
 - `data/ZRB_baseline/`: oqim, suv talabi, suv omborlari va kanallar maʼlumotlari, 2010–2023.
 - `eflow_game/`: «daryo uchun suv» daftari va oʻyini ortidagi model, oldindan hisoblangan natijalar bilan.
-- `coursebooks/`: toʻrtta darslik veb-sahifa koʻrinishida, hech narsa ishga tushirmasdan oʻqish uchun.
-- `games/`: uchta oʻyin.
+- `coursebooks/`: beshta darslik veb-sahifa koʻrinishida, hech narsa ishga tushirmasdan oʻqish uchun.
+- `games/`: toʻrtta oʻyin.
 - `_cache/`: uzoq hisob-kitoblar natijalari, optimallashtirish daftari soniyalarda ochilishi uchun.
 
 Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan [TaqSim](https://github.com/hydrosolutions/taqsim).

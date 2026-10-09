@@ -1,0 +1,194 @@
+/* Tokens: the same palette as the other game pages of the course, in light and dark; the kind colours are the
+   module's KIND_COLOUR (blocks_demo.py), used as strokes on tinted boxes so that the text stays readable in both. */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #6b6a66;
+  --grid: #e1e0d9;
+  --axis: #878680;
+  --border: rgba(11, 11, 11, 0.14);
+  --water: #2a78d6;
+  --shortage: #b42f2f;
+  --good-text: #006300;
+  --bad-text: #b42f2f;
+  --accent: #1f66c1;
+  --focus: #1f66c1;
+  --code-bg: #f3f2ee;
+  --sink-fill: #e9e8e2;
+  --tint: 16%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #a3a29a;
+    --grid: #2c2c2a;
+    --axis: #6e6d68;
+    --border: rgba(255, 255, 255, 0.16);
+    --water: #3987e5;
+    --shortage: #e66767;
+    --good-text: #2fbf2f;
+    --bad-text: #e66767;
+    --accent: #5b9cee;
+    --focus: #5b9cee;
+    --code-bg: #111110;
+    --sink-fill: #2a2a28;
+    --tint: 28%;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --ink: #ffffff;
+  --ink-2: #c3c2b7;
+  --muted: #a3a29a;
+  --grid: #2c2c2a;
+  --axis: #6e6d68;
+  --border: rgba(255, 255, 255, 0.16);
+  --water: #3987e5;
+  --shortage: #e66767;
+  --good-text: #2fbf2f;
+  --bad-text: #e66767;
+  --accent: #5b9cee;
+  --focus: #5b9cee;
+  --code-bg: #111110;
+  --sink-fill: #2a2a28;
+  --tint: 28%;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; font-size: 14px; font-size: clamp(14px, 0.85vw + 3px, 18px); }
+body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+h1, h2, h3 { line-height: 1.25; margin: 0; }
+h1 { font-size: 1.25rem; font-weight: 650; }
+h1 .thin { font-weight: 400; color: var(--ink-2); }
+h2 { font-size: 1.02rem; font-weight: 620; }
+h3 { font-size: 0.95rem; font-weight: 620; margin-top: 10px; }
+p { margin: 0.35rem 0; }
+button, input { font: inherit; color: inherit; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+code { font-size: 0.9rem; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+[hidden] { display: none !important; }
+output, td, .num { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 1600px; margin: 0 auto; padding: 0 16px 32px; }
+header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.brand .logo { display: block; height: 44px; width: auto; padding: 4px 8px; background: #ffffff; border-radius: 8px; border: 1px solid var(--border); }
+.top-controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); flex-wrap: wrap; }
+.segmented button { border: 0; background: transparent; min-height: 28px; padding: 4px 10px; cursor: pointer; color: var(--ink-2); white-space: nowrap; }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.btn { border: 1px solid var(--border); background: var(--surface-2); border-radius: 8px; padding: 5px 10px; min-height: 28px; cursor: pointer; color: var(--ink); }
+.btn.small { padding: 2px 9px; font-size: 0.9rem; min-height: 28px; }
+.btn.primary { background: var(--ink); color: var(--surface); border-color: var(--ink); min-width: 6em; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+.prose { font-size: 0.95rem; color: var(--ink-2); }
+.prose p { margin: 0 0 10px; break-inside: avoid; }
+.prose b, .prose strong { color: var(--ink); }
+.hint { color: var(--muted); font-size: 0.9rem; }
+
+/* the "Before you play" panel, as on the other game pages */
+.intro { margin: 0 0 10px; padding: 10px 16px; }
+.intro summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.intro summary::-webkit-details-marker { display: none; }
+.intro summary::before { content: "▸"; font-size: 0.9em; opacity: 0.7; }
+.intro[open] summary::before { content: "▾"; }
+.intro summary h2 { margin: 0; font-size: 1.05rem; }
+.intro .prose { column-width: 52ch; column-gap: 36px; margin-top: 6px; }
+.intro .prose .wide { column-span: all; }
+table.kinds { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 6px 0 8px; }
+table.kinds th { text-align: left; color: var(--muted); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--border); }
+table.kinds td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--grid); vertical-align: top; color: var(--ink-2); }
+table.kinds td:first-child { white-space: nowrap; }
+.kind-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; color: #ffffff; font-weight: 620; font-size: 0.85rem; letter-spacing: 0.02em; }
+.kind-tag.Reach, .kind-tag.Splitter { color: #0b0b0b; }
+
+/* the stage and the card beside it */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 24rem; grid-template-rows: auto 1fr; grid-template-areas: "stage side" "controls side"; gap: 10px 12px; align-items: start; }
+.stage { grid-area: stage; padding: 8px 10px 6px; }
+.stage header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.stage-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.stage svg { display: block; width: 100%; min-width: 760px; height: auto; }
+.narrow-only { display: none; }
+.stage .legend { color: var(--muted); font-size: 0.88rem; margin: 2px 0 0; }
+.controls { grid-area: controls; display: grid; gap: 10px; }
+.side { grid-area: side; min-width: 0; }
+.side .card { position: sticky; top: 8px; }
+.month-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#months button { min-width: 3.2em; }
+.knobs { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 8px 18px; }
+.knob label { display: flex; justify-content: space-between; gap: 8px; font-size: 0.92rem; color: var(--ink-2); }
+.knob label b { color: var(--ink); font-weight: 620; }
+.knob output { color: var(--ink); font-weight: 620; white-space: nowrap; }
+input[type="range"] { width: 100%; accent-color: var(--ink); height: 26px; margin: 0; }
+.knob .ticks { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: -4px; }
+
+/* the stage's SVG: sizes are set inline on the text (a stylesheet rule beats the SVG attribute) */
+.stage .edge path.line { fill: none; stroke: var(--water); stroke-linecap: round; transition: stroke-width 0.25s ease; }
+.stage .edge path.line.dry { stroke-dasharray: 4 6; opacity: 0.6; }
+.stage .edge path.hit { fill: none; stroke: transparent; stroke-width: 18; cursor: pointer; }
+.stage .edge.lit path.line, .stage .edge:hover path.line { stroke: var(--accent); marker-end: url(#arrow-lit); }
+.stage marker path.head { fill: var(--water); }
+.stage marker path.head.lit { fill: var(--accent); }
+.stage .edge text { fill: var(--ink); }
+.stage .edge rect.tag { fill: var(--surface); stroke: var(--border); rx: 4; }
+.stage .edge.lit rect.tag, .stage .edge:hover rect.tag { stroke: var(--accent); }
+.stage .blk { cursor: pointer; }
+.stage .blk rect.box { stroke-width: 1.8; transition: stroke-width 0.15s ease; }
+.stage .blk.sink rect.box { fill: var(--sink-fill); }
+.stage .blk:hover rect.box, .stage .blk.lit rect.box { stroke-width: 3.2; }
+.stage .blk.selected rect.box { stroke: var(--ink); stroke-width: 3.2; }
+.stage .blk text.name { fill: var(--ink); font-weight: 650; }
+.stage .blk text.kind { fill: var(--ink-2); }
+.stage .blk text.sub { fill: var(--ink-2); font-weight: 600; }
+.stage .blk text.sub.bad { fill: var(--bad-text); }
+.stage .blk text.sub.good { fill: var(--good-text); }
+.stage .gauge-bg { fill: var(--surface); stroke: var(--axis); stroke-width: 0.8; }
+.stage .gauge-fill { fill: var(--water); }
+
+/* the block card */
+.blockcard .kindline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.blockcard .analogy { font-style: italic; color: var(--ink-2); margin: 6px 0; }
+.blockcard pre { margin: 6px 0; padding: 8px 10px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; font-size: 0.8rem; line-height: 1.4; overflow-x: auto; white-space: pre; }
+.blockcard table.nums { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.blockcard table.nums td { padding: 2px 0; border-bottom: 1px solid var(--grid); }
+.blockcard table.nums td:last-child { text-align: right; font-weight: 620; white-space: nowrap; }
+.blockcard .balance { margin: 8px 0 2px; padding: 6px 8px; background: var(--surface-2); border-radius: 8px; font-size: 0.9rem; }
+.blockcard .balance.closes { border-left: 4px solid var(--good-text); }
+
+/* the year strip and the notice box */
+.year { margin-top: 10px; }
+.year .parts { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 4px 0; }
+.year .part { display: inline-flex; align-items: baseline; gap: 6px; padding: 2px 8px; border-radius: 8px; background: var(--surface-2); }
+.year .part b { font-weight: 650; }
+.year .sum { color: var(--good-text); font-weight: 620; }
+.year .sum.bad { color: var(--bad-text); }
+.notice { margin-top: 10px; }
+.notice ol { margin: 4px 0 0; padding-left: 1.4em; color: var(--ink-2); font-size: 0.95rem; }
+.notice li { margin: 4px 0; }
+.notice b { color: var(--ink); }
+footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
+
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "controls" "side"; }
+  .side .card { position: static; }
+  .intro .prose { column-width: auto; }
+}
+@media (max-width: 820px) {
+  .narrow-only { display: inline; }
+}
+@media (max-width: 600px) {
+  .brand .logo { height: 36px; }
+  .stage { padding: 6px 4px; }
+}

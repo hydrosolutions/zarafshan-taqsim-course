@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaqSim block by block</title>
+<meta name="description" content="TaqSim block by block: a demo water system of nine blocks of seven kinds (Source, Reach, Splitter, Storage, Demand, PassThrough, Sink). Five knobs, twelve months, every number computed by TaqSim in advance. Offline teaching tool for the TaqSim workshop, Tashkent, October 2026. English and Russian.">
+<style>
+/*__STYLE__*/
+</style>
+<script>
+// language and theme, before the page is drawn
+(function () {
+  var lang = "en", theme = "auto";
+  try { lang = localStorage.getItem("blocksGame.lang") === "ru" ? "ru" : "en"; theme = localStorage.getItem("blocksGame.theme") || "auto"; } catch (e) { /* no storage */ }
+  document.documentElement.setAttribute("lang", lang);
+  document.documentElement.setAttribute("data-lang", lang);
+  if (theme === "light" || theme === "dark") document.documentElement.setAttribute("data-theme", theme);
+})();
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="@@LOGO@@" alt="hydrosolutions">
+      <h1 id="page-title"><span data-lang="en">TaqSim block by block <span class="thin">nine blocks, seven kinds, five knobs</span></span><span data-lang="ru" hidden>TaqSim блок за блоком <span class="thin">девять блоков, семь видов, пять рычагов</span></span></h1>
+    </div>
+    <div class="top-controls">
+      <div class="segmented" id="lang-buttons" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></div>
+      <button class="btn small" id="theme-toggle" type="button">Theme: auto</button>
+    </div>
+  </header>
+
+  <!-- intro:start -->
+  <details class="card intro" id="intro" open>
+    <summary><h2><span data-lang="en">Before you play: what a block is, what a rule card is, what to watch</span><span data-lang="ru" hidden>Прежде чем играть: что такое блок, что такое карточка правила, за чем следить</span></h2></summary>
+    <div class="prose" data-lang="en">
+      <p><b>What a block is.</b> A TaqSim model is a chain of boxes, and each box does one thing with water: it brings it in, carries it, splits it, stores it, uses it or takes it out of the story. A box never decides anything by itself; it only moves water. The demo below has nine boxes of seven kinds: a river, a canyon, a headworks, a canal, a reservoir, a farm, a turbine and two places where the water leaves. The full Zarafshan model is made of the same kinds, only more of them.</p>
+      <p><b>What a rule card is.</b> Every box that has a choice to make carries a small piece of Python that tells it what to do each month: how much to send which way, how much to let out of the valve, how much is lost. That piece of code is the block's rule, and this page shows it verbatim when you click the block. Five of the rules contain a number you can turn; those numbers are the five sliders.</p>
+      <p><b>What to watch.</b> Pick a month, or press Play, and watch the width of the arrows: that is how much water each edge carries in that month, in Mm³. The reservoir shows how full it is, the farm whether it got all it needs, the turbine whether water spills past its gate. Click any block for its card: the analogy, the rule, this month's numbers and a one-line balance. At the bottom the whole year adds up: what the river brought equals where it all went. Every number was computed by TaqSim in advance; nothing is simulated in the browser.</p>
+      <div class="wide" id="kinds-en"></div>
+    </div>
+    <div class="prose" data-lang="ru" hidden>
+      <p><b>Что такое блок.</b> Модель TaqSim — это цепочка коробок, и каждая коробка делает с водой одно: приносит её, переносит, делит, хранит, использует или выводит из рассказа. Коробка сама ничего не решает, она только двигает воду. В демонстрации ниже девять коробок семи видов: река, ущелье, гидроузел, канал, водохранилище, поле, турбина и два места, где вода уходит. Полная модель Зарафшана состоит из тех же видов, только их больше.</p>
+      <p><b>Что такое карточка правила.</b> Каждая коробка, которой есть что решать, несёт маленький кусок кода на Python, который говорит ей, что делать каждый месяц: сколько отправить в какую сторону, сколько выпустить через задвижку, сколько теряется. Этот кусок кода — правило блока, и эта страница показывает его дословно, когда вы нажимаете на блок. В пяти правилах есть число, которое можно крутить; эти числа — пять ползунков.</p>
+      <p><b>За чем следить.</b> Выберите месяц или нажмите «Пуск» и смотрите на толщину стрелок: это сколько воды несёт каждое ребро в этом месяце, в млн м³. Водохранилище показывает, насколько оно полно, поле — получило ли оно всё, что нужно, турбина — сбрасывается ли вода мимо её затвора. Нажмите на любой блок, чтобы открыть его карточку: аналогию, правило, числа этого месяца и баланс в одну строку. Внизу сходится весь год: сколько принесла река, столько и ушло. Все числа заранее вычислены в TaqSim; в браузере ничего не моделируется.</p>
+      <div class="wide" id="kinds-ru"></div>
+    </div>
+  </details>
+  <!-- intro:end -->
+
+  <div class="layout">
+    <section class="card stage" aria-label="The demo system">
+      <header>
+        <h2 id="stage-title">October: water on every edge, Mm³</h2>
+        <span class="hint" data-i18n>Click a block for its card. Hover an edge or a block.</span>
+      </header>
+      <div class="stage-scroll"><svg id="stage" viewBox="0 0 1150 272" role="img" aria-label="Nine blocks and eight edges"></svg></div>
+      <p class="legend"><span data-i18n>Arrow width: the water carried along that edge this month. Dashed: nothing flows.</span> <span class="narrow-only" data-i18n>Scroll sideways to see the whole system →</span></p>
+    </section>
+
+    <section class="controls">
+      <div class="card">
+        <div class="month-row">
+          <div class="segmented" id="months" role="group" aria-label="Month"></div>
+          <button class="btn primary" id="play" type="button" data-i18n>Play</button>
+          <button class="btn" id="reset" type="button" data-i18n>Reset</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2 data-i18n>The five knobs</h2>
+        <p class="hint" data-i18n>Each knob is one number inside one block's rule. The sliders snap to the values TaqSim has run.</p>
+        <div class="knobs" id="knobs"></div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="card blockcard" id="card" aria-live="polite"></div>
+    </aside>
+  </div>
+
+  <section class="card year" id="year"></section>
+
+  <section class="card notice">
+    <h2><span data-lang="en">What to notice</span><span data-lang="ru" hidden>На что обратить внимание</span></h2>
+    <ol data-lang="en">
+      <li><b>The canyon delays the river by a month.</b> Step from June to July: the river's peak enters the canyon in July, but the headworks receives June's water. The summer peak arrives at the headworks a month late, and the canyon shows what is still inside.</li>
+      <li><b>Two kinds of "spill".</b> A full reservoir overflows, and that water travels on to the farm (the arrow to the farm includes it). A turbine gate's spill is different: TaqSim records it and does not follow it; it leaves the books. Set the gate to 300 and watch the year strip.</li>
+      <li><b>A rule, not a lack of water.</b> Set the valve maximum to 20 and look at May and June: the reservoir holds over 600 of its 667 Mm³, yet the farm is short by 21.6 and 11.8. The water is there; the rule does not release it. (In July and August the overflow of the full reservoir happens to cover the need.)</li>
+      <li><b>A little short even with a big valve.</b> With the valve at 120 the farm is still short by a few Mm³ in most months it needs water: 2.8 in October, 10.0 in September. 15 % is lost between the gate and the plants, and the rule asks for the need at the gate, not at the plants.</li>
+    </ol>
+    <ol data-lang="ru" hidden>
+      <li><b>Ущелье задерживает реку на месяц.</b> Перейдите с июня на июль: пик реки входит в ущелье в июле, а гидроузел получает июньскую воду. Летний пик доходит до гидроузла на месяц позже, а ущелье показывает, сколько воды ещё внутри.</li>
+      <li><b>Два разных «сброса».</b> Полное водохранилище переливается, и эта вода идёт дальше, на поле (стрелка к полю уже включает её). Сброс мимо затвора турбины — другое: TaqSim записывает его и дальше не следит; вода выбывает из учёта. Поставьте затвор на 300 и посмотрите на строку года.</li>
+      <li><b>Правило, а не нехватка воды.</b> Поставьте максимум задвижки на 20 и посмотрите на май и июнь: в водохранилище больше 600 из его 667 млн м³, а полю не хватает 21.6 и 11.8. Вода есть; правило её не выпускает. (В июле и августе перелив полного водохранилища случайно покрывает потребность.)</li>
+      <li><b>Небольшой дефицит даже при большой задвижке.</b> При задвижке 120 поле всё равно недополучает несколько млн м³ почти в каждый месяц, когда ему нужна вода: 2.8 в октябре, 10.0 в сентябре. 15 % теряется между затвором и растениями, а правило просит потребность у затвора, а не у растений.</li>
+    </ol>
+  </section>
+
+  <footer class="foot" data-lang="en">The 405 knob combinations were run in TaqSim by <code>scripts/build_blocks_game.py</code> with the model of <code>src/zarafshan_taqsim/blocks_demo.py</code>; the rule cards are the classes of that module, verbatim. hydrosolutions, TaqSim workshop Tashkent, 12–13 October 2026.</footer>
+  <footer class="foot" data-lang="ru" hidden>405 сочетаний рычагов прогнаны в TaqSim скриптом <code>scripts/build_blocks_game.py</code> по модели из <code>src/zarafshan_taqsim/blocks_demo.py</code>; карточки правил — классы этого модуля, дословно. hydrosolutions, семинар по TaqSim, Ташкент, 12–13 октября 2026 г.</footer>
+</div>
+<script id="blocks-data" type="application/json">/*__DATA__*/</script>
+<script>
+/*__APP__*/
+</script>
+</body>
+</html>
