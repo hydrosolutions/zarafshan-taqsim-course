@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: The course site
+    url: https://hydrosolutions.github.io/zarafshan-taqsim-course/
+    about: Review the published pages, notebooks and games here, not the files in this repository.
