@@ -195,7 +195,22 @@ body { margin: 0 !important; padding: 0 !important; max-width: none !important; 
 .hero .kicker { font-size: .85rem; letter-spacing: .12em; text-transform: uppercase; opacity: .85; margin: 0 0 10px; }
 .hero h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 12px; border: 0; padding: 0; color: #ffffff; letter-spacing: -.01em; }
 .hero .meta { font-size: 1.05rem; opacity: .92; margin: 0; }
-main { max-width: 1120px; margin: 0 auto; padding: 24px 32px 72px; }
+.course-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); max-width: 1440px; margin: 0 auto; }
+.contents { position: sticky; top: 100px; align-self: start; max-height: calc(100vh - 116px); overflow-y: auto; padding: 24px 16px; font-size: .85rem; }
+.contents > summary { font-weight: 700; color: var(--ink); cursor: pointer; padding: 8px; }
+.contents details { margin: 10px 0; }
+.contents details summary { cursor: pointer; font-weight: 600; padding: 6px 8px; }
+.contents ul { list-style: none; padding: 0; margin: 4px 0; }
+.contents a { display: block; text-decoration: none; padding: 6px 10px; border-radius: 6px; }
+.contents a:hover, .contents a:focus-visible { background: var(--tint); }
+main { min-width: 0; width: 100%; max-width: 1120px; margin: 0 auto; padding: 24px 32px 72px; }
+main [id] { scroll-margin-top: 110px; }
+.table-scroll { overflow-x: auto; }
+@media (max-width: 1050px) {
+  .course-layout { display: block; }
+  .contents { position: static; max-height: none; margin: 16px 18px 0; padding: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 main > p:first-child { display: none; }
 main h1 { font-size: 1.9rem; line-height: 1.2; color: var(--ink); margin: 2.4em 0 .4em; padding-top: 1.2em; border-top: 1px solid var(--line); letter-spacing: -.01em; }
 main h1:first-of-type { border-top: 0; padding-top: 0; margin-top: 1.2em; }
@@ -243,7 +258,7 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <h1>TaqSim course</h1>
 <p class="meta">Water allocation in the Zarafshan basin · Tashkent, 14–15 October 2026</p>
 </div></section>
-<main>
+<div class="course-layout"><details class="contents" open><summary>Contents · Содержание · Mundarija</summary><nav aria-label="Course sections"><details data-language="english" open><summary>English</summary><a href="#english">English · ↑</a><ul><li><a href="#before-the-course-three-things-to-do-15-minutes">Before the course: three things to do (15 minutes)</a></li><li><a href="#trying-the-ai-helper-10-minutes-optional-but-recommended">Trying the AI helper (10 minutes, optional but recommended)</a></li><li><a href="#chatgpt-and-an-optional-sider-sidebar">ChatGPT and an optional Sider sidebar</a></li><li><a href="#three-kinds-of-material">Three kinds of material</a></li><li><a href="#the-course-step-by-step">The course, step by step</a></li><li><a href="#if-something-goes-wrong">If something goes wrong</a></li><li><a href="#for-people-who-have-python-on-their-computer">For people who have Python on their computer</a></li><li><a href="#what-is-in-the-folder">What is in the folder</a></li></ul></details><details data-language="russian"><summary>Русский</summary><a href="#russian">Русский · ↑</a><ul><li><a href="#перед-курсом-три-шага-15-минут">Перед курсом: три шага (15 минут)</a></li><li><a href="#пробуем-ии-помощника-10-минут-по-желанию-но-рекомендуется">Пробуем ИИ-помощника (10 минут, по желанию, но рекомендуется)</a></li><li><a href="#chatgpt-и-дополнительная-боковая-панель-sider">ChatGPT и дополнительная боковая панель Sider</a></li><li><a href="#три-вида-материалов">Три вида материалов</a></li><li><a href="#курс-шаг-за-шагом">Курс шаг за шагом</a></li><li><a href="#если-что-то-пошло-не-так">Если что-то пошло не так</a></li><li><a href="#для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на компьютере есть Python</a></li><li><a href="#что-в-папке">Что в папке</a></li></ul></details><details data-language="uzbek"><summary>Oʻzbekcha</summary><a href="#uzbek">Oʻzbekcha · ↑</a><ul><li><a href="#kursdan-oldin-uchta-ish-15-daqiqa">Kursdan oldin: uchta ish (15 daqiqa)</a></li><li><a href="#sunʼiy-intellekt-yordamchisini-sinab-koʻrish-10-daqiqa-ixtiyoriy-lekin-tavsiya-etiladi">Sunʼiy intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin tavsiya etiladi)</a></li><li><a href="#chatgpt-va-ixtiyoriy-sider-yon-paneli">ChatGPT va ixtiyoriy Sider yon paneli</a></li><li><a href="#uch-xil-material">Uch xil material</a></li><li><a href="#kurs-qadam-baqadam">Kurs qadam-baqadam</a></li><li><a href="#agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri ketsa</a></li><li><a href="#kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor kishilar uchun</a></li><li><a href="#papkada-nima-bor">Papkada nima bor</a></li></ul></details></nav></details><main>
 
 <p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a> &nbsp;|&nbsp; <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/" target="_blank" rel="noopener">Course page</a> (links open in new tabs)</p>
 
@@ -268,6 +283,16 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <li><p>Gemini answers with code. Click <strong>Insert</strong> (or copy the code into a new box with <strong>+ Code</strong>) and run the box. The right answer is <strong>9 percent</strong>.</p></li>
 </ol>
 <p>If that worked, you have done everything the course needs. More tasks for Gemini are in the notebook itself.</p>
+<h2 id="chatgpt-and-an-optional-sider-sidebar">ChatGPT and an optional Sider sidebar</h2>
+<p><strong>ChatGPT Free is supported in Uzbekistan.</strong> Open <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a>, choose <strong>Sign up</strong> if you do not already have an account, and follow the instructions. Stay on the free plan; no paid subscription or API key is needed for these exercises. Free usage has limits. See <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">OpenAI's supported countries</a> and <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">free plan</a>.</p>
+<p><strong>Sider is an optional Chrome extension</strong> that places an AI chat beside your notebook. It is a separate product, with its own account and usage allowance. A free ChatGPT account does not supply Sider credits. We have not confirmed Sider installation and sign-up from an Uzbekistan connection; try it before the workshop and use ChatGPT in another tab if it is unavailable.</p>
+<ol type="1">
+<li>In desktop Chrome, open <a href="https://sider.ai/extensions" target="_blank" rel="noopener">Sider's official extension page</a>, follow its <strong>Chrome</strong> link, then choose <strong>Add to Chrome</strong> and review the requested permissions.</li>
+<li>Open Chrome's Extensions menu (the puzzle icon), pin Sider, and click its icon beside your Colab notebook. Sign in to Sider or create a Sider account if prompted. Use its free allowance; no purchase is required for trying it. Available models and limits can change: <a href="https://sider.ai/help-center" target="_blank" rel="noopener">Sider help</a>.</li>
+<li>Copy the relevant code cell or error into the sidebar. Do not assume it can see the whole notebook. Ask: “Explain this code in simple words, then suggest one small change. Show the complete replacement cell.”</li>
+<li>Read the proposed change, copy it into a new Colab code cell, run it, and check the water balance and results. Use only the public course examples when trying a new AI service.</li>
+</ol>
+<p>The same prompts work in ChatGPT in a separate tab. For the final reservoir-and-two-farms exercise, also provide the <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD.md" target="_blank" rel="noopener">TaqSim API card</a>, so the assistant uses the course's model version. The workshop demonstration still uses Gemini in Colab; Sider and ChatGPT are alternatives.</p>
 <h2 id="three-kinds-of-material">Three kinds of material</h2>
 <p>Every step offers up to three things. The table below always names them the same way:</p>
 <ul>
@@ -279,7 +304,7 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <h2 id="the-course-step-by-step">The course, step by step</h2>
 <p>Each step adds one thing to the step before. Start at the top, even if you know water models already: the tools are new to everyone.</p>
 <p><strong>The workshop runs over two half-days, 14–15 October 2026.</strong> We work through the sequence below with demonstrations, games and hands-on exercises; the pace is flexible. The aim is to run and modify prepared examples and explain their results. We finish with a Gemini demonstration and an optional challenge. Anything unfinished can be continued afterwards; all materials stay online.</p>
-<table>
+<div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Step</th>
@@ -305,7 +330,7 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <td>2</td>
 <td><strong>TaqSim block by block</strong></td>
 <td>The seven kinds of block TaqSim is made of, each with an everyday picture, the smallest system that shows what it does, and its rule card: the few lines of code that tell it what to do each month. Then all seven in one small river, and the check that every drop is accounted for</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interactive coursebook — try it</a> (EN)</strong><br>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">notebook</a> (EN) · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interactive coursebook — try it</a> (EN)</strong> · Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">notebook</a> (EN) · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
 </tr>
 <tr>
 <td></td>
@@ -362,14 +387,14 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <td>Read: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">prompt guide and checks</a> (EN) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">Русский</a> · Start: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">blank notebook</a> · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">rescue notebook</a> (EN · RU)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Every notebook starts with a setup box that takes about a minute. Always run that box first. The games are single web pages: click the link and play, nothing to install. For a room without internet, open the <code>games</code> folder on GitHub, click the file, click the download button (an arrow pointing down, top right), and open the downloaded file in any browser.</p>
 <h2 id="if-something-goes-wrong">If something goes wrong</h2>
 <ul>
 <li><strong>A box shows red text and stops.</strong> Read the last line of the red text. Then paste the whole red text into Gemini and ask "what went wrong?". This is also how you will work during the course.</li>
 <li><strong>"Runtime disconnected".</strong> Colab stops a notebook after a while without use. Choose <strong>Runtime → Run all</strong> again.</li>
 <li><strong>The setup box takes very long.</strong> Wait two minutes. If nothing happens, choose <strong>Runtime → Disconnect and delete runtime</strong>, then <strong>Runtime → Run all</strong>.</li>
-<li><strong>Gemini does not appear.</strong> It needs a personal Google account and is not available in every country. Use the free <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini app</a> or <a href="https://chat.openai.com" target="_blank" rel="noopener">ChatGPT</a> in another browser tab instead: paste the cheat sheet from the starter notebook and your question there, and copy the code back into Colab.</li>
+<li><strong>Gemini does not appear.</strong> It needs a personal Google account and is not available in every country. Use the free <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini app</a> or <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> in another browser tab instead: paste the cheat sheet from the starter notebook and your question there, and copy the code back into Colab.</li>
 </ul>
 <h2 id="for-people-who-have-python-on-their-computer">For people who have Python on their computer</h2>
 <p>Everything also runs locally with Python 3.12 or newer and <code>git</code>:</p>
@@ -414,6 +439,16 @@ jupyter lab</code></pre>
 <li><p>Gemini ответит кодом. Нажмите <strong>Вставить</strong> (Insert) или скопируйте код в новый блок через <strong>+ Код</strong> и запустите его. Правильный ответ — <strong>9 процентов</strong>.</p></li>
 </ol>
 <p>Если это получилось, вы сделали всё, что нужно для курса. Другие задания для Gemini есть в самой тетради.</p>
+<h2 id="chatgpt-и-дополнительная-боковая-панель-sider">ChatGPT и дополнительная боковая панель Sider</h2>
+<p><strong>Бесплатный ChatGPT доступен в Узбекистане.</strong> Откройте <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a>, выберите <strong>Sign up</strong>, если у вас ещё нет аккаунта, и следуйте инструкциям. Для упражнений достаточно бесплатного плана: платная подписка и ключ API не нужны. Бесплатное использование имеет ограничения. См. <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">список стран OpenAI</a> и <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">бесплатный план</a>.</p>
+<p><strong>Sider — необязательное расширение Chrome:</strong> чат с ИИ рядом с тетрадью. Это отдельный сервис со своим аккаунтом и лимитами; бесплатный аккаунт ChatGPT не даёт кредиты Sider. Мы не проверяли установку и регистрацию Sider через интернет-соединение в Узбекистане. Попробуйте до семинара; если не получится, откройте ChatGPT в другой вкладке.</p>
+<ol type="1">
+<li>В Chrome на компьютере откройте <a href="https://sider.ai/extensions" target="_blank" rel="noopener">официальную страницу расширения Sider</a>, перейдите по ссылке <strong>Chrome</strong>, нажмите <strong>Add to Chrome</strong> и проверьте запрашиваемые разрешения.</li>
+<li>В меню расширений Chrome (значок пазла) закрепите Sider и откройте его рядом с тетрадью Colab. При необходимости войдите или создайте аккаунт Sider. Для пробы используйте бесплатный лимит; покупка не нужна. Модели и лимиты могут меняться: <a href="https://sider.ai/help-center" target="_blank" rel="noopener">справка Sider</a>.</li>
+<li>Скопируйте нужный блок кода или ошибку в чат: не предполагается, что помощник видит всю тетрадь. Спросите: «Объясни код простыми словами, предложи одно небольшое изменение и покажи полный блок для замены».</li>
+<li>Прочитайте ответ, вставьте код в новый блок Colab, запустите и проверьте водный баланс и результаты. Для знакомства с новым ИИ-сервисом используйте только открытые примеры курса.</li>
+</ol>
+<p>Эти же запросы работают в ChatGPT в отдельной вкладке. Для задания с водохранилищем и двумя хозяйствами также передайте <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD.md" target="_blank" rel="noopener">памятку по API TaqSim</a>, чтобы помощник использовал версию модели из курса. Демонстрация на семинаре по-прежнему использует Gemini в Colab; Sider и ChatGPT — альтернативы.</p>
 <h2 id="три-вида-материалов">Три вида материалов</h2>
 <p>Каждый шаг предлагает до трёх вещей. В таблице ниже они всегда названы одинаково:</p>
 <ul>
@@ -425,7 +460,7 @@ jupyter lab</code></pre>
 <h2 id="курс-шаг-за-шагом">Курс шаг за шагом</h2>
 <p>Каждый шаг добавляет одну вещь к предыдущему. Начинайте сверху, даже если водные модели вам знакомы: инструменты новы для всех.</p>
 <p><strong>Семинар проходит в течение двух полудней, 14–15 октября 2026 года.</strong> Мы следуем приведённой ниже последовательности: демонстрации, игры и практические упражнения; темп гибкий. Цель — запускать и изменять готовые примеры и объяснять результаты. В конце — демонстрация Gemini и необязательное самостоятельное задание. Незавершённые упражнения можно продолжить после курса; все материалы останутся онлайн.</p>
-<table>
+<div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Шаг</th>
@@ -451,7 +486,7 @@ jupyter lab</code></pre>
 <td>2</td>
 <td><strong>TaqSim блок за блоком</strong></td>
 <td>Семь видов блоков, из которых состоит TaqSim: у каждого бытовая картинка, самая маленькая система, показывающая, что он делает, и его «карточка правила» — несколько строк кода, которые говорят ему, что делать каждый месяц. Затем все семь в одной маленькой реке и проверка, что учтена каждая капля</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Интерактивный учебник — попробовать</a> (EN)</strong><br>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">тетрадь</a> (EN) · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Интерактивный учебник — попробовать</a> (EN)</strong> · Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">тетрадь</a> (EN) · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
 </tr>
 <tr>
 <td></td>
@@ -508,14 +543,14 @@ jupyter lab</code></pre>
 <td>Читать: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">подсказки и проверки</a> (RU) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">English</a> · Начать: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">пустая тетрадь</a> · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">готовая запасная тетрадь</a> (EN · RU)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Каждая тетрадь начинается с блока настройки, который занимает около минуты. Всегда запускайте этот блок первым. Игры — это отдельные веб-страницы: нажмите на ссылку и играйте, устанавливать ничего не нужно. Для зала без интернета откройте папку <code>games</code> на GitHub, нажмите на файл, затем на кнопку скачивания (стрелка вниз, справа вверху) и откройте скачанный файл в любом браузере.</p>
 <h2 id="если-что-то-пошло-не-так">Если что-то пошло не так</h2>
 <ul>
 <li><strong>В блоке появился красный текст, и он остановился.</strong> Прочитайте последнюю строку красного текста. Затем вставьте весь красный текст в Gemini и спросите «что пошло не так?». Так же вы будете работать и во время курса.</li>
 <li><strong>«Среда выполнения отключена» (Runtime disconnected).</strong> Colab останавливает тетрадь, если ею долго не пользуются. Снова выберите <strong>Среда выполнения → Выполнить все</strong>.</li>
 <li><strong>Блок настройки работает очень долго.</strong> Подождите две минуты. Если ничего не происходит, выберите <strong>Среда выполнения → Отключить и удалить среду выполнения</strong>, затем <strong>Выполнить все</strong>.</li>
-<li><strong>Gemini не появляется.</strong> Ему нужен личный аккаунт Google, и он доступен не во всех странах. Вместо него откройте в другой вкладке бесплатное <a href="https://gemini.google.com" target="_blank" rel="noopener">приложение Gemini</a> или <a href="https://chat.openai.com" target="_blank" rel="noopener">ChatGPT</a>: вставьте туда шпаргалку из стартовой тетради и свой вопрос, а полученный код скопируйте обратно в Colab.</li>
+<li><strong>Gemini не появляется.</strong> Ему нужен личный аккаунт Google, и он доступен не во всех странах. Вместо него откройте в другой вкладке бесплатное <a href="https://gemini.google.com" target="_blank" rel="noopener">приложение Gemini</a> или <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>: вставьте туда шпаргалку из стартовой тетради и свой вопрос, а полученный код скопируйте обратно в Colab.</li>
 </ul>
 <h2 id="для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на компьютере есть Python</h2>
 <p>Всё работает и локально, с Python 3.12 или новее и <code>git</code>:</p>
@@ -560,6 +595,16 @@ jupyter lab</code></pre>
 <li><p>Gemini kod bilan javob beradi. <strong>Insert</strong> ni bosing (yoki kodni <strong>+ Code</strong> orqali yangi blokka nusxalang) va blokni ishga tushiring. Toʻgʻri javob — <strong>9 foiz</strong>.</p></li>
 </ol>
 <p>Shu ishlagan boʻlsa, kurs uchun kerak boʻlgan hamma narsani qildingiz. Gemini uchun boshqa topshiriqlar daftarning oʻzida bor.</p>
+<h2 id="chatgpt-va-ixtiyoriy-sider-yon-paneli">ChatGPT va ixtiyoriy Sider yon paneli</h2>
+<p><strong>Bepul ChatGPT Oʻzbekistonda qoʻllab-quvvatlanadi.</strong> <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> saytini oching, hisobingiz boʻlmasa <strong>Sign up</strong> ni tanlang va koʻrsatmalarga amal qiling. Mashqlar uchun bepul tarif yetarli: pulli obuna yoki API kaliti kerak emas. Bepul foydalanish cheklangan. <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">OpenAI mamlakatlar roʻyxati</a> va <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">bepul tarif</a> haqida oʻqing.</p>
+<p><strong>Sider — Chrome uchun ixtiyoriy kengaytma:</strong> daftar yonida AI bilan suhbatlashish imkonini beradi. Uning oʻz hisobi va foydalanish limiti bor; bepul ChatGPT hisobi Sider kreditlarini bermaydi. Oʻzbekistondagi internet orqali Sider oʻrnatish va roʻyxatdan oʻtishni tekshirmadik. Seminardan oldin sinab koʻring; ishlamasa, ChatGPT ni boshqa oynada oching.</p>
+<ol type="1">
+<li>Kompyuterdagi Chrome orqali <a href="https://sider.ai/extensions" target="_blank" rel="noopener">Sider kengaytmasining rasmiy sahifasini</a> oching, <strong>Chrome</strong> havolasiga oʻting, <strong>Add to Chrome</strong> ni bosing va soʻralgan ruxsatlarni tekshiring.</li>
+<li>Chrome kengaytmalar menyusida (pazl belgisi) Sider ni mahkamlang va Colab daftari yonida oching. Kerak boʻlsa, Sider hisobiga kiring yoki hisob yarating. Sinash uchun bepul limitdan foydalaning; xarid shart emas. Modellar va limitlar oʻzgarishi mumkin: <a href="https://sider.ai/help-center" target="_blank" rel="noopener">Sider yordami</a>.</li>
+<li>Kerakli kod bloki yoki xatoni chatga nusxalang; yordamchi butun daftarni koʻryapti deb oʻylamang. Soʻrang: «Kodni oddiy soʻzlar bilan tushuntir, bitta kichik oʻzgarish taklif qil va almashtirish uchun toʻliq kod blokini koʻrsat».</li>
+<li>Javobni oʻqing, kodni yangi Colab blokiga qoʻying, ishga tushiring va suv balansi hamda natijalarni tekshiring. Yangi AI xizmatini sinashda faqat kursning ochiq misollaridan foydalaning.</li>
+</ol>
+<p>Xuddi shu soʻrovlarni boshqa oynadagi ChatGPT da ham ishlatish mumkin. Suv ombori va ikkita xoʻjalik mashqi uchun yordamchiga <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD.md" target="_blank" rel="noopener">TaqSim API qoʻllanmasini</a> ham bering: shunda u kursdagi model versiyasidan foydalanadi. Seminar namoyishida Gemini Colab ichida ishlatiladi; Sider va ChatGPT — muqobil variantlar.</p>
 <h2 id="uch-xil-material">Uch xil material</h2>
 <p>Har bir qadam uchtagacha narsa taklif qiladi. Quyidagi jadvalda ular doim bir xil nomlanadi:</p>
 <ul>
@@ -571,7 +616,7 @@ jupyter lab</code></pre>
 <h2 id="kurs-qadam-baqadam">Kurs qadam-baqadam</h2>
 <p>Har bir qadam oldingisiga bitta narsa qoʻshadi. Suv modellarini bilsangiz ham yuqoridan boshlang: vositalar hamma uchun yangi.</p>
 <p><strong>Seminar 2026-yil 14–15-oktabr kunlari, ikki yarim kun davom etadi.</strong> Quyidagi ketma-ketlikda namoyishlar, oʻyinlar va amaliy mashqlar bilan ishlaymiz; surʼat moslashuvchan. Maqsad — tayyor misollarni ishga tushirish, oʻzgartirish va natijalarini tushuntirish. Yakunda Gemini namoyishi va ixtiyoriy mustaqil topshiriq boʻladi. Tugallanmagan mashqlarni keyin davom ettirish mumkin; barcha materiallar onlayn qoladi.</p>
-<table>
+<div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Qadam</th>
@@ -597,7 +642,7 @@ jupyter lab</code></pre>
 <td>2</td>
 <td><strong>TaqSim blokma-blok</strong></td>
 <td>TaqSim tashkil topgan yetti xil blok: har birining kundalik hayotdan olingan tasviri, nima qilishini koʻrsatadigan eng kichik tizim va uning «qoida kartasi» — har oy nima qilishni aytadigan bir necha qator kod. Soʻng yettalasi bitta kichik daryoda va har bir tomchi hisobga olinganini tekshirish</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interaktiv darslik — sinab koʻring</a> (EN)</strong><br>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">daftar</a> (EN) · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interaktiv darslik — sinab koʻring</a> (EN)</strong> · Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">daftar</a> (EN) · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
 </tr>
 <tr>
 <td></td>
@@ -654,14 +699,14 @@ jupyter lab</code></pre>
 <td>Oʻqish: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">soʻrovlar va tekshiruvlar qoʻllanmasi</a> (EN) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">Русский</a> · Boshlash: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">boʻsh daftar</a> · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">tayyor zaxira daftar</a> (EN · RU)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Har bir daftar bir daqiqacha davom etadigan sozlash bloki bilan boshlanadi. Doim avval shu blokni ishga tushiring. Oʻyinlar alohida veb-sahifalardir: havolani bosing va oʻynang, hech narsa oʻrnatish shart emas. Internetsiz xona uchun GitHub da <code>games</code> papkasini oching, faylni bosing, yuklab olish tugmasini (oʻng yuqoridagi pastga strelka) bosing va yuklangan faylni istalgan brauzerda oching.</p>
 <h2 id="agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri ketsa</h2>
 <ul>
 <li><strong>Blokda qizil matn chiqdi va u toʻxtadi.</strong> Qizil matnning oxirgi qatorini oʻqing. Soʻng butun qizil matnni Gemini ga qoʻyib, «nima notoʻgʻri ketdi?» deb soʻrang. Kurs davomida ham shunday ishlaysiz.</li>
 <li><strong>«Runtime disconnected».</strong> Colab uzoq vaqt ishlatilmagan daftarni toʻxtatadi. Yana <strong>Runtime → Run all</strong> ni tanlang.</li>
 <li><strong>Sozlash bloki juda uzoq ishlayapti.</strong> Ikki daqiqa kuting. Hech narsa boʻlmasa, <strong>Runtime → Disconnect and delete runtime</strong>, soʻng <strong>Runtime → Run all</strong> ni tanlang.</li>
-<li><strong>Gemini chiqmayapti.</strong> Unga shaxsiy Google hisobi kerak va u hamma mamlakatda ham mavjud emas. Oʻrniga boshqa oynada bepul <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini ilovasi</a> yoki <a href="https://chat.openai.com" target="_blank" rel="noopener">ChatGPT</a> dan foydalaning: boshlanish daftaridagi eslatma varaqasini va savolingizni u yerga qoʻying, olingan kodni Colab ga qaytarib nusxalang.</li>
+<li><strong>Gemini chiqmayapti.</strong> Unga shaxsiy Google hisobi kerak va u hamma mamlakatda ham mavjud emas. Oʻrniga boshqa oynada bepul <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini ilovasi</a> yoki <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> dan foydalaning: boshlanish daftaridagi eslatma varaqasini va savolingizni u yerga qoʻying, olingan kodni Colab ga qaytarib nusxalang.</li>
 </ul>
 <h2 id="kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor kishilar uchun</h2>
 <p>Hammasi lokal ham ishlaydi, Python 3.12 yoki undan yangisi va <code>git</code> bilan:</p>
@@ -684,9 +729,29 @@ jupyter lab</code></pre>
 <li><code>_cache/</code>: uzoq hisob-kitoblar natijalari, optimallashtirish daftari soniyalarda ochilishi uchun.</li>
 </ul>
 <p>Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>. Materiallar Toshkentda 2026-yil 14–15-oktabrda oʻtkaziladigan TaqSim oʻquv kursi uchun tayyorlangan.</p>
-</main><footer><div class="footer-inner">
+</main></div><footer><div class="footer-inner">
 <span><b>hydrosolutions GmbH</b> · Venusstrasse 29, 8050 Zürich, Switzerland · <a href="https://www.hydrosolutions.ch" target="_blank" rel="noopener">www.hydrosolutions.ch</a></span>
 <span>Model software: <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a> · Course material: CC BY 4.0</span>
 </div></footer>
-</body>
+<script>
+(() => {
+  const contents = document.querySelector('.contents');
+  const narrow = window.matchMedia('(max-width: 1050px)');
+  const resize = () => { contents.open = !narrow.matches; };
+  resize();
+  narrow.addEventListener('change', resize);
+  function followHash() {
+    const hash = decodeURIComponent(location.hash.slice(1));
+    if (!hash) return;
+    for (const group of contents.querySelectorAll('[data-language]')) {
+      group.open = [...group.querySelectorAll('a')].some(a => decodeURIComponent(a.hash.slice(1)) === hash);
+    }
+  }
+  followHash();
+  window.addEventListener('hashchange', followHash);
+  contents.addEventListener('click', event => {
+    if (event.target.closest('a') && narrow.matches) contents.open = false;
+  });
+})();
+</script></body>
 </html>
