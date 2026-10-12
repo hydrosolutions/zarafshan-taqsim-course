@@ -1,52 +1,37 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Zarafshan in sixteen blocks: read first</title>
+<title>Zarafshan in sixteen blocks</title>
 <style>
-  body { margin: 0; padding: 24px 16px 48px; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-         font-size: 16px; line-height: 1.55; color: #1f2328; background: #ffffff; }
-  main { max-width: 78ch; margin: 0 auto; }
-  h1 { font-size: 1.6rem; margin: 0 0 4px; }
-  p.lead { color: #57606a; margin: 0 0 18px; }
-  p { margin: 10px 0; }
-  a.play { display: inline-block; margin-top: 18px; padding: 10px 16px; background: #0969da; color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600; }
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:system-ui,sans-serif;color:#0b0b0b;background:white}body{display:flex;flex-direction:column}.lang-switcher{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 12px;background:#f9f9f7;border-bottom:1px solid #d9d9d1;font-size:.9rem;color:#52514e}.lang-switcher span{margin-right:6px}.lang-switcher button{padding:5px 12px;background:#fcfcfb;border:1px solid #c3c2b7;border-radius:6px;color:#0b0b0b;font:inherit;cursor:pointer}.lang-switcher button[aria-pressed=true]{background:#2a78d6;border-color:#2a78d6;color:white}.lang-switcher button:focus-visible,a:focus-visible{outline:2px solid #2a78d6;outline-offset:2px}.course-link{margin-left:auto;color:#2366a6}#coursebook-frame{border:0;width:100%;flex:1;min-height:0}noscript{padding:20px}@media(max-width:520px){.lang-switcher{gap:5px;padding:7px}.lang-switcher span{width:100%;font-size:.8rem}.lang-switcher button{padding:5px 9px}.course-link{font-size:.8rem}}
 </style>
 </head>
-<body><nav aria-label="Course language" style="padding:12px 24px;background:#eef5f8;font:16px system-ui;position:relative;z-index:100"><a href="sixteen_blocks_read_first.html" lang="en">English</a> · <a href="sixteen_blocks_read_first_ru.html" lang="ru">Русский</a> · <a href="../index.html#russian">Курс / Course</a></nav><main>
-<h1>The Zarafshan in sixteen blocks</h1>
-<p class="lead">Read this before you open the game. The same text sits at the top of the game page, where you can fold it away.</p>
-<p><b>What you see.</b> A simplified Zarafshan, from the Ravatkhoja headworks down to below Navoi, for one water year
-      from October to September, month by month. Upstream: the headworks with the transfers to Jizzakh and Kashkadarya, the
-      Samarkand canals (the <i>upper fields</i>) and the cities. Then the weir that fills the Kattakurgan reservoir in winter.
-      Below it: the lower headworks with the thermal power plant and the canals of Kattakurgan and Navoi (the <i>lower
-      fields</i>). At the end, the river that must still flow for nature and for the users downstream. Water drained from the
-      fields comes back months later. Every block is a TaqSim block of one of six kinds; the same kinds build the full basin model.</p>
-      <p><b>What you can change.</b> Three levers, each a decision a basin manager really takes. The <i>river reserve</i>: the
-      share of each month's flow that both headworks must leave in the river. The <i>fill share</i>: how much of the winter
-      water the weir sends into the reservoir. The <i>release share</i>: how much of what is missing below the reservoir in
-      summer is released from it.</p>
-      <p><b>What you watch.</b> Four results: upper fields supplied, lower fields supplied, downstream needs met (months out
-      of twelve), and water left in the reservoir on 30 September, against the 170 Mm³ it held on 1 October. Five worlds to
-      run them in: a dry, a mean and a wet year from the record, and the mean year as the climate models project it for
-      2041–2070 and 2071–2099 (see the provenance notes below for the source).</p>
-      <p><b>Why this system is interesting.</b> In the mean and wet years almost everyone can be served. In the dry year about
-      a quarter less water arrives, and the order of service becomes visible: the upper fields are served first, and no lever
-      changes that; every cubic metre kept for the river or for next year is taken from the lower fields. No plan gives the
-      lower fields 40 % of their need, meets the downstream needs in all twelve months and keeps 170 Mm³ at the same time.
-      In the future worlds the year brings as much water as today, but earlier: more in April and May, less in July and
-      August, when the crops need most. That hurts first whoever has no storage, the upper canals, while the reservoir
-      shields the lower fields. The game lets you find all this out by trying, which is the point.</p>
-      <p><b>What to try.</b> Follow the tasks on the right. First find the blocks and play a year. Then, in the dry year: meet
-      the downstream needs in every month and see who pays; give the lower fields 40 % and see what breaks; keep 170 Mm³ in
-      store and see what the reservoir costs the fields. Open the Trade-off explorer: among all lever settings, which plans does
-      no other plan beat, and what does each cost on the other axes? Finally switch to the 2071–2099 world and play the year.</p>
-      <p><b>What a water manager takes away.</b> In a dry year, allocation is a choice among losers, not a technical optimum;
-      the levers decide who loses. The order of service at the headworks matters more than any single lever. Keeping water for
-      next year has a price this year, and the model makes it visible. Plans that no other plan beats are many, and choosing
-      among them is a decision the model informs but cannot make. And when the water comes at the wrong time, storage is the
-      adaptation.</p>
-<a class="play" href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">Open the game</a>
-</main></body>
+<body>
+<div class="lang-switcher" role="group" aria-label="Language">
+<span>Language · Til · Язык:</span>
+<button type="button" data-lang="en" lang="en" aria-pressed="true">English</button>
+<button type="button" data-lang="uz" lang="uz" aria-pressed="false">Oʻzbekcha</button>
+<button type="button" data-lang="ru" lang="ru" aria-pressed="false">Русский</button>
+<a class="course-link" href="../index.html" id="course-link">Course</a>
+</div>
+<iframe id="coursebook-frame" title="Coursebook — English"></iframe>
+<noscript><a href="sixteen_blocks_read_first_en.html">English</a> · <a href="sixteen_blocks_read_first_ru.html">Русский</a> · <a href="sixteen_blocks_read_first_uz.html">Oʻzbekcha</a></noscript>
+<script>
+(()=>{'use strict';
+const base='sixteen_blocks_read_first', frame=document.getElementById('coursebook-frame'), buttons=[...document.querySelectorAll('[data-lang]')];
+const names={en:'English',ru:'Русский',uz:'Oʻzbekcha'},courseNames={en:'Course',ru:'Курс',uz:'Kurs'},anchors={en:'english',ru:'russian',uz:'uzbek'};
+let current='en';
+function choose(value){return Object.hasOwn(names,value)?value:'en'}
+function bookmark(){try{const doc=frame.contentDocument;const headings=[...doc.querySelectorAll('section[id],h1[id],h2[id],h3[id]')];let nearest=null;for(const h of headings){if(h.getBoundingClientRect().top<=130)nearest=h}return nearest?'#'+encodeURIComponent(nearest.id):frame.contentWindow.location.hash}catch{return location.hash}}
+function apply(lang,hash,push){lang=choose(lang);current=lang;document.documentElement.lang=lang;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));frame.title='Coursebook — '+names[lang];const link=document.getElementById('course-link');link.textContent=courseNames[lang];link.href='../index.html#'+anchors[lang];const target=base+'_'+lang+'.html'+hash;if(frame.hasAttribute('src'))frame.contentWindow.location.replace(target);else frame.src=target;const url=new URL(location.href);url.searchParams.set('lang',lang);url.hash=hash;if(push)history.pushState(null,'',url);else history.replaceState(null,'',url);try{localStorage.setItem('taqsim-coursebook-language',lang)}catch{}}
+buttons.forEach(b=>b.addEventListener('click',()=>{if(b.dataset.lang!==current)apply(b.dataset.lang,bookmark(),true)}));
+frame.addEventListener('load',()=>{try{const w=frame.contentWindow;document.title=frame.contentDocument.title;for(const a of frame.contentDocument.querySelectorAll('a[href]')){const href=a.getAttribute('href');if(!href||href.startsWith('#')||href.startsWith('javascript:'))continue;const url=new URL(a.href);if(url.pathname!==w.location.pathname||url.origin!==location.origin){a.target=url.origin===location.origin?'_top':'_blank';a.rel='noopener'}}w.addEventListener('hashchange',()=>{const url=new URL(location.href);url.hash=w.location.hash;history.replaceState(null,'',url)})}catch{}});
+window.addEventListener('popstate',()=>apply(new URLSearchParams(location.search).get('lang'),location.hash,false));
+let saved='en';try{saved=localStorage.getItem('taqsim-coursebook-language')||'en'}catch{}
+apply(new URLSearchParams(location.search).get('lang')||saved,location.hash,false);
+})();
+</script>
+</body>
 </html>
