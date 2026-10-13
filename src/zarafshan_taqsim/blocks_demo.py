@@ -155,6 +155,21 @@ class Evaporation:
         return {EVAPORATION: node.storage * self.share}
 
 
+@dataclass(frozen=True)
+class ReservoirOutlets:
+    """Route the reservoir's recorded release to the farm and overflow to the river."""
+
+    reservoir: Storage
+
+    def split(self, node: Splitter, amount: float, t: Timestep) -> dict[str, float]:
+        events = self.reservoir.events_at(t.index)
+        release = sum(e.amount for e in events if isinstance(e, WaterReleased))
+        overflow = sum(e.amount for e in events if isinstance(e, WaterSpilled))
+        if abs(release + overflow - amount) > 1e-6:
+            raise ValueError("Reservoir outlet amounts do not match the incoming water")
+        return {"farm": release, "river_end": overflow}
+
+
 def rule_card(obj) -> object:
     """The source code of a rule (or any function or class), shown as a code block in a notebook."""
     import inspect
@@ -171,6 +186,7 @@ BLOCK_KIND: dict[str, str] = {
     "headworks": "Splitter",
     "canal": "Reach",
     "reservoir": "Storage",
+    "outlets": "Splitter",
     "farm": "Demand",
     "drain": "Sink",
     "turbine": "PassThrough",
@@ -182,7 +198,9 @@ EDGES: tuple[tuple[str, str], ...] = (
     ("headworks", "canal"),
     ("headworks", "turbine"),
     ("canal", "reservoir"),
-    ("reservoir", "farm"),
+    ("reservoir", "outlets"),
+    ("outlets", "farm"),
+    ("outlets", "river_end"),
     ("farm", "drain"),
     ("turbine", "river_end"),
 )
@@ -190,7 +208,7 @@ EDGE_IDS: tuple[str, ...] = tuple(f"{a}_to_{b}" for a, b in EDGES)
 
 
 def build_demo(knobs: Knobs = DEFAULT_KNOBS, years: int = YEARS) -> WaterSystem:
-    """The nine blocks, wired. Each block is given its rule here; the rule is what the block does every month."""
+    """The ten blocks, wired. Each block is given its rule here; the rule is what the block does every month."""
     system = WaterSystem(frequency=Frequency.MONTHLY)
     system.add_node(Source(id="river", inflow=TimeSeries(values=list(INFLOW_MM3) * years)))
     system.add_node(Reach(id="canyon", routing_model=LagRouting(), loss_rule=SeepageLoss(share=0.0)))
@@ -214,6 +232,7 @@ def build_demo(knobs: Knobs = DEFAULT_KNOBS, years: int = YEARS) -> WaterSystem:
             efficiency=EFFICIENCY,
         )
     )
+    system.add_node(Splitter(id="outlets", split_policy=ReservoirOutlets(system.nodes["reservoir"])))
     system.add_node(Sink(id="drain"))
     system.add_node(PassThrough(id="turbine", capacity=knobs.turbine_capacity))
     system.add_node(Sink(id="river_end"))
@@ -287,6 +306,7 @@ def simulate_demo(knobs: Knobs = DEFAULT_KNOBS, years: int = YEARS) -> BlockRun:
             "in_transit": monthly(n["canyon"], WaterInTransit, steps),
         },
         "headworks": {"received": monthly(n["headworks"], WaterReceived, steps)},
+        "outlets": {"received": monthly(n["outlets"], WaterReceived, steps)},
         "canal": {
             "entered": monthly(n["canal"], WaterReceived, steps),
             "seepage": monthly(n["canal"], WaterLost, steps),
@@ -388,6 +408,8 @@ def balance_table(run: BlockRun) -> pd.DataFrame:
             0,
             0,
         ),
+        ("outlets", "Splitter", s["outlets"]["received"].sum(),
+         run.flows["outlets_to_farm"].sum() + run.flows["outlets_to_river_end"].sum(), 0, 0, 0, 0),
         ("drain", "Sink", s["drain"]["received"].sum(), s["drain"]["received"].sum(), 0, 0, 0, 0),
         (
             "turbine",
@@ -552,10 +574,11 @@ LAYOUT: dict[str, tuple[float, float]] = {
     "headworks": (2.6, 1.0),
     "canal": (3.9, 1.7),
     "reservoir": (5.2, 1.7),
-    "farm": (6.5, 1.7),
-    "drain": (7.8, 1.7),
+    "outlets": (6.5, 1.7),
+    "farm": (7.8, 1.7),
+    "drain": (9.1, 1.7),
     "turbine": (4.55, 0.3),
-    "river_end": (7.8, 0.3),
+    "river_end": (9.1, 0.3),
 }
 ANALOGY: dict[str, str] = {
     "Source": "a spring: water appears, from a list of numbers",
@@ -609,6 +632,9 @@ def _arrow(ax, a, b, label=None, width=1.0):
     dx = 0.42
     start = (x0 + dx, y0)
     end = (x1 - dx, y1)
+    overflow_edge = a == "outlets" and b == "river_end"
+    if overflow_edge:
+        start = (x0, y0 - 0.26)
     ax.add_patch(
         FancyArrowPatch(
             start,
@@ -617,7 +643,7 @@ def _arrow(ax, a, b, label=None, width=1.0):
             mutation_scale=12,
             linewidth=max(0.8, width),
             color=WATER,
-            connectionstyle="arc3,rad=0.0" if y0 == y1 else "angle3,angleA=0,angleB=90" if x1 > x0 else "arc3",
+            connectionstyle="angle3,angleA=-90,angleB=0" if overflow_edge else "arc3,rad=0.0" if y0 == y1 else "angle3,angleA=0,angleB=90" if x1 > x0 else "arc3",
             zorder=1,
         )
     )
@@ -640,10 +666,10 @@ def _arrow(ax, a, b, label=None, width=1.0):
 
 @_styled
 def plot_demo_network(run: BlockRun | None = None, month: int | None = None, highlight: str | None = None) -> Figure:
-    """The nine blocks and eight edges. With a run and a month, every edge carries that month's flow in Mm³."""
-    fig, ax = plt.subplots(figsize=(11.5, 3.6))
+    """The ten blocks and eight edges. With a run and a month, every edge carries that month's flow in Mm³."""
+    fig, ax = plt.subplots(figsize=(14, 4.4))
     ax.set_axis_off()
-    ax.set_xlim(-0.6, 8.4)
+    ax.set_xlim(-0.6, 9.7)
     ax.set_ylim(-0.3, 2.3)
     ax.grid(False)
     for a, b in EDGES:
@@ -651,6 +677,8 @@ def plot_demo_network(run: BlockRun | None = None, month: int | None = None, hig
         if run is not None and month is not None:
             flow = float(run.flows[f"{a}_to_{b}"][month])
             label, width = f"{flow:,.0f}", 0.8 + 4.0 * flow / max(INFLOW_MM3)
+        if label is not None and a == "outlets":
+            label = ("release " if b == "farm" else "overflow ") + label
         _arrow(ax, a, b, label, width)
     for node, kind in BLOCK_KIND.items():
         sub = None
@@ -669,7 +697,7 @@ def plot_demo_network(run: BlockRun | None = None, month: int | None = None, hig
         if run is not None and month is not None and node == "canyon":
             sub = f"inside: {run.transit_level[month]:,.0f}"
         _box(ax, LAYOUT[node], node, kind, highlight=(node == highlight), sub=sub)
-    title = "The demo system: nine blocks of seven kinds"
+    title = "The demo system: ten blocks of seven kinds"
     if run is not None and month is not None:
         title = f"{MONTHS[month]}: water on every edge, Mm³"
     ax.set_title(title)
@@ -787,6 +815,7 @@ def plot_where_the_water_went(run: BlockRun) -> Figure:
     s = run.series
     parts = {
         "river end, through the turbine": run.flows["turbine_to_river_end"],
+        "reservoir overflow to river": run.flows["outlets_to_river_end"],
         "spilled past the turbine": s["turbine"]["spilled"],
         "kept in the canyon for next month": transit_change(run),
         "put into the reservoir": storage_change(run),
@@ -798,6 +827,7 @@ def plot_where_the_water_went(run: BlockRun) -> Figure:
     }
     colours = {
         "river end, through the turbine": WATER,
+        "reservoir overflow to river": "#56B4E9",
         "spilled past the turbine": "#9dc3ea",
         "kept in the canyon for next month": "#8fb6dd",
         "put into the reservoir": "#1f5fa8",
