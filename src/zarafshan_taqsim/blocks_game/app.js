@@ -189,7 +189,11 @@
       const cx = px(x), cy = py(y);
       const colour = D.kind_colour[kind];
       const g = el("g", { class: `blk ${kind.toLowerCase()}`, "data-block": block, tabindex: 0, role: "button" }, stage);
-      el("rect", { class: "box", x: cx - BW / 2, y: cy - BH / 2, width: BW, height: BH, rx: 10, style: `fill: color-mix(in srgb, ${colour} var(--tint), var(--surface)); stroke: ${colour}` }, g);
+      const clip = el("clipPath", { id: `block-clip-${block}` }, g);
+      el("rect", { x: cx - BW / 2, y: cy - BH / 2, width: BW, height: BH, rx: 10 }, clip);
+      el("rect", { x: cx - BW / 2, y: cy - BH / 2, width: BW, height: BH, rx: 10, style: "fill:var(--surface)" }, g);
+      el("rect", { x: cx - BW / 2, y: cy - BH / 2, width: 5, height: BH, fill: colour, "clip-path": `url(#block-clip-${block})` }, g);
+      el("rect", { class: "box", x: cx - BW / 2, y: cy - BH / 2, width: BW, height: BH, rx: 10, style: `fill:none; stroke:${colour}` }, g);
       const label = el("text", { class: "name", x: cx, y: cy - 4, "text-anchor": "middle" }, g);
       el("text", { class: "kind", x: cx, y: cy + 11, "text-anchor": "middle", style: "font-size:11px" }, g).textContent = kind;
       let gaugeBg = null, gaugeFill = null;

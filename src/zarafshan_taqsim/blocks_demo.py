@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
 from taqsim import (
     Demand,
     Edge,
@@ -495,17 +495,17 @@ INK, SECONDARY, MUTED = "#1f2a33", "#4a5560", "#6b6a66"
 WATER, SHORTAGE, GREEN, AMBER = "#2a78d6", "#d95926", "#1baf7a", "#d9a326"
 SURFACE, GRID, AXIS = "#fbfbf9", "#e6e5df", "#b8b7ae"
 KIND_COLOUR: dict[str, str] = {
-    "Source": "#2a78d6",
-    "Reach": "#5aa9e6",
-    "Splitter": "#d9a326",
-    "Storage": "#1f5fa8",
-    "Demand": "#1baf7a",
-    "PassThrough": "#8a7ccf",
-    "Sink": "#6b6a66",
+    "Source": "#0072B2",
+    "Reach": "#56B4E9",
+    "Splitter": "#E69F00",
+    "Storage": "#CC79A7",
+    "Demand": "#009E73",
+    "PassThrough": "#D55E00",
+    "Sink": "#595959",
 }
 _RC = {
     "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
+    "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
     "font.size": 9.5,
     "axes.titlesize": 10.5,
     "axes.titleweight": "bold",
@@ -532,7 +532,7 @@ _RC = {
     "figure.dpi": 150,
     "figure.facecolor": "white",
     "savefig.facecolor": "white",
-    "svg.fonttype": "none",
+    "svg.fonttype": "path",
 }
 
 
@@ -590,11 +590,14 @@ def _box(ax, xy, label, kind, highlight=False, sub=None):
         boxstyle="round,pad=0.02,rounding_size=0.08",
         linewidth=2.2 if highlight else 1.0,
         edgecolor=INK if highlight else colour,
-        facecolor=colour if kind != "Sink" else "#e9e8e2",
+        facecolor="white",
         alpha=0.95,
     )
     ax.add_patch(patch)
-    text_colour = "white" if kind != "Sink" else INK
+    accent = Rectangle((x - w / 2 - 0.02, y - h / 2 - 0.02), 0.045, h + 0.04, facecolor=colour, edgecolor="none")
+    accent.set_clip_path(patch)
+    ax.add_patch(accent)
+    text_colour = INK
     ax.text(x, y + 0.06, label, ha="center", va="center", fontsize=9, fontweight="bold", color=text_colour)
     ax.text(x, y - 0.1, kind, ha="center", va="center", fontsize=7.5, color=text_colour, alpha=0.9)
     if sub:
@@ -699,8 +702,9 @@ def plot_block_catalogue() -> Figure:
                 1.5,
                 0.4,
                 boxstyle="round,pad=0.02,rounding_size=0.08",
-                facecolor=KIND_COLOUR[kind] if kind != "Sink" else "#e9e8e2",
-                edgecolor="none",
+                facecolor="white",
+                edgecolor=KIND_COLOUR[kind],
+                linewidth=1.5,
             )
         )
         ax.text(
@@ -711,7 +715,7 @@ def plot_block_catalogue() -> Figure:
             va="center",
             fontsize=9,
             fontweight="bold",
-            color="white" if kind != "Sink" else INK,
+            color=INK,
         )
         ax.text(
             1.85,
