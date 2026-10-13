@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.figure import Figure
+from matplotlib.patches import FancyBboxPatch, Rectangle
 from matplotlib.ticker import MaxNLocator
 from taqsim import Demand, Edge, Objective, Sink, Source, Storage, Strategy, TimeSeries, WaterSystem, optimize
 from taqsim.common import EVAPORATION
@@ -913,11 +914,11 @@ def explorer_html(payload: dict, compact: bool = False) -> str:
 # --- Figures ------------------------------------------------------------------------------------------------
 
 # One look for every figure of the coursebook, the notebooks and the slides: the typeface and palette of the course
-# pages, no chart junk, text kept as text in SVG so that the web page renders it crisp at any size. The settings are
+# pages, no chart junk, outlined SVG labels so that fonts stay consistent on every computer. The settings are
 # applied when a figure is made (`_styled`), not globally, so that other notebooks in the same kernel are untouched.
 _RC = {
     "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica Neue", "Helvetica", "Arial", "DejaVu Sans"],
+    "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
     "font.size": 9.5,
     "axes.titlesize": 10.5,
     "axes.titleweight": "bold",
@@ -949,7 +950,7 @@ _RC = {
     "figure.facecolor": "white",
     "figure.dpi": 150,  # the notebooks show PNG; the web page and the slides use SVG
     "savefig.dpi": 200,
-    "svg.fonttype": "none",  # text stays text in SVG
+    "svg.fonttype": "path",  # preserve Arial across browsers and Cyrillic displays
     "axes.prop_cycle": mpl.cycler(color=[WATER, SHORTAGE, GREEN, "#8e6bd6", MUTED]),
 }
 
@@ -1011,7 +1012,17 @@ NETWORK_NODES: tuple[tuple[str, str, str], ...] = (
     ("downstream", "Sink", "takes what is left"),
 )
 NETWORK_EDGES: tuple[tuple[str, str], ...] = (("river", "reservoir"), ("reservoir", "farm"), ("farm", "downstream"))
-_NODE_MARKERS = {"Source": "o", "Storage": "s", "Demand": "h", "Sink": "v"}
+_NODE_COLORS = {"Source": "#0072B2", "Storage": "#CC79A7", "Demand": "#009E73", "Sink": "#595959"}
+
+
+def _node_card(ax: plt.Axes, x: float, y: float, width: float, height: float, kind: str) -> None:
+    color = _NODE_COLORS[kind]
+    card = FancyBboxPatch((x, y), width, height, boxstyle="round,pad=0,rounding_size=0.08",
+                         facecolor="white", edgecolor=color, linewidth=1.5, zorder=3)
+    ax.add_patch(card)
+    accent = Rectangle((x, y), width * 0.035, height, facecolor=color, edgecolor="none", zorder=4)
+    accent.set_clip_path(card)
+    ax.add_patch(accent)
 
 
 WINTER_NETWORK_NODES: tuple[tuple[str, str, str], ...] = (
@@ -1048,13 +1059,13 @@ def plot_network(winter: bool = False, reservoir: bool = True) -> Figure:
         (x0, y0), (x1, y1) = positions[source], positions[target]
         ax.annotate(
             "",
-            xy=(x1 - 0.55, y1),
-            xytext=(x0 + 0.55, y0),
+            xy=(x1 - 0.8, y1),
+            xytext=(x0 + 0.8, y0),
             arrowprops={"arrowstyle": "-|>", "color": WATER, "linewidth": 1.8, "shrinkA": 0, "shrinkB": 0},
         )
         ax.text(
             (x0 + x1) / 2,
-            0.2,
+            0.53,
             f"{source}_to_{target}",
             ha="center",
             fontsize=6.5 if winter else 7.5,
@@ -1063,15 +1074,13 @@ def plot_network(winter: bool = False, reservoir: bool = True) -> Figure:
         )
     for node_id, kind, note in nodes:
         x, y = positions[node_id]
-        ax.scatter(x, y, s=3000, marker=_NODE_MARKERS[kind], color=SURFACE, edgecolors=INK, linewidths=1.4, zorder=3)
-        label_y = y + 0.08 if kind == "Sink" else y  # a triangle's visual centre sits above its middle
-        size = 7 if kind == "Sink" or len(node_id) > 10 else 8  # "downstream" and "winter_fields" must fit their shapes
-        ax.text(x, label_y, node_id, ha="center", va="center", fontsize=size, color=INK, weight="bold", zorder=4)
-        ax.text(x, -0.62, kind, ha="center", va="top", fontsize=8.5, color=SECONDARY)
+        _node_card(ax, x - 0.8, y - 0.4, 1.6, 0.8, kind)
+        ax.text(x, y + 0.1, node_id, ha="center", va="center", fontsize=8, color=INK, weight="bold", zorder=5)
+        ax.text(x, y - 0.18, kind, ha="center", va="center", fontsize=8, color=SECONDARY, zorder=5)
         ax.text(x, -0.85, note, ha="center", va="top", fontsize=7.5, color=MUTED)
-    pad = (spacing * (len(NETWORK_NODES) - 1) - positions["downstream"][0]) / 2  # the three blocks stay centred
+    pad = max(0.0, (spacing * (len(NETWORK_NODES) - 1) - positions["downstream"][0]) / 2)  # the three blocks stay centred
     ax.set_xlim(-0.9 - pad, positions["downstream"][0] + 0.9 + pad)
-    ax.set_ylim(-1.2, 0.55)
+    ax.set_ylim(-1.2, 0.78)
     ax.axis("off")
     fig.tight_layout()
     return fig
@@ -1091,9 +1100,9 @@ def plot_system_sketch(regime: Regime | None = None) -> Figure:
     width, gap = 2.0, 0.55
     for i, (name, note, kind) in enumerate(blocks):
         x = i * (width + gap)
-        ax.add_patch(plt.Rectangle((x, 0.0), width, 1.0, facecolor=SURFACE, edgecolor=SECONDARY, linewidth=1.0))
-        ax.text(x + width / 2, 0.74, name, ha="center", va="center", fontsize=10, color=INK, weight="bold")
-        ax.text(x + width / 2, 0.36, note, ha="center", va="center", fontsize=8, color=SECONDARY)
+        _node_card(ax, x, 0.0, width, 1.0, kind)
+        ax.text(x + width / 2, 0.74, name, ha="center", va="center", fontsize=10, color=INK, weight="bold", zorder=5)
+        ax.text(x + width / 2, 0.36, note, ha="center", va="center", fontsize=8, color=SECONDARY, zorder=5)
         ax.text(x + width / 2, -0.16, f"TaqSim block: {kind}", ha="center", va="center", fontsize=7.5, color=MUTED)
         if i < len(blocks) - 1:
             ax.annotate(

@@ -105,7 +105,7 @@
 * { box-sizing: border-box; }
 /* Type grows with the window: 14 px up to 1280 px wide, 18 px from 1765 px. */
 html { -webkit-text-size-adjust: 100%; font-size: 14px; font-size: clamp(14px, 0.85vw + 3px, 18px); }
-body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 Arial, Helvetica, sans-serif; }
 h1, h2, h3 { line-height: 1.25; margin: 0; }
 h1 { font-size: 1.25rem; font-weight: 650; }
 h1 .thin { font-weight: 400; color: var(--ink-2); }
@@ -211,7 +211,7 @@ header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: cent
   .schematic-box svg { min-width: 940px; }
   .scroll-note { display: block; }
 }
-.schematic text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--ink); font-size: 18px; }
+.schematic text { font-family: Arial, Helvetica, sans-serif; fill: var(--ink); font-size: 18px; }
 .schematic .name { font-weight: 620; }
 .schematic .value { fill: var(--ink-2); }
 .schematic .small { fill: var(--ink-2); }
@@ -292,7 +292,7 @@ input[type="range"] { width: 100%; accent-color: var(--ink); height: 26px; margi
 .chart { width: 100%; min-width: 0; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 #scatter { max-width: 760px; }
-.chart svg text, .pc-wrap svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 12px; fill: var(--muted); }
+.chart svg text, .pc-wrap svg text { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: var(--muted); }
 .pc-wrap svg text { user-select: none; -webkit-user-select: none; }
 .pc-wrap svg text.halo { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; fill: var(--ink-2); }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9rem; color: var(--ink-2); margin: 4px 0 2px; }
@@ -465,6 +465,12 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 .intro .prose { column-width: 52ch; column-gap: 36px; }  /* the whole width: two columns on a wide window, one on a laptop */
 .intro .prose p { margin: 0 0 10px; break-inside: avoid; }
 .lang-note { margin: -6px 0 12px; }
+
+/* Shared TaqSim type colours; sector colours remain on outcome charts and water paths. */
+.schematic .node-box, .schematic .hw, .schematic .pill { fill: #fff; stroke: var(--node-color); stroke-width: 2; }
+.schematic .node .in-box { fill: #1f2933; }
+.block-card { border-color: var(--node-color); border-left: 7px solid var(--node-color); border-radius: 9px; background: #fff; color: #1f2933; }
+.block-card .type-tag { color: #1f2933; background: #fff; border: 1px solid var(--node-color); border-left: 5px solid var(--node-color); }
 
 </style>
 </head>
@@ -1357,7 +1363,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
   // Text widths in the diagram's own units, measured with the fonts the stylesheet gives the SVG text, so that a
   // label can be fitted into its box in either language.
   const measureCtx = (() => { try { return document.createElement("canvas").getContext("2d"); } catch (e) { return null; } })();
-  const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+  const FONT = 'Arial, Helvetica, sans-serif';
   function textWidth(str, size, weight, spacing) {
     let w = 0;
     if (measureCtx) { measureCtx.font = `${weight || 400} ${size}px ${FONT}`; w = measureCtx.measureText(str).width; }
@@ -1670,6 +1676,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
     edge: { name: "Edge", what: L("The connection from one block to the next. An edge has no physics: what leaves one block arrives at the next in the same step.", "Связь от одного блока к следующему. У ребра нет физики: то, что выходит из одного блока, приходит в следующий на том же шаге."),
       step: L("Its id is written source_to_target. If a connection should delay or lose water, put a Reach on it.", "Его идентификатор пишется source_to_target. Если связь должна задерживать или терять воду, поставьте на неё Reach."), params: "source, target", full: L("70 edges", "70 рёбер") },
   };
+  const TYPE_COLORS = { source: "#0072B2", reach: "#56B4E9", splitter: "#E69F00", storage: "#CC79A7", demand: "#009E73", passthrough: "#D55E00", sink: "#595959", edge: "#287D9E" };
   const NODE_TYPES = ["source", "reach", "splitter", "storage", "demand", "sink"];
 
   // the drawing starts at `top`: nothing stands above it
@@ -2378,10 +2385,11 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
         const typed = state.typeFilter && state.typeFilter !== "edge" ? n.type === state.typeFilter : null;
         const g = svg("g", { class: `node${typed === false ? " dimmed" : ""}`, "data-block": id }, root);
         const tag = TYPES[n.type].name.toUpperCase();
+        g.style.setProperty("--node-color", TYPE_COLORS[n.type]);
         const status = blockStatus(id, m, ind, t, annual);
         let hits = [n.hit, n.hit2].filter(Boolean);
         if (n.kind === "source") {
-          svg("circle", { cx: n.x, cy: n.y, r: 10, fill: C.river }, g);
+          svg("circle", { cx: n.x, cy: n.y, r: 10, fill: TYPE_COLORS[n.type] }, g);
           text(g, 8, n.y + 36, tag, { class: "tag" });
           text(g, 8, n.y + 58, n.name, { class: "name" });
           text(g, 8, n.y + 80, `${vol(m.inflow)} ${MM3}`, { class: "value" });
@@ -2414,13 +2422,13 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
             text(g, side.x, n.y + 44, held, { class: "small", style: `font-size:${fitSize(held, room, 18, 400, 12)}px` });
           }
         } else if (n.kind === "sink") {
-          svg("path", { d: `M ${n.x} ${n.y - 11} L ${n.x + 15} ${n.y} L ${n.x} ${n.y + 11} Z`, fill: C.environment }, g);
+          svg("path", { d: `M ${n.x} ${n.y - 11} L ${n.x + 15} ${n.y} L ${n.x} ${n.y + 11} Z`, fill: TYPE_COLORS[n.type] }, g);
           text(g, W - 6, n.y + 60, tag, { class: "tag", "text-anchor": "end" });
           text(g, W - 6, n.y + 82, n.name, { class: "name", "text-anchor": "end" });
           // what leaves the model, as the inflow is written under the Source at the other end
           text(g, W - 6, n.y + 104, `${vol(m.outflow)} ${MM3}`, { class: "value", "text-anchor": "end" });
         } else if (n.kind === "sink-up") {
-          svg("path", { d: `M ${n.x - 11} ${n.y + 15} L ${n.x} ${n.y} L ${n.x + 11} ${n.y + 15} Z`, fill: C.transfers }, g);
+          svg("path", { d: `M ${n.x - 11} ${n.y + 15} L ${n.x} ${n.y} L ${n.x + 11} ${n.y + 15} Z`, fill: TYPE_COLORS[n.type] }, g);
           text(g, n.x - 22, n.y + 8, tag, { class: "tag", "text-anchor": "end" });
           text(g, n.x - 22, n.y + 30, n.name, { class: "name", "text-anchor": "end" });
         } else {
@@ -2432,15 +2440,17 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
             const cap = K.reservoir.capacity;
             const gw = 34, gx = x0 + w - gw;
             const hh = clamp((s / cap) * BOX_H, 0, BOX_H);
-            svg("rect", { x: x0, y: y0, width: w, height: BOX_H, class: "node-box" }, g);
-            svg("rect", { x: gx, y: y0 + BOX_H - hh, width: gw, height: hh, class: "water gauge" }, g);
+            svg("rect", { x: x0, y: y0, width: w, height: BOX_H, rx: 9, class: "node-box" }, g);
+            svg("rect", { x: gx, y: y0 + BOX_H - hh, width: gw, height: hh, class: "water gauge", "clip-path": `url(#warmup-card-${id})` }, g);
             svg("line", { x1: gx, x2: gx, y1: y0, y2: y0 + BOX_H, class: "gauge-side", "data-id": "gauge-side" }, g);
             for (const [level, name] of [[K.reservoir.dead, "dead-storage"], [K.reservoir.initial, "start-storage"]]) {
               const ly = y0 + BOX_H - (level / cap) * BOX_H;
               svg("line", { x1: gx + gw - 14, x2: gx + gw, y1: ly, y2: ly, class: "gauge-mark", "data-id": name }, g);
             }
-          } else svg("rect", { x: x0, y: y0, width: w, height: BOX_H, class: `node-box${n.zone ? " zone" : ""}` }, g);
-          svg("rect", { x: x0, y: y0, width: 5, height: BOX_H, fill: C[n.sector] }, g);
+          } else svg("rect", { x: x0, y: y0, width: w, height: BOX_H, rx: 9, class: "node-box" }, g);
+          const clip = svg("clipPath", { id: `warmup-card-${id}` }, svg("defs", {}, g));
+          svg("rect", { x: x0, y: y0, width: w, height: BOX_H, rx: 9 }, clip);
+          svg("rect", { x: x0, y: y0, width: 7, height: BOX_H, fill: TYPE_COLORS[n.type], "clip-path": `url(#warmup-card-${id})` }, g);
           const gaugeW = id === "reservoir" ? 34 : 0;
           const roomTop = w - 12 - 8 - (status.ok != null ? 30 : gaugeW);
           const roomBottom = w - 12 - 8 - gaugeW;
@@ -3571,7 +3581,7 @@ if (typeof module !== "undefined") module.exports = WarmupSketches;
       const here = Object.entries(BLOCKS).filter(([, b]) => b.type === type);
       const count = typeCount(type);
       const showButton = () => h("button", { class: "btn small show-type", type: "button", "aria-pressed": "false", text: RU_T("Show in the river"), onclick: () => setTypeFilter(state.typeFilter === type ? null : type) });
-      grid.appendChild(h("div", { class: `block-card${count ? "" : " unused"}`, "data-type": type }, [
+      grid.appendChild(h("div", { class: `block-card${count ? "" : " unused"}`, "data-type": type, style: `--node-color:${TYPE_COLORS[type]}` }, [
         h("h3", {}, [h("span", { class: "type-tag", text: T.name }), count ? L(`× ${count} here`, `× ${count} здесь`) : RU_T("not used here")]),
         h("p", { text: T.what }),
         h("p", {}, [h("strong", { text: RU_T("In each step: ") }), T.step]),

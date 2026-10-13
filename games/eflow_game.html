@@ -105,7 +105,7 @@
 * { box-sizing: border-box; }
 /* Type grows with the window: 14 px up to 1280 px wide, 18 px from 1765 px. */
 html { -webkit-text-size-adjust: 100%; font-size: 14px; font-size: clamp(14px, 0.85vw + 3px, 18px); }
-body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 1rem/1.45 Arial, Helvetica, sans-serif; }
 h1, h2, h3 { line-height: 1.25; margin: 0; }
 h1 { font-size: 1.25rem; font-weight: 650; }
 h1 .thin { font-weight: 400; color: var(--ink-2); }
@@ -215,21 +215,17 @@ header.top { padding: 8px 0 6px; display: flex; gap: 8px 16px; align-items: cent
   .schematic-box svg { min-width: 900px; }
   .scroll-note { display: block; }
 }
-.schematic text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; fill: var(--ink); font-size: 15px; }
+.schematic text { font-family: Arial, Helvetica, sans-serif; fill: var(--ink); font-size: 15px; }
 .schematic .name { font-weight: 620; font-size: 18px; }
 .schematic .value { fill: var(--ink-2); }
 .schematic .small { fill: var(--ink-2); }
 .schematic .tag { fill: var(--ink-2); font-size: 12px; font-weight: 650; letter-spacing: 0.06em; }
 /* labels on the lines keep a halo of the surface colour, so they stay readable where they cross a line */
 .schematic .edge-label { fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
-.schematic .node-box { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.4; }
-/* the source and the two sinks carry a light tint of their colour (browsers without color-mix keep the plain surface) */
-.schematic .node-box.source { stroke: var(--river); fill: color-mix(in srgb, var(--river) 12%, var(--surface)); }
-.schematic .node-box.fields { stroke: var(--irrigation); fill: color-mix(in srgb, var(--irrigation) 12%, var(--surface)); }
-.schematic .node-box.river-end { stroke: var(--environment); fill: color-mix(in srgb, var(--environment) 12%, var(--surface)); }
-.schematic .node-box.zone { stroke-dasharray: 5 3; }
-.schematic .hw { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
-.schematic .pill { fill: var(--surface); stroke: var(--ink); stroke-width: 1.6; }
+/* Stable type colours and white cards match the course's TaqSim block diagrams in both themes. */
+.schematic .node-box { fill: none; stroke-width: 1.8; }
+.schematic .block .name { fill: #243746; }
+.schematic .block .tag, .schematic .block .small { fill: #526675; }
 .schematic .link { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
 .schematic .link.zero { stroke-dasharray: 3 5; opacity: 0.8; }
 .schematic .flow-arrow { stroke: var(--surface); stroke-width: 1.2; stroke-linejoin: round; pointer-events: none; }
@@ -302,7 +298,7 @@ input[type="range"] { width: 100%; accent-color: var(--ink); height: 26px; margi
 .chart { width: 100%; min-width: 0; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 #scatter { max-width: 760px; }
-.chart svg text, .pc-wrap svg text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 12px; fill: var(--muted); }
+.chart svg text, .pc-wrap svg text { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: var(--muted); }
 .pc-wrap svg text { user-select: none; -webkit-user-select: none; }
 .pc-wrap svg text.halo { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; fill: var(--ink-2); }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9rem; color: var(--ink-2); margin: 4px 0 2px; }
@@ -1296,19 +1292,19 @@ const EflowModel = (() => {
   // Block texts. The geometry is laid out at render time from the measured text widths, so that every box fits its
   // labels in both languages and the labels on the lines stay clear of the boxes.
   const BLOCKS = {
-    inflow: { box: "node-box source", name: () => L("Inflow", "Приток"), kind: () => "SOURCE",
+    inflow: { box: "node-box source", color: "#0072B2", name: () => L("Inflow", "Приток"), kind: () => "SOURCE",
       what: () => L("The Zarafshan at Ravatkhoja: the recorded daily flow, 2010–2023.", "Зарафшан у Раватходжи: наблюдённый суточный сток за 2010–2023 годы."),
       rule: () => L("Passes on each day's recorded flow (IntervalVolume, 1 day, quantum 1 m³).", "Передаёт наблюдённый сток каждого дня (IntervalVolume, 1 день, квант 1 м³).") },
-    headworks: { box: "hw", name: () => L("Headworks", "Гидроузел"), kind: () => L("REACH · E-FLOW RULE", "REACH · ЭКОСТОК"),
+    headworks: { box: "node-box reach", color: "#56B4E9", name: () => L("Headworks", "Гидроузел"), kind: () => L("REACH · E-FLOW RULE", "REACH · ЭКОСТОК"),
       what: () => L("The Ravatkhoja headworks. TaqSim's EFlowSplit rule: reserve min(share × flow, ceiling) for the river, pass the rest on.", "Раватходжинский гидроузел. Правило EFlowSplit в TaqSim: зарезервировать для реки min(доля × сток, потолок), остальное передать дальше."),
       rule: () => "EFlowSplit(natural_ratios={river_end: 1}, remainder_ratios={canal_gate: 1}, eflow_fraction=share, eflow_cap=ceiling × 86 400 m³)" },
-    canal_gate: { box: "hw", name: () => L("Canal gate", "Голова канала"), kind: () => L("REACH · PRIORITY RULE", "REACH · ПРИОРИТЕТ"),
+    canal_gate: { box: "node-box reach", color: "#56B4E9", name: () => L("Canal gate", "Голова канала"), kind: () => L("REACH · PRIORITY RULE", "REACH · ПРИОРИТЕТ"),
       what: () => L("The head of the Samarkand canals. PriorityDistribution: the fields get their demand of the day first; the rest returns to the river.", "Голова самаркандских каналов. Правило PriorityDistribution: поля первыми получают свою потребность дня; остальное возвращается в реку."),
       rule: () => "PriorityDistribution('fields', monthly demand × 86 400 m³, remainder_ratios={river_end: 1})" },
-    fields: { box: "node-box fields", name: () => L("Fields", "Поля"), kind: () => "SINK",
+    fields: { box: "node-box fields", color: "#595959", name: () => L("Fields", "Поля"), kind: () => "SINK",
       what: () => L("The Samarkand canals Dargom, Mirzapay and Akkaradarya: what arrives here is counted as crops supplied.", "Самаркандские каналы Даргом, Мирзапай и Аккарадарья: всё, что сюда приходит, считается водой для посевов."),
       rule: () => L("Records what arrives.", "Записывает всё, что приходит.") },
-    river_end: { box: "node-box river-end", name: () => L("River end", "Конец реки"), kind: () => "SINK",
+    river_end: { box: "node-box river-end", color: "#595959", name: () => L("River end", "Конец реки"), kind: () => "SINK",
       what: () => L("The river below the headworks. fishy scores this daily series against the natural record.", "Река ниже гидроузла. fishy оценивает этот суточный ряд против естественного."),
       rule: () => L("Records what arrives (the reserve plus what the canal did not need).", "Записывает всё, что приходит (резерв плюс то, что не понадобилось каналу).") },
   };
@@ -1316,7 +1312,7 @@ const EflowModel = (() => {
   let selected = null;
   // Text widths in the diagram's own units, measured with the fonts the stylesheet gives the SVG text.
   const measureCtx = (() => { try { return document.createElement("canvas").getContext("2d"); } catch (e) { return null; } })();
-  const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+  const FONT = 'Arial, Helvetica, sans-serif';
   function textWidth(str, size, weight, spacing) {
     let w = 0;
     if (measureCtx) { measureCtx.font = `${weight || 400} ${size}px ${FONT}`; w = measureCtx.measureText(str).width; }
@@ -1334,7 +1330,7 @@ const EflowModel = (() => {
   }
   // Columns from left to right, each as wide as its longest line; the two sinks share the last column.
   function layout(p, v) {
-    const GAP = 96, GAP_SINKS = 250, PAD = 26, MIN_W = 120, MARGIN = 8;
+    const GAP = 96, GAP_SINKS = 250, PAD = 40, MIN_W = 120, MARGIN = 8;
     const width = (id) => Math.max(MIN_W, PAD + Math.max(textWidth(BLOCKS[id].kind(), 12, 650, 0.06), textWidth(BLOCKS[id].name(), 18, 620), textWidth(blockSub(id, p, v), 15)));
     const sinkW = Math.max(width("fields"), width("river_end"));
     const geo = {};
@@ -1379,7 +1375,14 @@ const EflowModel = (() => {
     for (const [id, b] of Object.entries(BLOCKS)) {
       const g = svg("g", { class: "block" }, root);
       const { x, y, w } = geo[id];
-      const rect = svg("rect", { x: x - w / 2, y: y - BOX_H / 2, width: w, height: BOX_H, rx: 8, class: b.box }, g);
+      const shape = { x: x - w / 2, y: y - BOX_H / 2, width: w, height: BOX_H, rx: 8 };
+      const clipId = `eflow-block-${id}`;
+      const clip = svg("clipPath", { id: clipId }, svg("defs", {}, g));
+      svg("rect", shape, clip);
+      svg("rect", { ...shape, fill: "#ffffff" }, g);
+      svg("rect", { x: shape.x, y: shape.y, width: 7, height: BOX_H, fill: b.color, "clip-path": `url(#${clipId})`, class: "block-accent" }, g);
+      const rect = svg("rect", { ...shape, class: b.box }, g);
+      rect.style.stroke = b.color;
       if (selected === id) svg("rect", { x: x - w / 2 - 4, y: y - BOX_H / 2 - 4, width: w + 8, height: BOX_H + 8, rx: 11, class: "ring" }, g);
       text(g, x, y - 13, b.kind(), { class: "tag", "text-anchor": "middle" });
       text(g, x, y + 8, b.name(), { class: "name", "text-anchor": "middle" });

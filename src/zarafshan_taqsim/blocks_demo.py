@@ -724,17 +724,16 @@ def plot_block_catalogue() -> Figure:
     }
     for i, (kind, picture) in enumerate(ANALOGY.items()):
         y = 3.9 - i * 0.58
-        ax.add_patch(
-            FancyBboxPatch(
-                (0.15, y - 0.2),
-                1.5,
-                0.4,
-                boxstyle="round,pad=0.02,rounding_size=0.08",
-                facecolor="white",
-                edgecolor=KIND_COLOUR[kind],
-                linewidth=1.5,
-            )
+        badge = FancyBboxPatch(
+            (0.15, y - 0.2), 1.5, 0.4,
+            boxstyle="round,pad=0.02,rounding_size=0.08",
+            facecolor="white", edgecolor=KIND_COLOUR[kind], linewidth=1.5,
         )
+        ax.add_patch(badge)
+        accent = Rectangle((0.13, y - 0.22), 0.055, 0.44,
+                           facecolor=KIND_COLOUR[kind], edgecolor="none")
+        accent.set_clip_path(badge)
+        ax.add_patch(accent)
         ax.text(
             0.9,
             y,
