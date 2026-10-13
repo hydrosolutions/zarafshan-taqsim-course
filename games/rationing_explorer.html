@@ -159,7 +159,7 @@ html #rationing-explorer svg text { font-size: 12px; }
   <details class="card intro" id="intro" open>
     <summary><h2><span data-lang="en">Before you play: what this explorer shows, and why</span><span data-lang="ru" hidden>Прежде чем играть: что показывает этот исследователь и зачем</span></h2></summary>
     <div class="prose" data-lang="en">
-      <div class="sketch" aria-label="Four TaqSim blocks: river, reservoir, farm, downstream"><svg viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
+      <div class="sketch" aria-label="Four TaqSim blocks: river, reservoir, farm, downstream"><svg data-rx-network="en" viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
   <g>
     <defs><clipPath id="en-river-clip"><rect x="10" y="22" width="170" height="66" rx="8"/></clipPath></defs>
     <rect class="box river" x="10" y="22" width="170" height="66" rx="8"/>
@@ -169,7 +169,7 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="small" x="95" y="81" text-anchor="middle">100 synthetic years</text>
   </g>
   <path class="link" d="M 182 55 L 214 55"/><path class="head" d="M 212 47 L 226 55 L 212 63 Z"/>
-  <g>
+  <g data-rx-reservoir-node="">
     <defs><clipPath id="en-store-clip"><rect x="228" y="22" width="190" height="66" rx="8"/></clipPath></defs>
     <rect class="box store" x="228" y="22" width="190" height="66" rx="8"/>
     <rect class="accent store" x="228" y="22" width="7" height="66" clip-path="url(#en-store-clip)"/>
@@ -177,9 +177,9 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="name" x="323" y="64" text-anchor="middle">Reservoir</text>
     <text class="small" x="323" y="81" text-anchor="middle">40 Mm³, two knobs</text>
   </g>
-  <path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
-  <text class="edge" x="436" y="40" text-anchor="middle">release</text>
-  <g>
+  <g data-rx-reservoir-node=""><path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
+  <text class="edge" x="436" y="40" text-anchor="middle">release</text></g>
+  <g data-rx-network-shift="">
     <defs><clipPath id="en-farm-clip"><rect x="466" y="22" width="190" height="66" rx="8"/></clipPath></defs>
     <rect class="box farm" x="466" y="22" width="190" height="66" rx="8"/>
     <rect class="accent farm" x="466" y="22" width="7" height="66" clip-path="url(#en-farm-clip)"/>
@@ -187,8 +187,8 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="name" x="561" y="64" text-anchor="middle">Farm</text>
     <text class="small" x="561" y="81" text-anchor="middle">45 Mm³ summer · 5 winter</text>
   </g>
-  <path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/>
-  <g>
+  <g data-rx-network-shift=""><path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/></g>
+  <g data-rx-network-shift="">
     <defs><clipPath id="en-sink-clip"><rect x="704" y="22" width="106" height="66" rx="8"/></clipPath></defs>
     <rect class="box sink" x="704" y="22" width="106" height="66" rx="8"/>
     <rect class="accent sink" x="704" y="22" width="7" height="66" clip-path="url(#en-sink-clip)"/>
@@ -205,7 +205,7 @@ html #rationing-explorer svg text { font-size: 12px; }
       <p><b>What a water manager takes away.</b> What you count decides the answer: with one goal there is one best plan; with two goals there is a line of compromises, and choosing among them is a decision, not a calculation. Choosing the goals is the most important modelling decision, and it is not a technical one. Intuition is a poor guide to which plans are beaten; the search is not. Real reservoir rules have these two knobs many times over, one pair for each month, which is why the full basin model hands the search to an optimiser. The notebook <i>A reservoir and a farm</i> builds this system block by block and goes on to a winter user and a seasonal forecast.</p>
     </div>
     <div class="prose" data-lang="ru" hidden>
-      <div class="sketch" aria-label="Четыре блока TaqSim: река, водохранилище, поле, низовье"><svg viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
+      <div class="sketch" aria-label="Четыре блока TaqSim: река, водохранилище, поле, низовье"><svg data-rx-network="ru" viewBox="0 0 820 118" xmlns="http://www.w3.org/2000/svg" role="img">
   <g>
     <defs><clipPath id="ru-river-clip"><rect x="10" y="22" width="170" height="66" rx="8"/></clipPath></defs>
     <rect class="box river" x="10" y="22" width="170" height="66" rx="8"/>
@@ -215,7 +215,7 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="small" x="95" y="81" text-anchor="middle">100 искусственных лет</text>
   </g>
   <path class="link" d="M 182 55 L 214 55"/><path class="head" d="M 212 47 L 226 55 L 212 63 Z"/>
-  <g>
+  <g data-rx-reservoir-node="">
     <defs><clipPath id="ru-store-clip"><rect x="228" y="22" width="190" height="66" rx="8"/></clipPath></defs>
     <rect class="box store" x="228" y="22" width="190" height="66" rx="8"/>
     <rect class="accent store" x="228" y="22" width="7" height="66" clip-path="url(#ru-store-clip)"/>
@@ -223,9 +223,9 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="name" x="323" y="64" text-anchor="middle">Водохранилище</text>
     <text class="small" x="323" y="81" text-anchor="middle">40 млн м³, два рычага</text>
   </g>
-  <path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
-  <text class="edge" x="436" y="40" text-anchor="middle">попуск</text>
-  <g>
+  <g data-rx-reservoir-node=""><path class="link" d="M 420 55 L 452 55"/><path class="head" d="M 450 47 L 464 55 L 450 63 Z"/>
+  <text class="edge" x="436" y="40" text-anchor="middle">попуск</text></g>
+  <g data-rx-network-shift="">
     <defs><clipPath id="ru-farm-clip"><rect x="466" y="22" width="190" height="66" rx="8"/></clipPath></defs>
     <rect class="box farm" x="466" y="22" width="190" height="66" rx="8"/>
     <rect class="accent farm" x="466" y="22" width="7" height="66" clip-path="url(#ru-farm-clip)"/>
@@ -233,8 +233,8 @@ html #rationing-explorer svg text { font-size: 12px; }
     <text class="name" x="561" y="64" text-anchor="middle">Поле</text>
     <text class="small" x="561" y="81" text-anchor="middle">45 млн м³ летом · 5 зимой</text>
   </g>
-  <path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/>
-  <g>
+  <g data-rx-network-shift=""><path class="link" d="M 658 55 L 690 55"/><path class="head" d="M 688 47 L 702 55 L 688 63 Z"/></g>
+  <g data-rx-network-shift="">
     <defs><clipPath id="ru-sink-clip"><rect x="704" y="22" width="106" height="66" rx="8"/></clipPath></defs>
     <rect class="box sink" x="704" y="22" width="106" height="66" rx="8"/>
     <rect class="accent sink" x="704" y="22" width="7" height="66" clip-path="url(#ru-sink-clip)"/>
@@ -962,6 +962,17 @@ html #rationing-explorer svg text { font-size: 12px; }
     if (withReservoir) savedPlan = plan;
     else plan = data.without_reservoir;
     current = plan;
+    document.querySelectorAll('[data-rx-network]').forEach(svg => {
+      svg.setAttribute('viewBox', withReservoir ? '0 0 820 118' : '0 0 582 118');
+      svg.querySelectorAll('[data-rx-reservoir-node]').forEach(n => n.style.display = withReservoir ? '' : 'none');
+      svg.querySelectorAll('[data-rx-network-shift]').forEach(n => n.setAttribute('transform', withReservoir ? 'translate(0 0)' : 'translate(-238 0)'));
+      const ru = svg.dataset.rxNetwork === 'ru';
+      const description = ru
+        ? (withReservoir ? 'Река → водохранилище → поле → низовье' : 'Река → поле → низовье')
+        : (withReservoir ? 'River → reservoir → farm → downstream' : 'River → farm → downstream');
+      svg.setAttribute('aria-label', description);
+      svg.parentElement.setAttribute('aria-label', description);
+    });
     root.querySelectorAll('.rx-controls input, .rx-presets button').forEach(n => n.disabled = !withReservoir);
     storageSvg.closest('figure').hidden = !withReservoir;
     if (toggle) { toggle.checked = withReservoir; toggleLabel.textContent = txt(withReservoir ? 'with-reservoir' : 'without-reservoir'); }

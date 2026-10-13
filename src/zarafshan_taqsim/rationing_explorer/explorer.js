@@ -371,6 +371,17 @@
     if (withReservoir) savedPlan = plan;
     else plan = data.without_reservoir;
     current = plan;
+    document.querySelectorAll('[data-rx-network]').forEach(svg => {
+      svg.setAttribute('viewBox', withReservoir ? '0 0 820 118' : '0 0 582 118');
+      svg.querySelectorAll('[data-rx-reservoir-node]').forEach(n => n.style.display = withReservoir ? '' : 'none');
+      svg.querySelectorAll('[data-rx-network-shift]').forEach(n => n.setAttribute('transform', withReservoir ? 'translate(0 0)' : 'translate(-238 0)'));
+      const ru = svg.dataset.rxNetwork === 'ru';
+      const description = ru
+        ? (withReservoir ? 'Река → водохранилище → поле → низовье' : 'Река → поле → низовье')
+        : (withReservoir ? 'River → reservoir → farm → downstream' : 'River → farm → downstream');
+      svg.setAttribute('aria-label', description);
+      svg.parentElement.setAttribute('aria-label', description);
+    });
     root.querySelectorAll('.rx-controls input, .rx-presets button').forEach(n => n.disabled = !withReservoir);
     storageSvg.closest('figure').hidden = !withReservoir;
     if (toggle) { toggle.checked = withReservoir; toggleLabel.textContent = txt(withReservoir ? 'with-reservoir' : 'without-reservoir'); }
