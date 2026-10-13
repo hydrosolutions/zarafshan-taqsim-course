@@ -25,7 +25,7 @@ from matplotlib.ticker import MaxNLocator
 from taqsim import Demand, Edge, Objective, Sink, Source, Storage, Strategy, TimeSeries, WaterSystem, optimize
 from taqsim.common import EVAPORATION
 from taqsim.node import NoLoss
-from taqsim.node.events import DeficitRecorded, WaterLost, WaterReleased, WaterSpilled, WaterStored
+from taqsim.node.events import DeficitRecorded, WaterLost, WaterReleased, WaterStored
 from taqsim.time import Frequency, Timestep
 
 logger = logging.getLogger(__name__)
@@ -859,129 +859,6 @@ def forecast_value(tables: dict[float, pd.DataFrame], summer_cap: float) -> pd.D
 # --- The explorer on the web page ---------------------------------------------------------------------------
 
 
-def _teaching_run(system: WaterSystem, inflows: tuple[float, ...]) -> dict:
-    system.simulate(len(inflows))
-    steps = len(inflows)
-    need = np.tile(MONTHLY_NEED_MM3, steps // 12)
-    delivery = need - _padded(_monthly(system.nodes["farm"], DeficitRecorded, "deficit"), steps)
-    winter_delivery = np.zeros(steps)
-    if "winter_fields" in system.nodes:
-        winter_delivery = np.tile(WINTER_FIELDS_NEED_MM3, steps // 12) - _padded(
-            _monthly(system.nodes["winter_fields"], DeficitRecorded, "deficit"), steps
-        )
-    reservoir = system.nodes.get("reservoir")
-    storage = _storage_path(system) if reservoir is not None else np.zeros(steps)
-    initial_storage = reservoir.initial_storage if reservoir is not None else 0.0
-    evaporation = _padded(_monthly(reservoir, WaterLost), steps) if reservoir is not None else np.zeros(steps)
-    release = _padded(_monthly(reservoir, WaterReleased), steps) if reservoir is not None else np.asarray(inflows)
-    overflow = _padded(_monthly(reservoir, WaterSpilled), steps) if reservoir is not None else np.zeros(steps)
-    # The coursebook's serial topology lets users withdraw from combined release and overflow.
-    downstream = release + overflow - delivery - winter_delivery
-    arrays = {
-        "delivery": delivery,
-        "storage": storage,
-        "spill": downstream,
-        "overflow": overflow,
-        "release": release,
-        "evaporation": evaporation,
-        "winter_delivery": winter_delivery,
-    }
-    return {
-        **{key: [round(float(value), 8) for value in values] for key, values in arrays.items()},
-        "initial_storage": initial_storage,
-        "summary": {
-            "farm_shortage": float((need - delivery).sum()),
-            "winter_supply": float(winter_delivery.sum()),
-            "summer_shortage": float((need - delivery).reshape(-1, 12)[:, 6:].sum()),
-            "end_storage": float(storage[-1]),
-            "downstream": float(downstream.sum()),
-            "evaporation": float(evaporation.sum()),
-        },
-    }
-
-
-def teaching_experiments_payload(inflows: tuple[float, ...] | None = None) -> dict:
-    """Run matched storage and forecast lessons with the coursebook's TaqSim model.
-
-    Each year is a separate experiment: storage comparisons start empty, while all forecast
-    choices start with the same 20 Mm³. No information mode receives a different river.
-    """
-    inflows = synthetic_inflows() if inflows is None else inflows
-    if not inflows or len(inflows) % 12:
-        raise ValueError("teaching experiments need complete twelve-month years")
-    if any(not np.isfinite(value) or value < 0 for value in inflows):
-        raise ValueError("teaching experiment inflows must be finite and non-negative")
-    if any(sum(inflows[start + 6 : start + 12]) <= 0 for start in range(0, len(inflows), 12)):
-        raise ValueError("teaching forecasts need positive summer inflow in each year")
-    forecasts = {
-        name: seasonal_forecast(inflows, skill) for name, skill in (("none", 0.0), ("perfect", 1.0), ("uncertain", 0.5))
-    }
-    years = []
-    for year in range(len(inflows) // 12):
-        river = tuple(inflows[year * 12 : (year + 1) * 12])
-        decisions = {}
-        for mode, values in forecasts.items():
-            decisions[mode] = [
-                _teaching_run(
-                    build_system(
-                        river,
-                        SUMMER_PLAN_FOR_WINTER,
-                        start_storage=START_STORAGE_MM3,
-                        winter=WinterPlan(trigger=60.0, ration=ration),
-                        forecast=(values[year],),
-                    ),
-                    river,
-                )
-                for ration in (0.0, 0.5, 1.0)
-            ]
-        years.append(
-            {
-                "inflow": list(river),
-                "need": list(MONTHLY_NEED_MM3),
-                "winter_need": list(WINTER_FIELDS_NEED_MM3),
-                "without": _teaching_run(build_river_farm(river), river),
-                "with": _teaching_run(
-                    build_system(
-                        river,
-                        start_storage=0.0,
-                        evaporation_share=EVAPORATION_SHARE_EXAMPLE,
-                    ),
-                    river,
-                ),
-                "forecast_summer": {mode: values[year] for mode, values in forecasts.items()},
-                "forecast": {mode: runs[1] for mode, runs in decisions.items()},
-                "decisions": decisions,
-            }
-        )
-    return {
-        "metadata": {
-            "capacity": CAPACITY_MM3,
-            "storage_start": 0.0,
-            "forecast_start": START_STORAGE_MM3,
-            "evaporation_share": EVAPORATION_SHARE_EXAMPLE,
-            "forecast_evaporation_share": 0.0,
-            "winter_trigger": 60.0,
-            "summer_trigger": SUMMER_PLAN_FOR_WINTER.trigger,
-            "summer_ration": SUMMER_PLAN_FOR_WINTER.ration,
-            "uncertain_skill": 0.5,
-            "decision_rations": [0.0, 0.5, 1.0],
-            "units": "Mm³",
-            "months": ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
-            "assumptions": [
-                "Synthetic teaching river, not observations or an operational forecast.",
-                "Each year resets: storage comparison starts empty; forecast comparisons all start at 20 Mm³.",
-                "No forecast means the usual summer inflow (climatology), not knowledge of that year's summer.",
-                "Winter ration applies only when stored water plus expected summer inflow is below 60 Mm³.",
-                "Same fixed summer rule in every forecast experiment; policies are illustrative, not optimized.",
-                "Forecast lessons use zero evaporation, matching the notebook; storage lesson uses illustrative 3% per summer month.",
-                "Following the coursebook, farm and winter fields can use reservoir overflow before the remainder passes downstream.",
-                "spill denotes downstream remainder; overflow denotes uncontrolled reservoir overflow before withdrawals.",
-            ],
-        },
-        "years": years,
-    }
-
-
 def explorer_payload(inflows: tuple[float, ...], table: pd.DataFrame, window_years: int = 20) -> dict:
     """Collect what the page's explorer shows: every plan's TaqSim scores, each year's worst month, and storage.
 
@@ -1010,7 +887,6 @@ def explorer_payload(inflows: tuple[float, ...], table: pd.DataFrame, window_yea
         "mean_axis_max": MEAN_SHORTAGE_AXIS_MAX,
         "window": {"start_year": start + 1, "years": window_years},
         "plans": plans,
-        "experiments": teaching_experiments_payload(inflows),
     }
 
 
@@ -1141,16 +1017,8 @@ _NODE_COLORS = {"Source": "#0072B2", "Storage": "#CC79A7", "Demand": "#009E73", 
 
 def _node_card(ax: plt.Axes, x: float, y: float, width: float, height: float, kind: str) -> None:
     color = _NODE_COLORS[kind]
-    card = FancyBboxPatch(
-        (x, y),
-        width,
-        height,
-        boxstyle="round,pad=0,rounding_size=0.08",
-        facecolor="white",
-        edgecolor=color,
-        linewidth=1.5,
-        zorder=3,
-    )
+    card = FancyBboxPatch((x, y), width, height, boxstyle="round,pad=0,rounding_size=0.08",
+                         facecolor="white", edgecolor=color, linewidth=1.5, zorder=3)
     ax.add_patch(card)
     accent = Rectangle((x, y), width * 0.035, height, facecolor=color, edgecolor="none", zorder=4)
     accent.set_clip_path(card)
@@ -1210,9 +1078,7 @@ def plot_network(winter: bool = False, reservoir: bool = True) -> Figure:
         ax.text(x, y + 0.1, node_id, ha="center", va="center", fontsize=8, color=INK, weight="bold", zorder=5)
         ax.text(x, y - 0.18, kind, ha="center", va="center", fontsize=8, color=SECONDARY, zorder=5)
         ax.text(x, -0.85, note, ha="center", va="top", fontsize=7.5, color=MUTED)
-    pad = max(
-        0.0, (spacing * (len(NETWORK_NODES) - 1) - positions["downstream"][0]) / 2
-    )  # the three blocks stay centred
+    pad = max(0.0, (spacing * (len(NETWORK_NODES) - 1) - positions["downstream"][0]) / 2)  # the three blocks stay centred
     ax.set_xlim(-0.9 - pad, positions["downstream"][0] + 0.9 + pad)
     ax.set_ylim(-1.2, 0.78)
     ax.axis("off")
