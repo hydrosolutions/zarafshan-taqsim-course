@@ -409,6 +409,130 @@
     drawShortage();
     drawStorage();
     select(current);
+    if (experimentsUI) experimentsUI.render();
+  }
+  // Teaching experiments use the same precomputed TaqSim results as the course notebook.
+  let experimentsUI = null;
+  if (data.experiments && !compact) {
+    const ex = data.experiments;
+    const words = {
+      en: {
+        tabs: ["Explore rationing", "Why store water?", "What is a forecast worth?"],
+        storeTitle: "Same river. Same farm. What changes when we can store water?",
+        storeIntro: "Without a reservoir, water must be used when it arrives. Storage can save some for later, but also loses water through evaporation. Compare the same twelve months on both sides.",
+        year: "Illustrated year", without: "Without reservoir", with: "With reservoir", river: "River", farm: "Farm", reservoir: "Reservoir",
+        delivered: "Water reaching the farm", shortage: "Farm shortage", downstream: "Water passing downstream", evaporation: "Evaporation", demand: "Farm need", inflow: "River inflow", month: "Month (October–September)",
+        assumptions: "Each illustrated year starts afresh. Both cases start with no stored water; there is no additional winter user in this experiment. Evaporation is an illustrative 3% per summer month, as in the notebook, not a measured site rate. Downstream water is water remaining after the farm. Reservoir overflow follows the coursebook routing through the farm before reaching downstream.",
+        storageCaption: "Blue: delivered water. Orange: unmet need. Dashed line: farm need. Both panels use the same scale.",
+        forecastTitle: "Release water in winter—or save it for the summer farm?",
+        forecastIntro: "A winter water user creates a real choice. Forecasts change what the reservoir expects to have in summer; they do not create water. Try the same rule with three kinds of information. We start with a year that clearly shows the difference; use the all-years comparison before judging the rule.",
+        modes: ["No forecast", "Perfect forecast", "Uncertain forecast"], forecast: "Expected summer inflow", actual: "Actual summer inflow", usual: "Uses the long-term average", exact: "Knows the coming summer exactly", uncertain: "An imperfect estimate; it can be wrong",
+        decision: "When the rule calls for winter rationing, supply", choices: ["0% of winter need", "50% of winter need", "100% of winter need"],
+        reveal: "Run the year and compare", reset: "Hide results and try again", winter: "Winter water supplied", summer: "Summer farm shortage", end: "Water left in storage", results: "Same year, same rule—different information", many: "Compare all illustrated years", single: "Return to this year", mean: "Mean result across all illustrated years", 
+        rule: "The winter rule compares stored water plus expected summer inflow with a 60 Mm³ threshold. Below it, the selected winter ration applies; otherwise winter need is supplied in full, subject to available water. Summer rationing is unchanged (16 Mm³ trigger; 50% ration).",
+        forecastAssumptions: "Each year starts with 20 Mm³ in storage. The three cases receive exactly the same actual inflow. No forecast uses the long-term summer average. The uncertain forecast uses the coursebook's skill-0.5 experiment. This is a comparison of a fixed rule, not an automatically optimised strategy.",
+        lesson: "Information helps only when the decision rule uses it well. Even a perfect forecast does not guarantee a better result with every fixed rule. In this example, an informed rule can reduce summer shortages by supplying less water in winter. Compare the two outcomes together.",
+        choose: "1 · Choose the year and the winter rule", information: "2 · Look at the information available before summer", outcome: "3 · Reveal what happens", unit: "Mm³", total: "Annual totals", waterStorage: "Water in storage at year end", count: "illustrated years", noEvap: "No reservoir surface: no reservoir evaporation.",
+      },
+      ru: {
+        tabs: ["Исследуем лимитирование", "Зачем хранить воду?", "Какова ценность прогноза?"],
+        storeTitle: "Та же река. То же хозяйство. Что меняет возможность хранить воду?",
+        storeIntro: "Без водохранилища воду нужно использовать, когда она поступает. Водохранилище позволяет сохранить часть воды на будущее, но часть теряется на испарение. Сравните одни и те же двенадцать месяцев.",
+        year: "Примерный год", without: "Без водохранилища", with: "С водохранилищем", river: "Река", farm: "Хозяйство", reservoir: "Водохранилище",
+        delivered: "Вода, поданная хозяйству", shortage: "Дефицит хозяйства", downstream: "Вода ниже по течению", evaporation: "Испарение", demand: "Потребность хозяйства", inflow: "Приток из реки", month: "Месяц (октябрь–сентябрь)",
+        assumptions: "Каждый пример начинается заново. Начальный запас воды в обоих случаях равен нулю; дополнительного зимнего потребителя здесь нет. Испарение — условные 3% за летний месяц, как в учебнике, а не измеренная величина для реального объекта. Сток ниже по течению — вода, оставшаяся после хозяйства. Перелив водохранилища проходит через хозяйство, как в учебном примере, а затем уходит вниз по течению.",
+        storageCaption: "Синий: поданная вода. Оранжевый: неудовлетворённая потребность. Пунктир: потребность хозяйства. Масштаб двух графиков одинаков.",
+        forecastTitle: "Подать воду зимой или сохранить для летнего орошения?",
+        forecastIntro: "Зимний потребитель создаёт реальный выбор. Прогноз меняет ожидаемый запас воды на лето, но не создаёт воду. Примените одно правило при трёх видах информации. Сначала выбран год, наглядно показывающий разницу; оцените правило по всем годам, прежде чем делать выводы.",
+        modes: ["Без прогноза", "Точный прогноз", "Неточный прогноз"], forecast: "Ожидаемый летний приток", actual: "Фактический летний приток", usual: "Используется многолетнее среднее", exact: "Летний приток известен точно", uncertain: "Приближённая оценка может оказаться ошибочной",
+        decision: "Когда правило ограничивает зимнюю подачу, подавать", choices: ["0% зимней потребности", "50% зимней потребности", "100% зимней потребности"],
+        reveal: "Рассчитать год и сравнить", reset: "Скрыть результаты и повторить", winter: "Подано зимнему потребителю", summer: "Дефицит летнего орошения", end: "Остаток воды в запасе", results: "Тот же год и правило — разная информация", many: "Сравнить все примеры лет", single: "Вернуться к этому году", mean: "Средний результат по всем примерам лет",
+        rule: "Зимнее правило сравнивает запас воды плюс ожидаемый летний приток с порогом 60 млн м³. Ниже порога действует выбранный лимит; иначе зимняя потребность удовлетворяется полностью, если воды достаточно. Летнее правило неизменно: порог 16 млн м³ и лимит 50%.",
+        forecastAssumptions: "В начале каждого года в запасе 20 млн м³. Фактический приток одинаков во всех трёх случаях. Без прогноза используется многолетнее среднее летнего притока. Неточный прогноз соответствует примеру из учебника с качеством 0,5. Сравнивается фиксированное правило, а не автоматически оптимизированная стратегия.",
+        lesson: "Информация полезна, когда правило принятия решений использует её разумно. Даже точный прогноз не гарантирует улучшения при любом фиксированном правиле. В этом примере правило с прогнозом может уменьшить летний дефицит за счёт меньшей зимней подачи. Оценивайте оба результата вместе.",
+        choose: "1 · Выберите год и зимнее правило", information: "2 · Изучите информацию, доступную до лета", outcome: "3 · Посмотрите результат", unit: "млн м³", total: "Итоги за год", waterStorage: "Запас воды в конце года", count: "примеров лет", noEvap: "Нет поверхности водохранилища — нет испарения с неё.",
+      },
+    };
+    const original = document.createElement("div");
+    original.id = "rx-panel-original";
+    while (root.firstChild) original.append(root.firstChild);
+    root.append(original);
+    const nav = document.createElement("div"); nav.className = "rx-tabs"; nav.setAttribute("role", "tablist"); root.prepend(nav);
+    const panel = document.createElement("section"); panel.id = "rx-panel-experiment"; panel.className = "rx-experiment"; root.append(panel);
+    let active = 0, yearIndex = ex.years.reduce((best, y, i, all) => y.forecast.none.summary.summer_shortage - y.forecast.perfect.summary.summer_shortage > all[best].forecast.none.summary.summer_shortage - all[best].forecast.perfect.summary.summer_shortage ? i : best, 0), decision = 1, revealed = false, many = false;
+    const tr = (key) => words[lang][key];
+    const node = (tag, content, parent, cls) => { const n = document.createElement(tag); if (content !== null) n.textContent = content; if (cls) n.className = cls; if (parent) parent.append(n); return n; };
+    const number = (n) => Number(n).toLocaleString(lang === "ru" ? "ru-RU" : "en-GB", { maximumFractionDigits: 1 });
+    const units = (n) => number(n) + " " + tr("unit");
+    function selector(label, values, selected, callback, parent) {
+      const wrap = node("label", label + " ", parent, "rx-ex-select");
+      const input = node("select", null, wrap);
+      values.forEach((label, i) => { const option = node("option", label, input); option.value = i; });
+      input.value = selected; input.addEventListener("change", () => callback(+input.value));
+      return input;
+    }
+    function metric(parent, label, value, maximum, color) {
+      const m = node("div", null, parent, "rx-ex-metric"); node("span", label, m); node("strong", units(value), m);
+      if (maximum) { const track = node("div", null, m, "rx-ex-bar"); track.setAttribute("aria-hidden", "true"); const bar = node("span", null, track); bar.style.width = Math.min(100, value / maximum * 100) + "%"; bar.style.background = color || "#0072B2"; }
+    }
+    function diagram(parent, reservoir) {
+      const d = node("div", null, parent, "rx-ex-network");
+      [["river", "#0072B2"], ...(reservoir ? [["reservoir", "#CC79A7"]] : []), ["farm", "#009E73"]].forEach(([label, color], i) => {
+        if (i) node("span", "→", d, "rx-ex-edge").setAttribute("aria-hidden", "true");
+        const block = node("span", tr(label), d, "rx-ex-node"); block.style.setProperty("--node-color", color);
+      });
+    }
+    function monthly(parent, run, need, top) {
+      const svg = el("svg", { role: "img", "aria-label": tr("storageCaption") }, parent);
+      const f = frame(svg, { height: 230, x: [-0.5, 11.5], y: [0, top], xTicks: Array.from({length:12}, (_, i) => i), xTickLabel: (i) => String((i + 9) % 12 + 1), yTicks: [0, top/2, top], xTitle: tr("month"), margin: {t:22,l:40,r:12,b:38} });
+      text(svg, 40, 12, tr("unit"));
+      const w = (f.x(1)-f.x(0))*0.6;
+      run.delivery.forEach((v,i) => {
+        el("rect", {x:f.x(i)-w/2,y:f.y(v),width:w,height:f.y(0)-f.y(v),fill:"#0072B2"}, svg);
+        const short = Math.max(0,need[i]-v);
+        if(short) el("rect", {x:f.x(i)-w/2,y:f.y(v+short),width:w,height:f.y(v)-f.y(v+short),fill:"#D55E00"}, svg);
+      });
+      el("path", {d:need.map((v,i)=>(i?"L":"M")+f.x(i)+","+f.y(v)).join(""),fill:"none",stroke:C.ink,"stroke-width":2,"stroke-dasharray":"5 4"}, svg);
+    }
+    function render() {
+      nav.replaceChildren();
+      tr("tabs").forEach((label,i) => {
+        const b = node("button", label, nav); b.id = "rx-ex-tab-"+i; b.type="button"; b.setAttribute("role","tab"); b.setAttribute("aria-selected",String(active===i)); b.setAttribute("aria-controls",i?panel.id:original.id); b.tabIndex=active===i?0:-1;
+        b.addEventListener("click",()=>{active=i;hideTooltip();render();if(i===0)drawAll();});
+        b.addEventListener("keydown",e=>{if(!["ArrowLeft","ArrowRight","Home","End"].includes(e.key))return;e.preventDefault();active=e.key==="Home"?0:e.key==="End"?2:(i+(e.key==="ArrowRight"?1:2))%3;render();$("rx-ex-tab-"+active).focus();if(active===0)drawAll();});
+      });
+      original.hidden = active !== 0; panel.hidden = active === 0;
+      original.setAttribute("role","tabpanel"); original.setAttribute("aria-labelledby","rx-ex-tab-0"); panel.setAttribute("role","tabpanel"); panel.setAttribute("aria-labelledby","rx-ex-tab-"+active);
+      panel.replaceChildren(); if(!active) return;
+      const year = ex.years[yearIndex];
+      node("h2", tr(active===1?"storeTitle":"forecastTitle"), panel);
+      node("p", tr(active===1?"storeIntro":"forecastIntro"), panel);
+      if(active===2)node("h3",tr("choose"),panel);
+      const controls = node("div",null,panel,"rx-ex-controls");
+      selector(tr("year"),ex.years.map((_,i)=>String(i+1)),yearIndex,v=>{yearIndex=v;revealed=false;many=false;render();},controls);
+      if(active===1) {
+        node("p",tr("inflow")+": "+units(year.inflow.reduce((a,b)=>a+b,0))+" · "+tr("demand")+": "+units(year.need.reduce((a,b)=>a+b,0)),panel,"rx-ex-note");
+        const grid=node("div",null,panel,"rx-ex-grid two");
+        const top=Math.ceil(Math.max(...year.need,...year.with.delivery,...year.without.delivery)/5)*5 || 5;
+        for(const key of ["without","with"]){const c=node("article",null,grid,"rx-ex-card");node("h3",tr(key),c);diagram(c,key==="with");monthly(c,year[key],year.need,top);const m=node("div",null,c,"rx-ex-metrics");for(const [label,field] of [["shortage","farm_shortage"],["downstream","downstream"],["evaporation","evaporation"]])metric(m,tr(label),year[key].summary[field]);metric(m,tr("waterStorage"),year[key].summary.end_storage);}
+        node("p",tr("storageCaption"),panel,"rx-ex-note");node("p",tr("assumptions"),panel,"rx-ex-note");
+      } else {
+        selector(tr("decision"),tr("choices"),decision,v=>{decision=v;revealed=false;many=false;render();},controls);
+        node("p",tr("rule"),panel,"rx-ex-note");node("h3",tr("information"),panel);
+        const info=node("div",null,panel,"rx-ex-grid three");
+        ["none","perfect","uncertain"].forEach((mode,i)=>{const c=node("article",null,info,"rx-ex-card");node("h3",tr("modes")[i],c);metric(c,tr("forecast"),year.forecast_summer[mode]);node("p",tr(["usual","exact","uncertain"][i]),c,"rx-ex-note");});
+        const reveal=node("button",tr(revealed?"reset":"reveal"),panel,"rx-ex-primary");reveal.addEventListener("click",()=>{revealed=!revealed;many=false;render();});
+        if(revealed){
+          const result=node("div",null,panel,"rx-ex-results");result.setAttribute("aria-live","polite");node("h3",tr("outcome"),result);node("p",tr("actual")+": "+units(year.inflow.slice(6).reduce((a,b)=>a+b,0)),result);
+          const toggle=node("button",tr(many?"single":"many"),result);toggle.addEventListener("click",()=>{many=!many;render();});node("p",tr(many?"mean":"results"),result);
+          const grid=node("div",null,result,"rx-ex-grid three");
+          ["none","perfect","uncertain"].forEach((mode,i)=>{const c=node("article",null,grid,"rx-ex-card");node("h3",tr("modes")[i],c);const selected=many?ex.years:[year];for(const [label,field]of[["winter","winter_supply"],["summer","summer_shortage"],["end","end_storage"]]){const avg=selected.reduce((sum,y)=>sum+y.decisions[mode][decision].summary[field],0)/selected.length;const maximum=Math.max(...["none","perfect","uncertain"].map(k=>selected.reduce((sum,y)=>sum+y.decisions[k][decision].summary[field],0)/selected.length),1);metric(c,tr(label),avg,maximum,field==="summer_shortage"?"#D55E00":field==="end_storage"?"#CC79A7":"#0072B2");}});
+          node("p",tr("lesson"),result,"rx-ex-takeaway");
+        }
+        node("p",tr("forecastAssumptions"),panel,"rx-ex-note");
+      }
+    }
+    experimentsUI={render};
   }
   current = byKey.get(keyOf(16, 0.8)) || reference;
   drawAll();
