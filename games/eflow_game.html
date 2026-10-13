@@ -487,6 +487,8 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
 .intro .prose { column-width: 52ch; column-gap: 36px; margin-top: 6px; }  /* two columns on a wide window, one on a laptop */
 .intro .prose p { margin: 0 0 10px; break-inside: avoid; }
 
+.legend .shortage-key { width: 16px; height: 14px; display: inline-block; background: color-mix(in srgb, var(--deficit) 16%, transparent); border-bottom: 5px solid var(--deficit); }
+
 </style>
 </head>
 <body>
@@ -608,6 +610,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
         <header><div><h2 id="hydro-title" data-i18n>The river below the headworks, day by day</h2><span class="sub" id="hydro-sub"></span></div></header>
         <div class="chart" id="chart-hydro"></div>
         <div class="legend" id="hydro-legend"></div>
+        <p class="caption" id="hydro-shortages" aria-live="polite"></p>
       </section>
     </section>
 
@@ -1442,6 +1445,14 @@ const EflowModel = (() => {
     const x = (i) => mg.l + (i / Math.max(n - 1, 1)) * (W - mg.l - mg.r);
     const scale = niceScale(opts.max, 5);
     const y = (v) => H - mg.b - (clamp(v, 0, scale.top) / scale.top) * (H - mg.t - mg.b);
+    // Shade each shortage day across the plot; a solid tick keeps isolated days visible.
+    const dayWidth = (W - mg.l - mg.r) / Math.max(n - 1, 1);
+    for (const day of opts.shortageDays || []) {
+      const left = Math.max(mg.l, x(day.i) - dayWidth / 2);
+      const right = Math.min(W - mg.r, x(day.i) + dayWidth / 2);
+      const band = svg("rect", { x: left, y: mg.t, width: right - left, height: H - mg.b - mg.t, fill: "var(--deficit)", opacity: 0.16 }, root);
+      svg("title", {}, band).textContent = day.label;
+    }
     for (const t of scale.ticks) {
       const g = svg("line", { x1: mg.l, x2: W - mg.r, y1: y(t), y2: y(t), "stroke-width": 1 }, root);
       g.style.stroke = "var(--grid)";
@@ -1469,6 +1480,10 @@ const EflowModel = (() => {
       l.style.stroke = hl.color;
       text(root, W - mg.r, y(hl.value) - 4, hl.label, { "text-anchor": "end", "font-size": "12" });
     }
+    for (const day of opts.shortageDays || []) {
+      const tick = svg("line", { x1: x(day.i), x2: x(day.i), y1: H - mg.b - 7, y2: H - mg.b, stroke: "var(--deficit)", "stroke-width": Math.max(2, dayWidth), class: "shortage-day" }, root);
+      svg("title", {}, tick).textContent = day.label;
+    }
     return root;
   }
   function renderCharts() {
@@ -1479,17 +1494,27 @@ const EflowModel = (() => {
     const xticks = [];
     for (let i = from; i < to; i++) if (Number(DATES[i].slice(8, 10)) === 1) xticks.push({ i: i - from, label: MONTHS[MONTH_OF[i] - 1] });
     const hl = p.ceiling_m3s != null && p.share_pct === 100 ? [{ value: p.ceiling_m3s, color: "var(--environment)", label: L(`guaranteed minimum ${fmt0(p.ceiling_m3s)} m³/s`, `гарантированный минимум ${fmt0(p.ceiling_m3s)} м³/с`) }] : [];
+    const shortageDays = [];
+    for (let i = from; i < to; i++) {
+      const missing = DEMAND[i] - tw.fields[i];
+      if (missing > 1e-9) shortageDays.push({ i: i - from, label: L(`${DATES[i]}: irrigation shortage ${fmt1(missing)} m³/s`, `${DATES[i]}: нехватка воды для орошения ${fmt1(missing)} м³/с`) });
+    }
     lineChart($("chart-hydro"), {
-      n: nat.length, max: Math.max(...nat), unit: M3S, xticks, hlines: hl, label: L(`Daily flow in ${state.year}: natural and below the headworks`, `Суточный расход в ${state.year} году: естественный и ниже гидроузла`),
+      n: nat.length, shortageDays, max: Math.max(...nat), unit: M3S, xticks, hlines: hl, label: L(`Daily flow in ${state.year}: natural and below the headworks`, `Суточный расход в ${state.year} году: естественный и ниже гидроузла`),
       area: { top: nat, bottom: riv, color: "var(--irrigation)" },
       series: [{ values: nat, color: "var(--axis)", width: 1.2, dash: "3 3" }, { values: riv, color: "var(--river)", width: 1.8 }],
     });
     $("hydro-sub").textContent = L(`${state.year} · the green band is the water the canal took · lowest flow below the headworks ${fmt1(lowestInYear(p))} m³/s (natural ${fmt1(Math.min(...nat))})`, `${state.year} · зелёная полоса — вода, взятая каналом · минимальный расход ниже гидроузла ${fmt1(lowestInYear(p))} м³/с (естественный ${fmt1(Math.min(...nat))})`);
+    $("hydro-shortages").textContent = L(
+      `${shortageDays.length} irrigation-shortage days in ${state.year}. Red vertical bands and bottom ticks mark days when the fields received less than the canal demand after the river reserve was set aside. The highlights show timing, not the size of the shortage.`,
+      `Дней с нехваткой воды для орошения в ${state.year} году: ${shortageDays.length}. Красные вертикальные полосы и отметки у нижней оси показывают дни, когда после выделения резерва для реки поля получили меньше потребности канала. Выделение показывает сроки, а не величину нехватки.`
+    );
     const legend = $("hydro-legend");
     legend.textContent = "";
     for (const [c, l, dash] of [["var(--axis)", "natural flow (record)", true], ["var(--river)", "river below the headworks", false], ["var(--irrigation)", "taken by the canal", false]]) {
       legend.appendChild(h("span", { class: "item" }, [h("span", { class: `line${dash ? " dashed" : ""}`, style: `color:${c}` }), t(l)]));
     }
+    legend.appendChild(h("span", { class: "item" }, [h("span", { class: "shortage-key" }), L("irrigation shortage day", "день с нехваткой воды для орошения")]));
   }
   function barChart(box, opts) {
     box.textContent = "";
