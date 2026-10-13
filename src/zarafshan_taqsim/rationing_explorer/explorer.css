@@ -252,3 +252,8 @@
 #rationing-explorer[data-compact="1"] .rx-legend {
   margin: 3px 0 0;
 }
+
+#rationing-explorer [hidden] {display:none!important;}
+#rationing-explorer .rx-reservoir-toggle {display:flex;align-items:center;gap:10px;margin-bottom:18px;font-size:17px;cursor:pointer;}
+#rationing-explorer .rx-reservoir-toggle input {width:22px;height:22px;accent-color:#0072B2;}
+#rationing-explorer :disabled {opacity:.45;cursor:not-allowed;}

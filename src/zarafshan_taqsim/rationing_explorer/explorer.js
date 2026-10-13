@@ -23,6 +23,8 @@
   const $ = (id) => document.getElementById(id);
   const tooltip = $("rx-tooltip");
   let current = reference;
+  let withReservoir = true;
+  let savedPlan = reference;
 
   // --- Language ------------------------------------------------------------------------------------------
   // The explorer follows the page: `data-lang` (or `lang`) on <html>, as the coursebook's switcher and the
@@ -30,6 +32,8 @@
   // data-rx key; the texts written by this script go through txt().
   const TEXT = {
     en: {
+      "with-reservoir": "With reservoir", "without-reservoir": "Without reservoir",
+      "no-storage-note": "Without storage, the farm uses water as it arrives. Same inflows and demand; grey bars show the reservoir without rationing. Reservoir controls do not apply.",
       "trigger-before": "Trigger: start rationing when the reservoir holds less than ", "trigger-after": "",
       "ration-before": "Ration: then deliver ", "ration-after": " of the summer need",
       "preset-none": "No rationing", "preset-light": "Ration lightly", "preset-deep": "Cut deep",
@@ -54,6 +58,8 @@
       window: (a, b) => `years ${a}–${b}, around the worst year`,
     },
     ru: {
+      "with-reservoir": "С водохранилищем", "without-reservoir": "Без водохранилища",
+      "no-storage-note": "Без запаса хозяйство использует воду по мере поступления. Приток и потребность те же; серые столбцы — водохранилище без лимитирования. Управление водохранилищем здесь не применяется.",
       "trigger-before": "Порог: начинать лимитирование, когда в водохранилище меньше ", "trigger-after": "",
       "ration-before": "Лимит: затем подавать ", "ration-after": " летней потребности",
       "preset-none": "Без лимитирования", "preset-light": "Лёгкое лимитирование", "preset-deep": "Жёсткое лимитирование",
@@ -169,7 +175,7 @@
 
   // --- Trade-off chart ---------------------------------------------------------------------------------
   const tradeoffSvg = $("rx-tradeoff");
-  const meanTop = data.mean_axis_max;
+  const meanTop = Math.max(data.mean_axis_max, data.without_reservoir ? Math.ceil((data.without_reservoir.mean_shortage + 2) / 2) * 2 : 0);
   const onChart = (p) => p.mean_shortage <= meanTop;
   let tradeoff;
   let marker;
@@ -203,6 +209,11 @@
     if (beyond) text(tradeoffSvg, W - m.r, y(0) - 8, txt("further-right", beyond), { "text-anchor": "end" });
     const refLabel = text(tradeoffSvg, x(reference.mean_shortage) + 10, y(reference.worst_month) - 8, txt("no-rationing"), { class: "rx-label" });
     refLabel.setAttribute("pointer-events", "none");
+    if (data.without_reservoir) {
+      const p = data.without_reservoir;
+      el("rect", {x:x(p.mean_shortage)-5,y:y(p.worst_month)-5,width:10,height:10,fill:C.shortage},tradeoffSvg);
+      text(tradeoffSvg,x(p.mean_shortage)-9,y(p.worst_month)-10,txt("without-reservoir"),{"text-anchor":"end",class:"rx-label"});
+    }
     hoverRing = el("circle", { r: 8, fill: "none", stroke: C.muted, "stroke-width": 1.5, visibility: "hidden" }, tradeoffSvg);
     marker = el("circle", { r: 7, fill: C.water, stroke: C.surface, "stroke-width": 2 }, tradeoffSvg);
   }
@@ -222,6 +233,7 @@
     return best;
   }
   tradeoffSvg.addEventListener("pointermove", (event) => {
+    if (!withReservoir) return;
     const p = nearestPlan(event);
     if (!p) {
       hoverRing.setAttribute("visibility", "hidden");
@@ -244,6 +256,7 @@
     hideTooltip();
   });
   tradeoffSvg.addEventListener("click", (event) => {
+    if (!withReservoir) return;
     const p = nearestPlan(event);
     if (p) select(p);
   });
@@ -280,7 +293,7 @@
     shortageCross.setAttribute("visibility", "visible");
     showTooltip(event, [
       [txt("year", year), ""],
-      [fmt(current.shortage[year - 1], 1) + " %", txt("tip-short-yours")],
+      [fmt(current.shortage[year - 1], 1) + " %", txt(withReservoir ? "tip-short-yours" : "without-reservoir")],
       [fmt(reference.shortage[year - 1], 1) + " %", txt("tip-short-ref")],
     ]);
   });
@@ -355,7 +368,13 @@
 
   let suggestion = null;
   function select(plan) {
+    if (withReservoir) savedPlan = plan;
+    else plan = data.without_reservoir;
     current = plan;
+    root.querySelectorAll('.rx-controls input, .rx-presets button').forEach(n => n.disabled = !withReservoir);
+    storageSvg.closest('figure').hidden = !withReservoir;
+    if (toggle) { toggle.checked = withReservoir; toggleLabel.textContent = txt(withReservoir ? 'with-reservoir' : 'without-reservoir'); }
+    root.querySelectorAll('[data-rx="key-current"]').forEach(n => n.textContent = txt(withReservoir ? 'key-current' : 'without-reservoir'));
     triggerInput.value = triggers.indexOf(plan.trigger);
     rationInput.value = rations.indexOf(plan.ration);
     $("rx-trigger-out").textContent = fmt(plan.trigger) + " " + txt("mm3");
@@ -367,8 +386,8 @@
     $("rx-worst-note").textContent = compare(plan.worst_month, reference.worst_month, 0);
     $("rx-years-note").textContent = compare(plan.years_short, reference.years_short, 0);
 
-    suggestion = plan.unbeaten ? null : betterPlan(plan);
-    $("rx-verdict-text").textContent = suggestion
+    suggestion = !withReservoir || plan.unbeaten ? null : betterPlan(plan);
+    $("rx-verdict-text").textContent = !withReservoir ? txt("no-storage-note") : suggestion
       ? txt("beaten", fmt(suggestion.trigger), percent(suggestion.ration), fmt(suggestion.mean_shortage, 1), fmt(suggestion.worst_month))
       : txt("unbeaten");
     $("rx-verdict-load").hidden = !suggestion;
@@ -409,6 +428,13 @@
     drawShortage();
     drawStorage();
     select(current);
+  }
+  let toggle = null, toggleLabel = null;
+  if (data.without_reservoir) {
+    const label = document.createElement('label'); label.className = 'rx-reservoir-toggle';
+    toggle = document.createElement('input'); toggle.type = 'checkbox'; toggle.checked = true;
+    toggleLabel = document.createElement('strong'); label.append(toggle,toggleLabel); root.prepend(label);
+    toggle.addEventListener('change', () => { withReservoir = toggle.checked; hideTooltip(); select(withReservoir ? savedPlan : data.without_reservoir); drawAll(); });
   }
   current = byKey.get(keyOf(16, 0.8)) || reference;
   drawAll();

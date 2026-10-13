@@ -881,9 +881,18 @@ def explorer_payload(inflows: tuple[float, ...], table: pd.DataFrame, window_yea
                 "storage": [round(float(value), 1) for value in run.storage[12 * start : 12 * (start + window_years)]],
             }
         )
+    without = simulate_without_reservoir(inflows)
     return {
         "capacity": CAPACITY_MM3,
         "years": years,
+        "without_reservoir": {
+            "trigger": 0, "ration": 1, "unbeaten": False,
+            "mean_shortage": round(without.scores.mean_shortage, 2),
+            "worst_month": round(without.scores.worst_month, 1),
+            "years_short": without.scores.years_short,
+            "shortage": [round(float(v), 1) for v in without.worst_month_by_year],
+            "storage": [0.0] * (12 * window_years),
+        },
         "mean_axis_max": MEAN_SHORTAGE_AXIS_MAX,
         "window": {"start_year": start + 1, "years": window_years},
         "plans": plans,
