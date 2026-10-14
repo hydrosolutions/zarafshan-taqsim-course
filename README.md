@@ -39,18 +39,18 @@ what you want in plain words. To try it:
 
 If that worked, you have done everything the course needs. More tasks for Gemini are in the notebook itself.
 
-## ChatGPT and an optional Sider sidebar
+## ChatGPT and the optional AI Sider sidebar
 
-**ChatGPT Free is supported in Uzbekistan.** Open [chatgpt.com](https://chatgpt.com), choose **Sign up** if you do not already have an account, and follow the instructions. Stay on the free plan; no paid subscription or API key is needed for these exercises. Free usage has limits. See [OpenAI's supported countries](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) and [free plan](https://chatgpt.com/plans/free/).
+**ChatGPT and Gemini web officially support Uzbekistan.** See [OpenAI's supported countries](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) and [Google's supported countries](https://support.google.com/gemini/answer/13575153?hl=en). This confirms provider eligibility, not access on the workshop Wi-Fi: local connectivity without VPN and extension installation still need to be checked before the workshop.
 
-**Sider is an optional Chrome extension** that places an AI chat beside your notebook. It is a separate product, with its own account and usage allowance. A free ChatGPT account does not supply Sider credits. We have not confirmed Sider installation and sign-up from an Uzbekistan connection; try it before the workshop and use ChatGPT in another tab if it is unavailable.
+**Use AI Sider: ChatGPT + DeepSeek + Gemini, offered by zenttranslate.** This optional Chrome extension displays the providers' own websites beside your notebook. It is a different product from Sider.ai. No separate extension account is required; sign in to the provider you choose. A [free ChatGPT account](https://chatgpt.com/plans/free/) supplies normal ChatGPT assistance and remains subject to its usual limits. No paid subscription or API key is needed for these exercises.
 
-1. In desktop Chrome, open [Sider's official extension page](https://sider.ai/extensions), follow its **Chrome** link, then choose **Add to Chrome** and review the requested permissions.
-2. Open Chrome's Extensions menu (the puzzle icon), pin Sider, and click its icon beside your Colab notebook. Sign in to Sider or create a Sider account if prompted. Use its free allowance; no purchase is required for trying it. Available models and limits can change: [Sider help](https://sider.ai/help-center).
-3. Copy the relevant code cell or error into the sidebar. Do not assume it can see the whole notebook. Ask: “Explain this code in simple words, then suggest one small change. Show the complete replacement cell.”
-4. Read the proposed change, copy it into a new Colab code cell, run it, and check the water balance and results. Use only the public course examples when trying a new AI service.
+1. In desktop Chrome, open the [exact AI Sider Chrome Web Store listing](https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm), check that the publisher is **zenttranslate**, choose **Add to Chrome** and review the requested permissions. If already installed, open it from the Extensions menu (the puzzle icon).
+2. Open the sidebar beside your Colab notebook, select ChatGPT or Gemini, and sign in to that provider. For ChatGPT, choose **Sign up** if needed and stay on the free plan. If sidebar sign-in fails, open [ChatGPT](https://chatgpt.com) or [Gemini](https://gemini.google.com) in a separate tab.
+3. Explicitly share the relevant code cell, error, page text or screenshot. Do not assume the assistant can see the whole notebook. Ask: “Explain this code in simple words, then suggest one small change. Show the complete replacement cell.”
+4. Read the proposed change, copy it into a new Colab code cell, run it yourself, and check the water balance and results. The sidebar is not a verified way to edit or run Colab automatically. Use only the public course examples when trying a new AI service.
 
-The same prompts work in ChatGPT in a separate tab. For the final reservoir-and-two-farms exercise, also provide the [TaqSim API card](gemini/API_CARD.md) / [Русский](gemini/API_CARD_RU.md), so the assistant uses the course's model version. The workshop demonstration still uses Gemini in Colab; Sider and ChatGPT are alternatives.
+The same prompts work in a separate ChatGPT or Gemini tab. For the reservoir-and-two-farms exercise, also provide the [TaqSim API card](gemini/API_CARD.md) / [Русский](gemini/API_CARD_RU.md), so the assistant uses the course's model version. The workshop demonstration uses Gemini in Colab; AI Sider is an optional alternative interface.
 
 ## Three kinds of material
 
@@ -182,18 +182,18 @@ was prepared for the TaqSim training in Tashkent, 14 to 15 October 2026.
 
 Если это получилось, вы сделали всё, что нужно для курса. Другие задания для Gemini есть в самой тетради.
 
-## ChatGPT и дополнительная боковая панель Sider
+## ChatGPT и необязательная боковая панель AI Sider
 
-**Бесплатный ChatGPT доступен в Узбекистане.** Откройте [chatgpt.com](https://chatgpt.com), выберите **Sign up**, если у вас ещё нет аккаунта, и следуйте инструкциям. Для упражнений достаточно бесплатного плана: платная подписка и ключ API не нужны. Бесплатное использование имеет ограничения. См. [список стран OpenAI](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) и [бесплатный план](https://chatgpt.com/plans/free/).
+**Веб-версии ChatGPT и Gemini официально поддерживаются в Узбекистане.** См. [список стран OpenAI](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) и [список стран Google](https://support.google.com/gemini/answer/13575153?hl=en). Это подтверждает поддержку страны, но не работу через Wi-Fi в месте проведения семинара: подключение без VPN и установку расширения ещё нужно проверить на месте.
 
-**Sider — необязательное расширение Chrome:** чат с ИИ рядом с тетрадью. Это отдельный сервис со своим аккаунтом и лимитами; бесплатный аккаунт ChatGPT не даёт кредиты Sider. Мы не проверяли установку и регистрацию Sider через интернет-соединение в Узбекистане. Попробуйте до семинара; если не получится, откройте ChatGPT в другой вкладке.
+**Используйте AI Sider: ChatGPT + DeepSeek + Gemini от zenttranslate.** Это необязательное расширение Chrome открывает сайты самих ИИ-сервисов рядом с тетрадью. Оно отличается от Sider.ai. Отдельный аккаунт расширения не нужен: войдите в аккаунт выбранного ИИ-сервиса. [Бесплатный аккаунт ChatGPT](https://chatgpt.com/plans/free/) даёт обычные возможности ChatGPT с его стандартными ограничениями. Для упражнений платная подписка и ключ API не нужны.
 
-1. В Chrome на компьютере откройте [официальную страницу расширения Sider](https://sider.ai/extensions), перейдите по ссылке **Chrome**, нажмите **Add to Chrome** и проверьте запрашиваемые разрешения.
-2. В меню расширений Chrome (значок пазла) закрепите Sider и откройте его рядом с тетрадью Colab. При необходимости войдите или создайте аккаунт Sider. Для пробы используйте бесплатный лимит; покупка не нужна. Модели и лимиты могут меняться: [справка Sider](https://sider.ai/help-center).
-3. Скопируйте нужный блок кода или ошибку в чат: не предполагается, что помощник видит всю тетрадь. Спросите: «Объясни код простыми словами, предложи одно небольшое изменение и покажи полный блок для замены».
-4. Прочитайте ответ, вставьте код в новый блок Colab, запустите и проверьте водный баланс и результаты. Для знакомства с новым ИИ-сервисом используйте только открытые примеры курса.
+1. В Chrome на компьютере откройте [страницу именно этого расширения AI Sider](https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm), проверьте издателя **zenttranslate**, нажмите **Add to Chrome** и проверьте запрашиваемые разрешения. Если расширение уже установлено, откройте его через меню расширений (значок пазла).
+2. Откройте панель рядом с тетрадью Colab, выберите ChatGPT или Gemini и войдите в аккаунт соответствующего сервиса. Для ChatGPT при необходимости выберите **Sign up** и бесплатный план. Если вход через панель не работает, откройте [ChatGPT](https://chatgpt.com) или [Gemini](https://gemini.google.com) в отдельной вкладке.
+3. Явно передайте нужный блок кода, сообщение об ошибке, текст страницы или снимок экрана. Не предполагается, что помощник видит всю тетрадь. Спросите: «Объясни код простыми словами, предложи одно небольшое изменение и покажи полный блок для замены».
+4. Прочитайте ответ, вставьте код в новый блок Colab, самостоятельно запустите его и проверьте водный баланс и результаты. Автоматическое редактирование и выполнение кода Colab через эту панель не проверено. Для знакомства с новым ИИ-сервисом используйте только открытые примеры курса.
 
-Эти же запросы работают в ChatGPT в отдельной вкладке. Для задания с водохранилищем и двумя хозяйствами также передайте [памятку по API TaqSim](gemini/API_CARD.md), чтобы помощник использовал версию модели из курса. Демонстрация на семинаре по-прежнему использует Gemini в Colab; Sider и ChatGPT — альтернативы.
+Эти же запросы работают в отдельной вкладке ChatGPT или Gemini. Для задания с водохранилищем и двумя хозяйствами также передайте [памятку по API TaqSim на русском](gemini/API_CARD_RU.md), чтобы помощник использовал версию модели из курса. Демонстрация на семинаре использует Gemini в Colab; AI Sider — необязательный альтернативный интерфейс.
 
 ## Три вида материалов
 
@@ -327,18 +327,18 @@ oʻzgartirasiz. Sinab koʻrish uchun:
 Shu ishlagan boʻlsa, kurs uchun kerak boʻlgan hamma narsani qildingiz. Gemini uchun boshqa topshiriqlar daftarning
 oʻzida bor.
 
-## ChatGPT va ixtiyoriy Sider yon paneli
+## ChatGPT va ixtiyoriy AI Sider yon paneli
 
-**Bepul ChatGPT Oʻzbekistonda qoʻllab-quvvatlanadi.** [chatgpt.com](https://chatgpt.com) saytini oching, hisobingiz boʻlmasa **Sign up** ni tanlang va koʻrsatmalarga amal qiling. Mashqlar uchun bepul tarif yetarli: pulli obuna yoki API kaliti kerak emas. Bepul foydalanish cheklangan. [OpenAI mamlakatlar roʻyxati](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) va [bepul tarif](https://chatgpt.com/plans/free/) haqida oʻqing.
+**ChatGPT va Gemini veb-versiyalari Oʻzbekistonda rasman qoʻllab-quvvatlanadi.** [OpenAI mamlakatlar roʻyxati](https://help.openai.com/en/articles/7947663-chatgpt-supported-countries) va [Google mamlakatlar roʻyxatini](https://support.google.com/gemini/answer/13575153?hl=en) koʻring. Bu mamlakat qoʻllab-quvvatlanishini bildiradi, ammo seminar joyidagi Wi-Fi orqali ishlashini tasdiqlamaydi: VPNsiz ulanish va kengaytmani oʻrnatishni seminardan oldin joyida tekshirish kerak.
 
-**Sider — Chrome uchun ixtiyoriy kengaytma:** daftar yonida AI bilan suhbatlashish imkonini beradi. Uning oʻz hisobi va foydalanish limiti bor; bepul ChatGPT hisobi Sider kreditlarini bermaydi. Oʻzbekistondagi internet orqali Sider oʻrnatish va roʻyxatdan oʻtishni tekshirmadik. Seminardan oldin sinab koʻring; ishlamasa, ChatGPT ni boshqa oynada oching.
+**zenttranslate taqdim etgan AI Sider: ChatGPT + DeepSeek + Gemini kengaytmasidan foydalaning.** Chrome uchun bu ixtiyoriy kengaytma daftar yonida AI xizmatlarining oʻz saytlarini ochadi. U Sider.ai mahsulotidan farq qiladi. Kengaytma uchun alohida hisob kerak emas; tanlangan AI xizmati hisobiga kiring. [Bepul ChatGPT hisobi](https://chatgpt.com/plans/free/) odatiy ChatGPT imkoniyatlarini uning standart cheklovlari bilan beradi. Mashqlar uchun pulli obuna yoki API kaliti kerak emas.
 
-1. Kompyuterdagi Chrome orqali [Sider kengaytmasining rasmiy sahifasini](https://sider.ai/extensions) oching, **Chrome** havolasiga oʻting, **Add to Chrome** ni bosing va soʻralgan ruxsatlarni tekshiring.
-2. Chrome kengaytmalar menyusida (pazl belgisi) Sider ni mahkamlang va Colab daftari yonida oching. Kerak boʻlsa, Sider hisobiga kiring yoki hisob yarating. Sinash uchun bepul limitdan foydalaning; xarid shart emas. Modellar va limitlar oʻzgarishi mumkin: [Sider yordami](https://sider.ai/help-center).
-3. Kerakli kod bloki yoki xatoni chatga nusxalang; yordamchi butun daftarni koʻryapti deb oʻylamang. Soʻrang: «Kodni oddiy soʻzlar bilan tushuntir, bitta kichik oʻzgarish taklif qil va almashtirish uchun toʻliq kod blokini koʻrsat».
-4. Javobni oʻqing, kodni yangi Colab blokiga qoʻying, ishga tushiring va suv balansi hamda natijalarni tekshiring. Yangi AI xizmatini sinashda faqat kursning ochiq misollaridan foydalaning.
+1. Kompyuterdagi Chrome orqali [aynan shu AI Sider kengaytmasining sahifasini](https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm) oching, nashriyotchi **zenttranslate** ekanini tekshiring, **Add to Chrome** ni bosing va soʻralgan ruxsatlarni koʻrib chiqing. Kengaytma allaqachon oʻrnatilgan boʻlsa, uni kengaytmalar menyusidan (pazl belgisi) oching.
+2. Colab daftari yonida panelni oching, ChatGPT yoki Gemini ni tanlang va tegishli xizmat hisobiga kiring. ChatGPT uchun kerak boʻlsa **Sign up** ni tanlab, bepul tarifda qoling. Panel orqali kirish ishlamasa, [ChatGPT](https://chatgpt.com) yoki [Gemini](https://gemini.google.com) ni alohida brauzer varagʻida oching.
+3. Kerakli kod bloki, xato xabari, sahifa matni yoki ekran tasvirini yordamchiga aniq yuboring. U butun daftarni koʻryapti deb oʻylamang. Soʻrang: «Kodni oddiy soʻzlar bilan tushuntir, bitta kichik oʻzgarish taklif qil va almashtirish uchun toʻliq kod blokini koʻrsat».
+4. Javobni oʻqing, kodni yangi Colab blokiga nusxalang, oʻzingiz ishga tushiring va suv balansi hamda natijalarni tekshiring. Bu panel orqali Colab kodini avtomatik tahrirlash yoki ishga tushirish tekshirilmagan. Yangi AI xizmatini sinashda faqat kursning ochiq misollaridan foydalaning.
 
-Xuddi shu soʻrovlarni boshqa oynadagi ChatGPT da ham ishlatish mumkin. Suv ombori va ikkita xoʻjalik mashqi uchun yordamchiga [TaqSim API qoʻllanmasini](gemini/API_CARD.md) ham bering: shunda u kursdagi model versiyasidan foydalanadi. Seminar namoyishida Gemini Colab ichida ishlatiladi; Sider va ChatGPT — muqobil variantlar.
+Xuddi shu soʻrovlarni ChatGPT yoki Gemini ochilgan alohida brauzer varagʻida ham ishlatish mumkin. Suv ombori va ikkita xoʻjalik mashqi uchun yordamchiga [TaqSim API qoʻllanmasini](gemini/API_CARD.md) ham bering: shunda u kursdagi model versiyasidan foydalanadi. Seminar namoyishida Gemini Colab ichida ishlatiladi; AI Sider — ixtiyoriy muqobil interfeys.
 
 ## Uch xil material
 
