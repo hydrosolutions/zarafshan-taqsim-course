@@ -298,7 +298,7 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <ul>
 <li><strong>Read: coursebook.</strong> A complete text with learning objectives, the background of the Zarafshan basin, the data and where they come from, the model, worked results and a reference list, as a web page with every figure in place. Nothing to run, no account needed.</li>
 <li><strong>Run: notebook.</strong> The same text in Colab, with the code behind it, folded until you want to see it. Change a number, run again, see what happens. Needs a Google account.</li>
-<li><strong>Play: game.</strong> An interactive web page: you move the levers, the results were computed in advance. No code, no account. There are four games: TaqSim block by block (step 2), the reservoir game (step 3), the river for nature (step 4) and the Zarafshan in sixteen blocks (step 5).</li>
+<li><strong>Play: game.</strong> An interactive web page: you move the levers, the results appear immediately. No code, no account. There are five games: TaqSim block by block (step 2), the reservoir game (step 3), the river for nature (step 4) and the Zarafshan in sixteen blocks (step 5), plus an optional annual Amu Darya demonstration.</li>
 </ul>
 <p>Each coursebook has an English · Русский · Oʻzbekcha language switcher. Notebooks have separate English and Russian links; existing Uzbek notebooks remain available. Some original figures retain English labels, with translated captions and explanations.</p>
 <p>After each link, the languages it comes in: EN English, RU Russian, UZ Uzbek. The data the coursebooks use are in the folder <code>data/</code> of this package.</p>
@@ -358,6 +358,12 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">what the model shows</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">handout, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
 </tr>
 <tr>
+<td>Optional demo</td>
+<td><strong>Amu Darya: sharing an annual water budget</strong></td>
+<td>Use the Qosh Tepa assessment to explore irrigated area, irrigation efficiency and a negotiated cap on existing withdrawals. Compare historical and reduced-supply assumptions; annual results are teaching scenarios, not current allocations or legal entitlements</td>
+<td>Play: <a href="games/amu_darya_game.html?lang=en" target="_blank" rel="noopener">game</a> (EN · RU · UZ)</td>
+</tr>
+<tr>
 <td></td>
 <td><strong>Real World application</strong></td>
 <td></td>
@@ -414,7 +420,7 @@ jupyter lab</code></pre>
 <li><code>data/ZRB_baseline/</code>: the inflow, demand, reservoir and canal data, 2010 to 2023.</li>
 <li><code>eflow_game/</code>: the model behind the river-for-nature notebook and game, with its precomputed results.</li>
 <li><code>coursebooks/</code>: the five coursebooks as web pages, to read without running anything.</li>
-<li><code>games/</code>: the four games.</li>
+<li><code>games/</code>: the five games.</li>
 <li><code>_cache/</code>: results of long computer runs, so the optimisation notebook opens in seconds.</li>
 </ul>
 <p>The model software is <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>, by hydrosolutions GmbH. The course material was prepared for the TaqSim training in Tashkent, 14 to 15 October 2026.</p>
@@ -455,7 +461,7 @@ jupyter lab</code></pre>
 <ul>
 <li><strong>Читать: учебник.</strong> Цельный текст с целями обучения, сведениями о бассейне Зарафшана, данными и их источниками, моделью, разобранными результатами и списком литературы — в виде веб-страницы со всеми рисунками. Ничего запускать не нужно, аккаунт не нужен.</li>
 <li><strong>Запустить: тетрадь.</strong> Тот же текст в Colab, вместе со стоящим за ним кодом, свёрнутым, пока он вам не нужен. Измените число, запустите заново, посмотрите, что изменилось. Нужен аккаунт Google.</li>
-<li><strong>Играть: игра.</strong> Интерактивная веб-страница: вы двигаете рычаги, результаты рассчитаны заранее. Без кода, без аккаунта. Игр четыре: TaqSim блок за блоком (шаг 2), игра с водохранилищем (шаг 3), вода для реки (шаг 4) и Зарафшан в шестнадцати блоках (шаг 5).</li>
+<li><strong>Играть: игра.</strong> Интерактивная веб-страница: вы двигаете рычаги, результаты появляются сразу. Без кода, без аккаунта. Игр пять: TaqSim блок за блоком (шаг 2), игра с водохранилищем (шаг 3), вода для реки (шаг 4) и Зарафшан в шестнадцати блоках (шаг 5), а также дополнительная годовая демонстрация для Амударьи.</li>
 </ul>
 <p>В каждом учебнике есть переключатель English · Русский · Oʻzbekcha. Тетради открываются отдельными ссылками на нужном языке.</p>
 <p>После каждой ссылки указаны языки: EN английский, RU русский, UZ узбекский. Данные, которые используют учебники, лежат в папке <code>data/</code> этого пакета.</p>
@@ -515,6 +521,12 @@ jupyter lab</code></pre>
 <td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">что показывает модель</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">памятка, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
 </tr>
 <tr>
+<td>Дополнительная демонстрация</td>
+<td><strong>Амударья: распределяем годовой объём воды</strong></td>
+<td>По оценке канала Кош-Тепа исследуйте площадь орошения, эффективность и согласованный предел существующих водозаборов. Сравните исходный и сокращённый приток. Это учебные годовые сценарии, а не текущие распределения или юридические права</td>
+<td>Играть: <a href="games/amu_darya_game.html?lang=ru" target="_blank" rel="noopener">игра</a> (EN · RU · UZ)</td>
+</tr>
+<tr>
 <td></td>
 <td><strong>Применение к реальному бассейну</strong></td>
 <td></td>
@@ -571,7 +583,7 @@ jupyter lab</code></pre>
 <li><code>data/ZRB_baseline/</code>: данные о притоке, водопотреблении, водохранилищах и каналах, 2010–2023.</li>
 <li><code>eflow_game/</code>: модель, стоящая за тетрадью и игрой «вода для реки», с заранее рассчитанными результатами.</li>
 <li><code>coursebooks/</code>: пять учебников в виде веб-страниц, для чтения без запуска.</li>
-<li><code>games/</code>: четыре игры.</li>
+<li><code>games/</code>: пять игр.</li>
 <li><code>_cache/</code>: результаты долгих расчётов, чтобы тетрадь по оптимизации открывалась за секунды.</li>
 </ul>
 <p>Программа модели — <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>, разработка hydrosolutions GmbH. Материалы подготовлены для обучения TaqSim в Ташкенте, 14–15 октября 2026 года.</p>
@@ -612,7 +624,7 @@ jupyter lab</code></pre>
 <ul>
 <li><strong>Oʻqish: darslik.</strong> Oʻquv maqsadlari, Zarafshon havzasi haqidagi maʼlumot, maʼlumotlar va ularning manbalari, model, tahlil qilingan natijalar va adabiyotlar roʻyxati bilan toʻliq matn, barcha rasmlari bilan veb-sahifa sifatida. Hech narsa ishga tushirish shart emas, hisob kerak emas.</li>
 <li><strong>Ishga tushirish: daftar.</strong> Oʻsha matn Colab da, orqasidagi kod bilan, siz koʻrmoqchi boʻlguncha yigʻilgan holda. Raqamni oʻzgartiring, qayta ishga tushiring, nima oʻzgarganini koʻring. Google hisobi kerak.</li>
-<li><strong>Oʻynash: oʻyin.</strong> Interaktiv veb-sahifa: richaglarni siz surasiz, natijalar oldindan hisoblangan. Kodsiz, hisobsiz. Oʻyinlar toʻrtta: TaqSim blokma-blok (2-qadam), suv ombori oʻyini (3-qadam), daryo uchun suv (4-qadam) va oʻn olti blokdagi Zarafshon (5-qadam).</li>
+<li><strong>Oʻynash: oʻyin.</strong> Interaktiv veb-sahifa: richaglarni siz surasiz, natijalar darhol koʻrinadi. Kodsiz, hisobsiz. Oʻyinlar beshta: TaqSim blokma-blok (2-qadam), suv ombori oʻyini (3-qadam), daryo uchun suv (4-qadam) va oʻn olti blokdagi Zarafshon (5-qadam), shuningdek Amudaryo uchun qoʻshimcha yillik namoyish.</li>
 </ul>
 <p>Har bir darslikda English · Русский · Oʻzbekcha til tugmalari bor. Daftarlar kerakli tildagi alohida havola orqali ochiladi.</p>
 <p>Har bir havoladan keyin uning tillari koʻrsatilgan: EN inglizcha, RU ruscha, UZ oʻzbekcha. Darsliklar ishlatadigan maʼlumotlar ushbu paketning <code>data/</code> papkasida.</p>
@@ -672,6 +684,12 @@ jupyter lab</code></pre>
 <td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">model nimani koʻrsatadi</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">bir sahifali eslatma, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
 </tr>
 <tr>
+<td>Qoʻshimcha namoyish</td>
+<td><strong>Amudaryo: yillik suvni taqsimlash</strong></td>
+<td>Qoʻshtepa baholashi asosida sugʻorish maydoni, samaradorlik va mavjud suv olish chegarasini oʻzgartiring. Yillik oʻquv ssenariylari; amaldagi taqsimot yoki huquqiy meʼyor emas</td>
+<td>Oʻynash: <a href="games/amu_darya_game.html?lang=uz" target="_blank" rel="noopener">oʻyin</a> (EN · RU · UZ)</td>
+</tr>
+<tr>
 <td></td>
 <td><strong>Haqiqiy havzaga tatbiq</strong></td>
 <td></td>
@@ -728,7 +746,7 @@ jupyter lab</code></pre>
 <li><code>data/ZRB_baseline/</code>: oqim, suv talabi, suv omborlari va kanallar maʼlumotlari, 2010–2023.</li>
 <li><code>eflow_game/</code>: «daryo uchun suv» daftari va oʻyini ortidagi model, oldindan hisoblangan natijalar bilan.</li>
 <li><code>coursebooks/</code>: beshta darslik veb-sahifa koʻrinishida, hech narsa ishga tushirmasdan oʻqish uchun.</li>
-<li><code>games/</code>: toʻrtta oʻyin.</li>
+<li><code>games/</code>: beshta oʻyin.</li>
 <li><code>_cache/</code>: uzoq hisob-kitoblar natijalari, optimallashtirish daftari soniyalarda ochilishi uchun.</li>
 </ul>
 <p>Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>. Materiallar Toshkentda 2026-yil 14–15-oktabrda oʻtkaziladigan TaqSim oʻquv kursi uchun tayyorlangan.</p>

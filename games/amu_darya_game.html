@@ -1,0 +1,1532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Amu Darya · Water to share</title>
+<meta name="description" content="An English/Russian/Uzbek annual Amu Darya allocation game based on the Qosh Tepa assessment. Offline TaqSim teaching material.">
+<style>:root{color-scheme:light;--page:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--muted:#52514e;--border:#deded7;--river:#4a6d8c;--blue:#1f66c1;--green:#007a00;--nature:#0f7f58;--pink:#b63365;--bad:#b42f2f}*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);font:15px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:1440px;padding:36px 28px;margin:auto}header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:26px}h1{font-size:clamp(26px,3vw,40px);line-height:1.15;letter-spacing:-1.1px;margin:5px 0 10px;font-weight:650}h2{font-size:20px;line-height:1.3;margin:0 0 16px;font-weight:620}h3{font-size:16px;margin:20px 0 6px}p{margin:0 0 12px}.eyebrow{font-size:11px;letter-spacing:1.6px;font-weight:700;color:var(--muted);margin:0 0 7px}.subtitle{color:var(--muted);margin:0;font-size:17px}.language{display:flex;gap:4px}.language button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button,input,select{font:inherit}button{border:1px solid var(--border);border-radius:7px;background:var(--surface);color:var(--ink);padding:8px 12px;cursor:pointer}button:hover{border-color:var(--river);background:#edf2f5}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:23px}.introduction{border-left:4px solid var(--river);margin-bottom:22px;max-width:100%}.introduction p:last-child{margin:0}.small{font-size:13px;color:var(--muted);line-height:1.55}.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px}.main-column{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;min-width:0}.main-column>*{min-width:0}.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.tag{font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;white-space:nowrap}.unit{font-size:12px;color:var(--muted);white-space:nowrap}.scenario-label{display:block;font-weight:600;margin-bottom:7px}select{padding:10px;width:100%;border:1px solid var(--border);border-radius:7px;background:var(--page);color:var(--ink);margin-bottom:9px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;margin:22px 0}.control-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.control-head label{font-weight:600;font-size:14px}.control-head output{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap;color:var(--blue)}input[type=range]{width:100%;accent-color:var(--blue);margin:12px 0 6px;cursor:pointer}.control p{font-size:12px;color:var(--muted);margin:0}.preset-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:16px;font-size:12px}.preset-row>div{display:flex;flex-wrap:wrap;gap:7px}.preset-row button{padding:5px 9px;font-size:12px}.results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result{border:1px solid var(--border);border-top:3px solid var(--river);border-radius:9px;background:var(--surface);padding:16px}.result.qt{border-top-color:var(--green)}.result.environment{border-top-color:var(--nature)}.result.existing{border-top-color:var(--pink)}.result h3{font-size:13px;color:var(--muted);margin:0 0 6px}.number{font-size:29px;letter-spacing:-.8px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25}.result p{font-size:12px;color:var(--muted);margin:8px 0 0}.bad{color:var(--bad)!important}.river{overflow-x:auto}svg{display:block;width:100%;min-width:520px;height:auto}svg text{font-family:inherit;fill:var(--ink)}.groups{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:13px}.balance{margin:13px 0 0}.tasks{align-self:start;position:sticky;top:16px}.task{border-top:1px solid var(--border);padding:17px 0}.task label{display:flex;gap:9px;font-size:14px;font-weight:600;align-items:flex-start}.task input{accent-color:var(--blue);margin-top:5px;flex-shrink:0}.task p{margin:8px 0 0 24px;font-size:12px;color:var(--muted)}.quiet{font-size:12px;width:100%;margin-top:10px}form{display:flex;gap:8px}input[type=text],input:not([type]){min-width:0;flex:1;border:1px solid var(--border);border-radius:7px;padding:9px 12px;background:var(--page)}.primary{background:var(--blue);color:white;border-color:var(--blue);white-space:nowrap}.primary:hover{background:#164d94;color:white}#saved-status{margin:10px 0}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:12px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:top;min-width:94px}th{font-weight:600;color:var(--muted)}td button{font-size:11px;padding:4px 7px;margin:3px 3px 0 0}td strong{display:block;overflow-wrap:anywhere}td small{color:var(--muted)}.sources{margin-top:22px}.sources summary{cursor:pointer;font-weight:600}.sources #sources{max-width:1000px;font-size:13px}.sources li{margin:8px 0}footer{text-align:center;font-size:12px;color:var(--muted);margin:24px 0 0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:1000px){.layout{grid-template-columns:minmax(0,1fr) 260px}.wrap{padding:24px 18px}.card{padding:18px}.controls{grid-template-columns:1fr;gap:18px}}@media(max-width:740px){.layout{display:flex;flex-direction:column}.tasks{position:static}.wrap{padding:20px 12px}header{gap:12px}.subtitle{font-size:14px}.language button{padding:6px 9px}.results{gap:9px}.result{padding:12px}.number{font-size:25px}.tag{display:none}form{flex-wrap:wrap}.primary{flex:1}.section-head h2{font-size:18px}.sources{padding:17px}.introduction{font-size:14px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+:root{--diagram-source:#edf2f5}.language{flex-wrap:wrap;justify-content:flex-end;max-width:210px}#theme-toggle{font-size:11px}[data-theme=dark]{color-scheme:dark;--page:#0d0d0d;--surface:#1a1a19;--ink:#fff;--muted:#c3c2b7;--border:#41413d;--river:#7f9fbb;--blue:#78aff5;--green:#42b142;--nature:#36b58a;--pink:#df779e;--bad:#ff8c8c;--diagram-source:#242f38}[data-theme=dark] button:hover{background:#30383d}[data-theme=dark] .primary{background:#225b9e;color:#fff}[data-theme=dark] .language button[aria-pressed=true]{background:#eee;color:#111}[data-theme=dark] svg path{stroke-opacity:.85}
+
+.river:focus-visible,#comparison-heading:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header><div><p class="eyebrow">TAQSIM · <span data-t="teaching">STUDENT LAB</span></p><h1 data-t="title">Amu Darya: water to share</h1><p class="subtitle" data-t="subtitle">One river. Four decisions. A year of consequences.</p></div><div class="language" role="group" aria-label="Language / Язык / Til"><button type="button" data-language="en" aria-pressed="true">EN</button><button type="button" data-language="ru" aria-pressed="false">RU</button><button type="button" data-language="uz" aria-pressed="false" aria-label="Oʻzbekcha">UZ</button><button type="button" id="theme-toggle" aria-pressed="false">Dark theme</button></div></header>
+<section class="card introduction"><p data-t="intro">Explore how Qosh Tepa expansion, irrigation efficiency and negotiated withdrawal caps change the water left downstream. This is an annual teaching model, based on a preliminary assessment, not a forecast or an allocation agreement.</p><p class="small" data-t="priority">Teaching rule: set aside the environmental reserve first, then supply capped existing withdrawals, then Qosh Tepa. The rest continues downstream. Return flows are not modelled.</p></section>
+<div class="layout"><div class="main-column">
+<section class="card"><div class="section-head"><h2 data-t="decisions">Make a plan</h2><span class="tag" data-t="annual">ANNUAL MODEL</span></div><label class="scenario-label" for="scenario" data-t="scenario">Water-supply scenario</label><select id="scenario"></select><p id="scenario-note" class="small"></p><div id="controls" class="controls"></div><div class="preset-row"><span data-t="presets">Starting plans:</span><div id="presets"></div></div></section>
+<section id="results-section" aria-label="Results"><div id="results" class="results" aria-live="polite"></div></section>
+<section class="card"><div class="section-head"><h2 data-t="ledger">Where the water goes</h2><span class="unit" data-t="unit">billion m³/year</span></div><p class="small" data-t="ledger-note">An annual allocation diagram, not a map or the geographical order of intakes. The reserve is shown separately from the downstream remainder.</p><div id="river" class="river" tabindex="0" role="region" aria-label="Where the water goes"></div><div id="existing-groups" class="groups"></div><p id="balance" class="small balance"></p></section>
+<section class="card"><h2 id="comparison-heading" tabindex="-1" data-t="compare">Compare your plans</h2><p class="small" data-t="compare-help">Save a plan before changing the scenario or a control. Compare both the water gained downstream and the reductions imposed on users.</p><form id="save-form"><label class="sr-only" for="plan-name" data-t="name">Plan name</label><input id="plan-name" maxlength="60" placeholder="Plan name"><button class="primary" type="submit" data-t="save">Save plan</button></form><p id="saved-status" class="small" role="status"></p><div class="table-scroll" id="comparison"></div></section>
+</div><aside class="card tasks"><p class="eyebrow" data-t="duration">15–20 MINUTES</p><h2 data-t="tasks">Your challenge</h2><p class="small" data-t="task-intro">Try each experiment, discuss it with a partner, then tick the box yourself. The ticks record your reflection, not an automatic score.</p><div id="tasks"></div><button type="button" id="reset" class="quiet" data-t="reset">Reset plans and reflections</button></aside></div>
+<details class="card sources"><summary data-t="sources">Sources, calculations & limits</summary><div id="sources"></div></details>
+<footer data-t="footer">TaqSim teaching game · Annual volumes only · English / Русский / Oʻzbekcha · Works offline</footer>
+</main>
+<script>window.AmuData = {
+  "meta": {
+    "model": "amu_darya_game",
+    "taqsim_version": "0.1.4",
+    "n_steps": 1,
+    "units": "bcm/year"
+  },
+  "scenarios": [
+    {
+      "id": "assessment_baseline",
+      "supply_bcm": 50.7,
+      "crop_requirement_multiplier": 1.0
+    },
+    {
+      "id": "reduced_supply",
+      "supply_bcm": 40.56,
+      "crop_requirement_multiplier": 1.0
+    },
+    {
+      "id": "combined_climate",
+      "supply_bcm": 40.56,
+      "crop_requirement_multiplier": 1.08
+    }
+  ],
+  "constants": {
+    "crop_requirement_mm": 728.25,
+    "environment_reserve_bcm": 3.4,
+    "existing_withdrawals_bcm": 26.6,
+    "existing_groups_bcm": {
+      "surkhandarya_tjk": 2.7,
+      "karakum": 10.1,
+      "qarshi": 4.2,
+      "lebap": 4.9,
+      "bukhara": 4.7
+    },
+    "downstream_reference_bcm": 20.7,
+    "plan_bounds": {
+      "area_ha": [
+        0.0,
+        550000.0
+      ],
+      "conveyance_efficiency": [
+        0.6,
+        0.95
+      ],
+      "application_efficiency": [
+        0.6,
+        0.9
+      ],
+      "existing_withdrawal_fraction": [
+        0.7,
+        1.0
+      ]
+    },
+    "plan_steps": {
+      "area_ha": 10000.0,
+      "conveyance_efficiency": 0.05,
+      "application_efficiency": 0.05,
+      "existing_withdrawal_fraction": 0.05
+    },
+    "default_plan": {
+      "area_ha": 100000.0,
+      "conveyance_efficiency": 0.7,
+      "application_efficiency": 0.6,
+      "existing_withdrawal_fraction": 1.0
+    }
+  },
+  "reference_cases": [
+    {
+      "plan": {
+        "area_ha": 0,
+        "conveyance_efficiency": 0.7,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 20.700000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 100000,
+        "conveyance_efficiency": 0.7,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.72825,
+        "qt_requested_bcm": 1.7339285714285715,
+        "qt_delivered_bcm": 1.7339285714285715,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.966071428571432,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 200000,
+        "conveyance_efficiency": 0.7,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 1.4565,
+        "qt_requested_bcm": 3.467857142857143,
+        "qt_delivered_bcm": 3.467857142857143,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 17.23214285714286,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000,
+        "conveyance_efficiency": 0.7,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 9.536607142857143,
+        "qt_delivered_bcm": 9.536607142857143,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 11.16339285714286,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000,
+        "conveyance_efficiency": 0.7,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 10.299535714285714,
+        "qt_delivered_bcm": 10.299535714285714,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 0.2604642857142885,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 28.680000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 20.700000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 28.680000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 20.700000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 28.680000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 20.700000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 28.680000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 18.540000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 20.700000000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 0.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 0.0,
+        "qt_requested_bcm": 0.0,
+        "qt_delivered_bcm": 0.0,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.560000000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 11.126041666666667,
+        "qt_delivered_bcm": 11.126041666666667,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 17.553958333333334,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 11.126041666666667,
+        "qt_delivered_bcm": 11.126041666666667,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 7.413958333333335,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 12.016125,
+        "qt_delivered_bcm": 12.016125,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 6.523875000000002,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 11.126041666666667,
+        "qt_delivered_bcm": 11.126041666666667,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 9.573958333333335,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 11.126041666666667,
+        "qt_delivered_bcm": 10.560000000000002,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 0.0,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 12.016125,
+        "qt_delivered_bcm": 10.560000000000002,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 0.0,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.41736111111111,
+        "qt_delivered_bcm": 7.41736111111111,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 21.262638888888894,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.41736111111111,
+        "qt_delivered_bcm": 7.41736111111111,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 11.122638888888893,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 8.01075,
+        "qt_delivered_bcm": 8.01075,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.529250000000003,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.41736111111111,
+        "qt_delivered_bcm": 7.41736111111111,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 13.282638888888894,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.41736111111111,
+        "qt_delivered_bcm": 7.41736111111111,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 3.142638888888892,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.6,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 8.01075,
+        "qt_delivered_bcm": 8.01075,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 2.5492500000000025,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.026973684210526,
+        "qt_delivered_bcm": 7.026973684210526,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 21.653026315789475,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.026973684210526,
+        "qt_delivered_bcm": 7.026973684210526,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 11.513026315789476,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 7.589131578947369,
+        "qt_delivered_bcm": 7.589131578947369,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 10.950868421052633,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.026973684210526,
+        "qt_delivered_bcm": 7.026973684210526,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 13.673026315789476,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 7.026973684210526,
+        "qt_delivered_bcm": 7.026973684210526,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 3.533026315789476,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.6,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 7.589131578947369,
+        "qt_delivered_bcm": 7.589131578947369,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 2.970868421052633,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 4.684649122807017,
+        "qt_delivered_bcm": 4.684649122807017,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 23.995350877192987,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 4.684649122807017,
+        "qt_delivered_bcm": 4.684649122807017,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 13.855350877192986,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 0.7
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 5.059421052631579,
+        "qt_delivered_bcm": 5.059421052631579,
+        "existing_requested_bcm": 18.62,
+        "existing_delivered_bcm": 18.62,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 13.480578947368425,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "assessment_baseline",
+        "supply_bcm": 50.7,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 50.7,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 4.684649122807017,
+        "qt_delivered_bcm": 4.684649122807017,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 16.015350877192986,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "reduced_supply",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.0
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.005375,
+        "qt_requested_bcm": 4.684649122807017,
+        "qt_delivered_bcm": 4.684649122807017,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 5.875350877192985,
+        "balance_error_bcm": 0.0
+      }
+    },
+    {
+      "plan": {
+        "area_ha": 550000.0,
+        "conveyance_efficiency": 0.95,
+        "application_efficiency": 0.9,
+        "existing_withdrawal_fraction": 1.0
+      },
+      "scenario": {
+        "id": "combined_climate",
+        "supply_bcm": 40.56,
+        "crop_requirement_multiplier": 1.08
+      },
+      "result": {
+        "supply_bcm": 40.56,
+        "qt_net_requirement_bcm": 4.325805,
+        "qt_requested_bcm": 5.059421052631579,
+        "qt_delivered_bcm": 5.059421052631579,
+        "existing_requested_bcm": 26.6,
+        "existing_delivered_bcm": 26.6,
+        "environment_bcm": 3.4,
+        "downstream_bcm": 5.500578947368424,
+        "balance_error_bcm": 0.0
+      }
+    }
+  ]
+}
+;</script>
+<script>/* Annual ledger, checked against the one-step TaqSim model over every slider combination. */
+(function (root) {
+  'use strict';
+  const bounds = {area_ha:[0,550000],conveyance_efficiency:[.6,.95],application_efficiency:[.6,.9],existing_withdrawal_fraction:[.7,1]};
+  const scenarios = {
+    assessment_baseline: {id:'assessment_baseline',supply_bcm:50.7,crop_requirement_multiplier:1},
+    reduced_supply: {id:'reduced_supply',supply_bcm:40.56,crop_requirement_multiplier:1},
+    combined_climate: {id:'combined_climate',supply_bcm:40.56,crop_requirement_multiplier:1.08}
+  };
+  const defaultPlan = {area_ha:100000,conveyance_efficiency:.7,application_efficiency:.6,existing_withdrawal_fraction:1};
+  function run(plan, scenario) {
+    scenario = typeof scenario === 'string' ? scenarios[scenario] : scenario;
+    for (const [key,[lo,hi]] of Object.entries(bounds)) {
+      if (!Number.isFinite(plan[key]) || plan[key] < lo || plan[key] > hi) throw new RangeError(key + ' outside approved bounds');
+    }
+    if (!scenario) throw new RangeError('Unknown scenario');
+    for (const key of ['supply_bcm','crop_requirement_multiplier']) {
+      if (!Number.isFinite(scenario[key]) || scenario[key] < 0) throw new RangeError(key + ' must be finite and nonnegative');
+    }
+    const net = plan.area_ha * 728.25 * 10 / 1e9 * scenario.crop_requirement_multiplier;
+    const requested = net / (plan.conveyance_efficiency * plan.application_efficiency);
+    const existingRequest = 26.6 * plan.existing_withdrawal_fraction;
+    const environment = Math.min(3.4,scenario.supply_bcm);
+    let remaining = Math.max(0,scenario.supply_bcm-environment);
+    const existing = Math.min(existingRequest,remaining);
+    remaining = Math.max(0,remaining-existing);
+    const qt = Math.min(requested,remaining);
+    const downstream = Math.max(0,remaining-qt);
+    return {
+      supply_bcm:scenario.supply_bcm,qt_net_requirement_bcm:net,qt_requested_bcm:requested,
+      qt_delivered_bcm:qt,existing_requested_bcm:existingRequest,existing_delivered_bcm:existing,
+      environment_bcm:environment,downstream_bcm:downstream,
+      balance_error_bcm:scenario.supply_bcm-(environment+existing+qt+downstream)
+    };
+  }
+  const api = {run, scenarios, defaultPlan, bounds};
+  root.AmuModel = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script>(() => {
+'use strict';
+const words = {
+en:{"lightTheme": "Light theme", "darkTheme": "Dark theme", "volumeUnit": "billion m³", "languageLabel": "Language", "resultsLabel": "Results", "groups": ["Surkhandarya/Tajikistan", "Karakum", "Qarshi", "Lebap", "Bukhara"],teaching:'STUDENT LAB',title:'Amu Darya: water to share',subtitle:'One river. Four decisions. A year of consequences.',intro:'Explore how Qosh Tepa expansion, irrigation efficiency and negotiated withdrawal caps change the water left downstream. This is an annual teaching model, based on a preliminary assessment, not a forecast or an allocation agreement.',priority:'Teaching rule: set aside the environmental reserve first, then supply capped existing withdrawals, then Qosh Tepa. The rest continues downstream. Return flows are not modelled.',decisions:'Make a plan',annual:'ANNUAL MODEL',scenario:'Water-supply scenario',presets:'Starting plans:',ledger:'Where the water goes',unit:'billion m³/year','ledger-note':'An annual allocation diagram, not a map or the geographical order of intakes. The reserve is shown separately from the downstream remainder.',compare:'Compare your plans','compare-help':'Save a plan before changing the scenario or a control. Compare both the water gained downstream and the reductions imposed on users.',name:'Plan name',save:'Save plan',duration:'15–20 MINUTES',tasks:'Your challenge','task-intro':'Try each experiment, discuss it with a partner, then tick the box yourself. The ticks record your reflection, not an automatic score.',reset:'Reset plans and reflections',sources:'Sources, calculations & limits',footer:'TaqSim teaching game · Annual volumes only · English / Русский / Oʻzbekcha · Works offline',area:'Proposed equipped area',canal:'Canal efficiency',field:'Field efficiency',cap:'Existing withdrawal cap',areaHelp:'Area equipped for irrigation; it may not receive all requested water.',canalHelp:'Share of canal withdrawals reaching the fields.',fieldHelp:'Share arriving at the field that meets crop water requirements.',capHelp:'Share of the 26.6 baseline withdrawal. Reductions require negotiation and can impose costs.',ha:'ha',baseline:'Assessment baseline',reduced:'Supply −20%',combined:'Supply −20%; crop requirement +8%',scenarioHelp:'Supply: {s} billion m³/year. Crop water requirement: {m}% of the assessment baseline.',qt:'Qosh Tepa supplied',existing:'Existing withdrawals',environment:'Environmental reserve',downstream:'Downstream remainder',ofRequest:'of {v} requested',shortage:'Unmet request: {v}',cut:'Reduction from the 26.6 baseline: {v}',reserved:'Set aside separately; fixed target 3.40.',difference:'Change from historical reference 20.70: {v}',reference:'Reference only, not a legal entitlement or measured demand.',source:'Annual supply',balanced:'Water balance closes: supply = reserve + existing withdrawals + Qosh Tepa + downstream remainder.',noPlans:'No saved plans yet.',saved:'Plan saved in this browser.',storage:'Browser storage is unavailable. Plans remain available until this page closes.',plan:'Plan',load:'Load',remove:'Delete',settings:'Settings',water:'Delivered / requested',end:'Downstream',empty:'No new canal',resetConfirm:'Clear all saved plans and reflection ticks?',loaded:'Plan loaded.',removed:'Plan deleted.',cleared:'Plans and reflections cleared.',taskTitles:['Establish a reference','Expand the canal','Test a drier future','Improve irrigation','Negotiate and explain'],taskBodies:['Choose “No new canal” and the assessment baseline. Explain the 20.70 downstream remainder, then save your reference.','Try 100,000, 200,000 and 550,000 ha at 70% canal and 60% field efficiency. Who receives less water? Save the full-expansion plan.','Keep 550,000 ha and choose the combined climate case. How much remains downstream? Lower canal efficiency to 60% and identify the unmet request.','Under the combined case, improve canal and field efficiency. Save a plan and explain why lower withdrawals do not necessarily equal basin-wide water savings.','Try a smaller cap on existing withdrawals. Compare the gain downstream with the reduction for existing users. Agree on a plan with a partner; state what information is still missing.']},
+ru:{"lightTheme": "Светлая тема", "darkTheme": "Тёмная тема", "volumeUnit": "млрд м³", "languageLabel": "Язык", "resultsLabel": "Результаты", "groups": ["Сурхандарья/Таджикистан", "Каракум", "Карши", "Лебап", "Бухара"],teaching:'УЧЕБНАЯ ЛАБОРАТОРИЯ',title:'Амударья: как разделить воду',subtitle:'Одна река. Четыре решения. Последствия за год.',intro:'Посмотрите, как расширение Кош-Тепа, эффективность орошения и согласованные лимиты водозабора меняют объём воды ниже по течению. Это годовая учебная модель по предварительной оценке, а не прогноз или соглашение о распределении воды.',priority:'Учебное правило: сначала выделяется экологический резерв, затем обеспечиваются существующие водозаборы в пределах лимита, затем Кош-Тепа. Остаток идёт вниз по течению. Возвратные воды не учитываются.',decisions:'Составьте план',annual:'ГОДОВАЯ МОДЕЛЬ',scenario:'Сценарий водообеспеченности',presets:'Исходные планы:',ledger:'Куда направляется вода',unit:'млрд м³/год','ledger-note':'Схема годового распределения, а не карта и не географическая последовательность водозаборов. Резерв показан отдельно от остатка ниже по течению.',compare:'Сравните свои планы','compare-help':'Сохраните план перед изменением сценария или настроек. Сравните прибавку воды ниже по течению с сокращением водозаборов пользователей.',name:'Название плана',save:'Сохранить план',duration:'15–20 МИНУТ',tasks:'Ваше задание','task-intro':'Выполните каждый опыт, обсудите его с партнёром и сами поставьте галочку. Галочки отмечают ваше обсуждение, а не автоматически рассчитанный балл.',reset:'Сбросить планы и отметки',sources:'Источники, расчёты и ограничения',footer:'Учебная игра TaqSim · Только годовые объёмы · English / Русский / Oʻzbekcha · Работает без интернета',area:'Планируемая площадь орошения',canal:'Эффективность канала',field:'Эффективность полива',cap:'Лимит существующих водозаборов',areaHelp:'Площадь, оборудованная для орошения; запрошенной воды может не хватить.',canalHelp:'Доля забранной в канал воды, доходящая до полей (коэффициент полезного действия, КПД).' ,fieldHelp:'Доля воды на поле, обеспечивающая потребность культур (КПД полива).',capHelp:'Доля от исходного водозабора 26,6. Сокращения требуют переговоров и могут приводить к издержкам.',ha:'га',baseline:'Исходная оценка',reduced:'Приток −20%',combined:'Приток −20%; потребность культур +8%',scenarioHelp:'Приток: {s} млрд м³/год. Потребность культур: {m}% от исходной оценки.',qt:'Подача в Кош-Тепа',existing:'Существующие водозаборы',environment:'Экологический резерв',downstream:'Остаток ниже по течению',ofRequest:'из запрошенных {v}',shortage:'Необеспеченная потребность: {v}',cut:'Сокращение относительно исходных 26,6: {v}',reserved:'Выделяется отдельно; фиксированная цель 3,40.',difference:'Изменение от исторического ориентира 20,70: {v}',reference:'Только ориентир, а не правовая норма или измеренная потребность.',source:'Годовой приток',balanced:'Водный баланс замкнут: приток = резерв + существующие водозаборы + Кош-Тепа + остаток ниже по течению.',noPlans:'Сохранённых планов пока нет.',saved:'План сохранён в этом браузере.',storage:'Хранилище браузера недоступно. Планы сохранятся до закрытия страницы.',plan:'План',load:'Загрузить',remove:'Удалить',settings:'Настройки',water:'Подано / запрошено',end:'Ниже по течению',empty:'Без нового канала',resetConfirm:'Удалить все сохранённые планы и отметки обсуждения?',loaded:'План загружен.',removed:'План удалён.',cleared:'Планы и отметки сброшены.',taskTitles:['Найдите исходный ориентир','Расширьте канал','Проверьте засушливый сценарий','Улучшите орошение','Обсудите распределение'],taskBodies:['Выберите «Без нового канала» и исходную оценку. Объясните остаток 20,70 ниже по течению, затем сохраните исходный план.','Попробуйте 100 000, 200 000 и 550 000 га при КПД канала 70% и полива 60%. Кому достанется меньше воды? Сохраните план полного расширения.','Оставьте 550 000 га и выберите комбинированный сценарий. Сколько воды осталось ниже по течению? Снизьте КПД канала до 60% и найдите необеспеченную потребность.','В комбинированном сценарии повысьте КПД канала и полива. Сохраните план и объясните, почему снижение водозабора не обязательно означает такую же экономию воды во всём бассейне.','Уменьшите лимит существующих водозаборов. Сравните прибавку ниже по течению с сокращением для нынешних пользователей. Согласуйте план с партнёром и укажите, какой информации ещё не хватает.']}}
+;
+words.uz={
+  "teaching": "TALABALAR LABORATORIYASI",
+  "title": "Amudaryo: suvni taqsimlash",
+  "subtitle": "Bir daryo. Toʻrt qaror. Bir yillik natijalar.",
+  "intro": "Qoʻshtepa maydonining kengayishi, sugʻorish samaradorligi va kelishilgan suv olish limitlari quyi oqimda qoladigan suvni qanday oʻzgartirishini oʻrganing. Bu dastlabki baholashga asoslangan yillik oʻquv modeli; u bashorat yoki suv taqsimoti boʻyicha kelishuv emas.",
+  "priority": "Oʻquv qoidasi: avval ekologik zaxira ajratiladi, keyin limit doirasida mavjud suv olish talablari, soʻng Qoʻshtepa talabi taʼminlanadi. Qolgan suv quyi oqimga oʻtadi. Qaytma suvlar hisobga olinmaydi.",
+  "decisions": "Reja tuzing",
+  "annual": "YILLIK MODEL",
+  "scenario": "Suv taʼminoti ssenariysi",
+  "presets": "Boshlangʻich rejalar:",
+  "ledger": "Suv qayerga yoʻnaladi",
+  "unit": "mlrd m³/yil",
+  "ledger-note": "Bu yillik suv taqsimoti sxemasi; xarita yoki suv olish joylarining geografik ketma-ketligi emas. Zaxira quyi oqimda qoladigan suvdan alohida koʻrsatilgan.",
+  "compare": "Rejalaringizni solishtiring",
+  "compare-help": "Ssenariy yoki sozlamalarni oʻzgartirishdan oldin rejani saqlang. Quyi oqimdagi suv koʻpayishini foydalanuvchilar suv olishidagi qisqarish bilan solishtiring.",
+  "name": "Reja nomi",
+  "save": "Rejani saqlash",
+  "duration": "15–20 DAQIQA",
+  "tasks": "Topshiriqlaringiz",
+  "task-intro": "Har bir tajribani bajaring, sherigingiz bilan muhokama qiling va katakchani oʻzingiz belgilang. Belgilar avtomatik ballni emas, muhokamangizni qayd etadi.",
+  "reset": "Rejalar va belgilarni tozalash",
+  "sources": "Manbalar, hisob-kitoblar va cheklovlar",
+  "footer": "TaqSim oʻquv oʻyini · Faqat yillik hajmlar · English / Русский / Oʻzbekcha · Internetsiz ishlaydi",
+  "area": "Sugʻorish uchun jihozlanadigan maydon",
+  "canal": "Kanal samaradorligi",
+  "field": "Dalada sugʻorish samaradorligi",
+  "cap": "Mavjud suv olish limiti",
+  "areaHelp": "Sugʻorish uchun jihozlangan maydon; talab qilingan suvning hammasi yetib bormasligi mumkin.",
+  "canalHelp": "Kanalga olingan suvning dalalargacha yetib boradigan ulushi.",
+  "fieldHelp": "Dalaga yetib kelgan suvning ekinlar suv ehtiyojini qondiradigan ulushi.",
+  "capHelp": "Boshlangʻich 26,6 mlrd m³ suv olishning ulushi. Qisqartirish muzokaralarni talab qiladi va xarajat yoki yoʻqotishlarga olib kelishi mumkin.",
+  "ha": "ga",
+  "baseline": "Baholashdagi boshlangʻich holat",
+  "reduced": "Suv kelishi −20%",
+  "combined": "Suv kelishi −20%; ekinlar ehtiyoji +8%",
+  "scenarioHelp": "Suv kelishi: {s} mlrd m³/yil. Ekinlar suv ehtiyoji: boshlangʻich baholashning {m}%.",
+  "qt": "Qoʻshtepaga yetkazilgan suv",
+  "existing": "Mavjud suv olish",
+  "environment": "Ekologik zaxira",
+  "downstream": "Quyi oqimda qolgan suv",
+  "ofRequest": "talab qilingan {v} dan",
+  "shortage": "Qondirilmagan talab: {v}",
+  "cut": "Boshlangʻich 26,6 ga nisbatan qisqarish: {v}",
+  "reserved": "Alohida ajratiladi; belgilangan hajm 3,40.",
+  "difference": "Tarixiy 20,70 koʻrsatkichiga nisbatan oʻzgarish: {v}",
+  "reference": "Faqat taqqoslash uchun; huquqiy ulush yoki oʻlchangan ehtiyoj emas.",
+  "source": "Yillik suv kelishi",
+  "balanced": "Suv balansi saqlanadi: kelgan suv = zaxira + mavjud suv olish + Qoʻshtepa + quyi oqimda qolgan suv.",
+  "noPlans": "Hali saqlangan rejalar yoʻq.",
+  "saved": "Reja shu brauzerda saqlandi.",
+  "storage": "Brauzer xotirasi mavjud emas. Rejalar sahifa yopilguncha saqlanadi.",
+  "plan": "Reja",
+  "load": "Yuklash",
+  "remove": "Oʻchirish",
+  "settings": "Sozlamalar",
+  "water": "Yetkazilgan / talab qilingan",
+  "end": "Quyi oqim",
+  "empty": "Yangi kanalsiz",
+  "resetConfirm": "Barcha saqlangan rejalar va muhokama belgilari oʻchirilsinmi?",
+  "loaded": "Reja yuklandi.",
+  "removed": "Reja oʻchirildi.",
+  "cleared": "Rejalar va belgilar tozalandi.",
+  "taskTitles": [
+    "Boshlangʻich holatni aniqlang",
+    "Kanalni kengaytiring",
+    "Qurgʻoqchil kelajakni sinang",
+    "Sugʻorishni yaxshilang",
+    "Kelishing va tushuntiring"
+  ],
+  "taskBodies": [
+    "“Yangi kanalsiz” rejasini va baholashdagi boshlangʻich holatni tanlang. Quyi oqimda qolgan 20,70 ni tushuntiring, keyin boshlangʻich rejangizni saqlang.",
+    "Kanal samaradorligi 70% va dalada sugʻorish samaradorligi 60% boʻlganda 100 000, 200 000 va 550 000 ga maydonni sinang. Kimga kamroq suv yetadi? Toʻliq kengayish rejasini saqlang.",
+    "550 000 ga maydonni saqlab, birlashgan iqlim ssenariysini tanlang. Quyi oqimda qancha suv qoldi? Kanal samaradorligini 60% ga tushiring va qondirilmagan talabni aniqlang.",
+    "Birlashgan ssenariyda kanal va dalada sugʻorish samaradorligini oshiring. Rejani saqlang va nima uchun suv olishning kamayishi butun havzada shuncha suv tejalishini anglatmasligini tushuntiring.",
+    "Mavjud suv olish limitini kamaytirib koʻring. Quyi oqimdagi qoʻshimcha suvni mavjud foydalanuvchilar suv olishidagi qisqarish bilan solishtiring. Sherigingiz bilan bir reja boʻyicha kelishing va yana qanday maʼlumotlar yetishmasligini ayting."
+  ],
+  "lightTheme": "Yorugʻ mavzu",
+  "darkTheme": "Qorongʻi mavzu",
+  "volumeUnit": "mlrd m³",
+  "languageLabel": "Til",
+  "resultsLabel": "Natijalar",
+  "groups": [
+    "Surxondaryo/Tojikiston",
+    "Qoraqum",
+    "Qarshi",
+    "Lebap",
+    "Buxoro"
+  ]
+};
+const defs=[['area_ha','area',0,550000,10000,'areaHelp'],['conveyance_efficiency','canal',.60,.95,.05,'canalHelp'],['application_efficiency','field',.60,.90,.05,'fieldHelp'],['existing_withdrawal_fraction','cap',.70,1,.05,'capHelp']];
+const defaults=()=>({area_ha:100000,conveyance_efficiency:.70,application_efficiency:.60,existing_withdrawal_fraction:1});
+const scenarios=AmuData.scenarios;
+let dark=false;
+let language=['en','ru','uz'].includes(new URLSearchParams(location.search).get('lang'))?new URLSearchParams(location.search).get('lang'):'en',plan=defaults(),scenario=scenarios[0],saved=[],ticks=[false,false,false,false,false],storageOK=true;
+try{const stored=JSON.parse(localStorage.getItem('amu-darya-plans-v1')||'null');if(stored&&Array.isArray(stored.plans)){saved=stored.plans.filter(p=>p&&typeof p.name==='string'&&scenarios.some(s=>s.id===p.scenario)&&defs.every(d=>typeof p.plan?.[d[0]]==='number'&&p.plan[d[0]]>=d[2]&&p.plan[d[0]]<=d[3])).slice(0,12);ticks=Array.from({length:5},(_,i)=>stored.ticks?.[i]===true);}}catch{storageOK=false;}
+const $=id=>document.getElementById(id), t=key=>words[language][key], esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])), n=(x,d=2)=>Number(x).toLocaleString(({en:'en-GB',ru:'ru-RU',uz:'uz-Latn-UZ'})[language],{minimumFractionDigits:d,maximumFractionDigits:d}), replace=(key,values)=>Object.entries(values).reduce((s,[k,v])=>s.replace('{'+k+'}',v),t(key));
+const scenarioName=s=>t(s.id==='assessment_baseline'?'baseline':s.id==='reduced_supply'?'reduced':'combined');
+const value=(key,x)=>key==='area_ha'?n(x,0)+' '+t('ha'):n(x*100,0)+'%';
+function persist(){try{localStorage.setItem('amu-darya-plans-v1',JSON.stringify({plans:saved,ticks}));}catch{storageOK=false;}}
+function renderStatic(){document.documentElement.lang=language;document.documentElement.dataset.theme=dark?'dark':'light';$('theme-toggle').textContent=t(dark?'lightTheme':'darkTheme');$('theme-toggle').setAttribute('aria-pressed',String(dark));document.title=t('title')+' · TaqSim';document.querySelector('.language').setAttribute('aria-label',t('languageLabel'));$('results-section').setAttribute('aria-label',t('resultsLabel'));document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));document.querySelectorAll('[data-language]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.language===language)));$('river').setAttribute('aria-label',t('ledger'));$('saved-status').textContent='';$('plan-name').placeholder=t('name');$('scenario').innerHTML=scenarios.map(s=>`<option value="${esc(s.id)}">${esc(scenarioName(s))}<\/option>`).join('');$('scenario').value=scenario.id;$('controls').innerHTML=defs.map(([key,label,min,max,step,help])=>`<div class="control"><div class="control-head"><label for="${key}">${esc(t(label))}<\/label><output for="${key}" id="value-${key}"><\/output><\/div><input type="range" id="${key}" min="${min}" max="${max}" step="${step}" value="${plan[key]}" aria-describedby="help-${key}"><p id="help-${key}">${esc(t(help))}<\/p><\/div>`).join('');$('presets').innerHTML=[0,100000,200000,550000].map(area=>`<button type="button" data-area="${area}">${area?esc(n(area,0)+' '+t('ha')):esc(t('empty'))}<\/button>`).join('');$('tasks').innerHTML=t('taskTitles').map((title,i)=>`<div class="task"><label><input type="checkbox" data-task="${i}" ${ticks[i]?'checked':''}><span>${i+1}. ${esc(title)}<\/span><\/label><p>${esc(t('taskBodies')[i])}<\/p><\/div>`).join('');renderSources();render();}
+function render(){const r=AmuModel.run(plan,scenario);defs.forEach(([key])=>{$(key).value=plan[key];$('value-'+key).textContent=value(key,plan[key]);$(key).setAttribute('aria-valuetext',value(key,plan[key]));});$('scenario').value=scenario.id;$('scenario-note').textContent=replace('scenarioHelp',{s:n(scenario.supply_bcm),m:n(scenario.crop_requirement_multiplier*100,0)});const cards=[['qt',r.qt_delivered_bcm,replace('ofRequest',{v:n(r.qt_requested_bcm)}),replace('shortage',{v:n(Math.max(0,r.qt_requested_bcm-r.qt_delivered_bcm))}),r.qt_requested_bcm-r.qt_delivered_bcm>1e-8],['existing',r.existing_delivered_bcm,replace('ofRequest',{v:n(r.existing_requested_bcm)}),replace('cut',{v:n(26.6-r.existing_delivered_bcm)}),false],['environment',r.environment_bcm,t('reserved'),'',false],['downstream',r.downstream_bcm,replace('difference',{v:(r.downstream_bcm>=20.7?'+':'')+n(r.downstream_bcm-20.7)}),t('reference'),false]];$('results').innerHTML=cards.map(([key,v,a,b,bad])=>`<div class="result ${key}"><h3>${esc(t(key))}<\/h3><div class="number">${n(v)} <span class="unit">${esc(t('volumeUnit'))}<\/span><\/div><p>${esc(a)}<\/p>${b?`<p class="${bad?'bad':''}">${esc(b)}<\/p>`:''}<\/div>`).join('');renderRiver(r);renderComparison();}
+function renderRiver(r){const nodes=[['environment',r.environment_bcm,'#0f7f58'],['existing',r.existing_delivered_bcm,'#b63365'],['qt',r.qt_delivered_bcm,'#007a00'],['downstream',r.downstream_bcm,'#4a6d8c']];let svg=`<svg viewBox="0 0 800 280" role="img" aria-label="${esc(t('ledger'))}"><title>${esc(t('ledger'))}<\/title><rect x="275" y="8" width="250" height="68" rx="9" fill="var(--diagram-source)" stroke="#4a6d8c"/><text x="400" y="34" text-anchor="middle" font-size="13">${esc(t('source'))}<\/text><text x="400" y="59" text-anchor="middle" font-size="22" font-weight="600">${n(r.supply_bcm)}<\/text>`;nodes.forEach(([key,v,color],i)=>{const x=100+i*200;svg+=`<path d="M400 79 V105 Q400 126 ${x} 126 V177" stroke="${color}" stroke-opacity=".45" stroke-width="${Math.max(2,28*v/r.supply_bcm)}" fill="none"/><rect x="${x-93}" y="180" width="186" height="83" rx="8" fill="var(--surface)" stroke="${color}"/><text x="${x}" y="204" text-anchor="middle" font-size="11">${esc(t(key))}<\/text><text x="${x}" y="236" text-anchor="middle" font-size="24" font-weight="600">${n(v)}<\/text>`;});$('river').innerHTML=svg+'<\/svg>';const groups=t('groups');$('existing-groups').innerHTML=groups.map((name,i)=>`<span>${esc(name)}: <strong>${n(r.existing_delivered_bcm*[2.7,10.1,4.2,4.9,4.7][i]/26.6)}<\/strong><\/span>`).join('');$('balance').textContent=t('balanced');}
+function renderComparison(){if(!saved.length){$('comparison').textContent=t('noPlans');return;}$('comparison').innerHTML=`<table><thead><tr><th>${esc(t('plan'))}<\/th><th>${esc(t('settings'))}<\/th><th>${esc(t('water'))} (${esc(t('unit'))})<\/th><th>${esc(t('end'))} (${esc(t('unit'))})<\/th><\/tr><\/thead><tbody>${saved.map((p,i)=>{const s=scenarios.find(s=>s.id===p.scenario),r=AmuModel.run(p.plan,s);return `<tr><td><strong>${esc(p.name)}<\/strong><small>${esc(scenarioName(s))}<\/small><br><button type="button" data-load="${i}">${esc(t('load'))}<\/button><button type="button" data-remove="${i}">${esc(t('remove'))}<\/button><\/td><td>${defs.map(([key,label])=>esc(t(label))+': '+esc(value(key,p.plan[key]))).join('<br>')}<\/td><td>${esc(t('qt'))}: ${n(r.qt_delivered_bcm)} / ${n(r.qt_requested_bcm)}<br>${esc(t('existing'))}: ${n(r.existing_delivered_bcm)} / ${n(r.existing_requested_bcm)}<br>${esc(t('environment'))}: ${n(r.environment_bcm)}<\/td><td><strong>${n(r.downstream_bcm)}<\/strong>${replace('difference',{v:n(r.downstream_bcm-20.7)})}<\/td><\/tr>`;}).join('')}<\/tbody><\/table>`;}
+function renderSources(){const en=`<h3>Based on the Qush Tepa assessment<\/h3><p>Tobias Siegfried and World Bank colleagues, <em>A Preliminary Assessment of Qush Tepa Irrigation Project’s Effect on Amu Darya Water Balance<\/em>, presentation and technical appendix, pages 6, 12, 22–23; accompanying <em>qosh_tepa_irrigation_calculator.xlsx<\/em>, irrigation calculator, water-balance scenarios and crop sheets. Calculations reconciled on 15 October 2026. These are assessment assumptions, not verified current conditions.<\/p><h3>From crops to withdrawals<\/h3><p>Equal area shares of alfalfa (1,063 mm/year), cotton (1,036), orchard (291) and wheat (523) give a mean net crop requirement of 728.25 mm/year. The source uses apple as a proxy for pomegranate. Net requirement in billion m³ = area in hectares × 728.25 × 10 ÷ 1,000,000,000. The scenario crop multiplier is then applied. Gross withdrawal request = net requirement ÷ canal efficiency ÷ field efficiency.<\/p><p>The assessment has 50.7 billion m³/year of supply, 26.6 of existing withdrawals and a 3.4 environmental reserve. The reduced-supply scenario applies −20% (40.56), not the separate −17% climate summary in the presentation. The combined case also increases crop requirements by 8%.<\/p><h3>What was reconciled<\/h3><p>At 70% canal and 60% field efficiency, requests are 1.73393, 3.46786 and 9.53661 billion m³/year for 100,000, 200,000 and 550,000 ha. The combined climate case requests 10.29954, recalculated from crop inputs rather than multiplying the rounded 9.5 by 1.08. The downstream remainders are 18.96607, 17.23214, 11.16339 and 0.26046 respectively. Without the canal, the baseline remainder is 20.7.<\/p><p>The spreadsheet’s lower-basin total includes the reserve; the presentation’s downstream remainder subtracts it. This game separates the two. The presentation’s inconsistent 44%, 41% and 9% figures are replaced by 37.4084%, 33.9884% and 0.6422% for the corresponding 100,000 ha, 200,000 ha and combined climate cases, each divided by its own scenario supply.<\/p><h3>How to interpret the result<\/h3><ul><li>The order of allocation is a teaching convention, not a legal entitlement or an account of actual operations. Existing groups receive their proportional share of the capped delivery. A negotiated cap reduces their request, so “request met” does not mean their original water use is maintained.<\/li><li>The 20.7 historical downstream remainder is a comparison reference, not measured demand. Neither the reserve nor the remainder proves environmental or downstream needs are met.<\/li><li>Return flows, salinity, reservoir operation, seasonal shortages, costs and crop yields are excluded. Higher efficiency reduces modelled gross withdrawals; it does not establish equivalent basin-wide savings. Equipped area is not a claim about fully irrigated or productive area.<\/li><li>The browser uses the same one-year allocation arithmetic as the TaqSim model. All volumes are annual. This diagram has no geographical intake ordering.<\/li><\/ul>`;
+const ru=`<h3>По материалам оценки Кош-Тепа<\/h3><p>Тобиас Зигфрид и коллеги Всемирного банка, <em>A Preliminary Assessment of Qush Tepa Irrigation Project’s Effect on Amu Darya Water Balance<\/em> («Предварительная оценка влияния проекта орошения Кош-Тепа на водный баланс Амударьи»), презентация и техническое приложение, страницы 6, 12, 22–23; файл <em>qosh_tepa_irrigation_calculator.xlsx<\/em>, листы расчёта орошения, сценариев водного баланса и культур. Расчёты сверены 15 октября 2026 года. Это допущения оценки, а не подтверждённые современные условия.<\/p><h3>От культур к водозабору<\/h3><p>Равные доли площадей люцерны (1063 мм/год), хлопка (1036), сада (291) и пшеницы (523) дают среднюю чистую потребность 728,25 мм/год. В источнике яблоня используется как аналог граната. Чистая потребность в млрд м³ = площадь в гектарах × 728,25 × 10 ÷ 1 000 000 000. Затем применяется множитель сценария. Запрошенный водозабор = чистая потребность ÷ КПД канала ÷ КПД полива.<\/p><p>Исходный приток — 50,7 млрд м³/год, существующие водозаборы — 26,6, экологический резерв — 3,4. Сценарий снижения притока использует −20% (40,56), а не отдельную оценку −17% из климатического раздела презентации. В комбинированном сценарии потребность культур также растёт на 8%.<\/p><h3>Что было согласовано в расчётах<\/h3><p>При КПД канала 70% и полива 60% запросы составляют 1,73393; 3,46786 и 9,53661 млрд м³/год для 100 000, 200 000 и 550 000 га. В комбинированном сценарии запрос равен 10,29954: он пересчитан по исходным данным культур, а не умножением округлённых 9,5 на 1,08. Остатки ниже по течению составляют соответственно 18,96607; 17,23214; 11,16339 и 0,26046. Без канала исходный остаток равен 20,7.<\/p><p>Итог для нижнего бассейна в таблице включает резерв, а остаток в презентации рассчитан после его вычитания. В игре эти объёмы разделены. Несогласованные значения 44%, 41% и 9% заменены на 37,4084%; 33,9884% и 0,6422% для соответствующих сценариев 100 000 га, 200 000 га и комбинированного климатического сценария. Знаменатель — приток своего сценария.<\/p><h3>Как понимать результат<\/h3><ul><li>Очередность — учебное допущение, а не правовая норма или описание фактической работы. Существующие группы получают пропорциональную долю подачи в пределах лимита. Снижение лимита уменьшает запрос, поэтому его выполнение не означает сохранения исходного водопользования.<\/li><li>Исторический остаток 20,7 — ориентир для сравнения, а не измеренная потребность. Ни резерв, ни остаток не доказывают выполнение экологических потребностей или потребностей нижнего течения.<\/li><li>Возвратные воды, засоление, работа водохранилищ, сезонный дефицит, затраты и урожайность не учитываются. Повышение КПД снижает расчётный водозабор, но не доказывает равную экономию во всём бассейне. Оборудованная площадь не означает полностью обеспеченную водой или продуктивную площадь.<\/li><li>Браузер использует тот же годовой расчёт распределения, что и модель TaqSim. Все объёмы годовые. Схема не отражает географический порядок водозаборов.<\/li><\/ul>`;
+const uz=`<h3>Qoʻshtepa baholashiga asoslangan<\/h3><p>Tobias Siegfried va Jahon bankidagi hamkasblari, <em>A Preliminary Assessment of Qush Tepa Irrigation Project’s Effect on Amu Darya Water Balance<\/em> («Qoʻshtepa sugʻorish loyihasining Amudaryo suv balansiga taʼsirini dastlabki baholash»), taqdimot va texnik ilova, 6, 12, 22–23-betlar; unga ilova qilingan <em>qosh_tepa_irrigation_calculator.xlsx<\/em> faylining sugʻorish hisoblari, suv balansi ssenariylari va ekinlar varaqlari. Hisob-kitoblar 2026-yil 15-oktabrda oʻzaro solishtirilib, moslashtirildi. Bular baholashdagi farazlar boʻlib, bugungi sharoit tasdiqlanganini anglatmaydi.<\/p><h3>Ekinlar ehtiyojidan suv olishgacha<\/h3><p>Beda (1 063 mm/yil), gʻoʻza (1 036), bogʻ (291) va bugʻdoy (523) maydonlarining teng ulushlari oʻrtacha sof suv ehtiyojini 728,25 mm/yilga teng qiladi. Manbada anor uchun olma koʻrsatkichlari oʻrinbosar sifatida ishlatilgan. Sof ehtiyoj, mlrd m³ = gektardagi maydon × 728,25 × 10 ÷ 1 000 000 000. Keyin ssenariyning ekinlar ehtiyoji koeffitsiyenti qoʻllanadi. Jami suv olish talabi = sof ehtiyoj ÷ kanal samaradorligi ÷ dalada sugʻorish samaradorligi.<\/p><p>Baholashdagi yillik suv kelishi 50,7 mlrd m³, mavjud suv olish 26,6 va ekologik zaxira 3,4 ga teng. Suv kelishi kamaygan ssenariyda −20% (40,56) qoʻllanadi; taqdimotning alohida iqlim xulosasidagi −17% qoʻllanmaydi. Birlashgan ssenariyda ekinlar suv ehtiyoji ham 8% ga oshadi.<\/p><h3>Hisob-kitoblardagi tafovutlar qanday bartaraf etildi<\/h3><p>Kanal samaradorligi 70% va dalada sugʻorish samaradorligi 60% boʻlganda 100 000, 200 000 va 550 000 ga uchun suv olish talabi mos ravishda 1,73393; 3,46786 va 9,53661 mlrd m³/yilni tashkil etadi. Birlashgan iqlim ssenariysida talab 10,29954 ga teng: u yaxlitlangan 9,5 ni 1,08 ga koʻpaytirish orqali emas, ekinlarning boshlangʻich maʼlumotlaridan qayta hisoblangan. Quyi oqimda qoladigan suv mos ravishda 18,96607; 17,23214; 11,16339 va 0,26046 ga teng. Kanalsiz boshlangʻich holatda qoladigan suv 20,7 ga teng.<\/p><p>Elektron jadvaldagi quyi havza jami hajmi zaxirani oʻz ichiga oladi; taqdimotdagi quyi oqim qoldigʻi esa zaxira ayirilgandan keyin hisoblangan. Oʻyinda bu hajmlar alohida koʻrsatiladi. Taqdimotdagi bir-biriga mos kelmagan 44%, 41% va 9% qiymatlari tegishli 100 000 ga, 200 000 ga va birlashgan iqlim ssenariylari uchun 37,4084%; 33,9884% va 0,6422% bilan almashtirilgan. Har bir ulush oʻz ssenariysidagi suv kelishiga nisbatan hisoblangan.<\/p><h3>Natijani qanday tushunish kerak<\/h3><ul><li>Taqsimlash tartibi oʻquv farazi boʻlib, huquqiy ulush yoki amaldagi boshqaruvning tavsifi emas. Mavjud guruhlar limit doirasida yetkazilgan suvdan mutanosib ulush oladi. Kelishilgan limit ularning talabini kamaytiradi; shuning uchun «talab qondirildi» degani boshlangʻich suv olish hajmi saqlanib qoldi degani emas.<\/li><li>Tarixiy 20,7 quyi oqim qoldigʻi oʻlchangan ehtiyoj emas, taqqoslash uchun koʻrsatkichdir. Zaxira ham, qoldiq ham ekologik yoki quyi oqim ehtiyojlari qondirilganini isbotlamaydi.<\/li><li>Qaytma suvlar, shoʻrlanish, suv omborlarini boshqarish, mavsumiy suv tanqisligi, xarajatlar va hosildorlik hisobga olinmagan. Samaradorlik oshishi modeldagi jami suv olishni kamaytiradi, ammo butun havzada shuncha suv tejalishini isbotlamaydi. Jihozlangan maydon toʻliq sugʻorilgan yoki hosil beradigan maydon degani emas.<\/li><li>Brauzer TaqSim modeli bilan bir xil bir yillik suv taqsimoti hisobini bajaradi. Barcha hajmlar yillik. Sxema suv olish joylarining geografik ketma-ketligini aks ettirmaydi.<\/li><\/ul>`;
+$('sources').innerHTML=({en,ru,uz})[language];}
+document.addEventListener('click',e=>{const button=e.target.closest('button');if(!button)return;if(button.id==='theme-toggle'){dark=!dark;renderStatic();}if(button.dataset.language){language=button.dataset.language;renderStatic();}if(button.dataset.area!==undefined){plan=defaults();plan.area_ha=Number(button.dataset.area);render();}if(button.dataset.load!==undefined){const item=saved[Number(button.dataset.load)];plan={...item.plan};scenario=scenarios.find(s=>s.id===item.scenario);render();$('comparison').querySelector(`[data-load="${button.dataset.load}"]`)?.focus();$('saved-status').textContent=t('loaded');}if(button.dataset.remove!==undefined){const index=Number(button.dataset.remove);saved.splice(index,1);persist();renderComparison();const next=$('comparison').querySelector(`[data-remove="${Math.min(index,saved.length-1)}"]`);(next||$('comparison-heading')).focus();$('saved-status').textContent=t('removed');}});
+$('controls').addEventListener('input',e=>{if(defs.some(d=>d[0]===e.target.id)){plan[e.target.id]=Number(e.target.value);render();}});
+$('scenario').addEventListener('change',e=>{scenario=scenarios.find(s=>s.id===e.target.value);render();});
+$('tasks').addEventListener('change',e=>{if(e.target.dataset.task!==undefined){ticks[Number(e.target.dataset.task)]=e.target.checked;persist();}});
+$('save-form').addEventListener('submit',e=>{e.preventDefault();const name=$('plan-name').value.trim()||`${t('plan')} ${saved.length+1}`;saved.push({name,plan:{...plan},scenario:scenario.id});if(saved.length>12)saved.shift();persist();$('plan-name').value='';renderComparison();$('saved-status').textContent=t(storageOK?'saved':'storage');});
+$('reset').addEventListener('click',()=>{if(!window.confirm(t('resetConfirm')))return;saved=[];ticks=[false,false,false,false,false];plan=defaults();scenario=scenarios[0];persist();renderStatic();$('saved-status').textContent=t('cleared');});
+renderStatic();
+})();
+</script>
+</body></html>
