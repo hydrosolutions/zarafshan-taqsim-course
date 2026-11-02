@@ -171,7 +171,13 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-  </style>
+
+/* Let the existing wrapper scroll the whole table, including its links. */
+.table-scroll table { display: table; min-width: 620px; overflow: visible; }
+.table-scroll { max-width: 100%; -webkit-overflow-scrolling: touch; }
+.table-scroll td:first-child, .table-scroll th:first-child { width: 3.5em; min-width: 3.5em; }
+.course-group td { background: #e8eff5; padding: 12px; font-weight: 700; }
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
@@ -258,498 +264,882 @@ footer a { color: var(--blue-dark); text-decoration: none; } footer a:hover { te
 <h1>TaqSim course</h1>
 <p class="meta">Water allocation in the Zarafshan basin · Tashkent, 14–15 October 2026</p>
 </div></section>
-<div class="course-layout"><details class="contents" open><summary>Contents · Содержание · Mundarija</summary><nav aria-label="Course sections"><details data-language="english" open><summary>English</summary><a href="#english">English · ↑</a><ul><li><a href="#before-the-course-three-things-to-do-15-minutes">Before the course: three things to do (15 minutes)</a></li><li><a href="#trying-the-ai-helper-10-minutes-optional-but-recommended">Trying the AI helper (10 minutes, optional but recommended)</a></li><li><a href="#chatgpt-and-the-optional-ai-sider-sidebar">ChatGPT and the optional AI Sider sidebar</a></li><li><a href="#three-kinds-of-material">Three kinds of material</a></li><li><a href="#the-course-step-by-step">The course, step by step</a></li><li><a href="#if-something-goes-wrong">If something goes wrong</a></li><li><a href="#for-people-who-have-python-on-their-computer">For people who have Python on their computer</a></li><li><a href="#what-is-in-the-folder">What is in the folder</a></li></ul></details><details data-language="russian"><summary>Русский</summary><a href="#russian">Русский · ↑</a><ul><li><a href="#перед-курсом-три-шага-15-минут">Перед курсом: три шага (15 минут)</a></li><li><a href="#пробуем-ии-помощника-10-минут-по-желанию-но-рекомендуется">Пробуем ИИ-помощника (10 минут, по желанию, но рекомендуется)</a></li><li><a href="#chatgpt-и-необязательная-боковая-панель-ai-sider">ChatGPT и необязательная боковая панель AI Sider</a></li><li><a href="#три-вида-материалов">Три вида материалов</a></li><li><a href="#курс-шаг-за-шагом">Курс шаг за шагом</a></li><li><a href="#если-что-то-пошло-не-так">Если что-то пошло не так</a></li><li><a href="#для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на компьютере есть Python</a></li><li><a href="#что-в-папке">Что в папке</a></li></ul></details><details data-language="uzbek"><summary>Oʻzbekcha</summary><a href="#uzbek">Oʻzbekcha · ↑</a><ul><li><a href="#kursdan-oldin-uchta-ish-15-daqiqa">Kursdan oldin: uchta ish (15 daqiqa)</a></li><li><a href="#sunʼiy-intellekt-yordamchisini-sinab-koʻrish-10-daqiqa-ixtiyoriy-lekin-tavsiya-etiladi">Sunʼiy intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin tavsiya etiladi)</a></li><li><a href="#chatgpt-va-ixtiyoriy-ai-sider-yon-paneli">ChatGPT va ixtiyoriy AI Sider yon paneli</a></li><li><a href="#uch-xil-material">Uch xil material</a></li><li><a href="#kurs-qadam-baqadam">Kurs qadam-baqadam</a></li><li><a href="#agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri ketsa</a></li><li><a href="#kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor kishilar uchun</a></li><li><a href="#papkada-nima-bor">Papkada nima bor</a></li></ul></details></nav></details><main>
-
-<p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a> &nbsp;|&nbsp; <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/" target="_blank" rel="noopener">Course page</a> (links open in new tabs)</p>
-
+<div class="course-layout"><details class="contents" open><summary>Contents · Содержание · Mundarija</summary><nav aria-label="Course sections"><details data-language="english" open><summary>English</summary><a href="#english">English · ↑</a><ul><li><a href="#before-the-course-three-things-to-do-15-minutes">Before the course: three things to do (15 minutes)</a></li><li><a href="#trying-the-ai-helper-10-minutes-optional-but-recommended">Trying the AI helper (10 minutes, optional but recommended)</a></li><li><a href="#chatgpt-and-the-optional-ai-sider-sidebar">ChatGPT and the optional AI Sider sidebar</a></li><li><a href="#three-kinds-of-material">Three kinds of material</a></li><li><a href="#the-course-step-by-step">The course, step by step</a></li><li><a href="#if-something-goes-wrong">If something goes wrong</a></li><li><a href="#for-people-who-have-python-on-their-computer">For people who have Python on their computer</a></li><li><a href="#what-is-in-the-folder">What is in the folder</a></li></ul></details><details data-language="russian"><summary>Русский</summary><a href="#russian">Русский · ↑</a><ul><li><a href="#перед-курсом-три-шага-15-минут">Перед курсом: три шага (15 минут)</a></li><li><a href="#пробуем-ии-помощника-10-минут-по-желанию-но-рекомендуется">Пробуем ИИ-помощника (10 минут, по желанию, но рекомендуется)</a></li><li><a href="#chatgpt-и-необязательная-боковая-панель-ai-sider">ChatGPT и необязательная боковая панель AI Sider</a></li><li><a href="#три-вида-материалов">Три вида материалов</a></li><li><a href="#курс-шаг-за-шагом">Курс шаг за шагом</a></li><li><a href="#если-что-то-пошло-не-так">Если что-то пошло не так</a></li><li><a href="#для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на компьютере есть Python</a></li><li><a href="#что-в-папке">Что в папке</a></li></ul></details><details data-language="uzbek"><summary>Oʻzbekcha</summary><a href="#uzbek">Oʻzbekcha · ↑</a><ul><li><a href="#kursdan-oldin-uchta-ish-15-daqiqa">Kursdan oldin: uchta ish (15 daqiqa)</a></li><li><a href="#sunʼiy-intellekt-yordamchisini-sinab-koʻrish-10-daqiqa-ixtiyoriy-lekin-tavsiya-etiladi">Sunʼiy intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin tavsiya etiladi)</a></li><li><a href="#chatgpt-va-ixtiyoriy-ai-sider-yon-paneli">ChatGPT va ixtiyoriy AI Sider yon paneli</a></li><li><a href="#uch-xil-material">Uch xil material</a></li><li><a href="#kurs-qadam-baqadam">Kurs qadam-baqadam</a></li><li><a href="#agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri ketsa</a></li><li><a href="#kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor kishilar uchun</a></li><li><a href="#papkada-nima-bor">Papkada nima bor</a></li></ul></details></nav></details><main><p align="right"><a href="#english">English</a> · <a href="#russian">Русский</a> · <a href="#uzbek">Oʻzbekcha</a>  |  <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/">Course page</a> (links open in new tabs)</p>
 <p><a id="english"></a></p>
-<h1 id="taqsim-course-water-allocation-in-the-zarafshan-basin">TaqSim course: water allocation in the Zarafshan basin</h1>
-<p>Welcome. This folder holds everything you need for the hands-on part of the course. You run the exercises in your web browser, on Google's free Colab service. Nothing has to be installed on your computer.</p>
-<h2 id="before-the-course-three-things-to-do-15-minutes">Before the course: three things to do (15 minutes)</h2>
-<p><strong>1. Get a Google account.</strong> If you already have a Gmail address, you can use it. If not, create one at <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com</a>. Google may ask for a phone number to confirm it is you.</p>
+<h1 id="taqsim-course-water-allocation-in-the-zarafshan-basin">TaqSim
+course: water allocation in the Zarafshan basin</h1>
+<p><strong>TaqSim</strong> is a Python tool for simulating water
+allocation: connect river inflows, reservoirs, canals and users, then
+follow where the water goes and who goes short. This course uses TaqSim
+v0.1.4 through notebooks and games.</p>
+<p><a href="#before-the-course-three-things-to-do-15-minutes">New? Start
+with setup</a> · <a href="#the-course-step-by-step">Already ready? Open
+the course steps</a></p>
+<p>Welcome. This folder holds everything you need for the hands-on part
+of the course. You run the exercises in your web browser, on Google's
+free Colab service. Nothing has to be installed on your computer.</p>
+<h2 id="before-the-course-three-things-to-do-15-minutes">Before the
+course: three things to do (15 minutes)</h2>
+<p><strong>1. Get a Google account.</strong> If you already have a Gmail
+address, you can use it. If not, create one at <a href="https://accounts.google.com/signup">accounts.google.com</a>.
+Google may ask for a phone number to confirm it is you.</p>
 <p><strong>2. Open the first notebook.</strong> Click this button:</p>
-<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" /></a></p>
-<p>A page with text and grey boxes of code opens. This is a <em>notebook</em>. Each grey box is a step you can run.</p>
-<p><strong>3. Run it.</strong> In the menu at the top, choose <strong>Runtime → Run all</strong>. The first box installs the model software, which takes about a minute. Then a drawing of a small river system appears, a table, and a chart. If you see those, you are ready for the course.</p>
-<p>If Colab asks "Run anyway?" because the notebook was not written by Google, click <strong>Run anyway</strong>. That is normal.</p>
-<h2 id="trying-the-ai-helper-10-minutes-optional-but-recommended">Trying the AI helper (10 minutes, optional but recommended)</h2>
-<p>Colab has a built-in AI assistant called Gemini. In the course you will use it to change water models by describing what you want in plain words. To try it:</p>
+<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<p>A page with text and grey boxes of code opens. This is a
+<em>notebook</em>. Each grey box is a step you can run.</p>
+<p><strong>3. Run it.</strong> In the menu at the top, choose
+<strong>Runtime → Run all</strong>. The first box installs the model
+software, which takes about a minute. Then a drawing of a small river
+system appears, a table, and a chart. If you see those, you are ready
+for the course.</p>
+<p>If Colab asks "Run anyway?" because the notebook was not written by
+Google, click <strong>Run anyway</strong>. That is normal.</p>
+<h2 id="trying-the-ai-helper-10-minutes-optional-but-recommended">Trying
+the AI helper (10 minutes, optional but recommended)</h2>
+<p>Colab has a built-in AI assistant called Gemini. In the course you
+will use it to change water models by describing what you want in plain
+words. To try it:</p>
 <ol type="1">
-<li><p>Click the blue <strong>Gemini</strong> button at the bottom of the page.</p></li>
+<li><p>Click the blue <strong>Gemini</strong> button at the bottom of
+the page.</p></li>
 <li><p>Copy this sentence into the chat and send it:</p>
 <blockquote>
-<p>Find the smallest canal share, in steps of 1 percent, for which the farm has no shortage in any of the three years. Use the run() function.</p>
+<p>Find the smallest canal share, in steps of 1 percent, for which the
+farm has no shortage in any of the three years. Use the run()
+function.</p>
 </blockquote></li>
-<li><p>Gemini answers with code. Click <strong>Insert</strong> (or copy the code into a new box with <strong>+ Code</strong>) and run the box. The right answer is <strong>9 percent</strong>.</p></li>
+<li><p>Read Gemini’s proposed code. <strong>Accept and execute</strong>
+inserts and runs it; <strong>Accept</strong> inserts it for you to run;
+<strong>Deny</strong> discards it. Some interfaces instead offer
+<strong>Insert</strong>. You can also copy the code into <strong>+
+Code</strong> and run it. The right answer is <strong>9
+percent</strong>.</p></li>
 </ol>
-<p>If that worked, you have done everything the course needs. More tasks for Gemini are in the notebook itself.</p>
-<span id="chatgpt-and-an-optional-sider-sidebar"></span><h2 id="chatgpt-and-the-optional-ai-sider-sidebar">ChatGPT and the optional AI Sider sidebar</h2>
-<p><strong>ChatGPT and Gemini web officially support Uzbekistan.</strong> See <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">OpenAI's supported countries</a> and <a href="https://support.google.com/gemini/answer/13575153?hl=en" target="_blank" rel="noopener">Google's supported countries</a>. This confirms provider eligibility, not access on the workshop Wi-Fi: local connectivity without VPN and extension installation still need to be checked before the workshop.</p>
-<p><strong>Use AI Sider: ChatGPT + DeepSeek + Gemini, offered by zenttranslate.</strong> This optional Chrome extension displays the providers' own websites beside your notebook. It is a different product from Sider.ai. No separate extension account is required; sign in to the provider you choose. A <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">free ChatGPT account</a> supplies normal ChatGPT assistance and remains subject to its usual limits. No paid subscription or API key is needed for these exercises.</p>
+<p>If that worked, you have done everything the course needs. More tasks
+for Gemini are in the notebook itself.</p>
+<h2 id="chatgpt-and-the-optional-ai-sider-sidebar">ChatGPT and the
+optional AI Sider sidebar</h2>
+<p><strong>ChatGPT and Gemini web officially support
+Uzbekistan.</strong> See <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries">OpenAI's
+supported countries</a> and <a href="https://support.google.com/gemini/answer/13575153?hl=en">Google's
+supported countries</a>. This confirms provider eligibility, not access
+on the workshop Wi-Fi: local connectivity without VPN and extension
+installation still need to be checked before the workshop.</p>
+<p><strong>Use AI Sider: ChatGPT + DeepSeek + Gemini, offered by
+zenttranslate.</strong> This optional Chrome extension displays the
+providers' own websites beside your notebook. It is a different product
+from Sider.ai. No separate extension account is required; sign in to the
+provider you choose. A <a href="https://chatgpt.com/plans/free/">free
+ChatGPT account</a> supplies normal ChatGPT assistance and remains
+subject to its usual limits. No paid subscription or API key is needed
+for these exercises.</p>
 <ol type="1">
-<li>In desktop Chrome, open the <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm" target="_blank" rel="noopener">exact AI Sider Chrome Web Store listing</a>, check that the publisher is <strong>zenttranslate</strong>, choose <strong>Add to Chrome</strong> and review the requested permissions. If already installed, open it from the Extensions menu (the puzzle icon).</li>
-<li>Open the sidebar beside your Colab notebook, select ChatGPT or Gemini, and sign in to that provider. For ChatGPT, choose <strong>Sign up</strong> if needed and stay on the free plan. If sidebar sign-in fails, open <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> or <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a> in a separate tab.</li>
-<li>Explicitly share the relevant code cell, error, page text or screenshot. Do not assume the assistant can see the whole notebook. Ask: “Explain this code in simple words, then suggest one small change. Show the complete replacement cell.”</li>
-<li>Read the proposed change, copy it into a new Colab code cell, run it yourself, and check the water balance and results. The sidebar is not a verified way to edit or run Colab automatically. Use only the public course examples when trying a new AI service.</li>
+<li>In desktop Chrome, open the <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm">exact
+AI Sider Chrome Web Store listing</a>, check that the publisher is
+<strong>zenttranslate</strong>, choose <strong>Add to Chrome</strong>
+and review the requested permissions. If already installed, open it from
+the Extensions menu (the puzzle icon).</li>
+<li>Open the sidebar beside your Colab notebook, select ChatGPT or
+Gemini, and sign in to that provider. For ChatGPT, choose <strong>Sign
+up</strong> if needed and stay on the free plan. If sidebar sign-in
+fails, open <a href="https://chatgpt.com">ChatGPT</a> or <a href="https://gemini.google.com">Gemini</a> in a separate tab.</li>
+<li>Explicitly share the relevant code cell, error, page text or
+screenshot. Do not assume the assistant can see the whole notebook. Ask:
+“Explain this code in simple words, then suggest one small change. Show
+the complete replacement cell.”</li>
+<li>Read the proposed change, copy it into a new Colab code cell, run it
+yourself, and check the water balance and results. The sidebar is not a
+verified way to edit or run Colab automatically. Use only the public
+course examples when trying a new AI service.</li>
 </ol>
-<p>The same prompts work in a separate ChatGPT or Gemini tab. For the reservoir-and-two-farms exercise, also provide the <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD.md" target="_blank" rel="noopener">TaqSim API card</a> / <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD_RU.md" target="_blank" rel="noopener">Русский</a>, so the assistant uses the course's model version. The workshop demonstration uses Gemini in Colab; AI Sider is an optional alternative interface.</p>
+<p>The same prompts work in a separate ChatGPT or Gemini tab. For the
+reservoir-and-two-farms exercise, also provide the <a href="gemini/API_CARD.md">TaqSim API card</a> / <a href="gemini/API_CARD_RU.md">Русский</a>, so the assistant uses the
+course's model version. The workshop demonstration uses Gemini in Colab;
+AI Sider is an optional alternative interface.</p>
 <h2 id="three-kinds-of-material">Three kinds of material</h2>
-<p>Every step offers up to three things. The table below always names them the same way:</p>
+<p>Every step offers up to three things. The table below always names
+them the same way:</p>
 <ul>
-<li><strong>Read: coursebook.</strong> A complete text with learning objectives, the background of the Zarafshan basin, the data and where they come from, the model, worked results and a reference list, as a web page with every figure in place. Nothing to run, no account needed.</li>
-<li><strong>Run: notebook.</strong> The same text in Colab, with the code behind it, folded until you want to see it. Change a number, run again, see what happens. Needs a Google account.</li>
-<li><strong>Play: game.</strong> An interactive web page: you move the levers, the results appear immediately. No code, no account. There are five games: TaqSim block by block (step 2), the reservoir game (step 3), the river for nature (step 4) and the Zarafshan in sixteen blocks (step 5), plus an optional annual Amu Darya demonstration.</li>
+<li><strong>Read: coursebook.</strong> A complete text with learning
+objectives, the background of the Zarafshan basin, the data and where
+they come from, the model, worked results and a reference list, as a web
+page with every figure in place. Nothing to run, no account needed.</li>
+<li><strong>Run: notebook.</strong> The same text in Colab, with the
+code behind it, folded until you want to see it. Change a number, run
+again, see what happens. Needs a Google account.</li>
+<li><strong>Play: game.</strong> An interactive web page: you move the
+levers, the results appear immediately. No code, no account. There are
+five games: TaqSim block by block (step 2), the reservoir game (step 3),
+the river for nature (step 4) and the Zarafshan in sixteen blocks (step
+5), plus an optional annual Amu Darya demonstration.</li>
 </ul>
-<p>Each coursebook has an English · Русский · Oʻzbekcha language switcher. Notebooks have separate English and Russian links; existing Uzbek notebooks remain available. Some original figures retain English labels, with translated captions and explanations.</p>
-<p>After each link, the languages it comes in: EN English, RU Russian, UZ Uzbek. The data the coursebooks use are in the folder <code>data/</code> of this package.</p>
+<p><strong>Languages.</strong> Coursebooks switch between English,
+Russian and Uzbek. Notebooks have English and Russian links; step 3 also
+has an Uzbek notebook. The interactive block coursebook is English only.
+Some figures have English labels with translated captions. EN = English,
+RU = Russian, UZ = Uzbek.</p>
+<p><strong>Data.</strong> Open the <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/tree/main/data">course
+data folder</a>.</p>
 <h2 id="the-course-step-by-step">The course, step by step</h2>
-<p>Each step adds one thing to the step before. Start at the top, even if you know water models already: the tools are new to everyone.</p>
-<p><strong>The workshop runs over two half-days, 14–15 October 2026.</strong> We work through the sequence below with demonstrations, games and hands-on exercises; the pace is flexible. The aim is to run and modify prepared examples and explain their results. We finish with a Gemini demonstration and an optional challenge. Anything unfinished can be continued afterwards; all materials stay online.</p>
+<p>Notebook filenames retain older numbering. Follow the step numbers
+here; each notebook shows its course step.</p>
+<p>Each step adds one thing to the step before. Start at the top, even
+if you know water models already: the tools are new to everyone.</p>
+<p><strong>The workshop runs over two half-days, 14–15 October
+2026.</strong> We work through the sequence below with demonstrations,
+games and hands-on exercises; the pace is flexible. The aim is to run
+and modify prepared examples and explain their results. We finish with a
+Gemini demonstration and an optional challenge. Anything unfinished can
+be continued afterwards; all materials stay online.</p>
 <div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Step</th>
 <th>What</th>
-<th>New in this step</th>
+<th>What you will do</th>
 <th>Open</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td></td>
-<td><strong>Introduction</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Introduction</td></tr>
 <tr>
 <td>1</td>
 <td><strong>Starter notebook</strong></td>
-<td>The tools: Colab, a notebook, a tiny river system, and Gemini changing it for you</td>
-<td>Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb" target="_blank" rel="noopener">notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Run a small river model in Colab and try changing it with
+Gemini.</td>
+<td>Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb">notebook
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>TaqSim block by block</strong></td>
-<td>The seven kinds of block TaqSim is made of, each with an everyday picture, the smallest system that shows what it does, and its rule card: the few lines of code that tell it what to do each month. Then all seven in one small river, and the check that every drop is accounted for</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interactive coursebook — try it</a> (EN)</strong> · Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
+<td>Explore the seven block types, their rules and the water
+balance.</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/">Interactive
+coursebook — try it</a> (EN)</strong> · Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html">coursebook</a>
+(EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb">notebook
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb">Русский</a>
+· Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html">game</a>
+(EN · RU)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Toy examples</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Toy examples</td></tr>
 <tr>
 <td>3</td>
 <td><strong>A reservoir and a farm</strong></td>
-<td>Your first water plan: two levers, a few results, and the set of plans no other plan beats. That is the Pareto idea, before the word. Then a winter water user and a seasonal forecast of the summer, first perfect, then one that can be wrong: what a forecast is worth</td>
-<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN · RU · UZ) · Run: notebook in <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb" target="_blank" rel="noopener">English</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb" target="_blank" rel="noopener">Русский</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb" target="_blank" rel="noopener">Oʻzbekcha</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
+<td>Try reservoir release rules and compare shortages; explore winter
+demand and forecasts.</td>
+<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html">coursebook</a>
+(EN · RU · UZ) · Run: notebook in <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb">English</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb">Русский</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb">Oʻzbekcha</a>
+· Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html">game</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>River for nature, game and notebook</strong></td>
-<td>A different kind of trade-off: water for the crops against a river that still behaves like a river</td>
-<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb" target="_blank" rel="noopener">notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
+<td>Compare water for crops with water left for the river.</td>
+<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html">coursebook</a>
+(EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb">notebook
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb">Русский</a>
+· Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html">game</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>5</td>
 <td><strong>The Zarafshan in sixteen blocks</strong></td>
-<td>A first model of the whole oasis, as a game: three levers, four results, and the question "can any other plan beat mine?". Five worlds to play in: a dry, a mean and a wet year, and the mean year as the climate models project it for 2041–2070 and 2071–2099. No code</td>
-<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">what the model shows</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">handout, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">game</a> (EN · RU)</td>
+<td>Explore allocation in a simplified Zarafshan basin without writing
+code.</td>
+<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html">what
+the model shows</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf">handout,
+PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf">Русский,
+PDF</a> · Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html">game</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>Optional demo</td>
 <td><strong>Amu Darya: sharing an annual water budget</strong></td>
-<td>Use the Qosh Tepa assessment to explore irrigated area, irrigation efficiency and a negotiated cap on existing withdrawals. Compare historical and reduced-supply assumptions; annual results are teaching scenarios, not current allocations or legal entitlements</td>
-<td>Play: <a href="games/amu_darya_game.html?lang=en" target="_blank" rel="noopener">game</a> (EN · RU · UZ)</td>
+<td>Use the Qosh Tepa assessment to explore irrigated area, irrigation
+efficiency and a negotiated cap on existing withdrawals. Compare
+historical and reduced-supply assumptions; annual results are teaching
+scenarios, not current allocations or legal entitlements</td>
+<td>Play: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/amu_darya_game.html?lang=en">game</a>
+(EN · RU · UZ)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Real World application</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Real World application</td></tr>
 <tr>
 <td>6</td>
 <td><strong>The Zarafshan model</strong></td>
-<td>The real basin as TaqSim sees it: the river from the Ravatkhoza headworks to Navoi, the two reservoirs (Kattakurgan and Akdarya), six irrigation districts, the thermal power plant and the canals with their losses: 61 blocks, run day by day over 2017–2022. Three allocation rules at the headworks are compared: equal shares, shares fixed to each branch's six-year demand, and shares that follow the month. Every run is read as a water balance: who got what, who went short, where the water was lost</td>
-<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf" target="_blank" rel="noopener">PDF</a> (EN) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb" target="_blank" rel="noopener">notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Run the basin model and compare water deliveries, losses and
+shortages.</td>
+<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html">coursebook</a>
+(EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf">PDF</a>
+(EN) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb">notebook
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>7</td>
 <td><strong>Optimising the Zarafshan</strong></td>
-<td>The same model with its 124 knobs exposed: the river-reserve share at four headworks and the two reservoirs' month-by-month release rules. Four goals that pull against each other: the farms' total deficit, the power plant's cooling water, fairness between districts, and releases an operator can actually run. NSGA-II, the search method, tries tens of thousands of plans and returns the unbeaten ones; the coursebook shows how to read a Pareto front in four dimensions and what the optimizer learned about running the reservoirs</td>
-<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html" target="_blank" rel="noopener">coursebook</a> (EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb" target="_blank" rel="noopener">notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Search for allocation rules that balance competing goals.</td>
+<td>Read: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html">coursebook</a>
+(EN · RU · UZ) · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb">notebook
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb">Русский</a></td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Build your own model with Gemini</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Build your own model with Gemini</td></tr>
 <tr>
 <td>8</td>
 <td><strong>Build your own model with Gemini</strong></td>
-<td>Start from a blank Colab notebook and describe a reservoir and two farms in everyday language. Follow the demonstration, check the connections and water balance, correct a mistake, then optionally modify the model for your own challenge</td>
-<td>Read: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">prompt guide and checks</a> (EN) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">Русский</a> · Start: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">blank notebook</a> · Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">rescue notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Build and check a small model with help from Gemini.</td>
+<td>Read: <a href="gemini/README.md">prompt guide and checks</a> (EN) ·
+<a href="gemini/README_RU.md">Русский</a> · Start: <a href="https://colab.research.google.com/#create=true">blank notebook</a>
+· Run: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb">rescue
+notebook — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb">Русский</a></td>
 </tr>
 </tbody>
 </table></div>
-<p>Every notebook starts with a setup box that takes about a minute. Always run that box first. The games are single web pages: click the link and play, nothing to install. For a room without internet, open the <code>games</code> folder on GitHub, click the file, click the download button (an arrow pointing down, top right), and open the downloaded file in any browser.</p>
+<p>Every notebook starts with a setup box that takes about a minute.
+Always run that box first. The games are single web pages: click the
+link and play, nothing to install. For a room without internet, open the
+<code>games</code> folder on GitHub, click the file, click the download
+button (an arrow pointing down, top right), and open the downloaded file
+in any browser.</p>
 <h2 id="if-something-goes-wrong">If something goes wrong</h2>
 <ul>
-<li><strong>A box shows red text and stops.</strong> Read the last line of the red text. Then paste the whole red text into Gemini and ask "what went wrong?". This is also how you will work during the course.</li>
-<li><strong>"Runtime disconnected".</strong> Colab stops a notebook after a while without use. Choose <strong>Runtime → Run all</strong> again.</li>
-<li><strong>The setup box takes very long.</strong> Wait two minutes. If nothing happens, choose <strong>Runtime → Disconnect and delete runtime</strong>, then <strong>Runtime → Run all</strong>.</li>
-<li><strong>Gemini does not appear.</strong> It needs a personal Google account and is not available in every country. Use the free <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini app</a> or <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> in another browser tab instead: paste the cheat sheet from the starter notebook and your question there, and copy the code back into Colab.</li>
+<li><strong>A box shows red text and stops.</strong> Read the last line
+of the red text. Then paste the whole red text into Gemini and ask "what
+went wrong?". This is also how you will work during the course.</li>
+<li><strong>"Runtime disconnected".</strong> Colab stops a notebook
+after a while without use. Choose <strong>Runtime → Run all</strong>
+again.</li>
+<li><strong>The setup box takes very long.</strong> Wait two minutes. If
+nothing happens, choose <strong>Runtime → Disconnect and delete
+runtime</strong>, then <strong>Runtime → Run all</strong>.</li>
+<li><strong>Gemini does not appear.</strong> It needs a personal Google
+account and is not available in every country. Use the free <a href="https://gemini.google.com">Gemini app</a> or <a href="https://chatgpt.com">ChatGPT</a> in another browser tab instead:
+paste the cheat sheet from the starter notebook and your question there,
+and copy the code back into Colab.</li>
 </ul>
-<h2 id="for-people-who-have-python-on-their-computer">For people who have Python on their computer</h2>
-<p>Everything also runs locally with Python 3.12 or newer and <code>git</code>:</p>
+<h2 id="for-people-who-have-python-on-their-computer">For people who
+have Python on their computer</h2>
+<p>Everything also runs locally with Python 3.12 or newer and
+<code>git</code>:</p>
 <pre><code>git clone https://github.com/hydrosolutions/zarafshan-taqsim-course.git
 cd zarafshan-taqsim-course
 pip install deap ctrl-freak pymoo polars jupyter
-pip install --no-deps &quot;git+https://github.com/hydrosolutions/taqsim.git@v0.1.4&quot;
-pip install &quot;git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301&quot;
+pip install --no-deps "git+https://github.com/hydrosolutions/taqsim.git@v0.1.4"
+pip install "git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301"
 jupyter lab</code></pre>
-<p>The setup box at the top of each notebook notices that the software is already installed and only sets the paths.</p>
+<p>The setup box at the top of each notebook notices that the software
+is already installed and only sets the paths.</p>
 <h2 id="what-is-in-the-folder">What is in the folder</h2>
 <ul>
-<li><code>00_starter.ipynb</code> to <code>06_gemini_rescue.ipynb</code>: the course notebooks. Follow the table above; filenames retain their original numbering.</li>
-<li><code>gemini/</code>: the blank-notebook demonstration guide, checks and optional challenge.</li>
-<li><code>src/zarafshan_taqsim/</code>: the Zarafshan model code the notebooks use.</li>
-<li><code>data/ZRB_baseline/</code>: the inflow, demand, reservoir and canal data, 2010 to 2023.</li>
-<li><code>eflow_game/</code>: the model behind the river-for-nature notebook and game, with its precomputed results.</li>
-<li><code>coursebooks/</code>: the five coursebooks as web pages, to read without running anything.</li>
+<li><code>00_starter.ipynb</code> to
+<code>06_gemini_rescue.ipynb</code>: the course notebooks. Follow the
+table above; filenames retain their original numbering.</li>
+<li><code>gemini/</code>: the blank-notebook demonstration guide, checks
+and optional challenge.</li>
+<li><code>src/zarafshan_taqsim/</code>: the Zarafshan model code the
+notebooks use.</li>
+<li><code>data/ZRB_baseline/</code>: the inflow, demand, reservoir and
+canal data, 2010 to 2023.</li>
+<li><code>eflow_game/</code>: the model behind the river-for-nature
+notebook and game, with its precomputed results.</li>
+<li><code>coursebooks/</code>: the five coursebooks as web pages, to
+read without running anything.</li>
 <li><code>games/</code>: the five games.</li>
-<li><code>_cache/</code>: results of long computer runs, so the optimisation notebook opens in seconds.</li>
+<li><code>_cache/</code>: results of long computer runs, so the
+optimisation notebook opens in seconds.</li>
 </ul>
-<p>The model software is <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>, by hydrosolutions GmbH. The course material was prepared for the TaqSim training in Tashkent, 14 to 15 October 2026.</p>
-<hr />
+<p>The model software is <a href="https://github.com/hydrosolutions/taqsim/tree/v0.1.4">TaqSim</a>,
+by hydrosolutions GmbH. The course material was prepared for the TaqSim
+training in Tashkent, 14 to 15 October 2026.</p>
+<hr/>
 <p><a id="russian"></a></p>
-<h1 id="курс-taqsim-распределение-воды-в-бассейне-зарафшана">Курс TaqSim: распределение воды в бассейне Зарафшана</h1>
-<p>Добро пожаловать. В этой папке есть всё, что нужно для практической части курса. Упражнения выполняются в браузере, в бесплатном сервисе Google Colab. На компьютер ничего устанавливать не нужно.</p>
-<h2 id="перед-курсом-три-шага-15-минут">Перед курсом: три шага (15 минут)</h2>
-<p><strong>1. Заведите аккаунт Google.</strong> Если у вас уже есть адрес Gmail, можно пользоваться им. Если нет, создайте аккаунт на <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com</a>. Google может попросить номер телефона для подтверждения.</p>
+<h1 id="курс-taqsim-распределение-воды-в-бассейне-зарафшана">Курс
+TaqSim: распределение воды в бассейне Зарафшана</h1>
+<p><strong>TaqSim</strong> — программа на Python для моделирования
+распределения воды: соедините притоки, водохранилища, каналы и
+потребителей и проследите, куда идёт вода и кому её не хватает. Курс
+использует TaqSim v0.1.4 через тетради и игры.</p>
+<p><a href="#перед-курсом-три-шага-15-минут">Подготовка</a> · <a href="#курс-шаг-за-шагом">Перейти к шагам курса</a></p>
+<p>Добро пожаловать. В этой папке есть всё, что нужно для практической
+части курса. Упражнения выполняются в браузере, в бесплатном сервисе
+Google Colab. На компьютер ничего устанавливать не нужно.</p>
+<h2 id="перед-курсом-три-шага-15-минут">Перед курсом: три шага (15
+минут)</h2>
+<p><strong>1. Заведите аккаунт Google.</strong> Если у вас уже есть
+адрес Gmail, можно пользоваться им. Если нет, создайте аккаунт на <a href="https://accounts.google.com/signup">accounts.google.com</a>.
+Google может попросить номер телефона для подтверждения.</p>
 <p><strong>2. Откройте первую тетрадь.</strong> Нажмите на кнопку:</p>
-<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" /></a></p>
-<p>Откроется страница с текстом и серыми блоками кода. Это <em>тетрадь</em> (notebook). Каждый серый блок — шаг, который можно запустить.</p>
-<p><strong>3. Запустите её.</strong> В меню сверху выберите <strong>Среда выполнения → Выполнить все</strong> (Runtime → Run all). Первый блок устанавливает программу модели, это занимает около минуты. Затем появятся схема небольшой речной системы, таблица и график. Если вы их видите, вы готовы к курсу.</p>
-<p>Если Colab спросит «Всё равно запустить?» (Run anyway), потому что тетрадь написана не Google, нажмите <strong>Всё равно запустить</strong>. Это нормально.</p>
-<h2 id="пробуем-ии-помощника-10-минут-по-желанию-но-рекомендуется">Пробуем ИИ-помощника (10 минут, по желанию, но рекомендуется)</h2>
-<p>В Colab встроен ИИ-помощник Gemini. На курсе вы будете с его помощью менять водные модели, описывая словами, что нужно. Чтобы попробовать:</p>
+<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<p>Откроется страница с текстом и серыми блоками кода. Это
+<em>тетрадь</em> (notebook). Каждый серый блок — шаг, который можно
+запустить.</p>
+<p><strong>3. Запустите её.</strong> В меню сверху выберите
+<strong>Среда выполнения → Выполнить все</strong> (Runtime → Run all).
+Первый блок устанавливает программу модели, это занимает около минуты.
+Затем появятся схема небольшой речной системы, таблица и график. Если вы
+их видите, вы готовы к курсу.</p>
+<p>Если Colab спросит «Всё равно запустить?» (Run anyway), потому что
+тетрадь написана не Google, нажмите <strong>Всё равно
+запустить</strong>. Это нормально.</p>
+<h2 id="пробуем-ии-помощника-10-минут-по-желанию-но-рекомендуется">Пробуем
+ИИ-помощника (10 минут, по желанию, но рекомендуется)</h2>
+<p>В Colab встроен ИИ-помощник Gemini. На курсе вы будете с его помощью
+менять водные модели, описывая словами, что нужно. Чтобы
+попробовать:</p>
 <ol type="1">
-<li><p>Нажмите синюю кнопку <strong>Gemini</strong> внизу страницы.</p></li>
-<li><p>Скопируйте это предложение в чат и отправьте (можно по-английски, Gemini понимает и русский):</p>
+<li><p>Нажмите синюю кнопку <strong>Gemini</strong> внизу
+страницы.</p></li>
+<li><p>Скопируйте это предложение в чат и отправьте (можно по-английски,
+Gemini понимает и русский):</p>
 <blockquote>
-<p>Find the smallest canal share, in steps of 1 percent, for which the farm has no shortage in any of the three years. Use the run() function.</p>
+<p>Find the smallest canal share, in steps of 1 percent, for which the
+farm has no shortage in any of the three years. Use the run()
+function.</p>
 </blockquote></li>
-<li><p>Gemini ответит кодом. Нажмите <strong>Вставить</strong> (Insert) или скопируйте код в новый блок через <strong>+ Код</strong> и запустите его. Правильный ответ — <strong>9 процентов</strong>.</p></li>
+<li><p>Gemini ответит кодом. Нажмите <strong>Вставить</strong> (Insert)
+или скопируйте код в новый блок через <strong>+ Код</strong> и запустите
+его. Правильный ответ — <strong>9 процентов</strong>.</p></li>
 </ol>
-<p>Если это получилось, вы сделали всё, что нужно для курса. Другие задания для Gemini есть в самой тетради.</p>
-<span id="chatgpt-и-дополнительная-боковая-панель-sider"></span><h2 id="chatgpt-и-необязательная-боковая-панель-ai-sider">ChatGPT и необязательная боковая панель AI Sider</h2>
-<p><strong>Веб-версии ChatGPT и Gemini официально поддерживаются в Узбекистане.</strong> См. <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">список стран OpenAI</a> и <a href="https://support.google.com/gemini/answer/13575153?hl=en" target="_blank" rel="noopener">список стран Google</a>. Это подтверждает поддержку страны, но не работу через Wi-Fi в месте проведения семинара: подключение без VPN и установку расширения ещё нужно проверить на месте.</p>
-<p><strong>Используйте AI Sider: ChatGPT + DeepSeek + Gemini от zenttranslate.</strong> Это необязательное расширение Chrome открывает сайты самих ИИ-сервисов рядом с тетрадью. Оно отличается от Sider.ai. Отдельный аккаунт расширения не нужен: войдите в аккаунт выбранного ИИ-сервиса. <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">Бесплатный аккаунт ChatGPT</a> даёт обычные возможности ChatGPT с его стандартными ограничениями. Для упражнений платная подписка и ключ API не нужны.</p>
+<p>Если это получилось, вы сделали всё, что нужно для курса. Другие
+задания для Gemini есть в самой тетради.</p>
+<h2 id="chatgpt-и-необязательная-боковая-панель-ai-sider">ChatGPT и
+необязательная боковая панель AI Sider</h2>
+<p><strong>Веб-версии ChatGPT и Gemini официально поддерживаются в
+Узбекистане.</strong> См. <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries">список
+стран OpenAI</a> и <a href="https://support.google.com/gemini/answer/13575153?hl=en">список
+стран Google</a>. Это подтверждает поддержку страны, но не работу через
+Wi-Fi в месте проведения семинара: подключение без VPN и установку
+расширения ещё нужно проверить на месте.</p>
+<p><strong>Используйте AI Sider: ChatGPT + DeepSeek + Gemini от
+zenttranslate.</strong> Это необязательное расширение Chrome открывает
+сайты самих ИИ-сервисов рядом с тетрадью. Оно отличается от Sider.ai.
+Отдельный аккаунт расширения не нужен: войдите в аккаунт выбранного
+ИИ-сервиса. <a href="https://chatgpt.com/plans/free/">Бесплатный аккаунт
+ChatGPT</a> даёт обычные возможности ChatGPT с его стандартными
+ограничениями. Для упражнений платная подписка и ключ API не нужны.</p>
 <ol type="1">
-<li>В Chrome на компьютере откройте <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm" target="_blank" rel="noopener">страницу именно этого расширения AI Sider</a>, проверьте издателя <strong>zenttranslate</strong>, нажмите <strong>Add to Chrome</strong> и проверьте запрашиваемые разрешения. Если расширение уже установлено, откройте его через меню расширений (значок пазла).</li>
-<li>Откройте панель рядом с тетрадью Colab, выберите ChatGPT или Gemini и войдите в аккаунт соответствующего сервиса. Для ChatGPT при необходимости выберите <strong>Sign up</strong> и бесплатный план. Если вход через панель не работает, откройте <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> или <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a> в отдельной вкладке.</li>
-<li>Явно передайте нужный блок кода, сообщение об ошибке, текст страницы или снимок экрана. Не предполагается, что помощник видит всю тетрадь. Спросите: «Объясни код простыми словами, предложи одно небольшое изменение и покажи полный блок для замены».</li>
-<li>Прочитайте ответ, вставьте код в новый блок Colab, самостоятельно запустите его и проверьте водный баланс и результаты. Автоматическое редактирование и выполнение кода Colab через эту панель не проверено. Для знакомства с новым ИИ-сервисом используйте только открытые примеры курса.</li>
+<li>В Chrome на компьютере откройте <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm">страницу
+именно этого расширения AI Sider</a>, проверьте издателя
+<strong>zenttranslate</strong>, нажмите <strong>Add to Chrome</strong> и
+проверьте запрашиваемые разрешения. Если расширение уже установлено,
+откройте его через меню расширений (значок пазла).</li>
+<li>Откройте панель рядом с тетрадью Colab, выберите ChatGPT или Gemini
+и войдите в аккаунт соответствующего сервиса. Для ChatGPT при
+необходимости выберите <strong>Sign up</strong> и бесплатный план. Если
+вход через панель не работает, откройте <a href="https://chatgpt.com">ChatGPT</a> или <a href="https://gemini.google.com">Gemini</a> в отдельной вкладке.</li>
+<li>Явно передайте нужный блок кода, сообщение об ошибке, текст страницы
+или снимок экрана. Не предполагается, что помощник видит всю тетрадь.
+Спросите: «Объясни код простыми словами, предложи одно небольшое
+изменение и покажи полный блок для замены».</li>
+<li>Прочитайте ответ, вставьте код в новый блок Colab, самостоятельно
+запустите его и проверьте водный баланс и результаты. Автоматическое
+редактирование и выполнение кода Colab через эту панель не проверено.
+Для знакомства с новым ИИ-сервисом используйте только открытые примеры
+курса.</li>
 </ol>
-<p>Эти же запросы работают в отдельной вкладке ChatGPT или Gemini. Для задания с водохранилищем и двумя хозяйствами также передайте <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD_RU.md" target="_blank" rel="noopener">памятку по API TaqSim на русском</a>, чтобы помощник использовал версию модели из курса. Демонстрация на семинаре использует Gemini в Colab; AI Sider — необязательный альтернативный интерфейс.</p>
+<p>Эти же запросы работают в отдельной вкладке ChatGPT или Gemini. Для
+задания с водохранилищем и двумя хозяйствами также передайте <a href="gemini/API_CARD_RU.md">памятку по API TaqSim на русском</a>, чтобы
+помощник использовал версию модели из курса. Демонстрация на семинаре
+использует Gemini в Colab; AI Sider — необязательный альтернативный
+интерфейс.</p>
 <h2 id="три-вида-материалов">Три вида материалов</h2>
-<p>Каждый шаг предлагает до трёх вещей. В таблице ниже они всегда названы одинаково:</p>
+<p>Каждый шаг предлагает до трёх вещей. В таблице ниже они всегда
+названы одинаково:</p>
 <ul>
-<li><strong>Читать: учебник.</strong> Цельный текст с целями обучения, сведениями о бассейне Зарафшана, данными и их источниками, моделью, разобранными результатами и списком литературы — в виде веб-страницы со всеми рисунками. Ничего запускать не нужно, аккаунт не нужен.</li>
-<li><strong>Запустить: тетрадь.</strong> Тот же текст в Colab, вместе со стоящим за ним кодом, свёрнутым, пока он вам не нужен. Измените число, запустите заново, посмотрите, что изменилось. Нужен аккаунт Google.</li>
-<li><strong>Играть: игра.</strong> Интерактивная веб-страница: вы двигаете рычаги, результаты появляются сразу. Без кода, без аккаунта. Игр пять: TaqSim блок за блоком (шаг 2), игра с водохранилищем (шаг 3), вода для реки (шаг 4) и Зарафшан в шестнадцати блоках (шаг 5), а также дополнительная годовая демонстрация для Амударьи.</li>
+<li><strong>Читать: учебник.</strong> Цельный текст с целями обучения,
+сведениями о бассейне Зарафшана, данными и их источниками, моделью,
+разобранными результатами и списком литературы — в виде веб-страницы со
+всеми рисунками. Ничего запускать не нужно, аккаунт не нужен.</li>
+<li><strong>Запустить: тетрадь.</strong> Тот же текст в Colab, вместе со
+стоящим за ним кодом, свёрнутым, пока он вам не нужен. Измените число,
+запустите заново, посмотрите, что изменилось. Нужен аккаунт Google.</li>
+<li><strong>Играть: игра.</strong> Интерактивная веб-страница: вы
+двигаете рычаги, результаты появляются сразу. Без кода, без аккаунта.
+Игр пять: TaqSim блок за блоком (шаг 2), игра с водохранилищем (шаг 3),
+вода для реки (шаг 4) и Зарафшан в шестнадцати блоках (шаг 5), а также
+дополнительная годовая демонстрация для Амударьи.</li>
 </ul>
-<p>В каждом учебнике есть переключатель English · Русский · Oʻzbekcha. Тетради открываются отдельными ссылками на нужном языке.</p>
-<p>После каждой ссылки указаны языки: EN английский, RU русский, UZ узбекский. Данные, которые используют учебники, лежат в папке <code>data/</code> этого пакета.</p>
+<p><strong>Языки.</strong> Учебники доступны на английском, русском и узбекском. Тетради имеют отдельные ссылки EN и RU; на шаге 3 также UZ. Интерактивный учебник блоков — только EN. Некоторые рисунки имеют английские подписи и переведённые пояснения. EN — английский, RU — русский, UZ — узбекский.</p><p><strong>Данные:</strong> <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/tree/main/data">папка курса</a>.</p>
 <h2 id="курс-шаг-за-шагом">Курс шаг за шагом</h2>
-<p>Каждый шаг добавляет одну вещь к предыдущему. Начинайте сверху, даже если водные модели вам знакомы: инструменты новы для всех.</p>
-<p><strong>Семинар проходит в течение двух полудней, 14–15 октября 2026 года.</strong> Мы следуем приведённой ниже последовательности: демонстрации, игры и практические упражнения; темп гибкий. Цель — запускать и изменять готовые примеры и объяснять результаты. В конце — демонстрация Gemini и необязательное самостоятельное задание. Незавершённые упражнения можно продолжить после курса; все материалы останутся онлайн.</p>
+<p>Номера файлов тетрадей исторические. Следуйте номерам шагов в
+таблице.</p>
+<p>Каждый шаг добавляет одну вещь к предыдущему. Начинайте сверху, даже
+если водные модели вам знакомы: инструменты новы для всех.</p>
+<p><strong>Семинар проходит в течение двух полудней, 14–15 октября 2026
+года.</strong> Мы следуем приведённой ниже последовательности:
+демонстрации, игры и практические упражнения; темп гибкий. Цель —
+запускать и изменять готовые примеры и объяснять результаты. В конце —
+демонстрация Gemini и необязательное самостоятельное задание.
+Незавершённые упражнения можно продолжить после курса; все материалы
+останутся онлайн.</p>
 <div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Шаг</th>
 <th>Что</th>
-<th>Что нового на этом шаге</th>
+<th>Что вы будете делать</th>
 <th>Открыть</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td></td>
-<td><strong>Введение</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Введение</td></tr>
 <tr>
 <td>1</td>
 <td><strong>Стартовая тетрадь</strong></td>
-<td>Инструменты: Colab, тетрадь, крошечная речная система и Gemini, который меняет её за вас</td>
-<td>Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb" target="_blank" rel="noopener">тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Запустите небольшую модель реки в Colab и измените её с помощью
+Gemini.</td>
+<td>Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb">тетрадь
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>TaqSim блок за блоком</strong></td>
-<td>Семь видов блоков, из которых состоит TaqSim: у каждого бытовая картинка, самая маленькая система, показывающая, что он делает, и его «карточка правила» — несколько строк кода, которые говорят ему, что делать каждый месяц. Затем все семь в одной маленькой реке и проверка, что учтена каждая капля</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Интерактивный учебник — попробовать</a> (EN)</strong> · Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
+<td>Изучите семь типов блоков, их правила и водный баланс.</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/">Интерактивный
+учебник — попробовать</a> (EN)</strong> · Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html">учебник</a>
+(EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb">тетрадь
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb">Русский</a>
+· Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html">игра</a>
+(EN · RU)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Учебные примеры</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Учебные примеры</td></tr>
 <tr>
 <td>3</td>
 <td><strong>Водохранилище и поле</strong></td>
-<td>Ваш первый план водопользования: два рычага, несколько результатов и набор планов, которые не побить никаким другим. Это идея Парето, пока без самого слова</td>
-<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN · RU · UZ) · Запустить: тетрадь на <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb" target="_blank" rel="noopener">English</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb" target="_blank" rel="noopener">Русский</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb" target="_blank" rel="noopener">Oʻzbekcha</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
+<td>Сравните правила выпуска и дефицит; исследуйте зимний спрос и
+прогнозы.</td>
+<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html">учебник</a>
+(EN · RU · UZ) · Запустить: тетрадь на <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb">English</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb">Русский</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb">Oʻzbekcha</a>
+· Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html">игра</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>Вода для реки: игра и тетрадь</strong></td>
-<td>Компромисс другого рода: вода для полей против реки, которая всё ещё ведёт себя как река</td>
-<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb" target="_blank" rel="noopener">тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
+<td>Сравните воду для полей и воду, оставленную реке.</td>
+<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html">учебник</a>
+(EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb">тетрадь
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb">Русский</a>
+· Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html">игра</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>5</td>
 <td><strong>Зарафшан в шестнадцати блоках</strong></td>
-<td>Первая модель всего оазиса в виде игры: три рычага, четыре результата и вопрос «может ли другой план побить мой?». Пять «миров»: сухой, средний и влажный год, а также средний год, каким его проецируют климатические модели на 2041–2070 и 2071–2099. Без кода</td>
-<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">что показывает модель</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">памятка, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">игра</a> (EN · RU)</td>
+<td>Исследуйте распределение воды в упрощённой модели Зарафшана без
+кода.</td>
+<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html">что
+показывает модель</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf">памятка,
+PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf">Русский,
+PDF</a> · Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html">игра</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>Дополнительная демонстрация</td>
 <td><strong>Амударья: распределяем годовой объём воды</strong></td>
-<td>По оценке канала Кош-Тепа исследуйте площадь орошения, эффективность и согласованный предел существующих водозаборов. Сравните исходный и сокращённый приток. Это учебные годовые сценарии, а не текущие распределения или юридические права</td>
-<td>Играть: <a href="games/amu_darya_game.html?lang=ru" target="_blank" rel="noopener">игра</a> (EN · RU · UZ)</td>
+<td>По оценке канала Кош-Тепа исследуйте площадь орошения, эффективность
+и согласованный предел существующих водозаборов. Сравните исходный и
+сокращённый приток. Это учебные годовые сценарии, а не текущие
+распределения или юридические права</td>
+<td>Играть: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/amu_darya_game.html?lang=ru">игра</a>
+(EN · RU · UZ)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Применение к реальному бассейну</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Применение к реальному бассейну</td></tr>
 <tr>
 <td>6</td>
 <td><strong>Модель Зарафшана</strong></td>
-<td>Настоящий бассейн глазами TaqSim: река от Раватхузского гидроузла до Навои, два водохранилища (Каттакурганское и Акдарьинское), шесть ирригационных районов, тепловая электростанция и каналы с их потерями: 61 блок, расчёт день за днём за 2017–2022 годы. Сравниваются три правила распределения на гидроузлах: равные доли, доли по шестилетней потребности каждой ветви и доли, меняющиеся по месяцам. Каждый расчёт читается как водный баланс: кто сколько получил, кому не хватило, где вода потерялась</td>
-<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf" target="_blank" rel="noopener">PDF</a> (EN) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb" target="_blank" rel="noopener">тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Запустите модель бассейна и сравните подачу, потери и дефицит.</td>
+<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html">учебник</a>
+(EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf">PDF</a>
+(EN) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb">тетрадь
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>7</td>
 <td><strong>Оптимизация Зарафшана</strong></td>
-<td>Та же модель со 124 открытыми «ручками»: доля воды, оставляемой реке на четырёх гидроузлах, и помесячные правила сброса двух водохранилищ. Четыре цели, которые тянут в разные стороны: суммарный дефицит хозяйств, охлаждающая вода электростанции, справедливость между районами и сбросы, которые оператор действительно может выполнять. NSGA-II, метод поиска, перебирает десятки тысяч планов и возвращает непревзойдённые; учебник показывает, как читать фронт Парето в четырёх измерениях и чему оптимизатор «научился» в управлении водохранилищами</td>
-<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html" target="_blank" rel="noopener">учебник</a> (EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb" target="_blank" rel="noopener">тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Найдите правила распределения, учитывающие несколько целей.</td>
+<td>Читать: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html">учебник</a>
+(EN · RU · UZ) · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb">тетрадь
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb">Русский</a></td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Создайте свою модель с Gemini</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Создайте свою модель с Gemini</td></tr>
 <tr>
 <td>8</td>
 <td><strong>Создайте свою модель с Gemini</strong></td>
-<td>Начните с пустой тетради Colab и опишите водохранилище и два хозяйства обычными словами. Следуйте демонстрации, проверьте связи и водный баланс, исправьте ошибку, затем при желании измените модель для своей задачи</td>
-<td>Читать: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">подсказки и проверки</a> (RU) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">English</a> · Начать: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">пустая тетрадь</a> · Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">готовая запасная тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Создайте и проверьте небольшую модель с помощью Gemini.</td>
+<td>Читать: <a href="gemini/README_RU.md">подсказки и проверки</a> (RU)
+· <a href="gemini/README.md">English</a> · Начать: <a href="https://colab.research.google.com/#create=true">пустая тетрадь</a>
+· Запустить: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb">готовая
+запасная тетрадь — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb">Русский</a></td>
 </tr>
 </tbody>
 </table></div>
-<p>Каждая тетрадь начинается с блока настройки, который занимает около минуты. Всегда запускайте этот блок первым. Игры — это отдельные веб-страницы: нажмите на ссылку и играйте, устанавливать ничего не нужно. Для зала без интернета откройте папку <code>games</code> на GitHub, нажмите на файл, затем на кнопку скачивания (стрелка вниз, справа вверху) и откройте скачанный файл в любом браузере.</p>
+<p>Каждая тетрадь начинается с блока настройки, который занимает около
+минуты. Всегда запускайте этот блок первым. Игры — это отдельные
+веб-страницы: нажмите на ссылку и играйте, устанавливать ничего не
+нужно. Для зала без интернета откройте папку <code>games</code> на
+GitHub, нажмите на файл, затем на кнопку скачивания (стрелка вниз,
+справа вверху) и откройте скачанный файл в любом браузере.</p>
 <h2 id="если-что-то-пошло-не-так">Если что-то пошло не так</h2>
 <ul>
-<li><strong>В блоке появился красный текст, и он остановился.</strong> Прочитайте последнюю строку красного текста. Затем вставьте весь красный текст в Gemini и спросите «что пошло не так?». Так же вы будете работать и во время курса.</li>
-<li><strong>«Среда выполнения отключена» (Runtime disconnected).</strong> Colab останавливает тетрадь, если ею долго не пользуются. Снова выберите <strong>Среда выполнения → Выполнить все</strong>.</li>
-<li><strong>Блок настройки работает очень долго.</strong> Подождите две минуты. Если ничего не происходит, выберите <strong>Среда выполнения → Отключить и удалить среду выполнения</strong>, затем <strong>Выполнить все</strong>.</li>
-<li><strong>Gemini не появляется.</strong> Ему нужен личный аккаунт Google, и он доступен не во всех странах. Вместо него откройте в другой вкладке бесплатное <a href="https://gemini.google.com" target="_blank" rel="noopener">приложение Gemini</a> или <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a>: вставьте туда шпаргалку из стартовой тетради и свой вопрос, а полученный код скопируйте обратно в Colab.</li>
+<li><strong>В блоке появился красный текст, и он остановился.</strong>
+Прочитайте последнюю строку красного текста. Затем вставьте весь красный
+текст в Gemini и спросите «что пошло не так?». Так же вы будете работать
+и во время курса.</li>
+<li><strong>«Среда выполнения отключена» (Runtime
+disconnected).</strong> Colab останавливает тетрадь, если ею долго не
+пользуются. Снова выберите <strong>Среда выполнения → Выполнить
+все</strong>.</li>
+<li><strong>Блок настройки работает очень долго.</strong> Подождите две
+минуты. Если ничего не происходит, выберите <strong>Среда выполнения →
+Отключить и удалить среду выполнения</strong>, затем <strong>Выполнить
+все</strong>.</li>
+<li><strong>Gemini не появляется.</strong> Ему нужен личный аккаунт
+Google, и он доступен не во всех странах. Вместо него откройте в другой
+вкладке бесплатное <a href="https://gemini.google.com">приложение
+Gemini</a> или <a href="https://chatgpt.com">ChatGPT</a>: вставьте туда
+шпаргалку из стартовой тетради и свой вопрос, а полученный код
+скопируйте обратно в Colab.</li>
 </ul>
-<h2 id="для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на компьютере есть Python</h2>
-<p>Всё работает и локально, с Python 3.12 или новее и <code>git</code>:</p>
+<h2 id="для-тех-у-кого-на-компьютере-есть-python">Для тех, у кого на
+компьютере есть Python</h2>
+<p>Всё работает и локально, с Python 3.12 или новее и
+<code>git</code>:</p>
 <pre><code>git clone https://github.com/hydrosolutions/zarafshan-taqsim-course.git
 cd zarafshan-taqsim-course
 pip install deap ctrl-freak pymoo polars jupyter
-pip install --no-deps &quot;git+https://github.com/hydrosolutions/taqsim.git@v0.1.4&quot;
-pip install &quot;git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301&quot;
+pip install --no-deps "git+https://github.com/hydrosolutions/taqsim.git@v0.1.4"
+pip install "git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301"
 jupyter lab</code></pre>
-<p>Блок настройки в начале каждой тетради заметит, что программа уже установлена, и только задаст пути.</p>
+<p>Блок настройки в начале каждой тетради заметит, что программа уже
+установлена, и только задаст пути.</p>
 <h2 id="что-в-папке">Что в папке</h2>
 <ul>
-<li><code>00_starter.ipynb</code> … <code>06_gemini_rescue.ipynb</code>: тетради курса. Следуйте таблице выше; исходная нумерация файлов сохранена.</li>
-<li><code>gemini/</code>: руководство для демонстрации с пустой тетради, проверки и необязательное задание.</li>
-<li><code>src/zarafshan_taqsim/</code>: код модели Зарафшана, который используют тетради.</li>
-<li><code>data/ZRB_baseline/</code>: данные о притоке, водопотреблении, водохранилищах и каналах, 2010–2023.</li>
-<li><code>eflow_game/</code>: модель, стоящая за тетрадью и игрой «вода для реки», с заранее рассчитанными результатами.</li>
-<li><code>coursebooks/</code>: пять учебников в виде веб-страниц, для чтения без запуска.</li>
+<li><code>00_starter.ipynb</code> … <code>06_gemini_rescue.ipynb</code>:
+тетради курса. Следуйте таблице выше; исходная нумерация файлов
+сохранена.</li>
+<li><code>gemini/</code>: руководство для демонстрации с пустой тетради,
+проверки и необязательное задание.</li>
+<li><code>src/zarafshan_taqsim/</code>: код модели Зарафшана, который
+используют тетради.</li>
+<li><code>data/ZRB_baseline/</code>: данные о притоке, водопотреблении,
+водохранилищах и каналах, 2010–2023.</li>
+<li><code>eflow_game/</code>: модель, стоящая за тетрадью и игрой «вода
+для реки», с заранее рассчитанными результатами.</li>
+<li><code>coursebooks/</code>: пять учебников в виде веб-страниц, для
+чтения без запуска.</li>
 <li><code>games/</code>: пять игр.</li>
-<li><code>_cache/</code>: результаты долгих расчётов, чтобы тетрадь по оптимизации открывалась за секунды.</li>
+<li><code>_cache/</code>: результаты долгих расчётов, чтобы тетрадь по
+оптимизации открывалась за секунды.</li>
 </ul>
-<p>Программа модели — <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>, разработка hydrosolutions GmbH. Материалы подготовлены для обучения TaqSim в Ташкенте, 14–15 октября 2026 года.</p>
-<hr />
+<p>Программа модели — <a href="https://github.com/hydrosolutions/taqsim/tree/v0.1.4">TaqSim</a>,
+разработка hydrosolutions GmbH. Материалы подготовлены для обучения
+TaqSim в Ташкенте, 14–15 октября 2026 года.</p>
+<hr/>
 <p><a id="uzbek"></a></p>
-<h1 id="taqsim-kursi-zarafshon-havzasida-suv-taqsimoti">TaqSim kursi: Zarafshon havzasida suv taqsimoti</h1>
-<p>Xush kelibsiz. Bu papkada kursning amaliy qismi uchun kerak boʻlgan hamma narsa bor. Mashqlar brauzerda, Googlening bepul Colab xizmatida bajariladi. Kompyuteringizga hech narsa oʻrnatish shart emas.</p>
-<h2 id="kursdan-oldin-uchta-ish-15-daqiqa">Kursdan oldin: uchta ish (15 daqiqa)</h2>
-<p><strong>1. Google hisobini oching.</strong> Gmail manzilingiz boʻlsa, undan foydalanishingiz mumkin. Boʻlmasa, <a href="https://accounts.google.com/signup" target="_blank" rel="noopener">accounts.google.com</a> sahifasida yarating. Google tasdiqlash uchun telefon raqamini soʻrashi mumkin.</p>
+<h1 id="taqsim-kursi-zarafshon-havzasida-suv-taqsimoti">TaqSim kursi:
+Zarafshon havzasida suv taqsimoti</h1>
+<p><strong>TaqSim</strong> — suv taqsimotini modellashtiradigan Python
+dasturi: oqimlar, omborlar, kanallar va isteʼmolchilarni ulab, suv
+qayerga borishi va kimga yetmasligini kuzatasiz. Kurs daftarlar va
+oʻyinlar orqali TaqSim v0.1.4 dan foydalanadi.</p>
+<p><a href="#kursdan-oldin-uchta-ish-15-daqiqa">Tayyorlash</a> · <a href="#kurs-qadam-baqadam">Kurs qadamlari</a></p>
+<p>Xush kelibsiz. Bu papkada kursning amaliy qismi uchun kerak boʻlgan
+hamma narsa bor. Mashqlar brauzerda, Googlening bepul Colab xizmatida
+bajariladi. Kompyuteringizga hech narsa oʻrnatish shart emas.</p>
+<h2 id="kursdan-oldin-uchta-ish-15-daqiqa">Kursdan oldin: uchta ish (15
+daqiqa)</h2>
+<p><strong>1. Google hisobini oching.</strong> Gmail manzilingiz boʻlsa,
+undan foydalanishingiz mumkin. Boʻlmasa, <a href="https://accounts.google.com/signup">accounts.google.com</a>
+sahifasida yarating. Google tasdiqlash uchun telefon raqamini soʻrashi
+mumkin.</p>
 <p><strong>2. Birinchi daftarni oching.</strong> Shu tugmani bosing:</p>
-<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb" target="_blank" rel="noopener"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" /></a></p>
-<p>Matn va kulrang kod bloklari boʻlgan sahifa ochiladi. Bu <em>daftar</em> (notebook). Har bir kulrang blok ishga tushirish mumkin boʻlgan bitta qadam.</p>
-<p><strong>3. Ishga tushiring.</strong> Yuqoridagi menyudan <strong>Runtime → Run all</strong> ni tanlang. Birinchi blok model dasturini oʻrnatadi, bu bir daqiqacha vaqt oladi. Soʻng kichik daryo tizimining chizmasi, jadval va grafik paydo boʻladi. Ularni koʻrsangiz, kursga tayyorsiz.</p>
-<p>Agar Colab daftar Google tomonidan yozilmagani uchun «Run anyway?» deb soʻrasa, <strong>Run anyway</strong> ni bosing. Bu odatiy hol.</p>
-<h2 id="sunʼiy-intellekt-yordamchisini-sinab-koʻrish-10-daqiqa-ixtiyoriy-lekin-tavsiya-etiladi">Sunʼiy intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin tavsiya etiladi)</h2>
-<p>Colab ichida Gemini nomli yordamchi bor. Kursda siz u orqali suv modellarini oddiy soʻzlar bilan tasvirlab oʻzgartirasiz. Sinab koʻrish uchun:</p>
+<p><a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb"><img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<p>Matn va kulrang kod bloklari boʻlgan sahifa ochiladi. Bu
+<em>daftar</em> (notebook). Har bir kulrang blok ishga tushirish mumkin
+boʻlgan bitta qadam.</p>
+<p><strong>3. Ishga tushiring.</strong> Yuqoridagi menyudan
+<strong>Runtime → Run all</strong> ni tanlang. Birinchi blok model
+dasturini oʻrnatadi, bu bir daqiqacha vaqt oladi. Soʻng kichik daryo
+tizimining chizmasi, jadval va grafik paydo boʻladi. Ularni koʻrsangiz,
+kursga tayyorsiz.</p>
+<p>Agar Colab daftar Google tomonidan yozilmagani uchun «Run anyway?»
+deb soʻrasa, <strong>Run anyway</strong> ni bosing. Bu odatiy hol.</p>
+<h2 id="sunʼiy-intellekt-yordamchisini-sinab-koʻrish-10-daqiqa-ixtiyoriy-lekin-tavsiya-etiladi">Sunʼiy
+intellekt yordamchisini sinab koʻrish (10 daqiqa, ixtiyoriy, lekin
+tavsiya etiladi)</h2>
+<p>Colab ichida Gemini nomli yordamchi bor. Kursda siz u orqali suv
+modellarini oddiy soʻzlar bilan tasvirlab oʻzgartirasiz. Sinab koʻrish
+uchun:</p>
 <ol type="1">
-<li><p>Sahifaning pastidagi koʻk <strong>Gemini</strong> tugmasini bosing.</p></li>
-<li><p>Shu jumlani chatga nusxalab yuboring (inglizcha boʻlsa ham boʻladi):</p>
+<li><p>Sahifaning pastidagi koʻk <strong>Gemini</strong> tugmasini
+bosing.</p></li>
+<li><p>Shu jumlani chatga nusxalab yuboring (inglizcha boʻlsa ham
+boʻladi):</p>
 <blockquote>
-<p>Find the smallest canal share, in steps of 1 percent, for which the farm has no shortage in any of the three years. Use the run() function.</p>
+<p>Find the smallest canal share, in steps of 1 percent, for which the
+farm has no shortage in any of the three years. Use the run()
+function.</p>
 </blockquote></li>
-<li><p>Gemini kod bilan javob beradi. <strong>Insert</strong> ni bosing (yoki kodni <strong>+ Code</strong> orqali yangi blokka nusxalang) va blokni ishga tushiring. Toʻgʻri javob — <strong>9 foiz</strong>.</p></li>
+<li><p>Taklif qilingan kodni oʻqing. <strong>Accept and execute</strong>
+kodni kiritib ishga tushiradi; <strong>Accept</strong> faqat kiritadi;
+<strong>Deny</strong> rad etadi. Ayrim interfeyslarda
+<strong>Insert</strong> bor. Kodni <strong>+ Code</strong> orqali
+nusxalab, ishga tushirish ham mumkin. Toʻgʻri javob — <strong>9
+foiz</strong>.</p></li>
 </ol>
-<p>Shu ishlagan boʻlsa, kurs uchun kerak boʻlgan hamma narsani qildingiz. Gemini uchun boshqa topshiriqlar daftarning oʻzida bor.</p>
-<span id="chatgpt-va-ixtiyoriy-sider-yon-paneli"></span><h2 id="chatgpt-va-ixtiyoriy-ai-sider-yon-paneli">ChatGPT va ixtiyoriy AI Sider yon paneli</h2>
-<p><strong>ChatGPT va Gemini veb-versiyalari Oʻzbekistonda rasman qoʻllab-quvvatlanadi.</strong> <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries" target="_blank" rel="noopener">OpenAI mamlakatlar roʻyxati</a> va <a href="https://support.google.com/gemini/answer/13575153?hl=en" target="_blank" rel="noopener">Google mamlakatlar roʻyxatini</a> koʻring. Bu mamlakat qoʻllab-quvvatlanishini bildiradi, ammo seminar joyidagi Wi-Fi orqali ishlashini tasdiqlamaydi: VPNsiz ulanish va kengaytmani oʻrnatishni seminardan oldin joyida tekshirish kerak.</p>
-<p><strong>zenttranslate taqdim etgan AI Sider: ChatGPT + DeepSeek + Gemini kengaytmasidan foydalaning.</strong> Chrome uchun bu ixtiyoriy kengaytma daftar yonida AI xizmatlarining oʻz saytlarini ochadi. U Sider.ai mahsulotidan farq qiladi. Kengaytma uchun alohida hisob kerak emas; tanlangan AI xizmati hisobiga kiring. <a href="https://chatgpt.com/plans/free/" target="_blank" rel="noopener">Bepul ChatGPT hisobi</a> odatiy ChatGPT imkoniyatlarini uning standart cheklovlari bilan beradi. Mashqlar uchun pulli obuna yoki API kaliti kerak emas.</p>
+<p>Shu ishlagan boʻlsa, kurs uchun kerak boʻlgan hamma narsani
+qildingiz. Gemini uchun boshqa topshiriqlar daftarning oʻzida bor.</p>
+<h2 id="chatgpt-va-ixtiyoriy-ai-sider-yon-paneli">ChatGPT va ixtiyoriy
+AI Sider yon paneli</h2>
+<p><strong>ChatGPT va Gemini veb-versiyalari Oʻzbekistonda rasman
+qoʻllab-quvvatlanadi.</strong> <a href="https://help.openai.com/en/articles/7947663-chatgpt-supported-countries">OpenAI
+mamlakatlar roʻyxati</a> va <a href="https://support.google.com/gemini/answer/13575153?hl=en">Google
+mamlakatlar roʻyxatini</a> koʻring. Bu mamlakat qoʻllab-quvvatlanishini
+bildiradi, ammo seminar joyidagi Wi-Fi orqali ishlashini tasdiqlamaydi:
+VPNsiz ulanish va kengaytmani oʻrnatishni seminardan oldin joyida
+tekshirish kerak.</p>
+<p><strong>zenttranslate taqdim etgan AI Sider: ChatGPT + DeepSeek +
+Gemini kengaytmasidan foydalaning.</strong> Chrome uchun bu ixtiyoriy
+kengaytma daftar yonida AI xizmatlarining oʻz saytlarini ochadi. U
+Sider.ai mahsulotidan farq qiladi. Kengaytma uchun alohida hisob kerak
+emas; tanlangan AI xizmati hisobiga kiring. <a href="https://chatgpt.com/plans/free/">Bepul ChatGPT hisobi</a> odatiy
+ChatGPT imkoniyatlarini uning standart cheklovlari bilan beradi.
+Mashqlar uchun pulli obuna yoki API kaliti kerak emas.</p>
 <ol type="1">
-<li>Kompyuterdagi Chrome orqali <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm" target="_blank" rel="noopener">aynan shu AI Sider kengaytmasining sahifasini</a> oching, nashriyotchi <strong>zenttranslate</strong> ekanini tekshiring, <strong>Add to Chrome</strong> ni bosing va soʻralgan ruxsatlarni koʻrib chiqing. Kengaytma allaqachon oʻrnatilgan boʻlsa, uni kengaytmalar menyusidan (pazl belgisi) oching.</li>
-<li>Colab daftari yonida panelni oching, ChatGPT yoki Gemini ni tanlang va tegishli xizmat hisobiga kiring. ChatGPT uchun kerak boʻlsa <strong>Sign up</strong> ni tanlab, bepul tarifda qoling. Panel orqali kirish ishlamasa, <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> yoki <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a> ni alohida brauzer varagʻida oching.</li>
-<li>Kerakli kod bloki, xato xabari, sahifa matni yoki ekran tasvirini yordamchiga aniq yuboring. U butun daftarni koʻryapti deb oʻylamang. Soʻrang: «Kodni oddiy soʻzlar bilan tushuntir, bitta kichik oʻzgarish taklif qil va almashtirish uchun toʻliq kod blokini koʻrsat».</li>
-<li>Javobni oʻqing, kodni yangi Colab blokiga nusxalang, oʻzingiz ishga tushiring va suv balansi hamda natijalarni tekshiring. Bu panel orqali Colab kodini avtomatik tahrirlash yoki ishga tushirish tekshirilmagan. Yangi AI xizmatini sinashda faqat kursning ochiq misollaridan foydalaning.</li>
+<li>Kompyuterdagi Chrome orqali <a href="https://chromewebstore.google.com/detail/ai-sider-chatgpt-%2B-deepse/cpggpmmbmacgemcffkapmeadpnfnmkbm">aynan
+shu AI Sider kengaytmasining sahifasini</a> oching, nashriyotchi
+<strong>zenttranslate</strong> ekanini tekshiring, <strong>Add to
+Chrome</strong> ni bosing va soʻralgan ruxsatlarni koʻrib chiqing.
+Kengaytma allaqachon oʻrnatilgan boʻlsa, uni kengaytmalar menyusidan
+(pazl belgisi) oching.</li>
+<li>Colab daftari yonida panelni oching, ChatGPT yoki Gemini ni tanlang
+va tegishli xizmat hisobiga kiring. ChatGPT uchun kerak boʻlsa
+<strong>Sign up</strong> ni tanlab, bepul tarifda qoling. Panel orqali
+kirish ishlamasa, <a href="https://chatgpt.com">ChatGPT</a> yoki <a href="https://gemini.google.com">Gemini</a> ni alohida brauzer varagʻida
+oching.</li>
+<li>Kerakli kod bloki, xato xabari, sahifa matni yoki ekran tasvirini
+yordamchiga aniq yuboring. U butun daftarni koʻryapti deb oʻylamang.
+Soʻrang: «Kodni oddiy soʻzlar bilan tushuntir, bitta kichik oʻzgarish
+taklif qil va almashtirish uchun toʻliq kod blokini koʻrsat».</li>
+<li>Javobni oʻqing, kodni yangi Colab blokiga nusxalang, oʻzingiz ishga
+tushiring va suv balansi hamda natijalarni tekshiring. Bu panel orqali
+Colab kodini avtomatik tahrirlash yoki ishga tushirish tekshirilmagan.
+Yangi AI xizmatini sinashda faqat kursning ochiq misollaridan
+foydalaning.</li>
 </ol>
-<p>Xuddi shu soʻrovlarni ChatGPT yoki Gemini ochilgan alohida brauzer varagʻida ham ishlatish mumkin. Suv ombori va ikkita xoʻjalik mashqi uchun yordamchiga <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/API_CARD.md" target="_blank" rel="noopener">TaqSim API qoʻllanmasini</a> ham bering: shunda u kursdagi model versiyasidan foydalanadi. Seminar namoyishida Gemini Colab ichida ishlatiladi; AI Sider — ixtiyoriy muqobil interfeys.</p>
+<p>Xuddi shu soʻrovlarni ChatGPT yoki Gemini ochilgan alohida brauzer
+varagʻida ham ishlatish mumkin. Suv ombori va ikkita xoʻjalik mashqi
+uchun yordamchiga <a href="gemini/API_CARD.md">TaqSim API
+qoʻllanmasini</a> ham bering: shunda u kursdagi model versiyasidan
+foydalanadi. Seminar namoyishida Gemini Colab ichida ishlatiladi; AI
+Sider — ixtiyoriy muqobil interfeys.</p>
 <h2 id="uch-xil-material">Uch xil material</h2>
-<p>Har bir qadam uchtagacha narsa taklif qiladi. Quyidagi jadvalda ular doim bir xil nomlanadi:</p>
+<p>Har bir qadam uchtagacha narsa taklif qiladi. Quyidagi jadvalda ular
+doim bir xil nomlanadi:</p>
 <ul>
-<li><strong>Oʻqish: darslik.</strong> Oʻquv maqsadlari, Zarafshon havzasi haqidagi maʼlumot, maʼlumotlar va ularning manbalari, model, tahlil qilingan natijalar va adabiyotlar roʻyxati bilan toʻliq matn, barcha rasmlari bilan veb-sahifa sifatida. Hech narsa ishga tushirish shart emas, hisob kerak emas.</li>
-<li><strong>Ishga tushirish: daftar.</strong> Oʻsha matn Colab da, orqasidagi kod bilan, siz koʻrmoqchi boʻlguncha yigʻilgan holda. Raqamni oʻzgartiring, qayta ishga tushiring, nima oʻzgarganini koʻring. Google hisobi kerak.</li>
-<li><strong>Oʻynash: oʻyin.</strong> Interaktiv veb-sahifa: richaglarni siz surasiz, natijalar darhol koʻrinadi. Kodsiz, hisobsiz. Oʻyinlar beshta: TaqSim blokma-blok (2-qadam), suv ombori oʻyini (3-qadam), daryo uchun suv (4-qadam) va oʻn olti blokdagi Zarafshon (5-qadam), shuningdek Amudaryo uchun qoʻshimcha yillik namoyish.</li>
+<li><strong>Oʻqish: darslik.</strong> Oʻquv maqsadlari, Zarafshon
+havzasi haqidagi maʼlumot, maʼlumotlar va ularning manbalari, model,
+tahlil qilingan natijalar va adabiyotlar roʻyxati bilan toʻliq matn,
+barcha rasmlari bilan veb-sahifa sifatida. Hech narsa ishga tushirish
+shart emas, hisob kerak emas.</li>
+<li><strong>Ishga tushirish: daftar.</strong> Oʻsha matn Colab da,
+orqasidagi kod bilan, siz koʻrmoqchi boʻlguncha yigʻilgan holda. Raqamni
+oʻzgartiring, qayta ishga tushiring, nima oʻzgarganini koʻring. Google
+hisobi kerak.</li>
+<li><strong>Oʻynash: oʻyin.</strong> Interaktiv veb-sahifa: richaglarni
+siz surasiz, natijalar darhol koʻrinadi. Kodsiz, hisobsiz. Oʻyinlar
+beshta: TaqSim blokma-blok (2-qadam), suv ombori oʻyini (3-qadam), daryo
+uchun suv (4-qadam) va oʻn olti blokdagi Zarafshon (5-qadam), shuningdek
+Amudaryo uchun qoʻshimcha yillik namoyish.</li>
 </ul>
-<p>Har bir darslikda English · Русский · Oʻzbekcha til tugmalari bor. Daftarlar kerakli tildagi alohida havola orqali ochiladi.</p>
-<p>Har bir havoladan keyin uning tillari koʻrsatilgan: EN inglizcha, RU ruscha, UZ oʻzbekcha. Darsliklar ishlatadigan maʼlumotlar ushbu paketning <code>data/</code> papkasida.</p>
+<p><strong>Tillar.</strong> Darsliklar ingliz, rus va oʻzbek tillarida.
+Daftarlarning EN va RU havolalari bor; 3-qadamda UZ ham bor. Interaktiv
+bloklar darsligi faqat EN. Ayrim rasmlar yozuvi inglizcha, izohlari
+tarjima qilingan. EN — inglizcha, RU — ruscha, UZ — oʻzbekcha.</p>
+<p><strong>Maʼlumotlar:</strong> <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/tree/main/data">kurs
+papkasi</a>.</p>
 <h2 id="kurs-qadam-baqadam">Kurs qadam-baqadam</h2>
-<p>Har bir qadam oldingisiga bitta narsa qoʻshadi. Suv modellarini bilsangiz ham yuqoridan boshlang: vositalar hamma uchun yangi.</p>
-<p><strong>Seminar 2026-yil 14–15-oktabr kunlari, ikki yarim kun davom etadi.</strong> Quyidagi ketma-ketlikda namoyishlar, oʻyinlar va amaliy mashqlar bilan ishlaymiz; surʼat moslashuvchan. Maqsad — tayyor misollarni ishga tushirish, oʻzgartirish va natijalarini tushuntirish. Yakunda Gemini namoyishi va ixtiyoriy mustaqil topshiriq boʻladi. Tugallanmagan mashqlarni keyin davom ettirish mumkin; barcha materiallar onlayn qoladi.</p>
+<p>Daftar fayllarining eski raqamlari saqlangan. Jadvaldagi qadam
+raqamlariga amal qiling; har bir daftar boshida qadam koʻrsatilgan.</p>
+<p>Har bir qadam oldingisiga bitta narsa qoʻshadi. Suv modellarini
+bilsangiz ham yuqoridan boshlang: vositalar hamma uchun yangi.</p>
+<p><strong>Seminar 2026-yil 14–15-oktabr kunlari, ikki yarim kun davom
+etadi.</strong> Quyidagi ketma-ketlikda namoyishlar, oʻyinlar va amaliy
+mashqlar bilan ishlaymiz; surʼat moslashuvchan. Maqsad — tayyor
+misollarni ishga tushirish, oʻzgartirish va natijalarini tushuntirish.
+Yakunda Gemini namoyishi va ixtiyoriy mustaqil topshiriq boʻladi.
+Tugallanmagan mashqlarni keyin davom ettirish mumkin; barcha materiallar
+onlayn qoladi.</p>
 <div class="table-scroll" tabindex="0"><table>
 <thead>
 <tr>
 <th>Qadam</th>
 <th>Nima</th>
-<th>Bu qadamda nima yangi</th>
+<th>Bu qadamda nima qilasiz</th>
 <th>Ochish</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td></td>
-<td><strong>Kirish</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Kirish</td></tr>
 <tr>
 <td>1</td>
 <td><strong>Boshlanish daftari</strong></td>
-<td>Vositalar: Colab, daftar, kichkina daryo tizimi va uni siz uchun oʻzgartiradigan Gemini</td>
-<td>Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb" target="_blank" rel="noopener">daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Colab da kichik daryo modelini ishga tushiring va Gemini bilan
+oʻzgartiring.</td>
+<td>Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter.ipynb">daftar
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/00_starter_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>TaqSim blokma-blok</strong></td>
-<td>TaqSim tashkil topgan yetti xil blok: har birining kundalik hayotdan olingan tasviri, nima qilishini koʻrsatadigan eng kichik tizim va uning «qoida kartasi» — har oy nima qilishni aytadigan bir necha qator kod. Soʻng yettalasi bitta kichik daryoda va har bir tomchi hisobga olinganini tekshirish</td>
-<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/" target="_blank" rel="noopener">Interaktiv darslik — sinab koʻring</a> (EN)</strong> · Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb" target="_blank" rel="noopener">daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
+<td>Yetti blok turi, ularning qoidalari va suv balansini oʻrganing.</td>
+<td><strong><a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/interactive/taqsim-blocks/">Interaktiv
+darslik — sinab koʻring</a> (EN)</strong> · Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/taqsim_blocks_coursebook.html">darslik</a>
+(EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks.ipynb">daftar
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/01_blocks_ru.ipynb">Русский</a>
+· Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/taqsim_blocks_game.html">oʻyin</a>
+(EN · RU)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Sodda oʻquv misollari</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Sodda oʻquv misollari</td></tr>
 <tr>
 <td>3</td>
 <td><strong>Suv ombori va dala</strong></td>
-<td>Birinchi suv rejangiz: ikkita richag, bir nechta natija va boshqa hech qaysi reja yenga olmaydigan rejalar toʻplami. Bu Pareto gʻoyasi, hozircha soʻzsiz</td>
-<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN · RU · UZ) · Ishga tushirish: daftar <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb" target="_blank" rel="noopener">English</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb" target="_blank" rel="noopener">Русский</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb" target="_blank" rel="noopener">Oʻzbekcha</a> tilida · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
+<td>Ombor qoidalari va taqchillikni solishtiring; qishki talab va
+prognozni oʻrganing.</td>
+<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/reservoir_and_farm_coursebook.html">darslik</a>
+(EN · RU · UZ) · Ishga tushirish: daftar <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_en.ipynb">English</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_ru.ipynb">Русский</a>
+· <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/02_rationing_uz.ipynb">Oʻzbekcha</a>
+tilida · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/rationing_explorer.html">oʻyin</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>Daryo uchun suv: oʻyin va daftar</strong></td>
-<td>Boshqa turdagi murosa: ekinlar uchun suv va hali ham daryodek oqadigan daryo</td>
-<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb" target="_blank" rel="noopener">daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb" target="_blank" rel="noopener">Русский</a> · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
+<td>Ekinlarga berilgan va daryoda qoldirilgan suvni solishtiring.</td>
+<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/river_for_nature_coursebook.html">darslik</a>
+(EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow.ipynb">daftar
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/05_eflow_ru.ipynb">Русский</a>
+· Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/eflow_game.html">oʻyin</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>5</td>
 <td><strong>Oʻn olti blokdagi Zarafshon</strong></td>
-<td>Butun vohaning oʻyin shaklidagi birinchi modeli: uchta richag, toʻrtta natija va «boshqa biror reja menikini yenga oladimi?» degan savol. Beshta «dunyo»: qurgʻoqchil, oʻrtacha va seryogʻin yil, hamda iqlim modellari 2041–2070 va 2071–2099 uchun bashorat qilgan oʻrtacha yil. Kodsiz</td>
-<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html" target="_blank" rel="noopener">model nimani koʻrsatadi</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf" target="_blank" rel="noopener">bir sahifali eslatma, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf" target="_blank" rel="noopener">Русский, PDF</a> · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html" target="_blank" rel="noopener">oʻyin</a> (EN · RU)</td>
+<td>Zarafshonning sodda modelida suv taqsimotini kodsiz oʻrganing.</td>
+<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/sixteen_blocks_read_first.html">model
+nimani koʻrsatadi</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout.pdf">bir
+sahifali eslatma, PDF — EN</a> · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/sixteen_blocks_handout_ru.pdf">Русский,
+PDF</a> · Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/zarafshan_warmup_game.html">oʻyin</a>
+(EN · RU)</td>
 </tr>
 <tr>
 <td>Qoʻshimcha namoyish</td>
 <td><strong>Amudaryo: yillik suvni taqsimlash</strong></td>
-<td>Qoʻshtepa baholashi asosida sugʻorish maydoni, samaradorlik va mavjud suv olish chegarasini oʻzgartiring. Yillik oʻquv ssenariylari; amaldagi taqsimot yoki huquqiy meʼyor emas</td>
-<td>Oʻynash: <a href="games/amu_darya_game.html?lang=uz" target="_blank" rel="noopener">oʻyin</a> (EN · RU · UZ)</td>
+<td>Qoʻshtepa baholashi asosida sugʻorish maydoni, samaradorlik va
+mavjud suv olish chegarasini oʻzgartiring. Yillik oʻquv ssenariylari;
+amaldagi taqsimot yoki huquqiy meʼyor emas</td>
+<td>Oʻynash: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/games/amu_darya_game.html?lang=uz">oʻyin</a>
+(EN · RU · UZ)</td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Haqiqiy havzaga tatbiq</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Haqiqiy havzaga tatbiq</td></tr>
 <tr>
 <td>6</td>
 <td><strong>Zarafshon modeli</strong></td>
-<td>Haqiqiy havza TaqSim koʻzi bilan: Ravatxoʻja gidrouzelidan Navoiygacha daryo, ikkita suv ombori (Kattaqoʻrgʻon va Oqdaryo), oltita sugʻorish tumani, issiqlik elektr stansiyasi va yoʻqotishlari bilan kanallar: 61 blok, 2017–2022 yillar davomida kun-bakun hisob. Gidrouzellarda uchta taqsimlash qoidasi taqqoslanadi: teng ulushlar, har bir tarmoqning olti yillik ehtiyojiga qarab belgilangan ulushlar va oyma-oy oʻzgaradigan ulushlar. Har bir hisob suv balansi sifatida oʻqiladi: kim qancha oldi, kimga yetmadi, suv qayerda yoʻqoldi</td>
-<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf" target="_blank" rel="noopener">PDF</a> (EN) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb" target="_blank" rel="noopener">daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Havza modelini ishga tushirib, yetkazish, yoʻqotish va taqchillikni
+solishtiring.</td>
+<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/simulation_coursebook.html">darslik</a>
+(EN · RU · UZ) · <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/zrb_water_system_simulation_coursebook.pdf">PDF</a>
+(EN) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation.ipynb">daftar
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/03_simulation_ru.ipynb">Русский</a></td>
 </tr>
 <tr>
 <td>7</td>
 <td><strong>Zarafshonni optimallashtirish</strong></td>
-<td>Oʻsha model 124 ta ochiq «dastak» bilan: toʻrtta gidrouzelda daryoga qoldiriladigan suv ulushi va ikki suv omborining oyma-oy chiqarish qoidalari. Bir-biriga qarshi tortadigan toʻrtta maqsad: xoʻjaliklarning umumiy taqchilligi, elektr stansiyasining sovitish suvi, tumanlar orasidagi adolat va operator haqiqatan bajara oladigan chiqarishlar. Qidiruv usuli NSGA-II oʻn minglab rejani sinab koʻrib, ustun kelib boʻlmaydiganlarini qaytaradi; darslik toʻrt oʻlchamli Pareto frontini qanday oʻqishni va optimallashtirgich suv omborlarini boshqarishda nimani «oʻrganganini» koʻrsatadi</td>
-<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html" target="_blank" rel="noopener">darslik</a> (EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb" target="_blank" rel="noopener">daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Bir nechta maqsadni hisobga oladigan taqsimot qoidalarini
+izlang.</td>
+<td>Oʻqish: <a href="https://hydrosolutions.github.io/zarafshan-taqsim-course/coursebooks/optimization_coursebook.html">darslik</a>
+(EN · RU · UZ) · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization.ipynb">daftar
+— EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/04_optimization_ru.ipynb">Русский</a></td>
 </tr>
-<tr>
-<td></td>
-<td><strong>Gemini bilan oʻz modelingizni yarating</strong></td>
-<td></td>
-<td></td>
-</tr>
+<tr class="course-group"><td colspan="4">Gemini bilan oʻz modelingizni yarating</td></tr>
 <tr>
 <td>8</td>
 <td><strong>Gemini bilan oʻz modelingizni yarating</strong></td>
-<td>Boʻsh Colab daftaridan boshlang va suv ombori hamda ikkita xoʻjalikni oddiy soʻzlar bilan tasvirlang. Namoyishni kuzating, bogʻlanishlar va suv balansini tekshiring, xatoni tuzating, soʻng ixtiyoriy ravishda modelni oʻz vazifangizga moslang</td>
-<td>Oʻqish: <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README.md" target="_blank" rel="noopener">soʻrovlar va tekshiruvlar qoʻllanmasi</a> (EN) · <a href="https://github.com/hydrosolutions/zarafshan-taqsim-course/blob/main/gemini/README_RU.md" target="_blank" rel="noopener">Русский</a> · Boshlash: <a href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">boʻsh daftar</a> · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb" target="_blank" rel="noopener">tayyor zaxira daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb" target="_blank" rel="noopener">Русский</a></td>
+<td>Gemini yordamida kichik model yarating va tekshiring.</td>
+<td>Oʻqish: <a href="gemini/README.md">soʻrovlar va tekshiruvlar
+qoʻllanmasi</a> (EN) · <a href="gemini/README_RU.md">Русский</a> ·
+Boshlash: <a href="https://colab.research.google.com/#create=true">boʻsh
+daftar</a> · Ishga tushirish: <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue.ipynb">tayyor
+zaxira daftar — EN</a> · <a href="https://colab.research.google.com/github/hydrosolutions/zarafshan-taqsim-course/blob/main/06_gemini_rescue_ru.ipynb">Русский</a></td>
 </tr>
 </tbody>
 </table></div>
-<p>Har bir daftar bir daqiqacha davom etadigan sozlash bloki bilan boshlanadi. Doim avval shu blokni ishga tushiring. Oʻyinlar alohida veb-sahifalardir: havolani bosing va oʻynang, hech narsa oʻrnatish shart emas. Internetsiz xona uchun GitHub da <code>games</code> papkasini oching, faylni bosing, yuklab olish tugmasini (oʻng yuqoridagi pastga strelka) bosing va yuklangan faylni istalgan brauzerda oching.</p>
-<h2 id="agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri ketsa</h2>
+<p>Har bir daftar bir daqiqacha davom etadigan sozlash bloki bilan
+boshlanadi. Doim avval shu blokni ishga tushiring. Oʻyinlar alohida
+veb-sahifalardir: havolani bosing va oʻynang, hech narsa oʻrnatish shart
+emas. Internetsiz xona uchun GitHub da <code>games</code> papkasini
+oching, faylni bosing, yuklab olish tugmasini (oʻng yuqoridagi pastga
+strelka) bosing va yuklangan faylni istalgan brauzerda oching.</p>
+<h2 id="agar-biror-narsa-notoʻgʻri-ketsa">Agar biror narsa notoʻgʻri
+ketsa</h2>
 <ul>
-<li><strong>Blokda qizil matn chiqdi va u toʻxtadi.</strong> Qizil matnning oxirgi qatorini oʻqing. Soʻng butun qizil matnni Gemini ga qoʻyib, «nima notoʻgʻri ketdi?» deb soʻrang. Kurs davomida ham shunday ishlaysiz.</li>
-<li><strong>«Runtime disconnected».</strong> Colab uzoq vaqt ishlatilmagan daftarni toʻxtatadi. Yana <strong>Runtime → Run all</strong> ni tanlang.</li>
-<li><strong>Sozlash bloki juda uzoq ishlayapti.</strong> Ikki daqiqa kuting. Hech narsa boʻlmasa, <strong>Runtime → Disconnect and delete runtime</strong>, soʻng <strong>Runtime → Run all</strong> ni tanlang.</li>
-<li><strong>Gemini chiqmayapti.</strong> Unga shaxsiy Google hisobi kerak va u hamma mamlakatda ham mavjud emas. Oʻrniga boshqa oynada bepul <a href="https://gemini.google.com" target="_blank" rel="noopener">Gemini ilovasi</a> yoki <a href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a> dan foydalaning: boshlanish daftaridagi eslatma varaqasini va savolingizni u yerga qoʻying, olingan kodni Colab ga qaytarib nusxalang.</li>
+<li><strong>Blokda qizil matn chiqdi va u toʻxtadi.</strong> Qizil
+matnning oxirgi qatorini oʻqing. Soʻng butun qizil matnni Gemini ga
+qoʻyib, «nima notoʻgʻri ketdi?» deb soʻrang. Kurs davomida ham shunday
+ishlaysiz.</li>
+<li><strong>«Runtime disconnected».</strong> Colab uzoq vaqt
+ishlatilmagan daftarni toʻxtatadi. Yana <strong>Runtime → Run
+all</strong> ni tanlang.</li>
+<li><strong>Sozlash bloki juda uzoq ishlayapti.</strong> Ikki daqiqa
+kuting. Hech narsa boʻlmasa, <strong>Runtime → Disconnect and delete
+runtime</strong>, soʻng <strong>Runtime → Run all</strong> ni
+tanlang.</li>
+<li><strong>Gemini chiqmayapti.</strong> Unga shaxsiy Google hisobi
+kerak va u hamma mamlakatda ham mavjud emas. Oʻrniga boshqa oynada bepul
+<a href="https://gemini.google.com">Gemini ilovasi</a> yoki <a href="https://chatgpt.com">ChatGPT</a> dan foydalaning: boshlanish
+daftaridagi eslatma varaqasini va savolingizni u yerga qoʻying, olingan
+kodni Colab ga qaytarib nusxalang.</li>
 </ul>
-<h2 id="kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor kishilar uchun</h2>
-<p>Hammasi lokal ham ishlaydi, Python 3.12 yoki undan yangisi va <code>git</code> bilan:</p>
+<h2 id="kompyuterida-python-bor-kishilar-uchun">Kompyuterida Python bor
+kishilar uchun</h2>
+<p>Hammasi lokal ham ishlaydi, Python 3.12 yoki undan yangisi va
+<code>git</code> bilan:</p>
 <pre><code>git clone https://github.com/hydrosolutions/zarafshan-taqsim-course.git
 cd zarafshan-taqsim-course
 pip install deap ctrl-freak pymoo polars jupyter
-pip install --no-deps &quot;git+https://github.com/hydrosolutions/taqsim.git@v0.1.4&quot;
-pip install &quot;git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301&quot;
+pip install --no-deps "git+https://github.com/hydrosolutions/taqsim.git@v0.1.4"
+pip install "git+https://github.com/hydrosolutions/fishy.git@881660e8901987d63d89caf61ef0d30991000301"
 jupyter lab</code></pre>
-<p>Har bir daftarning boshidagi sozlash bloki dastur allaqachon oʻrnatilganini sezadi va faqat yoʻllarni belgilaydi.</p>
+<p>Har bir daftarning boshidagi sozlash bloki dastur allaqachon
+oʻrnatilganini sezadi va faqat yoʻllarni belgilaydi.</p>
 <h2 id="papkada-nima-bor">Papkada nima bor</h2>
 <ul>
-<li><code>00_starter.ipynb</code> … <code>06_gemini_rescue.ipynb</code>: kurs daftarlari. Yuqoridagi jadvalga amal qiling; fayllarning eski raqamlari saqlangan.</li>
-<li><code>gemini/</code>: boʻsh daftardan boshlash qoʻllanmasi, tekshiruvlar va ixtiyoriy topshiriq.</li>
-<li><code>src/zarafshan_taqsim/</code>: daftarlar ishlatadigan Zarafshon modelining kodi.</li>
-<li><code>data/ZRB_baseline/</code>: oqim, suv talabi, suv omborlari va kanallar maʼlumotlari, 2010–2023.</li>
-<li><code>eflow_game/</code>: «daryo uchun suv» daftari va oʻyini ortidagi model, oldindan hisoblangan natijalar bilan.</li>
-<li><code>coursebooks/</code>: beshta darslik veb-sahifa koʻrinishida, hech narsa ishga tushirmasdan oʻqish uchun.</li>
+<li><code>00_starter.ipynb</code> … <code>06_gemini_rescue.ipynb</code>:
+kurs daftarlari. Yuqoridagi jadvalga amal qiling; fayllarning eski
+raqamlari saqlangan.</li>
+<li><code>gemini/</code>: boʻsh daftardan boshlash qoʻllanmasi,
+tekshiruvlar va ixtiyoriy topshiriq.</li>
+<li><code>src/zarafshan_taqsim/</code>: daftarlar ishlatadigan Zarafshon
+modelining kodi.</li>
+<li><code>data/ZRB_baseline/</code>: oqim, suv talabi, suv omborlari va
+kanallar maʼlumotlari, 2010–2023.</li>
+<li><code>eflow_game/</code>: «daryo uchun suv» daftari va oʻyini
+ortidagi model, oldindan hisoblangan natijalar bilan.</li>
+<li><code>coursebooks/</code>: beshta darslik veb-sahifa koʻrinishida,
+hech narsa ishga tushirmasdan oʻqish uchun.</li>
 <li><code>games/</code>: beshta oʻyin.</li>
-<li><code>_cache/</code>: uzoq hisob-kitoblar natijalari, optimallashtirish daftari soniyalarda ochilishi uchun.</li>
+<li><code>_cache/</code>: uzoq hisob-kitoblar natijalari,
+optimallashtirish daftari soniyalarda ochilishi uchun.</li>
 </ul>
-<p>Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a>. Materiallar Toshkentda 2026-yil 14–15-oktabrda oʻtkaziladigan TaqSim oʻquv kursi uchun tayyorlangan.</p>
+<p>Model dasturi — hydrosolutions GmbH tomonidan ishlab chiqilgan <a href="https://github.com/hydrosolutions/taqsim/tree/v0.1.4">TaqSim</a>.
+Materiallar Toshkentda 2026-yil 14–15-oktabrda oʻtkaziladigan TaqSim
+oʻquv kursi uchun tayyorlangan.</p>
 </main></div><footer><div class="footer-inner">
 <span><b>hydrosolutions GmbH</b> · Venusstrasse 29, 8050 Zürich, Switzerland · <a href="https://www.hydrosolutions.ch" target="_blank" rel="noopener">www.hydrosolutions.ch</a></span>
 <span>Model software: <a href="https://github.com/hydrosolutions/taqsim" target="_blank" rel="noopener">TaqSim</a> · Course material: CC BY 4.0</span>

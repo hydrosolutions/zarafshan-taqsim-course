@@ -127,7 +127,7 @@ table.kinds td:first-child { white-space: nowrap; }
 .stage { grid-area: stage; padding: 8px 10px 6px; }
 .stage header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .stage-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.stage svg { display: block; width: 100%; min-width: 760px; height: auto; }
+.stage svg { display: block; width: 100%; min-width: 1100px; height: auto; }
 .narrow-only { display: none; }
 .stage .legend { color: var(--muted); font-size: 0.88rem; margin: 2px 0 0; }
 .controls { grid-area: controls; display: grid; gap: 10px; }
@@ -250,7 +250,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
         <h2 id="stage-title">October: water on every edge, Mm³</h2>
         <span class="hint" data-i18n>Click a block for its card. Hover an edge or a block.</span>
       </header>
-      <div class="stage-scroll"><svg id="stage" viewBox="0 0 1150 272" role="img" aria-label="Ten blocks and ten edges"></svg></div>
+      <p id="edge-detail" aria-live="polite">Tap or focus an edge for its monthly volume · Нажмите на стрелку, чтобы увидеть месячный объём</p><div class="stage-scroll"><svg id="stage" viewBox="0 0 1150 272" role="img" aria-label="Ten blocks and ten edges"></svg></div>
       <p class="legend"><span data-i18n>Arrow width: the water carried along that edge this month. Dashed: nothing flows.</span> <span class="narrow-only" data-i18n>Scroll sideways to see the whole system →</span></p>
     </section>
 
@@ -483,7 +483,14 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       const line = el("path", { class: "line", d: geo.d, "marker-end": "url(#arrow)" }, g);
       el("path", { class: "hit", d: geo.d }, g);
       const tag = el("rect", { class: "tag", height: 18 }, g);
-      const text = el("text", { x: geo.lx, y: geo.ly + 4, "text-anchor": "middle", style: "font-size:12px" }, g);
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      const showFlow = () => { $("edge-detail").textContent = `${name(a)} → ${name(b)}: ${fmtEdge(current()[`${a}_to_${b}`][month])} ${L("Mm³", "млн м³")} · ${MONTH_SHORT[LANG][month]}`; };
+      g.addEventListener("mouseenter", showFlow);
+      g.addEventListener("focus", showFlow);
+      g.addEventListener("click", showFlow);
+      g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); showFlow(); } });
+      const text = el("text", { x: geo.lx, y: geo.ly + 4, "text-anchor": "middle", style: "font-size:16px" }, g);
       EDGE_EL[id] = { g, line, tag, text, geo, a, b };
       g.addEventListener("mouseenter", () => { BLOCK_EL[a].g.classList.add("lit"); BLOCK_EL[b].g.classList.add("lit"); });
       g.addEventListener("mouseleave", () => { BLOCK_EL[a].g.classList.remove("lit"); BLOCK_EL[b].g.classList.remove("lit"); });
@@ -499,18 +506,18 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       el("rect", { x: cx - BW / 2, y: cy - BH / 2, width: 5, height: BH, fill: colour, "clip-path": `url(#block-clip-${block})` }, g);
       el("rect", { class: "box", x: cx - BW / 2, y: cy - BH / 2, width: BW, height: BH, rx: 10, style: `fill:none; stroke:${colour}` }, g);
       const label = el("text", { class: "name", x: cx, y: cy - 4, "text-anchor": "middle" }, g);
-      el("text", { class: "kind", x: cx, y: cy + 11, "text-anchor": "middle", style: "font-size:11px" }, g).textContent = kind;
+      el("text", { class: "kind", x: cx, y: cy + 11, "text-anchor": "middle", style: "font-size:14px" }, g).textContent = kind;
       let gaugeBg = null, gaugeFill = null;
       if (kind === "Storage") {
         gaugeBg = el("rect", { class: "gauge-bg", x: cx - BW / 2 + 10, y: cy + 16, width: BW - 20, height: 7, rx: 2 }, g);
         gaugeFill = el("rect", { class: "gauge-fill", x: cx - BW / 2 + 10, y: cy + 16, width: 0, height: 7, rx: 2 }, g);
       }
-      const sub = el("text", { class: "sub", x: cx, y: cy + BH / 2 + 17, "text-anchor": "middle", style: "font-size:12.5px" }, g);
+      const sub = el("text", { class: "sub", x: cx, y: cy + BH / 2 + 17, "text-anchor": "middle", style: "font-size:15px" }, g);
       BLOCK_EL[block] = { g, label, sub, gaugeFill, kind };
       const edgesOf = D.edges.filter(([a, b]) => a === block || b === block).map(([a, b]) => `${a}_to_${b}`);
       g.addEventListener("mouseenter", () => edgesOf.forEach((e) => EDGE_EL[e].g.classList.add("lit")));
       g.addEventListener("mouseleave", () => edgesOf.forEach((e) => EDGE_EL[e].g.classList.remove("lit")));
-      const pick = () => { selected = block; render(); };
+      const pick = () => { selected = block; render(); if (window.matchMedia("(max-width: 900px)").matches) { $("card").scrollIntoView({behavior:"smooth", block:"start"}); } };
       g.addEventListener("click", pick);
       g.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); pick(); } });
     }
@@ -543,7 +550,7 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
       e.line.classList.toggle("dry", flow < 0.05);
       const label = (id === "outlets_to_farm" ? L("release ", "попуск ") : id === "outlets_to_river_end" ? L("overflow ", "перелив ") : "") + fmtEdge(flow);
       e.text.textContent = label;
-      const w = textWidth(label, 500, 12) + 10;
+      const w = textWidth(label, 500, 16) + 10;
       e.tag.setAttribute("x", e.geo.lx - w / 2);
       e.tag.setAttribute("y", e.geo.ly - 9);
       e.tag.setAttribute("width", w);
@@ -734,6 +741,17 @@ footer.foot { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
   $("reset").addEventListener("click", () => { knobs = D.default_knobs.slice(); buildKnobs(); render(); });
 
   function render() {
+    let hydro = $("inflow-context");
+    if (!hydro) { hydro = h("div", {id:"inflow-context"}); $("months").parentElement.append(hydro); }
+    hydro.textContent = "";
+    hydro.append(h("p", {text:L("River inflow (Mm³/month). Select a bar to inspect that month.", "Приток реки (млн м³/месяц). Выберите столбик месяца.")}));
+    const bars = h("div", {style:"display:flex;align-items:end;gap:3px;height:125px"});
+    const inflow = current().river_to_canyon;
+    inflow.forEach((v,i) => {
+      const b = h("button", {type:"button", title:`${MONTH_SHORT[LANG][i]}: ${v.toFixed(1)}`, "aria-label":`${MONTH_SHORT[LANG][i]}: ${v.toFixed(1)}`, "aria-pressed":String(i===month), style:`flex:1;min-width:0;height:${35+85*v/Math.max(...inflow)}px;background:${i===month?'var(--accent)':'var(--surface-2)'};color:var(--ink);border:1px solid var(--border);cursor:pointer`, text:MONTH_SHORT[LANG][i]});
+      b.addEventListener("click", () => {stop(); month=i; render();}); bars.append(b);
+    });
+    hydro.append(bars);
     for (const [i, b] of Array.from($("months").children).entries()) b.setAttribute("aria-pressed", String(i === month));
     $("play").textContent = timer ? L("Pause", "Пауза") : L("Play", "Пуск");
     renderStage();

@@ -816,8 +816,8 @@ def plot_where_the_water_went(run: BlockRun) -> Figure:
         "river end, through the turbine": run.flows["turbine_to_river_end"],
         "reservoir overflow to river": run.flows["outlets_to_river_end"],
         "spilled past the turbine": s["turbine"]["spilled"],
-        "kept in the canyon for next month": transit_change(run),
-        "put into the reservoir": storage_change(run),
+        "canyon storage: held (+) / released (−)": transit_change(run),
+        "reservoir storage: filled (+) / drawn down (−)": storage_change(run),
         "evaporated": s["reservoir"]["evaporated"],
         "seepage in the canal": s["canal"]["seepage"],
         "lost on the farm": s["farm"]["inefficiency"],
@@ -827,9 +827,9 @@ def plot_where_the_water_went(run: BlockRun) -> Figure:
     colours = {
         "river end, through the turbine": WATER,
         "reservoir overflow to river": "#56B4E9",
-        "spilled past the turbine": "#9dc3ea",
-        "kept in the canyon for next month": "#8fb6dd",
-        "put into the reservoir": "#1f5fa8",
+        "spilled past the turbine": "#332288",
+        "canyon storage: held (+) / released (−)": "#AA4499",
+        "reservoir storage: filled (+) / drawn down (−)": "#882255",
         "evaporated": AMBER,
         "seepage in the canal": "#e3c76d",
         "lost on the farm": "#f0b08a",
@@ -851,7 +851,8 @@ def plot_where_the_water_went(run: BlockRun) -> Figure:
     ax.axhline(0, color=AXIS, lw=0.8)
     ax.set_xticks(x, MONTHS)
     ax.set_ylabel("Mm³ per month")
-    ax.set_title("Where the water went, month by month (below zero: taken out of the canyon or the reservoir)")
+    ax.set_title("Where the water went: outputs + signed storage changes = river inflow")
+    ax.text(0, -0.24, "Above-zero totals minus the magnitude of below-zero totals equal the dashed river line.", transform=ax.transAxes, fontsize=9)
     ax.legend(ncol=3, loc="upper left", fontsize=7.5)
     fig.tight_layout()
     return fig
@@ -866,8 +867,8 @@ def plot_balance(run: BlockRun) -> Figure:
         "to the two sinks": (b["to_sinks"], WATER),
         "used by the crops": (b["consumed"], GREEN),
         "lost: seepage, evaporation, farm": (b["lost"], AMBER),
-        "left at the turbine's gate": (b["left"], "#9dc3ea"),
-        "change in storage": (b["stored"], "#1f5fa8"),
+        "left at the turbine's gate": (b["left"], "#332288"),
+        "change in storage": (b["stored"], "#882255"),
     }
     ax.bar(0, b["river"], 0.55, color=INK, label="the river brought")
     bottom = 0.0
@@ -881,7 +882,7 @@ def plot_balance(run: BlockRun) -> Figure:
                 ha="center",
                 va="center",
                 fontsize=8,
-                color="white" if colour != "#9dc3ea" else INK,
+                color="white" if colour != "#332288" else INK,
             )
         bottom += value
     ax.text(
