@@ -1,0 +1,121 @@
+/* The TaqSim block editor. Colours follow the course games (blocks_game/style.css). */
+.tq {
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #6b6a66;
+  --border: rgba(11, 11, 11, 0.14);
+  --water: #2a78d6;
+  --accent: #1f66c1;
+  --good: #006300;
+  --bad: #b42f2f;
+  container-type: inline-size;
+  box-sizing: border-box;
+  background: var(--page);
+  color: var(--ink);
+  font: 15px/1.45 Arial, Helvetica, sans-serif;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+.tq *, .tq *::before, .tq *::after { box-sizing: border-box; }
+.tq h2, .tq h3, .tq h4, .tq p { margin: 0; }
+
+.tq-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.tq-dots { display: flex; gap: 6px; }
+.tq-dot { width: 26px; height: 5px; border-radius: 3px; background: var(--border); }
+.tq-dot.is-past { background: var(--water); opacity: 0.45; }
+.tq-dot.is-now { background: var(--water); }
+.tq-count { color: var(--muted); font-size: 13px; }
+.tq-title { font-size: 21px; line-height: 1.25; margin-bottom: 6px; }
+.tq-body { color: var(--ink-2); max-width: 72ch; }
+.tq-task { margin-top: 8px; padding: 8px 12px; border-left: 4px solid var(--water); background: var(--surface-2); border-radius: 0 6px 6px 0; max-width: 78ch; }
+
+.tq-main { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 12px; margin-top: 14px; align-items: start; }
+.tq-inspector { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.tq-palette { margin-bottom: 8px; }
+.tq-label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.tq-small { font-size: 13px; color: var(--muted); }
+.tq-palette-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; }
+
+.tq-chip {
+  display: grid; gap: 1px; text-align: left; width: 132px; padding: 7px 10px 7px 12px;
+  font: inherit; color: var(--ink); background: #fff; cursor: grab; touch-action: none; user-select: none;
+  border: 1px solid var(--border); border-left: 6px solid var(--kind); border-radius: 8px;
+}
+.tq-chip span { font-size: 12px; color: var(--muted); }
+.tq-chip:hover:not(:disabled) { border-color: var(--kind); }
+.tq-chip:disabled { opacity: 0.4; cursor: default; }
+.tq-ghost { position: fixed; z-index: 1000; width: 132px; pointer-events: none; transform: translate(-50%, -50%); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); opacity: 0.95; }
+
+.tq-canvas-frame { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.tq-canvas {
+  display: block; width: 100%; height: auto; touch-action: none; user-select: none; outline: none;
+  background-image: radial-gradient(rgba(11, 11, 11, 0.09) 1px, transparent 1px); background-size: 18px 18px;
+}
+.tq-canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.tq-empty { fill: var(--muted); font-size: 15px; }
+.tq-edge { fill: none; stroke: var(--water); stroke-width: 3; }
+.tq-edge.is-selected { stroke: var(--bad); stroke-width: 4; }
+.tq-edge.is-draft { stroke-dasharray: 6 5; opacity: 0.7; }
+.tq-edge-hit { fill: none; stroke: transparent; stroke-width: 18; cursor: pointer; }
+.tq-arrow { fill: var(--water); }
+.tq-block { cursor: grab; }
+.tq-block-box { fill: #fff; stroke: rgba(11, 11, 11, 0.3); stroke-width: 1.2; }
+.tq-block.is-selected .tq-block-box { stroke: var(--kind); stroke-width: 3; }
+.tq-block.is-target .tq-block-box { stroke: var(--water); stroke-dasharray: 5 4; stroke-width: 2; }
+.tq-block-stripe { fill: var(--kind); }
+.tq-block-name { font-size: 15px; font-weight: 700; fill: #0b0b0b; }
+.tq-block-kind { font-size: 12px; fill: #6b6a66; }
+.tq-port { fill: #fff; stroke: var(--water); stroke-width: 2.5; }
+.tq-port.is-active { fill: var(--water); }
+.tq-port-in { fill: var(--water); }
+.tq-port-hit { fill: transparent; cursor: crosshair; }
+
+.tq-messages { margin-top: 8px; display: grid; gap: 6px; min-height: 38px; }
+.tq-message { padding: 8px 12px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); }
+.tq-message.is-todo::before { content: "→ "; color: var(--accent); font-weight: 700; }
+.tq-message.is-ok { border-color: var(--good); color: var(--good); background: #f1f8f1; }
+.tq-message.is-ok::before { content: "✓ "; font-weight: 700; }
+.tq-message.is-error { border-color: var(--bad); color: var(--bad); }
+.tq-message.is-working { color: var(--muted); font-style: italic; }
+
+.tq-block-title { display: flex; align-items: baseline; gap: 8px; padding-left: 8px; border-left: 5px solid var(--kind); margin-bottom: 4px; }
+.tq-kind { font-size: 12px; color: var(--muted); }
+.tq-rule { font-size: 13px; margin: 14px 0 0; padding-top: 10px; border-top: 1px solid var(--border); }
+.tq-field { display: grid; gap: 2px; margin-top: 12px; }
+.tq-field-top { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+.tq-field output { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tq-field input[type="range"] { width: 100%; margin: 2px 0; accent-color: var(--accent); }
+.tq-help { font-size: 12px; color: var(--muted); }
+.tq-inspector .tq-button { margin-top: 14px; }
+
+.tq-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.tq-spacer { flex: 1; }
+.tq-button {
+  font: inherit; color: var(--ink); background: #fff; border: 1px solid rgba(11, 11, 11, 0.3); border-radius: 8px;
+  padding: 7px 14px; cursor: pointer; min-height: 38px;
+}
+.tq-button:hover:not(:disabled) { border-color: var(--accent); }
+.tq-button:disabled { opacity: 0.45; cursor: default; }
+.tq-button.is-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+.tq-button.is-quiet { border-color: var(--border); color: var(--ink-2); }
+.tq-button:focus-visible, .tq-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.tq-result { margin-top: 16px; }
+.tq-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.tq-card { display: grid; gap: 2px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+.tq-card-label { font-size: 13px; color: var(--ink-2); }
+.tq-card-value { font-size: 22px; font-variant-numeric: tabular-nums; }
+.tq-card-sub { font-size: 12px; color: var(--muted); min-height: 1em; }
+.tq-note { margin: 12px 0; max-width: 82ch; color: var(--ink-2); }
+.tq-figure { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-bottom: 10px; overflow-x: auto; }
+.tq-figure svg { display: block; width: 100%; max-width: 860px; height: auto; margin: 0 auto; }
+.tq-code { margin: 8px 0 0; padding: 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; font: 13px/1.5 Consolas, Menlo, monospace; overflow-x: auto; white-space: pre; }
+
+@container (max-width: 900px) {
+  .tq-main { grid-template-columns: minmax(0, 1fr); }
+}
