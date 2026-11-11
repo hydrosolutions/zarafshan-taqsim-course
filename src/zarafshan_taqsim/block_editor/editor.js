@@ -3,9 +3,9 @@
 // sends back hints, scores and figures. See widget.py for the other side.
 
 const SVG = "http://www.w3.org/2000/svg";
-const MIN_W = 640, H = 240; // canvas size in its own units: one unit is one pixel unless the page is narrower than MIN_W
+const MIN_W = 300, ROW_H = 240, SANDBOX_H = 430; // the canvas is as wide as the page gives it; one unit is one pixel // canvas size in its own units: one unit is one pixel unless the page is narrower than MIN_W
 const BW = 132, BH = 56; // block size
-const SLOT_X = 20, ROW_Y = 60, ROW_STEP = 90;
+const SLOT_X = 14, GAP = 26, ROW_Y = 60, ROW_STEP = 90;
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 
@@ -32,13 +32,22 @@ function render({ model, el }) {
   let codeOpen = false;
   let timer = null;
   let wasDone = false;
-  let W = MIN_W; // grows with the page, so that blocks keep their size
+  let W = MIN_W; // the width the page gives the canvas; a wider drawing scrolls sideways
 
-  const lesson = () => model.get("lesson") || { steps: [], blocks: {}, ui: {} };
+  const lesson = () => model.get("lesson") || { steps: [], blocks: {}, kinds: {}, ui: {} };
   const ui = (key) => lesson().ui[key] || key;
   const stepIndex = () => model.get("step") || 0;
   const step = () => lesson().steps[stepIndex()] || { palette: [], fields: {} };
-  const block = (id) => lesson().blocks[id] || { kind: "?", label: id, colour: "#888", params: {} };
+  // What the page knows about a block: a named block of the guided steps, or any block of its kind
+  const infoOf = (node) => {
+    const named = lesson().blocks[node.id];
+    const kind = (lesson().kinds || {})[node.kind] || {};
+    return { label: named && !step().sandbox ? named.label : node.id, colour: (named || kind).colour || "#888", about: step().sandbox ? kind.about : (named || kind).about, params: { ...(kind.params || {}), ...((named || {}).params || {}) } };
+  };
+  const sandbox = () => Boolean(step().sandbox);
+  // tall enough for the lowest block, with room below it to move blocks further down
+  const width = () => Math.max(W, ...graph.nodes.map((node) => node.x + BW + SLOT_X));
+  const height = () => Math.max(sandbox() ? SANDBOX_H : ROW_H, ...graph.nodes.map((node) => node.y + BH + (sandbox() ? 100 : 40)));
   const nodeOf = (id) => graph.nodes.find((node) => node.id === id);
   const state = () => model.get("state") || {};
 
@@ -46,25 +55,23 @@ function render({ model, el }) {
   const root = make("div", "tq");
   const head = make("header", "tq-head");
   const main = make("div", "tq-main");
-  const stage = make("div", "tq-stage");
   const inspector = make("aside", "tq-inspector");
   const messages = make("div", "tq-messages");
   const nav = make("div", "tq-nav");
   const result = make("section", "tq-result");
-  const svg = shape("svg", { viewBox: `0 0 ${W} ${H}`, class: "tq-canvas", tabindex: "0", role: "application" });
+  const svg = shape("svg", { viewBox: `0 0 ${MIN_W} ${ROW_H}`, class: "tq-canvas", tabindex: "0", role: "application" });
   const palette = make("div", "tq-palette");
   const frame = make("div", "tq-canvas-frame");
   frame.append(svg);
-  stage.append(palette, frame, messages);
-  main.append(stage, inspector);
-  root.append(head, main, nav, result);
+  // One grid: the settings sit beside everything else and stay in view while the results scroll
+  main.append(palette, frame, messages, inspector, nav, result);
+  root.append(head, main);
   el.append(root);
 
   const fit = () => {
-    const width = Math.max(MIN_W, Math.floor(frame.clientWidth));
-    if (width === W) return;
-    W = width;
-    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const page = Math.max(MIN_W, Math.floor(frame.clientWidth));
+    if (page === W) return;
+    W = page;
     graph.nodes.forEach(clampNode);
     drawCanvas();
   };
@@ -103,8 +110,9 @@ function render({ model, el }) {
   function connect(from, to) {
     if (from === to || kindOf(from) === "Sink" || kindOf(to) === "Source") return false;
     if (graph.edges.some((edge) => edge.source === to && edge.target === from)) return false;
-    // these blocks send their water to one place: a new connection replaces the old one
-    graph.edges = graph.edges.filter((edge) => edge.source !== from);
+    if (graph.edges.some((edge) => edge.source === from && edge.target === to)) return false;
+    // every block but a Splitter sends its water to one place: a new connection replaces the old one
+    if (kindOf(from) !== "Splitter") graph.edges = graph.edges.filter((edge) => edge.source !== from);
     graph.edges.push({ source: from, target: to });
     return true;
   }
@@ -123,10 +131,18 @@ function render({ model, el }) {
   }
 
   // --- geometry ---------------------------------------------------------------------------------------------
-  const outPort = (node) => ({ x: node.x + BW, y: node.y + BH / 2 });
-  const inPort = (node) => ({ x: node.x, y: node.y + BH / 2 });
+  // On a page too narrow for two blocks side by side (a phone), blocks stack and water runs top to bottom
+  const stacked = () => W < 2 * SLOT_X + 2 * BW + GAP;
+  const portOut = () => (stacked() ? { x: BW / 2, y: BH } : { x: BW, y: BH / 2 }); // where on a block the water leaves
+  const portIn = () => (stacked() ? { x: BW / 2, y: 0 } : { x: 0, y: BH / 2 });
+  const outPort = (node) => ({ x: node.x + portOut().x, y: node.y + portOut().y });
+  const inPort = (node) => ({ x: node.x + portIn().x, y: node.y + portIn().y });
 
   function curve(a, b) {
+    if (stacked()) {
+      const bend = Math.max(20, Math.abs(b.y - a.y) / 2);
+      return { a, c1: { x: a.x, y: a.y + bend }, c2: { x: b.x, y: b.y - bend }, b };
+    }
     const bend = Math.max(30, Math.abs(b.x - a.x) / 2);
     return { a, c1: { x: a.x + bend, y: a.y }, c2: { x: b.x - bend, y: b.y }, b };
   }
@@ -183,11 +199,15 @@ function render({ model, el }) {
   }
 
   const clampNode = (node) => {
-    node.x = Math.round(Math.min(W - BW - 8, Math.max(8, node.x)));
-    node.y = Math.round(Math.min(H - BH - 8, Math.max(8, node.y)));
+    node.x = Math.round(Math.max(8, stacked() ? Math.min(W - BW - 8, node.x) : node.x));
+    node.y = Math.round(Math.max(8, node.y));
   };
 
-  const slotStep = (columns) => Math.min(230, (W - 2 * SLOT_X - BW) / Math.max(1, columns - 1));
+  // How many blocks fit side by side, and how far apart a row of `columns` blocks is spread
+  const perRow = (columns) => Math.max(1, Math.min(columns, Math.floor((W - 2 * SLOT_X + GAP) / (BW + GAP))));
+  const slotStep = (columns) => Math.min(230, (W - 2 * SLOT_X - BW) / Math.max(1, perRow(columns) - 1));
+  // A tidy row is never broken (the canvas scrolls sideways instead), except on a phone, where blocks stack
+  const rowStep = (columns) => Math.max(BW + GAP, Math.min(230, (W - 2 * SLOT_X - BW) / Math.max(1, columns - 1)));
 
   // Line the blocks up from left to right in the order the water passes them
   function tidy() {
@@ -203,20 +223,34 @@ function render({ model, el }) {
     graph.nodes.forEach((node) => depthOf(node.id, new Set()));
     const columns = Math.max(...graph.nodes.map((node) => depth[node.id]), 0) + 1;
     const used = {};
+    graph.nodes.forEach((node) => (used[depth[node.id]] = (used[depth[node.id]] || 0) + 1));
+    const band = ROW_STEP * Math.max(1, ...Object.values(used)); // a chain too long for the page continues one band lower
+    const placed = {};
     for (const node of graph.nodes) {
       const column = depth[node.id];
-      used[column] = (used[column] || 0) + 1;
-      node.x = SLOT_X + slotStep(columns) * column;
-      node.y = ROW_Y + ROW_STEP * (used[column] - 1);
+      placed[column] = (placed[column] || 0) + 1;
+      node.x = stacked() ? SLOT_X : SLOT_X + rowStep(columns) * column;
+      node.y = ROW_Y + (stacked() ? band * column : 0) + ROW_STEP * (placed[column] - 1);
       clampNode(node);
     }
   }
 
   // --- adding blocks ----------------------------------------------------------------------------------------
-  function addBlock(id, at) {
-    if (nodeOf(id)) return;
-    const info = block(id);
-    const node = { id, kind: info.kind, x: 0, y: 0, params: clone(info.params || {}) };
+  // In the guided steps a palette entry is one named block; in the sandbox it is a kind, and each new
+  // block gets the kind's name with a number (farm, farm_2, ...)
+  function addBlock(entry, at) {
+    let id = entry, kind;
+    if (sandbox()) {
+      kind = entry;
+      const base = lesson().kinds[kind].name;
+      id = base;
+      for (let n = 2; nodeOf(id); n += 1) id = `${base}_${n}`;
+    } else {
+      if (nodeOf(id)) return;
+      kind = lesson().blocks[id].kind;
+    }
+    const node = { id, kind, x: 0, y: 0, params: {} };
+    node.params = clone(infoOf(node).params);
     if (at) {
       node.x = at.x - BW / 2;
       node.y = at.y - BH / 2;
@@ -225,12 +259,14 @@ function render({ model, el }) {
       insertIntoEdge(node);
     } else {
       // its place in the row of this step's blocks; one row lower if something is already there
-      node.x = SLOT_X + slotStep(step().palette.length) * Math.max(0, step().palette.indexOf(id));
-      node.y = ROW_Y;
+      const slots = step().palette.length, slot = Math.max(0, step().palette.indexOf(entry));
+      node.x = SLOT_X + slotStep(slots) * (slot % perRow(slots));
+      node.y = ROW_Y + ROW_STEP * Math.floor(slot / perRow(slots));
       clampNode(node);
-      const crowded = graph.nodes.some((other) => Math.abs(other.x - node.x) < BW + 10 && Math.abs(other.y - node.y) < BH + 10);
+      const crowded = () => graph.nodes.some((other) => other !== node && Math.abs(other.x - node.x) < BW + 10 && Math.abs(other.y - node.y) < BH + 10);
       graph.nodes.push(node);
-      if (crowded || edgeUnder(node) >= 0) node.y = ROW_Y + ROW_STEP;
+      // the next free row below, if something is already there
+      for (let tries = 0; tries < 8 && (crowded() || edgeUnder(node) >= 0); tries += 1) node.y += ROW_STEP;
     }
     selected = { node: id };
     drawAll();
@@ -248,7 +284,17 @@ function render({ model, el }) {
     });
     const count = make("span", "tq-count", ui("step_of").replace("{n}", stepIndex() + 1).replace("{total}", steps.length));
     const top = make("div", "tq-progress");
-    top.append(dots, count);
+    const languages = make("span", "tq-languages");
+    for (const language of lesson().languages || []) {
+      const pick = make("button", "tq-language" + (language.code === lesson().lang ? " is-on" : ""), language.name);
+      pick.type = "button";
+      pick.addEventListener("click", () => {
+        model.set("lang", language.code);
+        model.save_changes();
+      });
+      languages.append(pick);
+    }
+    top.append(dots, count, make("span", "tq-spacer"), languages);
     const title = make("h2", "tq-title", step().title || "");
     const body = make("p", "tq-body");
     body.innerHTML = step().body || "";
@@ -260,12 +306,13 @@ function render({ model, el }) {
     palette.replaceChildren(make("h3", "tq-label", ui("blocks")));
     const list = make("div", "tq-palette-list");
     for (const id of step().palette) {
-      const info = block(id);
+      const kind = sandbox() ? id : lesson().blocks[id].kind;
+      const info = sandbox() ? { label: id, colour: lesson().kinds[id].colour, about: lesson().kinds[id].about } : infoOf({ id, kind });
       const item = make("button", "tq-chip");
       item.type = "button";
       item.style.setProperty("--kind", info.colour);
-      item.disabled = Boolean(nodeOf(id));
-      item.append(make("b", null, info.label), make("span", null, info.kind));
+      item.disabled = !sandbox() && Boolean(nodeOf(id));
+      item.append(make("b", null, info.label), make("span", null, sandbox() ? lesson().kinds[id].name : kind));
       item.title = info.about || "";
       item.addEventListener("pointerdown", (event) => startPaletteDrag(event, id, item));
       list.append(item);
@@ -304,13 +351,18 @@ function render({ model, el }) {
 
   function drawCanvas() {
     svg.replaceChildren();
+    const tall = height();
+    const wide = width();
+    svg.setAttribute("viewBox", `0 0 ${wide} ${tall}`);
+    svg.setAttribute("width", wide);
+    svg.setAttribute("height", tall);
     const defs = shape("defs");
     const marker = shape("marker", { id: "tq-arrow", viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" });
     marker.append(shape("path", { d: "M0,0 L10,5 L0,10 z", class: "tq-arrow" }));
     defs.append(marker);
     svg.append(defs);
     if (!graph.nodes.length) {
-      const hint = shape("text", { x: W / 2, y: H / 2, class: "tq-empty", "text-anchor": "middle" });
+      const hint = shape("text", { x: W / 2, y: tall / 2, class: "tq-empty", "text-anchor": "middle" });
       hint.textContent = ui("blocks_hint");
       svg.append(hint);
     }
@@ -325,20 +377,22 @@ function render({ model, el }) {
       svg.append(shape("path", { d: pathOf(curve(outPort(nodeOf(gesture.from)), gesture.to)), class: "tq-edge is-draft" }));
     }
     for (const node of graph.nodes) {
-      const info = block(node.id);
+      const info = infoOf(node);
       const group = shape("g", { transform: `translate(${node.x},${node.y})`, class: "tq-block" + (selected && selected.node === node.id ? " is-selected" : "") + (sticky && sticky !== node.id && node.kind !== "Source" ? " is-target" : ""), "data-node": node.id });
       group.style.setProperty("--kind", info.colour);
       group.append(shape("rect", { width: BW, height: BH, rx: 8, class: "tq-block-box" }));
       group.append(shape("rect", { width: 7, height: BH, rx: 3, class: "tq-block-stripe" }));
       const name = shape("text", { x: 18, y: 24, class: "tq-block-name" });
       name.textContent = info.label;
+      // a long name is written smaller, so that it stays inside its block
+      name.style.fontSize = `${Math.max(10, Math.min(15, Math.floor((BW - 26) / (0.64 * info.label.length))))}px`;
       const kind = shape("text", { x: 18, y: 42, class: "tq-block-kind" });
       kind.textContent = node.kind;
       group.append(name, kind);
-      if (node.kind !== "Source") group.append(shape("circle", { cx: 0, cy: BH / 2, r: 5, class: "tq-port-in" }));
+      if (node.kind !== "Source") group.append(shape("circle", { cx: portIn().x, cy: portIn().y, r: 5, class: "tq-port-in" }));
       if (node.kind !== "Sink") {
-        group.append(shape("circle", { cx: BW, cy: BH / 2, r: 7, class: "tq-port" + (sticky === node.id ? " is-active" : "") }));
-        group.append(shape("circle", { cx: BW, cy: BH / 2, r: 16, class: "tq-port-hit", "data-port": node.id }));
+        group.append(shape("circle", { cx: portOut().x, cy: portOut().y, r: 7, class: "tq-port" + (sticky === node.id ? " is-active" : "") }));
+        group.append(shape("circle", { cx: portOut().x, cy: portOut().y, r: 16, class: "tq-port-hit", "data-port": node.id }));
       }
       svg.append(group);
     }
@@ -419,6 +473,11 @@ function render({ model, el }) {
     drawCanvas();
   });
 
+  svg.addEventListener("pointercancel", () => {
+    gesture = null; // the browser took the touch over, to scroll the page
+    drawCanvas();
+  });
+
   svg.addEventListener("keydown", (event) => {
     if (event.key === "Delete" || event.key === "Backspace") {
       removeSelected();
@@ -450,40 +509,80 @@ function render({ model, el }) {
     }
     const node = nodeOf(selected.node);
     if (!node) return;
-    const info = block(node.id);
+    const info = infoOf(node);
     const title = make("div", "tq-block-title");
     title.style.setProperty("--kind", info.colour);
     title.append(make("b", null, info.label), make("span", "tq-kind", node.kind));
     inspector.append(title, make("p", "tq-small", info.about || ""));
-    const fields = step().fields[node.id] || [];
+    const fields = step().fields[node.id] || step().fields[node.kind] || [];
     if (!fields.length) inspector.append(make("p", "tq-small", ui("no_settings")));
-    let ruleStarted = false;
+    const locks = (step().locks || {})[node.id] || {};
+    Object.assign(node.params, locks); // e.g. the capacity, which limits how far the trigger slider goes
+    let group = null;
+    const held = []; // numbers this step does not let the learner change: listed in one line, not as sliders
     for (const field of fields) {
-      if (field.group === "rule" && !ruleStarted) {
-        ruleStarted = true;
-        inspector.append(make("h4", "tq-rule", ui("rule")));
+      const fixed = false;
+      if (locks[field.key] !== undefined) {
+        const value = locks[field.key];
+        const option = (field.options || []).find((choice) => choice.value === String(value));
+        held.push(`${field.label} ${field.type === "toggle" ? ui(value ? "on" : "off") : option ? option.label : format(field, value)}`);
+        continue;
       }
-      const max = field.max_from ? Math.min(field.max, Number(node.params[field.max_from])) : field.max;
-      if (node.params[field.key] === undefined) node.params[field.key] = field.min;
-      if (node.params[field.key] > max) node.params[field.key] = max;
-      const row = make("label", "tq-field");
+      if (field.group && field.group !== group) inspector.append(make("h4", "tq-rule", ui(`group.${field.group}`)));
+      group = field.group || group;
+      if (node.params[field.key] === undefined) node.params[field.key] = info.params[field.key] !== undefined ? info.params[field.key] : field.min;
+      const row = make(field.type === "choice" ? "div" : "label", "tq-field" + (fixed ? " is-fixed" : ""));
       const top = make("span", "tq-field-top");
-      const value = make("output", null, format(field, node.params[field.key]));
-      top.append(make("span", null, field.label), value);
-      const input = make("input");
-      Object.assign(input, { type: "range", min: field.min, max, step: field.step, value: node.params[field.key] });
-      input.addEventListener("input", () => {
-        node.params[field.key] = Number(input.value);
-        value.textContent = format(field, node.params[field.key]);
-        for (const other of fields) {
-          if (other.max_from === field.key && node.params[other.key] > node.params[field.key]) node.params[other.key] = node.params[field.key];
+      const help = make("span", "tq-help", (field.help || "") + (fixed ? ` (${ui("fixed")})` : ""));
+      if (field.type === "toggle") {
+        const input = make("input");
+        Object.assign(input, { type: "checkbox", checked: Boolean(node.params[field.key]), disabled: fixed });
+        const value = make("output", null, ui(input.checked ? "on" : "off"));
+        input.addEventListener("change", () => {
+          node.params[field.key] = input.checked;
+          value.textContent = ui(input.checked ? "on" : "off");
+          send();
+        });
+        const text = make("span", "tq-toggle");
+        text.append(input, make("span", null, field.label));
+        top.append(text, value);
+        row.append(top, help);
+      } else if (field.type === "choice") {
+        top.append(make("span", null, field.label));
+        const choices = make("span", "tq-choices");
+        for (const option of field.options) {
+          const button = make("button", "tq-choice" + (String(node.params[field.key]) === option.value ? " is-on" : ""), option.label);
+          button.type = "button";
+          button.disabled = fixed;
+          button.addEventListener("click", () => {
+            node.params[field.key] = option.value;
+            drawInspector();
+            send();
+          });
+          choices.append(button);
         }
-        send(350);
-      });
-      input.addEventListener("change", drawInspector); // refresh the sliders whose range depends on this one
-      row.append(top, input, make("span", "tq-help", field.help || ""));
+        row.append(top, choices, help);
+      } else {
+        const max = field.max_from ? Math.min(field.max, Number(node.params[field.max_from])) : field.max;
+        if (node.params[field.key] > max) node.params[field.key] = max;
+        const value = make("output", null, format(field, node.params[field.key]));
+        top.append(make("span", null, field.label), value);
+        const input = make("input");
+        Object.assign(input, { type: "range", min: field.min, max, step: field.step, value: node.params[field.key], disabled: fixed });
+        input.addEventListener("input", () => {
+          node.params[field.key] = Number(input.value);
+          value.textContent = format(field, node.params[field.key]);
+          for (const other of fields) {
+            if (other.max_from === field.key && node.params[other.key] > node.params[field.key]) node.params[other.key] = node.params[field.key];
+          }
+          send(350);
+        });
+        input.addEventListener("change", drawInspector); // refresh the sliders whose range depends on this one
+        row.append(top, input, help);
+      }
       inspector.append(row);
     }
+    if (held.length) inspector.append(make("p", "tq-held", `${ui("fixed_list")} ${held.join(" · ")}`));
     inspector.append(remove);
   }
 
@@ -502,7 +601,7 @@ function render({ model, el }) {
     const back = make("button", "tq-button", ui("back"));
     back.disabled = stepIndex() === 0;
     back.addEventListener("click", () => goTo(stepIndex() - 1));
-    const solve = make("button", "tq-button is-quiet", ui("show_me"));
+    const solve = make("button", "tq-button is-quiet", ui(sandbox() ? "example" : "show_me"));
     solve.addEventListener("click", () => {
       waiting = true;
       selected = null;
@@ -524,12 +623,71 @@ function render({ model, el }) {
     next.disabled = last || waiting || !state().done;
     next.addEventListener("click", () => goTo(stepIndex() + 1));
     for (const button of [back, solve, clear, next]) button.type = "button";
-    nav.append(back, solve, clear, make("span", "tq-spacer"));
-    if (last && state().done) nav.append(make("span", "tq-small", ui("last_step")));
-    nav.append(next);
+    nav.append(back, solve, clear);
+    if (sandbox()) {
+      const save = make("button", "tq-button is-quiet", ui("save"));
+      save.type = "button";
+      save.addEventListener("click", () => {
+        const file = new Blob([JSON.stringify({ taqsim_blocks: 1, ...graph }, null, 1)], { type: "application/json" });
+        const link = make("a");
+        link.href = URL.createObjectURL(file);
+        link.download = "my_taqsim_model.json";
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      });
+      const picker = make("input");
+      Object.assign(picker, { type: "file", accept: ".json,application/json", hidden: true });
+      picker.addEventListener("change", async () => {
+        try {
+          const loaded = JSON.parse(await picker.files[0].text());
+          const kinds = lesson().kinds;
+          const fine = loaded.taqsim_blocks && Array.isArray(loaded.nodes) && Array.isArray(loaded.edges) && loaded.nodes.every((node) => typeof node.id === "string" && kinds[node.kind]);
+          if (!fine) throw new Error("not a model");
+          const ids = new Set(loaded.nodes.map((node) => node.id));
+          graph = {
+            nodes: loaded.nodes.map((node) => ({ id: node.id, kind: node.kind, x: Number(node.x) || 0, y: Number(node.y) || 0, params: node.params || {} })),
+            edges: loaded.edges.filter((edge) => ids.has(edge.source) && ids.has(edge.target)).map((edge) => ({ source: edge.source, target: edge.target })),
+          };
+          graph.nodes.forEach(clampNode);
+          selected = null;
+          drawAll();
+          send();
+        } catch (error) {
+          messages.replaceChildren(make("p", "tq-message is-error", ui("load_failed")));
+        }
+        picker.value = "";
+      });
+      const load = make("button", "tq-button is-quiet", ui("load"));
+      load.type = "button";
+      load.addEventListener("click", () => picker.click());
+      nav.append(save, load, picker);
+    }
+    nav.append(make("span", "tq-spacer"));
+    if (last && !sandbox() && state().done) nav.append(make("span", "tq-small", ui("last_step")));
+    if (!last) nav.append(next);
+  }
+
+  const tip = make("div", "tq-tip-box");
+  tip.hidden = true;
+  root.append(tip);
+
+  function showTip(event) {
+    const text = event.target.getAttribute && event.target.getAttribute("data-tip");
+    if (!text) {
+      tip.hidden = true;
+      return;
+    }
+    tip.textContent = text;
+    tip.hidden = false;
+    // beside the pointer, so that it works for a small dot and for a tall bar alike
+    const frame = root.getBoundingClientRect();
+    const left = Math.min(Math.max(8, event.clientX - frame.left + 14), frame.width - tip.offsetWidth - 8);
+    tip.style.left = `${left}px`;
+    tip.style.top = `${event.clientY - frame.top - tip.offsetHeight - 12}px`;
   }
 
   function drawResult() {
+    tip.hidden = true;
     const now = state();
     result.replaceChildren();
     if (!(now.figures || []).length) return;
@@ -537,6 +695,8 @@ function render({ model, el }) {
     const cards = make("div", "tq-cards");
     for (const card of now.cards || []) {
       const box = make("div", "tq-card");
+      if (card.quiet) box.classList.add("is-quiet");
+      if (card.tag) box.append(make("span", "tq-card-tag", card.tag));
       box.append(make("span", "tq-card-label", card.label), make("b", "tq-card-value", card.value), make("span", "tq-card-sub", card.sub || ""));
       cards.append(box);
     }
@@ -544,9 +704,36 @@ function render({ model, el }) {
     note.innerHTML = now.note || "";
     result.append(cards, note);
     for (const figure of now.figures) {
+      // a figure may bring its own explanation, which is shown right above it
+      if (figure.caption) {
+        const caption = make("p", "tq-caption");
+        caption.innerHTML = figure.caption;
+        result.append(caption);
+      }
       const holder = make("div", "tq-figure");
-      holder.innerHTML = figure;
+      holder.innerHTML = figure.svg || figure;
       result.append(holder);
+      // points that carry a text show it when the pointer is on them (or, on a phone, when they are tapped)
+      holder.addEventListener("pointerover", (event) => showTip(event));
+      holder.addEventListener("pointermove", (event) => {
+        if (!tip.hidden && event.pointerType === "mouse") showTip(event);
+      });
+      holder.addEventListener("pointerdown", (event) => showTip(event));
+      holder.addEventListener("pointerout", (event) => {
+        if (event.pointerType === "mouse") tip.hidden = true;
+      });
+    }
+    if (now.table) {
+      const grid = make("table", "tq-table");
+      const headRow = make("tr");
+      for (const column of now.table.columns) headRow.append(make("th", null, column));
+      grid.append(headRow);
+      for (const cells of now.table.rows) {
+        const line = make("tr");
+        for (const cell of cells) line.append(make("td", null, cell));
+        grid.append(line);
+      }
+      result.append(grid);
     }
     if (now.code) {
       const toggle = make("button", "tq-button is-quiet", ui(codeOpen ? "hide_code" : "show_code"));
@@ -560,7 +747,15 @@ function render({ model, el }) {
     }
   }
 
+  // Open the settings of the block this step is about, unless the learner has chosen something else
+  function focus() {
+    const wanted = step().focus;
+    if (!selected && wanted && nodeOf(wanted)) selected = { node: wanted };
+  }
+
   function drawAll() {
+    fit();
+    focus();
     drawHead();
     drawPalette();
     drawCanvas();
@@ -574,9 +769,14 @@ function render({ model, el }) {
   const onState = () => {
     if ((state().rev || 0) < rev) return; // an answer to an older drawing
     waiting = false;
-    if (state().done && !wasDone && !gesture) {
+    if (state().done && !wasDone && !gesture && !sandbox()) {
       tidy(); // the step's network is complete: show it in a clean row
       drawCanvas();
+    }
+    if (!selected && step().focus && nodeOf(step().focus)) {
+      focus();
+      drawCanvas();
+      drawInspector();
     }
     wasDone = Boolean(state().done);
     drawMessages();

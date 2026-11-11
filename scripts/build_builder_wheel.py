@@ -24,6 +24,7 @@ def main() -> None:
     files: dict[str, bytes] = {
         "zarafshan_taqsim/__init__.py": b'"""Reduced package for the block editor page only."""\n',
         "zarafshan_taqsim/rationing_coursebook.py": (SRC / "rationing_coursebook.py").read_bytes(),
+        "zarafshan_taqsim/blocks_demo.py": (SRC / "blocks_demo.py").read_bytes(),
     }
     for path in sorted((SRC / "block_editor").iterdir()):
         if path.suffix in {".py", ".js", ".css", ".json"}:

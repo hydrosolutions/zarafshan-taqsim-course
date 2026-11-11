@@ -1,5 +1,7 @@
 /* The TaqSim block editor. Colours follow the course games (blocks_game/style.css). */
 .tq {
+  position: relative;
+  max-width: 100%;
   --page: #f9f9f7;
   --surface: #fcfcfb;
   --surface-2: #f3f2ee;
@@ -18,7 +20,7 @@
   font: 15px/1.45 Arial, Helvetica, sans-serif;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 16px;
+  padding: clamp(10px, 2.5cqw, 16px);
   text-align: left;
 }
 .tq *, .tq *::before, .tq *::after { box-sizing: border-box; }
@@ -34,7 +36,18 @@
 .tq-body { color: var(--ink-2); max-width: 72ch; }
 .tq-task { margin-top: 8px; padding: 8px 12px; border-left: 4px solid var(--water); background: var(--surface-2); border-radius: 0 6px 6px 0; max-width: 78ch; }
 
-.tq-main { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 12px; margin-top: 14px; align-items: start; }
+.tq-main {
+  display: grid; grid-template-columns: minmax(0, 1fr) 250px; column-gap: 12px; margin-top: 14px;
+  grid-template-rows: auto auto auto auto 1fr; /* spare height goes below the results, not between the rows */
+  grid-template-areas: "palette inspector" "canvas inspector" "messages inspector" "nav inspector" "result inspector";
+}
+.tq-palette { grid-area: palette; }
+.tq-canvas-frame { grid-area: canvas; }
+.tq-messages { grid-area: messages; }
+.tq-nav { grid-area: nav; }
+.tq-result { grid-area: result; min-width: 0; }
+.tq-inspector { grid-area: inspector; align-self: start; position: sticky; top: 8px; max-height: calc(100vh - 16px); overflow-y: auto; }
+.tq-held { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
 .tq-inspector { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
 .tq-palette { margin-bottom: 8px; }
 .tq-label { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
@@ -51,9 +64,10 @@
 .tq-chip:disabled { opacity: 0.4; cursor: default; }
 .tq-ghost { position: fixed; z-index: 1000; width: 132px; pointer-events: none; transform: translate(-50%, -50%); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); opacity: 0.95; }
 
-.tq-canvas-frame { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.tq-canvas-frame { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; overflow-y: hidden; }
+.tq-block, .tq-port-hit, .tq-edge-hit { touch-action: none; }
 .tq-canvas {
-  display: block; width: 100%; height: auto; touch-action: none; user-select: none; outline: none;
+  display: block; touch-action: pan-x pan-y; user-select: none; outline: none;
   background-image: radial-gradient(rgba(11, 11, 11, 0.09) 1px, transparent 1px); background-size: 18px 18px;
 }
 .tq-canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
@@ -117,5 +131,39 @@
 .tq-code { margin: 8px 0 0; padding: 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; font: 13px/1.5 Consolas, Menlo, monospace; overflow-x: auto; white-space: pre; }
 
 @container (max-width: 900px) {
-  .tq-main { grid-template-columns: minmax(0, 1fr); }
+  .tq-main { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "palette" "canvas" "messages" "inspector" "nav" "result"; }
+  .tq-inspector { position: static; max-height: none; margin-top: 8px; }
 }
+@container (max-width: 560px) {
+  .tq-title { font-size: 18px; }
+  .tq-chip { width: calc(50% - 4px); }
+  .tq-figure svg { width: 620px; max-width: none; }
+  .tq-nav .tq-button { flex: 1 1 auto; }
+  .tq-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+.tq-field.is-fixed { opacity: 0.6; }
+.tq-toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.tq-toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+.tq-choices { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.tq-choice { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(11, 11, 11, 0.3); background: #fff; color: var(--ink); cursor: pointer; }
+.tq-choice.is-on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+.tq-choice:disabled { cursor: default; }
+.tq-table { border-collapse: collapse; margin: 0 0 12px; font-variant-numeric: tabular-nums; }
+.tq-table th, .tq-table td { padding: 5px 14px 5px 0; text-align: right; border-bottom: 1px solid var(--border); }
+.tq-table th { font-size: 13px; font-weight: 400; color: var(--ink-2); }
+.tq-languages { display: inline-flex; gap: 4px; }
+.tq-language { font: inherit; font-size: 13px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); background: transparent; color: var(--ink-2); cursor: pointer; }
+.tq-language.is-on { background: #fff; border-color: rgba(11, 11, 11, 0.4); color: var(--ink); font-weight: 700; }
+.tq-card-tag { justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; background: var(--accent); border-radius: 999px; padding: 1px 8px; margin-bottom: 2px; }
+.tq-card.is-quiet { background: transparent; border-style: dashed; }
+.tq-card.is-quiet .tq-card-tag { background: var(--muted); }
+.tq-card.is-quiet .tq-card-value { font-weight: 400; color: var(--ink-2); }
+.tq-caption { margin: 14px 0 6px; max-width: 82ch; color: var(--ink-2); }
+.tq-tip { fill: transparent; stroke: transparent; stroke-width: 2; cursor: pointer; pointer-events: all; }
+.tq-tip:hover { stroke: #0b0b0b; }
+.tq-tip-box { position: absolute; z-index: 20; max-width: 260px; padding: 6px 10px; border-radius: 8px; background: #0b0b0b; color: #fff; font-size: 13px; line-height: 1.35; pointer-events: none; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); }
+.tq-tip-box[hidden] { display: none; }
+.tq-tip-bar { stroke: none; }
+.tq-tip-bar:hover { stroke: none; fill: rgba(11, 11, 11, 0.1); }
+.tq-tip-box { white-space: pre-line; }

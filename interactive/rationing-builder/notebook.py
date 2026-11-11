@@ -1,4 +1,4 @@
-"""Build the rationing model with blocks: step 2 of the course without writing code.
+"""Build the rationing model with blocks: step 3 of the course (notebook 02) without writing code.
 
 Run it locally (marimo and anywidget are added for the run only):
 

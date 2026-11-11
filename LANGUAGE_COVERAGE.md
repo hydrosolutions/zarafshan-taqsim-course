@@ -19,6 +19,10 @@ Participant-facing prose is translated, including instructions and scientific ex
 
 Checks preserve executable calculations, equations, numerical tables, links and notebook structure. Models were not rerun for translation. The English optimization coursebook lacks some later computed result figures; the Russian edition discloses this inherited limitation. Simulation source inconsistencies are documented in the authoring review notes. These source limitations are not corrected silently during translation.
 
+## Block editor (step 3)
+
+The block editor (`interactive/rationing-builder/`, `02_rationing_visual_*.ipynb`) has its prose in English, Russian and Uzbek, switchable inside the page; `?lang=ru` or `?lang=uz` opens it in that language. Block kinds, block ids in the sandbox and the Python code stay English, and figures keep their English labels, as in the notebooks. Its texts live in this repository, in `src/zarafshan_taqsim/block_editor/i18n*.py`. The Russian and Uzbek texts were machine-written from the English with the terms of `02_rationing_ru.ipynb` and `02_rationing_uz.ipynb` and have not had a native-speaker review yet.
+
 ## Language navigation
 
 Canonical coursebook URLs now open a compact language-switching page. Each loads the selected full book from `_en.html`, `_ru.html` or `_uz.html`. This keeps the long simulation book from downloading three copies at once. The switcher preserves section anchors and remembers the selected language. Direct language-file links return to the canonical page with that language selected; the full content is also readable with JavaScript disabled. The existing reservoir-and-farm book retains its original inline switcher.
